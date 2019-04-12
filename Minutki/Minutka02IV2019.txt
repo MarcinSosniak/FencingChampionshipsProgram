@@ -1,0 +1,5 @@
+Minutka 02 IV 2019
+	ustalenie wstepnego diagramu klas
+		
+	wstepna wizja projektu
+	okreslenie wymagan funkcjonalnych
