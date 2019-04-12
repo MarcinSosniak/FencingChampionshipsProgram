@@ -1,0 +1,11 @@
+Minutka 12 IV 2019
+	Uwagi do prezentacji
+	-wizja:
+		- motywacja
+			- dlaczego ?
+			- komu ?
+			- po co ?
+		- punkty widzenia 2 uzytkownikow
+			- operator
+			- wizja 
+	- wymagania niefunkcjonalne
