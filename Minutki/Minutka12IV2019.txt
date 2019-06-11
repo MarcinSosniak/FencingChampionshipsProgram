@@ -1,0 +1,27 @@
+Minutka 12 IV 2019
+	Uwagi do prezentacji
+		-wizja:
+			- motywacja
+				- dlaczego ?
+				- komu ?
+				- po co ?
+			- punkty widzenia 2 uzytkownikow
+				- operator
+				- wizja 
+		- wymagania niefunkcjonalne
+	
+	Natepne spotkanie (około miesiąc 6-10 V 2019):
+		- dostep do confluenca??
+		- umowic sie co do 3 spotkania czy sierpien/wrzesien czy raczej czerwiec
+		Studium wykonalności:
+		- mamy przekonać że da sie zrobić projekt
+		- udowodnienie, że wiemy co mamy zrobić i jesteśmy w stanie to zrobić:
+			- wiemy GUI (mockup)
+			- dodatkowe rozmowy z klientem
+			- wybrane technologie i UDOWODNIC ze sa wystarczajace i sa w stanie sie dogadac:
+				-udowodnienie moze sie opierac na doswiadczeniach PRAKTYCZNYCH. 
+					Fragment kodu możliwe poprzednie projekty
+			- pokazanie ze mamy na tyle sił przerobowych ze damy rade
+			- Pokazać plan realizacji projektu REALNY (nie na zasadzie przeddzidzia sroddzidzia i zadzidzia)
+			- pokazac ze umiemy sie poslugiwac pewnymi technologiami ALBO pokazac w planie ze przeznaczamy czas na nauke
+		- pewne rzeczy mają być zrobione zaimplementowane

@@ -1,0 +1,5 @@
+Minutka 11 06 2019
+    - uczenie się biblioteki javafx
+    - rozpoczelismy pisanie frontendu i podstawowym widokow
+    - wybranie technologii (Junit)
+    - 
