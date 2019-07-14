@@ -1,0 +1,25 @@
+\begin{thebibliography}{1}
+
+\bibitem{artykul2011}
+Autor.
+\newblock Artyku{\l} w czasopi{\'s}mie.
+\newblock {\em Czasopismo}, 2011.
+\newblock W materia{\l}ach {\'z}r{\'o}d{\l}owych powinny znale{\'z}{\'c}
+  si{\k{e}} tylko najwa{\.z}niejsze pozycje odnosz{\k{a}}ce si{\k{e}} do
+  nietypowych sk{\l}adowych rozwi{\k{a}}zania.
+
+\bibitem{projekt2011}
+Autor.
+\newblock Inny projekt.
+\newblock \url{strona.internetowa.projektu}, 2011.
+
+\bibitem{ksiazka2011}
+Autor.
+\newblock {\em Ksi{\k{a}}{\.z}ka}.
+\newblock Wydawnictwo, 2011.
+
+\bibitem{narzedzie2011}
+Narz{\k{e}}dzie/technologia.
+\newblock \url{strona.internetowa.narzedzia}.
+
+\end{thebibliography}

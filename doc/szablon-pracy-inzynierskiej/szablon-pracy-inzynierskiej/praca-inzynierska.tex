@@ -1,0 +1,91 @@
+\documentclass[polish,12pt]{aghthesis}
+% \documentclass[english,12pt]{aghthesis} dla pracy w jêzyku angielskim. Uwaga, w przypadku strony tytu³owej zmiana jêzyka dotyczy tylko kolejno¶ci wersji jêzykowych tytu³u pracy. 
+
+% Szablon przystosowany jest do druku dwustronnego. 
+
+\usepackage[latin2]{inputenc}
+\usepackage{url}
+
+\author{Marcin So¶niak, Paulina Tuduj \\ Marek Fudaliñski}
+
+\titlePL{System do organizacji i rozgrywania zawodów w Nowoczesnej Szermierce Klasycznej}
+\titleEN{Application for organizing and playing competitions in Modern Classical Fencing}
+
+\fieldofstudy{Informatyka}
+
+\supervisor{£ukasz Faber\ AGH}
+
+\date{\the\year}
+
+
+\begin{document}
+
+\maketitle
+
+\section{\SectionTitleProjectVision}
+\label{sec:cel-wizja}
+\emph{Charakterystyka problemu, motywacja projektu (w tym przegl±d
+  istniej±cych rozwi±zañ prowadz±ca do uzasadnienia celu prac),
+  wizja produktu i analiza zagro¿eñ.}  % niniejsza linijka to tylko komentarz, który nale¿y usun±æ
+
+\subsection{Charakterystyka Problemu}
+  Klient potrzebuje narzêdzia do asystowania przy rozgrywaniu zawodów Nowoczesnej Szermierki Klasycznej, dostosowanego do dynamicznie zmiej±cego sie regulaminu, elastycznego, odpornego na blêdy oraz prostego w obs³udze. Jednocze¶nie ma szybko i czytelnie przekazywaæ informacje istotne zawodnikom (jak przydzia³y do grup, wyniki walk)
+\subsection{Motywacja projektu}
+  Programy komputerowe u³±twiaj± ogarnizacje i gromadzenie danych w ramach zawodów. Nowoczesna Szermierka Klasyczna  jest now± i dynamicznie rozwiaj±c± siê dyscyplin±, wprowadzaj±c± reguralne i czêste zmainy w regulaminie, dotycz±ce równie¿ spodobu rozgrywania zawodów. Jendocze¶nie zasady oceniania walk s± bardzo nie typowe w stosunku do innych sportów, miedzy innymi doposzczujac zarowno czeste remisy, jak reguarlne ujemne punkty.Organizator wymaga te¿, aby program mog³a obs³ugiwaæ osoba po bardzo krótkim i prostym szkoleniu. Nie istnieje aktualnie ¿adne narzêdzie które mog³o by, w stopniu zadowalaj±cym organizatora, asystowaæ w rozgrywaniu zawodów. Alternatywami s± poprzedni program do rozgrywania zawdów Nowoczesnej Szermierki Klasycznej, oraz ró¿nego rodzaju oskryptowane arkusze kalkulacyjne. Jednak poprzedni progam nie jest w stanie wspó³pracowaæ z nadchodz±cymi zamianami, organizacji grup zawodników, a arkusze kalkulacyjne, rowniez wymagaja poprawek w samych skryptach, nie tylko w plikach konfigarcyjnych, oraz s± nie intuicyjne w u¿yciu, co mo¿e prowadziæ do b³êdów u¿ytkownika.
+\subsection{Wizja}
+  Program bedzie napisany w jezyku Java 8, ze wzg³êdu na stabilno¶æ i przenoszalno¶æ, oraz pewno¶æ platformy. Do zostanie wykorzystana JavaFX jako natywny framework Javy. Bêdzie on w pe³ni konfigurowalny, zapewniaj±c te¿ mo¿liwo¶æ ³atwej poprawki b³êdów uzytkownika, oraz prostego przywrócenia stanu w przypadku innej awarii. Same grupy bêd± zale¿ne od pliku inicjalizacyjengo, a strategia dobierania zawodonikow do grup, bedzie rowniez wybierana z konfiguracji, oraz z latwa mozliwoscia dopisania kolejnych. 
+  
+
+\section{\SectionTitleScope}
+\label{sec:zakres-funkcjonalnosci}
+\emph{Kontekst u¿ytkowania produktu (aktorzy, wspó³pracuj±ce systemy)
+  oraz specyfikacja wymagañ funkcjonalnych i niefunkcjonalnych.}  % niniejsza linijka to tylko komentarz, który nale¿y usun±æ
+ 
+\subsection{aktorzy}
+\subsubsection{Operator niebezpieczny}
+Operator  niebezpieczny to u¿ytkownik wchodz±cy w bezpo¶reni± interaktuje z programem, nie uznanym za u¿ykownika bezpiecznego. Nale¿y przyj±æ i¿ taki operator jest tylk± wstêpnie przeszkolony i nie powinnien mieæ mo¿liwo¶æi dotstêpu do bardziej niebezpiecznych funkcji (jak arbitralne dodanie/ odjêcie puntkóW, czy te¿ wyeliminowanie zawodnika z turnieju). Nale¿y to przyj±æ, ¿e mo¿e on pope³niaæ b³edy, i musi siê daæ je w prosty sposób skorygowaæ
+\subsubsection{Operator bezpieczny}
+Operator to u¿ytkownik bezpo¶renio interaktuj±cy z programem. Powinnien mieæ dostêp do wszystkich funkcji. Jego dzia³ania tak¿e maj± byæ odwracalne, ale nie jest istotne ¿eby opcje cofniêcia niektorych zmian da³o sie znale¶æ prosto.
+\subsubsection{Zawodnik}
+Zawodnik jest u¿ytkownikiem pasywnym, tylko odbiera inforacje z ekranu w postaci graficznej/tekstowej. 
+
+\subsection{Wspó³pracuj±ce Systemy}
+Program ma pracowaæ w ¶rodowisku windows.
+
+\subsection{Wymagania funkcjonalne}
+
+\subsection{Wymagania niefunkcjonalne}
+\subitem{Odporno¶æ na b³êdu u¿ytkownika}
+\subitem{Odporno¶æ na b³êdyu}
+
+\section{\SectionTitleRealizationAspects}
+\label{sec:wybrane-aspekty-realizacji}
+\emph{Przyjête za³o¿enia, struktura i zasada dzia³ania systemu,
+  wykorzystane rozwi±zania technologiczne wraz z uzasadnieniem
+  ich wyboru, istotne mechanizmy i zastosowane algorytmy.} % niniejsza linijka to tylko komentarz, który nale¿y usun±æ
+
+
+
+\section{\SectionTitleWorkOrganization}
+\label{sec:organizacja-pracy}
+\emph{Struktura zespo³u (role poszczególnych osób), krótki opis i
+  uzasadnienie przyjêtej metodyki i/lub kolejno¶ci prac, planowane i
+  zrealizowane etapy prac ze wskazaniem udzia³u poszczególnych
+  cz³onków zespo³u, wykorzystane praktyki i narzêdzia w zarz±dzaniu
+  projektem.}  % niniejsza linijka to tylko komentarz, który nale¿y usun±æ
+
+\section{\SectionTitleResults}
+\label{sec:wyniki-projektu}
+\emph{Wskazanie wyników projektu (co konkretnie uda³o siê uzyskaæ:
+  oprogramowanie, dokumentacja, raporty z testów/wdro¿enia, itd.), prezentacja wyników
+  i ocena ich u¿yteczno¶ci (jak zosta³o to zweryfikowane --- np.\ wnioski
+  klienta/u¿ytkownika, zrealizowane testy wydajno¶ciowe, itd.),
+  istniej±ce ograniczenia i propozycje dalszych prac.}  % niniejsza linijka to tylko komentarz, który nale¿y usun±æ
+
+% o ile to mo¿liwe proszê uzywaæ odwo³añ \cite w konkretnych miejscach a nie \nocite
+
+\nocite{artykul2011,ksiazka2011,narzedzie2011,projekt2011}
+
+\bibliography{bibliografia}
+
+\end{document}
