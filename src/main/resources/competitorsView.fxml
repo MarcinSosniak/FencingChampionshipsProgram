@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane prefHeight="431.0" prefWidth="616.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CompetitorsViewController">
+    <fx:include fx:id="menubar" source="menuBar.fxml" GridPane.rowIndex="0" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS" fillHeight="true"/>
+    <TableView GridPane.rowIndex="1">
+        <columns>
+            <TableColumn text="nazwisko" />
+            <TableColumn text="imie" />
+            <TableColumn text="klub" />
+            <TableColumn text="grupa" />
+            <TableColumn text="szpada" />
+            <TableColumn text="szabla" />
+            <TableColumn text="rapier" />
+            <TableColumn text="status sędziowski" />
+            <TableColumn text="szpada" />
+            <TableColumn text="szabla" />
+            <TableColumn text="rapier" />
+            <TableColumn text="licencja" />
+        </columns>
+    </TableView>
+    <Button text="+ dodaj nowego zawodnika" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+
+
+    <rowConstraints>
+        <RowConstraints percentHeight="3" />
+        <RowConstraints percentHeight="90" />
+        <RowConstraints percentHeight="7" />
+    </rowConstraints>
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+</GridPane>

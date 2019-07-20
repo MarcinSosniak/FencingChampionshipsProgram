@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!--not using menu because we doen;t have any dropdown so it is seans less-->
+<HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.MenuBarController" >
+    <children>
+        <Button text="Zapisz" id="Save" HBox.hgrow="ALWAYS" maxHeight="Infinity"/>
+        <Button text="Zapisz jako" id="Save_as" HBox.hgrow="ALWAYS" maxHeight="Infinity"/>
+        <Button text="Cofnij" id="Undo" HBox.hgrow="ALWAYS" maxHeight="Infinity"/>
+        <Button text="Ponów" id="Redo" HBox.hgrow="ALWAYS" maxHeight="Infinity"/>
+        <Button text="Eksportuj wyniki" id="Export_results" HBox.hgrow="ALWAYS" maxHeight="Infinity"/>
+        <Button text="Tryb administratora" id="Admin_mode" HBox.hgrow="ALWAYS" maxHeight="Infinity"/>
+    </children>
+</HBox>
