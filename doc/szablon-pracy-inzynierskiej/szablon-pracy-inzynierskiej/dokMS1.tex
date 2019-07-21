@@ -29,7 +29,21 @@
   wizja produktu i analiza zagro¿eñ.}  % niniejsza linijka to tylko komentarz, który nale¿y usun±æ
 
 \subsection{Charakterystyka Problemu}
-  Klient potrzebuje narzêdzia do asystowania przy rozgrywaniu zawodów Nowoczesnej Szermierki Klasycznej, dostosowanego do dynamicznie zmiej±cego sie regulaminu, elastycznego, odpornego na blêdy oraz prostego w obs³udze. Jednocze¶nie ma szybko i czytelnie przekazywaæ informacje istotne zawodnikom (jak przydzia³y do grup, wyniki walk)
+  Klient potrzebuje narzêdzia do asystowania przy rozgrywaniu zawodów Nowoczesnej Szermierki Klasycznej, dostosowanego do dynamicznie zmiej±cego sie regulaminu, elastycznego, odpornego na blêdy oraz prostego w obs³udze. Jednocze¶nie ma szybko i czytelnie przekazywaæ informacje istotne zawodnikom (jak przydzia³y do grup, wyniki walk). 
+\subsection{Charakterystyka Zawodow}
+Zawody sk³adaj± siê z 3 "pod zawodów" na trzech broniach: szabli, szpadzie, rapierze z lewakiem (w skrócie rapierze). Najpierw s± rundy eliminacyjne (chocia¿ mo¿e byæ jedna), opó³fina³y i fina³y na danej broni s± rozgrywana pucharowo (tzw. drabnika).
+\subsubsection{Charakterystyka eliminacji}
+ W rundach eliminacyjnych zawodnicy s± przypisywani do grup gdzie walcz± ka¿dy z ka¿dym. Grupy maj± sta³y rozmiar w danej rundzie eliminacji w danej broni. Po ka¿dej rundzie do nastêpnej rundy przechodzi pewna liczba zawodników o najwiêszkej liczbie punktów z walk na danej broni i rozgrywana jest kolejna runda, lub te¿ ju¿ pó³fina³y. 
+\subsubsection{Charakterystyka punktacji walk}
+ Ka¿da walka mo¿e siê zakoñczyæ na 3 sposoby. Albo który¶ z zawodników wygra, wtedy zwyciêsca otrzymuje 2 punkty, przegrany otrzymuje 0. Walka mo¿e siê zakonczyæ "trafieniem obopólnym" kiedy obaj zawodnicy otrzymuja -1 punkt. 
+\subsubsection{Charakterystyka 'killerów'}
+ W etapie eliminacyjnym mo¿e siê zdarzyæ i¿ dla danego rozmaru grupy nie da sie uzyskac rownych grup zawodnikow. Np. dla 8 zawodników i rozmiaru grupy 3 w jednej z grup bêdzie brakowa³o zawodnika. Dla ka¿dego zawodnika z nie pe³nej grupy wtedy dobiera siê killerów, tak aby ta ka¿da osoba z wybrakowanej grupy zawalczy³a komplet walk (rozmiar grupy - 1 ). Punky killerów s± wtedy skalowane raze n/(n+k) gdzie n to rozmiar grupy w danej rundzie a k to ilo¶æ walk jako killer.
+\subsubsection{Charakterystyka drabinki}
+ Najpierw rozgrywane sa 2 pólfina³y potem zwyciêscy pólfina³ów walcz± razem w walce fina³owej, a przegrani walcz± o 3 miejsce. Je¶li jendak który kolwiek pó³fina³ zakoñczy siê trafieniem obopólnym jest on powtarzany. Je¶li jednak trafienie obopólne siê powtórzy, to obaj zawodnicy zajmuj± miejsce czwarte, a drugi pó³fina³ staje fina³em (nawet je¶li by³ ju¿ rozegrany). Je¶li oba pólfina³y zakoñcz± sie trafieniami obopólnymi, to wszyscy czterej zawodnicy zajmuj± czwarte miejsce.
+\subsubsection{Wyliczanie punktów koñcowych}
+ Punkty zawodników za zawody (do klasyfikacji genralnej, i sezonowego pucharu trzech broni), s± wyliczane dla ka¿dej broni na podstawie miejsca zajêtego na danej broni. Punkty na danej broni = 101 - miejsce na danej broni licz±c od 1. Czyli pierwsza osoba otrzymuje 100pkt druga 99 etc. Zawodnicy (oprócz pierwszej czwórki wyznaczanej przez drabinke) otrzymuj± miejsca w kolejno¶ci zgodniej z ilo¶ci± punktów z walk na danej broni. Wielu zawodników mo¿e zajmowaæ to samo miejsce. Jednak samo miejsce zale¿y od ilo¶ci zawodników przed nim. Zau¿my ¿e mamy zawodników A,B,C. A i B maja 8pkt na szpadzie (i tylko oni), a C ma 7 punktów na szpadzie. Je¶li wiêc A i B zajm± miejsce 14, to C zajmie miejsce 16 a nikt nie zajmie miejsca piêtnastego. 
+
+
 \subsection{Motywacja projektu}
   Programy komputerowe u³±twiaj± ogarnizacje i gromadzenie danych w ramach zawodów. Nowoczesna Szermierka Klasyczna  jest now± i dynamicznie rozwiaj±c± siê dyscyplin±, wprowadzaj±c± reguralne i czêste zmainy w regulaminie, dotycz±ce równie¿ spodobu rozgrywania zawodów. Jendocze¶nie zasady oceniania walk s± bardzo nie typowe w stosunku do innych sportów, miedzy innymi doposzczujac zarowno czeste remisy, jak reguarlne ujemne punkty.Organizator wymaga te¿, aby program mog³a obs³ugiwaæ osoba po bardzo krótkim i prostym szkoleniu. Nie istnieje aktualnie ¿adne narzêdzie które mog³o by, w stopniu zadowalaj±cym organizatora, asystowaæ w rozgrywaniu zawodów. Alternatywami s± poprzedni program do rozgrywania zawdów Nowoczesnej Szermierki Klasycznej, oraz ró¿nego rodzaju oskryptowane arkusze kalkulacyjne. Jednak poprzedni progam nie jest w stanie wspó³pracowaæ z nadchodz±cymi zamianami, organizacji grup zawodników, a arkusze kalkulacyjne, rowniez wymagaja poprawek w samych skryptach, nie tylko w plikach konfigarcyjnych, oraz s± nie intuicyjne w u¿yciu, co mo¿e prowadziæ do b³êdów u¿ytkownika.
 \subsection{Wizja}
@@ -55,8 +69,8 @@ Program ma pracowaæ w ¶rodowisku windows.
 \subsection{Wymagania funkcjonalne}
 \subsubsection{Pacz±tek}
 \begin{itemize}
-	\item Mo¿liwosæ wczytania zapisu
-	\item Mo¿liwo¶æ uruchomneina programu z nowymi zawodami i nadanie im nazwy
+	\item wczytania zapisu
+	\item uruchomneina programu z nowymi zawodami i nadanie im nazwy
 \end{itemize}
 \subsubsection{Przygotowanie nowych zawodów}
 \begin{itemize}
@@ -70,13 +84,23 @@ Program ma pracowaæ w ¶rodowisku windows.
 	\item Mo¿liwo¶æ pe³nej edycji danych zawodnika
 \end{itemize}
 \subsubsection{Rozgrywanie zawodów}
-program umo¿liwia:
 \begin{itemize}
 	\item przej¶cie miêdzy trybem autmatycznym i administratora, tryb administratora chroniony has³em.
 	\item zmiane has³a administratora 
-	\item Mo¿liwo¶æ rozgrywania równolegle i niezale¿enie ka¿dej z broni
-	\item Mo¿liwo¶æ wybrania strategii rozlosowywania zawodników [tryb administratora]
-	\item Mo¿liwo¶æ uruchomneina programu z nowymi zawodami i nadanie im nazwy
+	\item rozgrywanie równolegle i niezale¿enie ka¿dej z broni
+	\item wybranie strategii rozlosowywania zawodników [tryb administratora]
+	\item automatyczne wczytanie z inicjalizacji ilosci zawodników przechodzacych do nastepnej rundy eliminacjim
+	\item rêczne wpisanie ilu zawodnikow ma przej¶æ do nastêpnej rundy elimiacji [tryb administratora]
+	\item dodanie/odjecie puntkow zawdonikowi przez operatora (na danej broni) [tryb administratora]
+	\item oznacznenia zawodnika jako kontuzjuwanego na danej broni [tryb administratora]
+	\item automatyczne wczytanie rozmiaru grup  rundy elimnacji
+	\item rcznego zadania rozmiaru grup rundy eliminacji [tryb administratora]
+	\item pozostawienie operatorowi do wyboru którzy zawodnicy przechodz± do nastpenej rundy spo¶ród tych którzy maj± równy wynik punktowy
+	\item sedziowie nie moga byc killerami
+	\item zaden zawodnik nie moze byc killerem po raz drugi, jesli bierze udzial inny zawodnik ktory moze byc killerem 
+	\item logowanie postêpów operatora
+	
+
 \end{itemize}
 
 
@@ -86,7 +110,7 @@ program umo¿liwia:
 	\item Odporno¶æ na b³êdy nie zale¿ne od uzytkownika
 	\item Jak najwiêksza automatycja
 	\item Mo¿liwo¶æ odtowrzenia dzia³añ u¿ytkownika
-	\item Mo¿liwo¶æ "w³amania" siê do systemy administratora na wypadek utraty has³a
+	\item Mo¿liwo¶æ "w³amania" siê do systemy administratora na wypadek utraty has³a. 
 \end{itemize}
 
 
