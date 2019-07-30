@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.7.13)  21 JUL 2019 14:34
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7000 64-bit) (preloaded format=pdflatex 2019.7.13)  29 JUL 2019 20:11
 entering extended mode
 **./dokMS1.tex
 (dokMS1.tex
@@ -296,12 +296,12 @@ LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <12> not available
  [3
 
 ] [4]
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 72.
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 74.
  ("C:\Program Files\MiKTeX 2.9\tex/latex/psnfss\omsptm.fd"
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 72.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 74.
 
 [5] [6] (dokMS1.bbl
 LaTeX Font Info:    Try loading font information for T1+pcr on input line 14.
@@ -317,10 +317,10 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 )
 [7] (dokMS1.aux) ) 
 Here is how much of TeX's memory you used:
- 3504 strings out of 492946
- 47892 string characters out of 3135622
- 131956 words of memory out of 3000000
- 7311 multiletter control sequences out of 15000+200000
+ 3503 strings out of 492946
+ 47878 string characters out of 3135622
+ 130956 words of memory out of 3000000
+ 7310 multiletter control sequences out of 15000+200000
  44620 words of font info for 47 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  41i,11n,45p,1492b,328s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -330,7 +330,7 @@ Files/MiKTeX 2.9/fonts/type1/urw/courier/ucrr8a.pfb><C:/Program Files/MiKTeX 2.
 9/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw
 /times/utmr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pf
 b>
-Output written on dokMS1.pdf (7 pages, 195042 bytes).
+Output written on dokMS1.pdf (7 pages, 195334 bytes).
 PDF statistics:
  59 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
