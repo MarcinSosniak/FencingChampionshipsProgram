@@ -9,11 +9,11 @@
 <!--not using menu because we doen;t have any dropdown so it is seans less-->
 <HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.MenuBarController" >
     <children>
-        <Button text="Zapisz" id="Save" HBox.hgrow="ALWAYS" maxHeight="Infinity"/>
-        <Button text="Zapisz jako" id="Save_as" HBox.hgrow="ALWAYS" maxHeight="Infinity"/>
-        <Button text="Cofnij" id="Undo" HBox.hgrow="ALWAYS" maxHeight="Infinity"/>
-        <Button text="Ponów" id="Redo" HBox.hgrow="ALWAYS" maxHeight="Infinity"/>
-        <Button text="Eksportuj wyniki" id="Export_results" HBox.hgrow="ALWAYS" maxHeight="Infinity"/>
-        <Button text="Tryb administratora" id="Admin_mode" HBox.hgrow="ALWAYS" maxHeight="Infinity"/>
+        <Button text="Zapisz" fx:id="Save" HBox.hgrow="ALWAYS" onAction="#save" maxHeight="Infinity"/>
+        <Button text="Zapisz jako" fx:id="Save_as" HBox.hgrow="ALWAYS" onAction="#saveAs" maxHeight="Infinity"/>
+        <Button text="Cofnij" fx:id="Undo" HBox.hgrow="ALWAYS" onAction="#undo" maxHeight="Infinity"/>
+        <Button text="Ponów" fx:id="Redo" HBox.hgrow="ALWAYS" onAction="#redo" maxHeight="Infinity"/>
+        <Button text="Eksportuj wyniki" fx:id="Export_results" HBox.hgrow="ALWAYS" onAction="#exportResults" maxHeight="Infinity"/>
+        <Button text="Tryb administratora" fx:id="Admin_mode" HBox.hgrow="ALWAYS" onAction="#adminModeOn" maxHeight="Infinity"/>
     </children>
 </HBox>
