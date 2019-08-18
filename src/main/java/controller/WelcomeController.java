@@ -5,7 +5,7 @@ import javafx.fxml.Initializable;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Controller implements Initializable {
+public class WelcomeController implements Initializable {
 
     public void selectCompetition(){
         System.out.format("selectCompetition (TODO:implement me)\n");
