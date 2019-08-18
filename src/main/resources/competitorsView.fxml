@@ -41,7 +41,7 @@
        </GridPane.margin>
     </Button>
     <Button text="+ dodaj nowego zawodnika" onAction="#addNewCompetitor" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
-    <Button text="ROZPOCZNIJ ZAWODY" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" style="-fx-background-color: green" onAction="#startCompetition" GridPane.rowIndex="2">
+    <Button text="ROZPOCZNIJ ZAWODY"  GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" style="-fx-background-color: green" onAction="#startCompetition" GridPane.rowIndex="2">
             <GridPane.margin>
                 <Insets right="5"/>
             </GridPane.margin>
