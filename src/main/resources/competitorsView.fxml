@@ -6,13 +6,11 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.ScrollPane?>
+
 <GridPane prefHeight="431.0" prefWidth="616.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CompetitorsViewController">
     <fx:include fx:id="menubar" source="menuBar.fxml" GridPane.rowIndex="0" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS" fillHeight="true"/>
-   <!--<ScrollPane GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" GridPane.rowIndex="1">-->
-    <TableView fx:id="CompetitorsID" GridPane.rowIndex="1">
+    <TableView fx:id="competitorsID" GridPane.rowIndex="1">
         <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
         </columnResizePolicy>
