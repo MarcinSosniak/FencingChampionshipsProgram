@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.geometry.Insets?>
+
+<GridPane prefHeight="431.0" prefWidth="616.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CompetitorsViewController">
+    <fx:include fx:id="menubar" source="menuBar.fxml" GridPane.rowIndex="0" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS" fillHeight="true"/>
+    <TableView fx:id="competitorsID" GridPane.rowIndex="1">
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+        </columnResizePolicy>
+        <columns>
+            <TableColumn text="nazwisko" fx:id="surname" />
+            <TableColumn text="imie" fx:id="name"/>
+            <TableColumn text="klub" fx:id="club"/>
+            <TableColumn text="grupa" fx:id="group"/>
+            <TableColumn text="szpada" fx:id="fSmallSwordParticipant"/>
+            <TableColumn text="szabla" fx:id="fSabreParticipant"/>
+            <TableColumn text="rapier" fx:id="fRapierParticipant"/>
+            <TableColumn text="status sędziowski" fx:id="refereeStatus"/>
+            <TableColumn text="Punkty">
+                <columns>
+                    <TableColumn text="szpada" fx:id="smallSwordPoints" />
+                    <TableColumn text="szabla" fx:id="sabrePoints" />
+                    <TableColumn text="rapier" fx:id="rapierPoints" />
+                </columns>
+            </TableColumn>
+            <TableColumn text="licencja" fx:id="licence"/>
+        </columns>
+    </TableView>
+    <Button text="wróć" onAction="#goBack"  GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
+       <GridPane.margin>
+           <Insets left="5"/>
+       </GridPane.margin>
+    </Button>
+    <Button text="+ dodaj nowego zawodnika" onAction="#addNewCompetitor" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+    <Button text="ROZPOCZNIJ ZAWODY"  GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" style="-fx-background-color: green" onAction="#startCompetition" GridPane.rowIndex="2">
+            <GridPane.margin>
+                <Insets right="5"/>
+            </GridPane.margin>
+    </Button>
+    <rowConstraints>
+        <RowConstraints percentHeight="3" />
+        <RowConstraints percentHeight="92" />
+        <RowConstraints percentHeight="5" />
+    </rowConstraints>
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+</GridPane>

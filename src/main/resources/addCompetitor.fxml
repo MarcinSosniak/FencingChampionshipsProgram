@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.CheckBox?>
+
+<!--TODO: addCompetition is very similar to editCompetitor.-->
+<!--TODO: We can reuse one of them in order to minimalize code-->
+
+<GridPane id="anchorPaneBackground" prefHeight="522.0" prefWidth="301.0" AnchorPane.topAnchor="10" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddCompetitorController">
+    <Text fx:id="title" style="-fx-font-size: 20" text="Dodaj nowego zawodnika" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+
+    <TextField fx:id="competitorName" text="imie" GridPane.fillWidth="TRUE" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+    <TextField fx:id="competitorSurname" text="nazwisko" GridPane.fillWidth="TRUE" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+    <TextField fx:id="competitorDivision" text="oddzial" GridPane.fillWidth="TRUE" GridPane.rowIndex="3" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+    <TextField fx:id="competitorGroup" text="grupa" GridPane.fillWidth="TRUE" GridPane.rowIndex="4" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+
+    <CheckBox fx:id="competitorFSmallSword" text="Szpada" GridPane.rowIndex="6" GridPane.columnIndex="1" GridPane.halignment="LEFT" />
+    <CheckBox fx:id="competitorFSabre" text="Szabla" GridPane.rowIndex="7" GridPane.columnIndex="1" GridPane.halignment="LEFT"/>
+    <CheckBox fx:id="competitorFRapier" text="Rapier" GridPane.rowIndex="8" GridPane.columnIndex="1" GridPane.halignment="LEFT"/>
+
+    <CheckBox fx:id="competitorFMainReferee" text="sedzia glowny" GridPane.rowIndex="10" GridPane.columnIndex="1" GridPane.halignment="LEFT"/>
+
+    <Text style="-fx-font-size: 14" text="data waznosci licencji" GridPane.rowIndex="12" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+    <TextField fx:id="competitorLicenceDate" text="dd/mm/rrrr" GridPane.fillWidth="TRUE" GridPane.rowIndex="13" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP"/>
+
+    <Button fx:id="cancelButton" text="anuluj --" onAction="#cancelAddNewCompetitor" GridPane.halignment="LEFT"  GridPane.valignment="TOP" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.columnIndex="1"/>
+    <Button fx:id="addButton" text="dodaj ++" onAction="#addNewCompetitor" style="-fx-background-color: green" GridPane.valignment="TOP" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.columnIndex="1"/>
+
+
+    <rowConstraints>
+        <RowConstraints percentHeight="15"/><!--Add new Competitor-->
+
+        <RowConstraints percentHeight="7"/><!--name-->
+        <RowConstraints percentHeight="7"/><!--surname-->
+        <RowConstraints percentHeight="7"/><!--division-->
+        <RowConstraints percentHeight="7"/><!--group-->
+
+        <RowConstraints percentHeight="4"/> <!--small_sword-->
+        <RowConstraints percentHeight="4"/> <!--sabre-->
+        <RowConstraints percentHeight="4"/> <!--rapier-->
+
+        <RowConstraints percentHeight="4"/><!--space-->
+
+        <RowConstraints percentHeight="5"/><!--main referee-->
+
+        <RowConstraints percentHeight="5"/><!--space-->
+
+
+        <RowConstraints percentHeight="4"/><!--title licence-->
+        <RowConstraints percentHeight="5"/><!--licence-->
+
+        <RowConstraints percentHeight="15"/><!--space-->
+        <RowConstraints percentHeight="7"/><!--buttons-->
+
+    </rowConstraints>
+    <columnConstraints>
+        <ColumnConstraints percentWidth="7"/>
+        <ColumnConstraints percentWidth="86"/>
+        <ColumnConstraints percentWidth="7"/>
+    </columnConstraints>
+
+</GridPane>
