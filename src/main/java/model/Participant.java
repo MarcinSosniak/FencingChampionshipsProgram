@@ -12,6 +12,39 @@ import java.util.List;
 public class Participant {
 
     private StringProperty name;
+
+    public void setName(String name) {
+        this.name.set(name);
+    }
+
+    public void setSurname(String surname) {
+        this.surname.set(surname);
+    }
+
+    public void setLocation(String location) {
+        this.location.set(location);
+    }
+
+    public void setLocationGroup(String locationGroup) {
+        this.locationGroup.set(locationGroup);
+    }
+
+    public void setfSmallSwordParticipant(boolean fSmallSwordParticipant) {
+        this.fSmallSwordParticipant.set(fSmallSwordParticipant);
+    }
+
+    public void setfSabreParticipant(boolean fSabreParticipant) {
+        this.fSabreParticipant.set(fSabreParticipant);
+    }
+
+    public void setfRapierParticipant(boolean fRapierParticipant) {
+        this.fRapierParticipant.set(fRapierParticipant);
+    }
+
+    public void setWeaponsPointsMap(HashMap<WeaponType, Integer> weaponsPointsMap) {
+        this.weaponsPointsMap = weaponsPointsMap;
+    }
+
     private StringProperty surname;
     private StringProperty location;
     private StringProperty locationGroup;
@@ -20,7 +53,7 @@ public class Participant {
 
 
     /** for table view required */
-    public BooleanProperty fSmallSwordParticipant;
+    private BooleanProperty fSmallSwordParticipant;
     private BooleanProperty fSabreParticipant;
     private BooleanProperty fRapierParticipant;
 
@@ -39,17 +72,6 @@ public class Participant {
         this.fRapierParticipant = new SimpleBooleanProperty();
 
         this.weaponsPointsMap= new HashMap<>();
-
-
-
-        /** Some Errors occured :) */
-//        this.name.setValue(name);
-//        this.surname.setValue(surname);
-//        this.location.setValue(location);
-//        this.locationGroup.setValue(locationGroup);
-//        this.judgeState.setValue(judgeState);
-//        this.licenseExpDate.setValue(licenceExpDate);
-//        this.weaponsPointsMap = new HashMap<>();
     }
 
     public String getName() {
@@ -96,6 +118,7 @@ public class Participant {
     }
 
     public BooleanProperty fSabreParticipantProperty() {
+        System.out.format("xDDD" + fSabreParticipant + "XDDDD\n");
         return fSabreParticipant;
     }
 

@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.DataGenerator;
+import model.Participant;
 
 public class ApplicationController {
     private Stage primaryStage;
@@ -26,6 +27,7 @@ public class ApplicationController {
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/competitorsView.fxml"));
             Parent root = loader.load();
+            /** In case if the controller is needed */
             CompetitorsViewController competitorsViewController = (CompetitorsViewController) loader.getController();
             /** Generating competitiors data, later init controller with empty list */
 
@@ -33,27 +35,48 @@ public class ApplicationController {
             this.currentStage = primaryStage;
             primaryStage.show();
         }catch (Exception e){
-            //e.printStackTrace();
+            e.printStackTrace();
             System.out.format("Cannot load main FXML\n");
         }
 
     }
 
-    public Stage renderStageAndSetOwner(String source, String title ,boolean fWindowModal){
-        Stage inputStage = new Stage();
+
+    public Stage renderAndSetOwner(String source, String title ,boolean fWindowModal){
+        Stage outputStage = new Stage();
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource(source));
-            Scene newScene;
-            newScene = new Scene(loader.load());
-            inputStage.setScene(newScene);
-            inputStage.setTitle(title);
-            inputStage.initOwner(this.currentStage);
+            Scene newScene = new Scene(loader.load());
+            outputStage.setScene(newScene);
+            outputStage.setTitle(title);
+            outputStage.initOwner(this.currentStage);
             if (fWindowModal)
-                inputStage.initModality(Modality.WINDOW_MODAL);
+                outputStage.initModality(Modality.WINDOW_MODAL);
         }catch(Exception e){
+            System.out.format("Error while rendering dialog");
             e.printStackTrace();
         }
-        return inputStage;
+        return outputStage;
     }
+
+    public Stage renderEditAndSetOwner(String source, String title , boolean fWindowModal, Participant p){
+        Stage outputStage = new Stage();
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(source));
+            Scene newScene = new Scene(loader.load());
+            outputStage.setScene(newScene);
+            outputStage.setTitle(title);
+            outputStage.initOwner(this.currentStage);
+            if (fWindowModal)
+                outputStage.initModality(Modality.WINDOW_MODAL);
+            EditCompetitorController controller = (EditCompetitorController) loader.getController();
+            controller.setData(p);
+        }catch (Exception e){
+            System.out.format("Error while rendering edit dialog");
+            e.printStackTrace();
+        }
+        return outputStage;
+    }
+
 
 }

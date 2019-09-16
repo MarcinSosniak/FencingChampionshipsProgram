@@ -6,7 +6,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import model.DataGenerator;
 import model.Participant;
@@ -59,18 +61,6 @@ public class CompetitorsViewController implements Initializable {
     TableColumn<Participant, Date> licence;
     /**E: Table view fields */
 
-
-
-
-
-
-
-
-
-
-
-
-
     @FXML
     public void goBack(){
         System.out.format("goBack (TODO:implement me)\n");
@@ -78,8 +68,8 @@ public class CompetitorsViewController implements Initializable {
 
     @FXML
     public void addNewCompetitor(){
-        System.out.format("addNewCompetitor (implemented)\n");
-        Stage childScene = ApplicationController.getApplicationController().renderStageAndSetOwner("/addCompetitor.fxml","Dodaj nowego zawodnika",true);
+        System.out.format("render addNewCompetitor (implemented)\n");
+        Stage childScene = ApplicationController.getApplicationController().renderAndSetOwner("/addCompetitor.fxml","Dodaj nowego zawodnika",true);
         childScene.showAndWait();
     }
 
@@ -89,6 +79,29 @@ public class CompetitorsViewController implements Initializable {
         System.out.format("Size: %d\n",participants.size());
     }
 
+
+    private void editCompetitor(Participant toEdit){
+        System.out.format("edit competitor to do implement\n");
+        Stage childScene = ApplicationController.getApplicationController().renderEditAndSetOwner("/editCompetitor.fxml","Edytuj zawodnika",true,toEdit);
+        childScene.showAndWait();
+    }
+
+    /** Right click to columns described here
+     * https://stackoverflow.com/questions/26563390/detect-doubleclick-on-row-of-tableview-javafx */
+    private void setRightClickOnCompetitor(TableView<Participant> competitorsTable){
+        competitorsTable.setRowFactory( x -> {
+            TableRow<Participant> tableRow = new TableRow<>();
+            tableRow.setOnMouseClicked( e -> {
+                if(e.getButton().equals(MouseButton.SECONDARY) && !tableRow.isEmpty()){
+                    Participant p = tableRow.getItem(); /*TODO: this line invokes whether someone participate in some competition and somehow it changes value to always true */
+                    editCompetitor(p);
+                    System.out.format("Right click on %s\n",p.getName());
+                }
+            });
+            return tableRow;
+        });
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
         //System.out.format("Size: %d\n",participants.size());
@@ -96,19 +109,15 @@ public class CompetitorsViewController implements Initializable {
         DataGenerator DG = new DataGenerator();
         this.setParticipants(DG.generateParticipants());
         competitorsTable.setItems(participants);
+        setRightClickOnCompetitor(competitorsTable);
 
         name.setCellValueFactory(dataValue -> dataValue.getValue().nameProperty());
         surname.setCellValueFactory(dataValue -> dataValue.getValue().surnameProperty());
         club.setCellValueFactory(dataValue -> dataValue.getValue().locationProperty());
         group.setCellValueFactory(dataValue -> dataValue.getValue().locationGroupProperty());
-        fSmallSwordParticipant.setCellValueFactory(dataValue ->{
-            /*TOBE REMOVED :) */
-            dataValue.getValue().fSmallSwordParticipantProperty().setValue(true);
-            return dataValue.getValue().fSmallSwordParticipantProperty();
-        }  );
+        fSmallSwordParticipant.setCellValueFactory(dataValue ->dataValue.getValue().fSmallSwordParticipantProperty());
         fSabreParticipant.setCellValueFactory(dataValue -> dataValue.getValue().fSabreParticipantProperty());
         fRapierParticipant.setCellValueFactory(dataValue -> dataValue.getValue().fRapierParticipantProperty());
-
         refereeStatus.setCellValueFactory(dataValue -> dataValue.getValue().judgeStateProperty());
 
         /*TODO: How to display points properly?? */
@@ -116,14 +125,8 @@ public class CompetitorsViewController implements Initializable {
         //smallSwordPoints.setCellValueFactory( x ->  BooleanProperty(true));
 //        sabrePoints.setCellValueFactory(dataValue -> dataValue.getValue().);
 //        rapierPoints.setCellValueFactory(dataValue -> dataValue.getValue().);
-
         licence.setCellValueFactory(dataValue -> dataValue.getValue().licenseExpDateProperty());
-        /*TODO: Why there is no participant in the table view */
 
 
-
-        /** Right click to columns described here
-         * https://stackoverflow.com/questions/26563390/detect-doubleclick-on-row-of-tableview-javafx
-         *  */
     }
 }
