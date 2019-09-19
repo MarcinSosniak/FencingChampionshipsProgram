@@ -16,7 +16,7 @@ public class EditCompetitorController implements Initializable {
 
 
     @FXML
-    Participant toEdit;
+    private Participant toEdit;
 
     @FXML
     TextField competitorName;
@@ -53,9 +53,9 @@ public class EditCompetitorController implements Initializable {
             competitorSurname.setText(toEdit.getSurname());
             competitorDivision.setText(toEdit.getLocation());
             competitorGroup.setText(toEdit.getLocationGroup());
-            competitorFSmallSword.setSelected(toEdit.isSmallSwordCompetitor());
-            competitorFRapier.setSelected(toEdit.isRapierCompetitor());
-            competitorFSabre.setSelected(toEdit.isSabreCompetitor());
+            competitorFSmallSword.setSelected(toEdit.fSmallSwordParticipantProperty().getValue());
+            competitorFRapier.setSelected(toEdit.fRapierParticipantProperty().getValue());
+            competitorFSabre.setSelected(toEdit.fSabreParticipantProperty().getValue());
             competitorFMainReferee.setSelected(toEdit.getJudgeState() == JudgeState.MAIN_JUDGE);
             competitorLicenceDate.setText(new SimpleDateFormat("dd-MM-yyyy").format(toEdit.getLicenseExpDate()));
         }

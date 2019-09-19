@@ -1,10 +1,8 @@
 package controller;
-
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -17,6 +15,7 @@ import model.enums.JudgeState;
 
 import java.math.BigDecimal;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -121,12 +120,27 @@ public class CompetitorsViewController implements Initializable {
         refereeStatus.setCellValueFactory(dataValue -> dataValue.getValue().judgeStateProperty());
 
         /*TODO: How to display points properly?? */
-
         //smallSwordPoints.setCellValueFactory( x ->  BooleanProperty(true));
-//        sabrePoints.setCellValueFactory(dataValue -> dataValue.getValue().);
-//        rapierPoints.setCellValueFactory(dataValue -> dataValue.getValue().);
-        licence.setCellValueFactory(dataValue -> dataValue.getValue().licenseExpDateProperty());
+        //sabrePoints.setCellValueFactory(dataValue -> dataValue.getValue().);
+        //rapierPoints.setCellValueFactory(dataValue -> dataValue.getValue().);
 
+        licence.setCellValueFactory(dataValue -> dataValue.getValue().licenseExpDateProperty());
+        licence.setCellFactory(column -> {
+            return new TableCell<Participant, Date>() {
+                @Override
+                protected void updateItem(Date item, boolean empty) {
+                    super.updateItem(item, empty);
+
+                    if (item == null || empty) {
+                        setText(null);
+                        setStyle("");
+                    } else {
+                        // Format date.
+                        setText(new SimpleDateFormat("dd-MM-yyyy").format(item));
+                    }
+                }
+            };
+        });
 
     }
 }

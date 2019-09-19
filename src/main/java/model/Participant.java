@@ -67,9 +67,9 @@ public class Participant {
         this.judgeState      = new SimpleObjectProperty<>(judgeState);
         this.licenseExpDate  = new SimpleObjectProperty<>(licenceExpDate);
 
-        this.fSmallSwordParticipant = new SimpleBooleanProperty();
-        this.fSabreParticipant = new SimpleBooleanProperty();
-        this.fRapierParticipant = new SimpleBooleanProperty();
+        this.fSmallSwordParticipant = new SimpleBooleanProperty(false);
+        this.fSabreParticipant = new SimpleBooleanProperty(false);
+        this.fRapierParticipant = new SimpleBooleanProperty(false);
 
         this.weaponsPointsMap= new HashMap<>();
     }
