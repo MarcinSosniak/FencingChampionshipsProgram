@@ -68,7 +68,7 @@ public class CompetitorsViewController implements Initializable {
     @FXML
     public void addNewCompetitor(){
         System.out.format("render addNewCompetitor (implemented)\n");
-        Stage childScene = ApplicationController.getApplicationController().renderAndSetOwner("/addCompetitor.fxml","Dodaj nowego zawodnika",true);
+        Stage childScene = ApplicationController.getApplicationController().renderAddNewCompetitor("/addCompetitor.fxml","Dodaj nowego zawodnika",true,participants);
         childScene.showAndWait();
     }
 

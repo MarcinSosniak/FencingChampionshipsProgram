@@ -64,7 +64,7 @@ public class EditCompetitorController implements Initializable {
     public void cancelEditCompetitor(){
         Stage toClose = (Stage) cancelButton.getScene().getWindow();
         toClose.close();
-        System.out.format("cancelEditCompetitor (TODO:implement me)\n");
+        System.out.format("cancelEditCompetitor\n");
     }
 
     public void editCompetitor(){
