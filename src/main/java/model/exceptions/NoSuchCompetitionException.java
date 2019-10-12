@@ -1,4 +1,4 @@
 package model.exceptions;
 
-public class NoSuchCompetitionException {
+public class NoSuchCompetitionException extends Exception{
 }

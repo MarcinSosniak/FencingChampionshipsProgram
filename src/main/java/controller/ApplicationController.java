@@ -6,8 +6,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import model.Competition;
 import model.DataGenerator;
 import model.Participant;
+import model.enums.WeaponType;
 
 public class ApplicationController {
     private Stage primaryStage;
@@ -25,11 +27,31 @@ public class ApplicationController {
     public void initRootLayouts(){
         this.primaryStage.setTitle("Inzynierka Szermierka");
 
+        /** Competitors View */
+//
+//        try{
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/competitorsView.fxml"));
+//            Parent root = loader.load();
+//            /** In case if the controller is needed */
+//            CompetitorsViewController competitorsViewController = (CompetitorsViewController) loader.getController();
+//            /** Generating competitiors data, later init controller with empty list */
+//
+//            primaryStage.setScene(new Scene(root));
+//            this.currentStage = primaryStage;
+//            primaryStage.show();
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            System.out.format("Cannot load main FXML\n");
+//        }
+
+        /** Elimination Controller */
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/competitorsView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/elimination.fxml"));
             Parent root = loader.load();
             /** In case if the controller is needed */
-            CompetitorsViewController competitorsViewController = (CompetitorsViewController) loader.getController();
+            Competition c = DataGenerator.generateSampleCompetition();
+            EliminationController ec = (EliminationController) loader.getController();
+            ec.setData(c);
             /** Generating competitiors data, later init controller with empty list */
 
             primaryStage.setScene(new Scene(root));
@@ -41,24 +63,6 @@ public class ApplicationController {
         }
 
     }
-
-
-//    public Stage renderAndSetOwner(String source, String title ,boolean fWindowModal){
-//        Stage outputStage = new Stage();
-//        try{
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource(source));
-//            Scene newScene = new Scene(loader.load());
-//            outputStage.setScene(newScene);
-//            outputStage.setTitle(title);
-//            outputStage.initOwner(this.currentStage);
-//            if (fWindowModal)
-//                outputStage.initModality(Modality.WINDOW_MODAL);
-//        }catch(Exception e){
-//            System.out.format("Error while rendering dialog");
-//            e.printStackTrace();
-//        }
-//        return outputStage;
-//    }
 
     public Stage renderAddNewCompetitor(String source, String title , boolean fWindowModal, ObservableList<Participant> participants) {
         Stage outputStage = new Stage();
@@ -97,6 +101,21 @@ public class ApplicationController {
             e.printStackTrace();
         }
             return outputStage;
+    }
+
+    public Scene renderWeaponTab(WeaponType wt,ObservableList<Participant> participants){
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/eliminationWeaponGroup.fxml"));
+            Scene newScene = new Scene(loader.load());
+            EliminationWeaponGroupController controller = (EliminationWeaponGroupController) loader.getController();
+            controller.setData(wt,participants);
+            return newScene;
+        }catch (Exception e){
+            System.out.format("Error while rendering weaponTab");
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 
