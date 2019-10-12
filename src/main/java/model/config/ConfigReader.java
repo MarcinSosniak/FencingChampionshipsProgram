@@ -1,5 +1,5 @@
 package model.config;
-import Util.Pair;
+import Util.HumanReadableFatalError;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -76,12 +76,110 @@ public class ConfigReader {
     }
 
     private static ConfigReader instance=null;
+    private static int MAX_IO_RETRIES = 5;
+    private static int IO_COOLDOWN_TIME_MS = 200; // if we have to retry how long to wait ?
 
     private HashMap<String,TagVariables> tags = new HashMap<>();
 
     private ConfigReader() { throw new IllegalStateException(); } // DO NOT CALL THIS
+    // in better language we would use ConfigReader() = delete;
 
-    private ConfigReader(String filePath) throws FileNotFoundException,IOException
+    private ConfigReader(String defaultConfigFilePath, String overrideConfigFilePath) throws FileNotFoundException,IOException,IllegalArgumentException
+    {
+        if(defaultConfigFilePath==null && overrideConfigFilePath==null)
+            throw new IllegalArgumentException(" At least one config file must be specified");
+        try{
+            if(defaultConfigFilePath!=null)
+            {
+                fillWeak(defaultConfigFilePath);
+            }
+        }
+        catch (IOException ex)
+        {
+            for(int i=0; i< MAX_IO_RETRIES; i++)
+            {
+                try{
+                    Thread.sleep(IO_COOLDOWN_TIME_MS);
+                    fillWeak(defaultConfigFilePath);
+                    break; // if successfull break
+                }
+                catch (FileNotFoundException fileNotFoundEx)
+                {
+                    throw fileNotFoundEx;
+                }
+                catch (IOException|InterruptedException exInner)
+                {
+                    ;// ignore
+                }
+            }
+        }
+        try{
+            if(overrideConfigFilePath!=null)
+            {
+                fillOverride(overrideConfigFilePath);
+            }
+        }
+        catch (IOException ex)
+        {
+            for(int i=0; i< MAX_IO_RETRIES; i++)
+            {
+                try{
+                    Thread.sleep(IO_COOLDOWN_TIME_MS);
+                    fillOverride(overrideConfigFilePath);
+                    break; // if successfull break
+                }
+                catch (FileNotFoundException fileNotFoundEx)
+                {
+                    throw fileNotFoundEx;
+                }
+                catch (IOException|InterruptedException exInner)
+                {
+                    ;// ignore
+                }
+            }
+        }
+
+    }
+
+
+    private void fillWeak(String filePath) throws FileNotFoundException,IOException
+    {
+        BufferedReader reader  = new BufferedReader(new FileReader(
+                filePath));
+        String currentTag=null;
+        TagVariables currentTagVars=new TagVariables();
+        String line = reader.readLine();
+        while(line != null)
+        {
+            line=line.trim();
+            if (line.startsWith("["))
+            {
+                if(currentTag!= null)
+                {
+                    tags.put(currentTag,currentTagVars);
+                }
+                currentTag=line.substring(1,line.length()-1);
+                currentTagVars=new TagVariables();
+            }
+            else
+            {
+                String[] splitedLine= line.split(" ");
+                try {
+                    currentTagVars.set(splitedLine[0], splitedLine[1]);
+                }
+                catch (ArrayIndexOutOfBoundsException ex)
+                {
+                    throw new IllegalStateException("invalid file format, probably variable without value");
+                }
+            }
+            line=reader.readLine();
+        }
+        if (currentTag != null)
+            if(!tags.containsKey(currentTag))
+                tags.put(currentTag,currentTagVars);
+    }
+
+    private void fillOverride(String filePath) throws FileNotFoundException,IOException
     {
         BufferedReader reader  = new BufferedReader(new FileReader(
                 filePath));
@@ -118,6 +216,7 @@ public class ConfigReader {
     }
 
 
+
     public static ConfigReader getInstance()
     {
         if (instance != null) {
@@ -126,16 +225,24 @@ public class ConfigReader {
         throw new IllegalStateException("Not initilized");
     }
 
-    public static void init(String filepath) throws IOException
+    public static void init(String defaultConfigFilePath,String overrideConfigFilePath) throws HumanReadableFatalError
     {
         if(instance!=null)
             throw new IllegalStateException("multiple initializations");
-        try{
-            instance=new ConfigReader(filepath);
+        try {
+            instance = new ConfigReader(defaultConfigFilePath, overrideConfigFilePath);
         }
-        catch(IOException ex)
+        catch (FileNotFoundException ex)
         {
-            instance=new ConfigReader(filepath);
+            throw new HumanReadableFatalError("File not found",ex);
+        }
+        catch (IOException ex)
+        {
+            throw new HumanReadableFatalError("Input Output Error",ex);
+        }
+        catch (IllegalArgumentException ex)
+        {
+            throw new HumanReadableFatalError("Invalid Argument",ex);
         }
     }
 
@@ -145,12 +252,38 @@ public class ConfigReader {
             throw new IllegalStateException("tag was not found");
         return tags.get(tag).getBoolean(name);
     }
+    public boolean getBooleanValue(String tag, String name,boolean defaultValue)
+    {
+        boolean out;
+        try
+        {
+            out=getBooleanValue(tag,name);
+        }
+        catch (IllegalStateException ex)
+        {
+            return defaultValue;
+        }
+        return out;
+    }
 
     public int getIntValue(String tag, String name)
     {
         if( !tags.containsKey(tag))
             throw new IllegalStateException("tag was not found");
         return tags.get(tag).getInt(name);
+    }
+    public int getIntValue(String tag, String name,int defaultValue)
+    {
+        int out;
+        try
+        {
+            out=getIntValue(tag,name);
+        }
+        catch (IllegalStateException ex)
+        {
+            return defaultValue;
+        }
+        return out;
     }
 
     public String debugDump()

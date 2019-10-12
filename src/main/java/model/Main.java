@@ -1,14 +1,17 @@
 package model;
 
-import javafx.application.Application;
+import Util.HumanReadableFatalError;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.config.ConfigReader;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
 import model.config.ConfigReader;
 
-import java.io.IOException;
+import java.util.Scanner;
 
 public class Main extends Application {
 
@@ -21,8 +24,18 @@ public class Main extends Application {
     }
 
 
-    public static void main(String[] args) throws IOException {
-        ConfigReader.init("src/main/resources/cfg/test.cfg");
-        launch(args);
+    public static void main(String[] args)  {
+        try {
+            ConfigReader.init("src/main/resources/cfg/default.cfg","src/main/resources/cfg/test.cfg");
+            launch(args);
+        }
+        catch(HumanReadableFatalError ex)
+        {
+            System.out.println(ex.getMessage());
+            System.out.println("press enter to exit");
+            Scanner scan= new Scanner(System.in);
+            scan.nextLine();
+            System.exit(2);
+        }
     }
 }
