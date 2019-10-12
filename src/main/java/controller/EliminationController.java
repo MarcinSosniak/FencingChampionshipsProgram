@@ -104,15 +104,18 @@ public class EliminationController {
 
         tv.getColumns().addAll(name,surname,group,points);
 
-//        tv.setRowFactory( row ->{
-//            TableRow<Participant> tableRow = new TableRow<>();
-//            tableRow.setOnMouseClicked( event -> {
-//                if(event.getButton().equals(MouseButton.SECONDARY) && !tableRow.isEmpty()){
-//                    Participant p = tableRow.getItem();
-//                    Stage childScene = ApplicationController.getApplicationController()
-//                }
-//            });
-//        });
+        tv.setRowFactory( row ->{
+            TableRow<Participant> tableRow = new TableRow<>();
+            tableRow.setOnMouseClicked( event -> {
+                if(event.getButton().equals(MouseButton.SECONDARY) && !tableRow.isEmpty()){
+                    System.out.format("Right click on add injury\n");
+                    Participant p = tableRow.getItem();
+                    Stage childScene = ApplicationController.getApplicationController().renderAddInjury("/addInjury.fxml","Add_Injury",true,p);
+                    childScene.showAndWait();
+                }
+            });
+            return tableRow;
+        });
 
 
 

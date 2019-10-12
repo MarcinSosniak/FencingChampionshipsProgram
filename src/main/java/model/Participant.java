@@ -168,6 +168,9 @@ public class Participant {
         else throw new NoSuchWeaponException();
     }
 
+    public void addInjury(WeaponType wt){
+
+    }
 
 
 
