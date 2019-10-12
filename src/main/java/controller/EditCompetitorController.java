@@ -12,7 +12,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
 
-public class EditCompetitorController implements Initializable {
+public class EditCompetitorController implements Initializable,GeneralPopupControllerInterface {
 
 
     @FXML
@@ -41,6 +41,7 @@ public class EditCompetitorController implements Initializable {
     @FXML
     Button cancelButton;
 
+    @Override
     public void setData(Participant p){
         System.out.format("Setting data in edit dialog\n");
         toEdit = p;

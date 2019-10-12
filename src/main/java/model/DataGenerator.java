@@ -39,6 +39,7 @@ public class DataGenerator {
     }
 
 
+    /** TODO: make it more complicated */
     static public Competition generateSampleCompetition(){
         ObservableList rapierParticipants = DataGenerator.generateWeaponParticipants(WeaponType.RAPIER,1);
         ObservableList sabreParticipants = DataGenerator.generateWeaponParticipants(WeaponType.SABRE,2);

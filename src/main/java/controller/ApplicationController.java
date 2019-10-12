@@ -28,30 +28,12 @@ public class ApplicationController {
         this.primaryStage.setTitle("Inzynierka Szermierka");
 
         /** Competitors View */
-//
-//        try{
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/competitorsView.fxml"));
-//            Parent root = loader.load();
-//            /** In case if the controller is needed */
-//            CompetitorsViewController competitorsViewController = (CompetitorsViewController) loader.getController();
-//            /** Generating competitiors data, later init controller with empty list */
-//
-//            primaryStage.setScene(new Scene(root));
-//            this.currentStage = primaryStage;
-//            primaryStage.show();
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            System.out.format("Cannot load main FXML\n");
-//        }
 
-        /** Elimination Controller */
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/elimination.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/competitorsView.fxml"));
             Parent root = loader.load();
             /** In case if the controller is needed */
-            Competition c = DataGenerator.generateSampleCompetition();
-            EliminationController ec = (EliminationController) loader.getController();
-            ec.setData(c);
+            CompetitorsViewController competitorsViewController = (CompetitorsViewController) loader.getController();
             /** Generating competitiors data, later init controller with empty list */
 
             primaryStage.setScene(new Scene(root));
@@ -61,6 +43,24 @@ public class ApplicationController {
             e.printStackTrace();
             System.out.format("Cannot load main FXML\n");
         }
+
+        /** Elimination Controller */
+//        try{
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/elimination.fxml"));
+//            Parent root = loader.load();
+//            /** In case if the controller is needed */
+//            Competition c = DataGenerator.generateSampleCompetition();
+//            EliminationController ec = (EliminationController) loader.getController();
+//            ec.setData(c);
+//            /** Generating competitiors data, later init controller with empty list */
+//
+//            primaryStage.setScene(new Scene(root));
+//            this.currentStage = primaryStage;
+//            primaryStage.show();
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            System.out.format("Cannot load main FXML\n");
+//        }
 
     }
 
@@ -103,19 +103,23 @@ public class ApplicationController {
             return outputStage;
     }
 
-    public Scene renderWeaponTab(WeaponType wt,ObservableList<Participant> participants){
+    public Stage renderAddInjury(String source, String title , boolean fWindowModal, Participant p){
+        Stage outputStage = new Stage();
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/eliminationWeaponGroup.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(source));
             Scene newScene = new Scene(loader.load());
-            EliminationWeaponGroupController controller = (EliminationWeaponGroupController) loader.getController();
-            controller.setData(wt,participants);
-            return newScene;
+            outputStage.setScene(newScene);
+            outputStage.setTitle(title);
+            outputStage.initOwner(this.currentStage);
+            if (fWindowModal)
+                outputStage.initModality(Modality.WINDOW_MODAL);
+            GeneralPopupControllerInterface controller = (GeneralPopupControllerInterface) loader.getController();
+            controller.setData(p);
         }catch (Exception e){
-            System.out.format("Error while rendering weaponTab");
+            System.out.format("Error while rendering add injury dialog");
             e.printStackTrace();
         }
-
-        return null;
+        return outputStage;
     }
 
 

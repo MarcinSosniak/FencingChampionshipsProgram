@@ -19,6 +19,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+/** TODO:
+ *      - date problem
+ *  */
 public class CompetitorsViewController implements Initializable {
 
     private ObservableList<Participant> participants;

@@ -7,10 +7,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
+import javafx.stage.Stage;
 import model.Competition;
 import model.Participant;
 import model.WeaponCompetition;
@@ -104,6 +103,19 @@ public class EliminationController {
         });
 
         tv.getColumns().addAll(name,surname,group,points);
+
+//        tv.setRowFactory( row ->{
+//            TableRow<Participant> tableRow = new TableRow<>();
+//            tableRow.setOnMouseClicked( event -> {
+//                if(event.getButton().equals(MouseButton.SECONDARY) && !tableRow.isEmpty()){
+//                    Participant p = tableRow.getItem();
+//                    Stage childScene = ApplicationController.getApplicationController()
+//                }
+//            });
+//        });
+
+
+
         /*TODO: add right click */
 
         tabToRet.setContent(tv);
