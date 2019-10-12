@@ -28,29 +28,11 @@ public class ApplicationController {
         this.primaryStage.setTitle("Inzynierka Szermierka");
 
         /** Competitors View */
-        try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/competitorsView.fxml"));
-            Parent root = loader.load();
-            /** In case if the controller is needed */
-            CompetitorsViewController competitorsViewController = (CompetitorsViewController) loader.getController();
-            /** Generating competitiors data, later init controller with empty list */
-
-            primaryStage.setScene(new Scene(root));
-            this.currentStage = primaryStage;
-            primaryStage.show();
-        }catch (Exception e){
-            e.printStackTrace();
-            System.out.format("Cannot load main FXML\n");
-        }
-
-        /** Elimination Controller */
 //        try{
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/elimination.fxml"));
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/competitorsView.fxml"));
 //            Parent root = loader.load();
 //            /** In case if the controller is needed */
-//            Competition c = DataGenerator.generateSampleCompetition();
-//            EliminationController ec = (EliminationController) loader.getController();
-//            ec.setData(c);
+//            CompetitorsViewController competitorsViewController = (CompetitorsViewController) loader.getController();
 //            /** Generating competitiors data, later init controller with empty list */
 //
 //            primaryStage.setScene(new Scene(root));
@@ -60,6 +42,24 @@ public class ApplicationController {
 //            e.printStackTrace();
 //            System.out.format("Cannot load main FXML\n");
 //        }
+
+        /** Elimination Controller */
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/elimination.fxml"));
+            Parent root = loader.load();
+            /** In case if the controller is needed */
+            Competition c = DataGenerator.generateSampleCompetition();
+            EliminationController ec = (EliminationController) loader.getController();
+            ec.setData(c);
+            /** Generating competitiors data, later init controller with empty list */
+
+            primaryStage.setScene(new Scene(root));
+            this.currentStage = primaryStage;
+            primaryStage.show();
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.format("Cannot load main FXML\n");
+        }
 
     }
 

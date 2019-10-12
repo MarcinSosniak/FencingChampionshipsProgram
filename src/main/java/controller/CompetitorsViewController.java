@@ -11,17 +11,13 @@ import javafx.stage.Stage;
 import model.DataGenerator;
 import model.Participant;
 import model.enums.JudgeState;
-
-
 import java.math.BigDecimal;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
 
-/** TODO:
- *      - date problem
- *  */
+
 public class CompetitorsViewController implements Initializable {
 
     private ObservableList<Participant> participants;
