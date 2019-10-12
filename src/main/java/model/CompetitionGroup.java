@@ -9,7 +9,6 @@ import java.util.List;
 public class CompetitionGroup {
 
     private ObservableList<Fight> fightsList;
-
     public ObservableList<Fight> getFightsList() {
         return fightsList;
     }

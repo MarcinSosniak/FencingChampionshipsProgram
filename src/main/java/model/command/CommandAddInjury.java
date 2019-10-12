@@ -15,4 +15,6 @@ public class CommandAddInjury   implements Command {
     public void redo() {
 
     }
+
+
 }

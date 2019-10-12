@@ -1,16 +1,14 @@
 package model.FightDrawing;
 
-import model.CompetitionGroup;
-import model.Fight;
+import model.*;
 import model.KillerDrawing.KillerRandomizerStrategy;
-import model.Participant;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TestDrawStrategy extends FightDrawStrategy {
     @Override
-    public ArrayList<CompetitionGroup> drawFightsForRound(int groupSize, List<Participant> participants) {
+    public ArrayList<CompetitionGroup> drawFightsForRound(Round round, int groupSize, List<Participant> participants) {
         if(participants.size() % groupSize != 0)
             throw new IllegalStateException("ola boga killerzy to za skompilkowane dla tego");
         ArrayList<CompetitionGroup> out=new ArrayList<>();
@@ -22,7 +20,7 @@ public class TestDrawStrategy extends FightDrawStrategy {
             {
                 for(int m=k+1;m<groupParticipants.size();m++)
                 {
-                    fightsInGroup.add(new Fight(groupParticipants.get(k),groupParticipants.get(m)));
+                    fightsInGroup.add(new Fight(round,groupParticipants.get(k),groupParticipants.get(m)));
                 }
             }
             out.add(new CompetitionGroup(fightsInGroup));

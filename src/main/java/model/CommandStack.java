@@ -4,11 +4,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.command.Command;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class CommandStack {
 
-    private ObservableList<Command> commandStack = FXCollections.observableArrayList();
-    private ObservableList<Command> undoStack = FXCollections.observableArrayList();
+    private ArrayList<Command> commandStack = new ArrayList<>();
+    private ArrayList<Command> undoStack = new ArrayList<>();
 
 
     public void executeCommand(Command command) {
@@ -31,7 +34,7 @@ public class CommandStack {
         undoStack.add(command);
     }
 
-    public ObservableList<Command> getCommandStack() {
+    public List<Command> getCommandStack() {
         return commandStack;
     }
 }

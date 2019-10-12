@@ -3,6 +3,8 @@ package model;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import model.command.Command;
+import model.config.ConfigReader;
 import model.enums.FightScore;
 
 import java.util.ArrayList;
@@ -12,10 +14,13 @@ public  class Fight {
     private ObjectProperty<Participant> firstParticipant= new SimpleObjectProperty<>();
     private ObjectProperty<Participant> secondParticipant = new SimpleObjectProperty<>();
     private ObjectProperty<FightScore> score = new SimpleObjectProperty<>();
-
-    public Fight(Participant first, Participant second){
+    private Round round;
+    public Fight(Round round,Participant first, Participant second){
+        this.round=round;
         this.firstParticipant.setValue(first);
         this.secondParticipant.setValue(second);
+        score.setValue(FightScore.NULL_STATE);
+        round.addExcpectedFightToParticipant(first);
     }
 
     public Participant getFirstParticipant() {
@@ -46,20 +51,32 @@ public  class Fight {
     public FightScore getScore() { return score.get(); }
 
 
-    public void setFightScore(FightScore score)
+    private void setFightScore(FightScore score)
     {
         this.score.setValue(score);
     }
 
-    public void setWinner(Participant winner)
+    public void setFightScoreDirect(FightScore score)
+    {
+        round.getCStack().executeCommand(new CommandAddBattleResult(this,score));
+    }
+
+    public void setWinner(Participant winner) // DO NOT OUTSIDE OF COMMAND_ADD_BATTLE_RESULT
+    {
+        round.getCStack().executeCommand(new CommandAddBattleResult(this,winner));
+    }
+
+    private FightScore getScoreWithWinner(Participant winner) // doesn't set anything
     {
         if(firstParticipant.equals(winner))
-            score.setValue(FightScore.WON_FIRST);
+            return FightScore.WON_FIRST;
         else if(secondParticipant.equals(winner))
-            score.setValue(FightScore.WON_SECOND);
+            return FightScore.WON_SECOND;
         else
             throw new IllegalArgumentException("participant missmatch, one to be winner is not in fight");
     }
+
+
     public void setDouble()
     {
         score.set(FightScore.DOUBLE);
@@ -82,6 +99,76 @@ public  class Fight {
             return  secondParticipant.get();
         else
             return null;
+    }
+
+    private void updateRoundScore(boolean reverse)
+    {
+        int multiplier=1;
+        if(reverse)
+            multiplier=-1;
+        ConfigReader cfg = ConfigReader.getInstance();
+        int winPoints=cfg.getIntValue("points","WIN",2);
+        int loosePoints=cfg.getIntValue("points","LOSE",0);
+        int doublePoints=cfg.getIntValue("points","DOUBLE",-1);
+        if (score.get() == FightScore.DOUBLE)
+        {
+            round.addPointsFromFight(firstParticipant.get(),multiplier*doublePoints);
+            round.addPointsFromFight(secondParticipant.get(),multiplier*doublePoints);
+        }
+        if (score.get()== FightScore.WON_FIRST)
+        {
+            round.addPointsFromFight(firstParticipant.get(),multiplier*winPoints);
+            round.addPointsFromFight(secondParticipant.get(),multiplier*loosePoints);
+        }
+        if (score.get()== FightScore.WON_SECOND)
+        {
+            round.addPointsFromFight(firstParticipant.get(),multiplier*loosePoints);
+            round.addPointsFromFight(secondParticipant.get(),multiplier*winPoints);
+        }
+    }
+
+    private class CommandAddBattleResult implements Command {
+        @Override
+        public void execute() {
+            oldScore=fight.getScore();
+            if(oldScore!= FightScore.NULL_STATE)
+                fight.updateRoundScore(true); // reverse previous change
+            fight.setFightScore(scoreToSet);
+            if(fight.getScore()!= FightScore.NULL_STATE)
+            fight.updateRoundScore(false);
+        }
+
+        @Override
+        public void undo() {
+            if(fight.getScore()!=scoreToSet)
+                throw new IllegalStateException("This error means that there is a bug. Something was changed outside " +
+                        "of command stack and/or element is missing from stack");
+            if(fight.getScore() != FightScore.NULL_STATE)
+                fight.updateRoundScore(true); // if we changed
+            fight.setFightScore(oldScore);
+            if(fight.getScore() != FightScore.NULL_STATE)
+                fight.updateRoundScore(false);
+        }
+
+        @Override
+        public void redo() {
+            execute();
+        }
+
+        private final FightScore scoreToSet;
+        private final Fight fight;
+        private FightScore oldScore= FightScore.NULL_STATE;
+        public CommandAddBattleResult(Fight fight, Participant winner)
+        {
+            this.fight=fight;
+            scoreToSet=fight.getScoreWithWinner(winner);
+        }
+
+        public CommandAddBattleResult(Fight fight, FightScore score)
+        {
+            this.fight=fight;
+            scoreToSet=score;
+        }
     }
 
 
