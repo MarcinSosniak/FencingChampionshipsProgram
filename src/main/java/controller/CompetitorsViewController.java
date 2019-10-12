@@ -19,6 +19,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+/** TODO:
+ *      - date problem
+ *  */
 public class CompetitorsViewController implements Initializable {
 
     private ObservableList<Participant> participants;
@@ -68,7 +71,7 @@ public class CompetitorsViewController implements Initializable {
     @FXML
     public void addNewCompetitor(){
         System.out.format("render addNewCompetitor (implemented)\n");
-        Stage childScene = ApplicationController.getApplicationController().renderAndSetOwner("/addCompetitor.fxml","Dodaj nowego zawodnika",true);
+        Stage childScene = ApplicationController.getApplicationController().renderAddNewCompetitor("/addCompetitor.fxml","Dodaj nowego zawodnika",true,participants);
         childScene.showAndWait();
     }
 
@@ -92,7 +95,7 @@ public class CompetitorsViewController implements Initializable {
             TableRow<Participant> tableRow = new TableRow<>();
             tableRow.setOnMouseClicked( e -> {
                 if(e.getButton().equals(MouseButton.SECONDARY) && !tableRow.isEmpty()){
-                    Participant p = tableRow.getItem(); /*TODO: this line invokes whether someone participate in some competition and somehow it changes value to always true */
+                    Participant p = tableRow.getItem();
                     editCompetitor(p);
                     System.out.format("Right click on %s\n",p.getName());
                 }
@@ -103,10 +106,8 @@ public class CompetitorsViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
-        //System.out.format("Size: %d\n",participants.size());
 
-        DataGenerator DG = new DataGenerator();
-        this.setParticipants(DG.generateParticipants());
+        this.setParticipants(DataGenerator.generateParticipants(1));
         competitorsTable.setItems(participants);
         setRightClickOnCompetitor(competitorsTable);
 

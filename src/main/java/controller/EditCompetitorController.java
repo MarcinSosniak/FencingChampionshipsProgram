@@ -41,6 +41,7 @@ public class EditCompetitorController implements Initializable {
     @FXML
     Button cancelButton;
 
+
     public void setData(Participant p){
         System.out.format("Setting data in edit dialog\n");
         toEdit = p;
@@ -49,22 +50,22 @@ public class EditCompetitorController implements Initializable {
 
     private void updateView(){
         if(toEdit != null){
-            competitorName.setText(toEdit.getName());
-            competitorSurname.setText(toEdit.getSurname());
-            competitorDivision.setText(toEdit.getLocation());
-            competitorGroup.setText(toEdit.getLocationGroup());
+            competitorName.setText(toEdit.nameProperty().getValue());
+            competitorSurname.setText(toEdit.surnameProperty().getValue());
+            competitorDivision.setText(toEdit.locationProperty().getValue());
+            competitorGroup.setText(toEdit.locationGroupProperty().getValue());
             competitorFSmallSword.setSelected(toEdit.fSmallSwordParticipantProperty().getValue());
             competitorFRapier.setSelected(toEdit.fRapierParticipantProperty().getValue());
             competitorFSabre.setSelected(toEdit.fSabreParticipantProperty().getValue());
             competitorFMainReferee.setSelected(toEdit.getJudgeState() == JudgeState.MAIN_JUDGE);
-            competitorLicenceDate.setText(new SimpleDateFormat("dd-MM-yyyy").format(toEdit.getLicenseExpDate()));
+            competitorLicenceDate.setText(new SimpleDateFormat("dd-MM-yyyy").format(toEdit.licenseExpDateProperty().getValue()));
         }
     }
 
     public void cancelEditCompetitor(){
         Stage toClose = (Stage) cancelButton.getScene().getWindow();
         toClose.close();
-        System.out.format("cancelEditCompetitor (TODO:implement me)\n");
+        System.out.format("cancelEditCompetitor\n");
     }
 
     public void editCompetitor(){

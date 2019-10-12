@@ -1,17 +1,19 @@
 package model;
 
 import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import model.enums.JudgeState;
 import model.enums.WeaponType;
 import model.exceptions.NoSuchWeaponException;
 
+import java.security.InvalidParameterException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 public class Participant {
-
-    private StringProperty name;
 
     public void setName(String name) {
         this.name.set(name);
@@ -30,26 +32,54 @@ public class Participant {
     }
 
     public void setfSmallSwordParticipant(boolean fSmallSwordParticipant) {
-        this.fSmallSwordParticipant.set(fSmallSwordParticipant);
+        if(!this.fSmallSwordParticipant.getValue().equals(fSmallSwordParticipant)) {
+            if(this.weaponPointsProperty.containsKey(WeaponType.SMALL_SWORD) && !fSmallSwordParticipant){
+                this.weaponPointsProperty.remove(WeaponType.SMALL_SWORD);
+            }else{
+                this.weaponPointsProperty.put(WeaponType.SMALL_SWORD,new SimpleIntegerProperty(0));
+            }
+            this.fSmallSwordParticipant.setValue(fSmallSwordParticipant);
+        }
     }
 
     public void setfSabreParticipant(boolean fSabreParticipant) {
-        this.fSabreParticipant.set(fSabreParticipant);
+        if(!this.fSabreParticipant.getValue().equals(fSabreParticipant)) {
+            if(this.weaponPointsProperty.containsKey(WeaponType.SABRE) && !fSabreParticipant){
+                this.weaponPointsProperty.remove(WeaponType.SABRE);
+            }else{
+                this.weaponPointsProperty.put(WeaponType.SABRE,new SimpleIntegerProperty(0));
+            }
+            this.fSabreParticipant.setValue(fSabreParticipant);
+        }
     }
 
     public void setfRapierParticipant(boolean fRapierParticipant) {
-        this.fRapierParticipant.set(fRapierParticipant);
+        if(!this.fRapierParticipant.getValue().equals(fRapierParticipant)) {
+            if(this.weaponPointsProperty.containsKey(WeaponType.RAPIER) && !fRapierParticipant){
+                this.weaponPointsProperty.remove(WeaponType.RAPIER);
+            }else{
+                this.weaponPointsProperty.put(WeaponType.RAPIER,new SimpleIntegerProperty(0));
+            }
+            this.fRapierParticipant.setValue(fRapierParticipant);
+        }
     }
 
-    public void setWeaponsPointsMap(HashMap<WeaponType, Integer> weaponsPointsMap) {
-        this.weaponsPointsMap = weaponsPointsMap;
+    public void setfWeaponParticipant(WeaponType wt,boolean fparticipant){
+        switch (wt){
+            case SABRE: setfSabreParticipant(fparticipant);break;
+            case RAPIER: setfRapierParticipant(fparticipant); break;
+            case SMALL_SWORD: setfSmallSwordParticipant(fparticipant);break;
+            default: throw new InvalidParameterException();
+        }
     }
 
+    private StringProperty name;
     private StringProperty surname;
     private StringProperty location;
     private StringProperty locationGroup;
     private ObjectProperty<JudgeState> judgeState;
     private ObjectProperty<Date> licenseExpDate;
+    private int timesKiller=0;
 
 
     /** for table view required */
@@ -57,7 +87,8 @@ public class Participant {
     private BooleanProperty fSabreParticipant;
     private BooleanProperty fRapierParticipant;
 
-    private HashMap<WeaponType,Integer> weaponsPointsMap;
+    /** Points for table view required */
+    private ObservableMap<WeaponType,IntegerProperty> weaponPointsProperty;
 
     public Participant(String name, String surname, String location, String locationGroup, JudgeState judgeState, Date licenceExpDate){
         this.name            = new SimpleStringProperty(name);
@@ -71,7 +102,7 @@ public class Participant {
         this.fSabreParticipant = new SimpleBooleanProperty(false);
         this.fRapierParticipant = new SimpleBooleanProperty(false);
 
-        this.weaponsPointsMap= new HashMap<>();
+        this.weaponPointsProperty = FXCollections.observableHashMap();
     }
 
     public String getName() {
@@ -118,15 +149,12 @@ public class Participant {
     }
 
     public BooleanProperty fSabreParticipantProperty() {
-        System.out.format("xDDD" + fSabreParticipant + "XDDDD\n");
         return fSabreParticipant;
     }
 
     public BooleanProperty fRapierParticipantProperty() {
         return fRapierParticipant;
     }
-
-
 
     public void setLicenseExpDate(Date licenceExpDate){ this.licenseExpDate.setValue(licenceExpDate); }
 
@@ -136,45 +164,27 @@ public class Participant {
 
     public JudgeState getJudgeState(){ return judgeState.get(); }
 
-    public void addWeaponsToWeaponsPointsMap(List<WeaponType> weaponTypeList){
-        for (WeaponType weaponType: weaponTypeList){
-            weaponsPointsMap.putIfAbsent(weaponType, 0);
-        }
-    }
-
-    public int getPointsForWeapon(WeaponType type) throws NoSuchWeaponException {
-        if (weaponsPointsMap.containsKey(type)) return weaponsPointsMap.get(type);
+    public IntegerProperty getPointsForWeaponProperty(WeaponType type) throws NoSuchWeaponException {
+        if(weaponPointsProperty.containsKey(type)) return weaponPointsProperty.get(type);
         else throw new NoSuchWeaponException();
     }
 
-    public void addPointsForWeapon(WeaponType weaponType, int points) throws NoSuchWeaponException {
-        if (weaponsPointsMap.containsKey(weaponType)) weaponsPointsMap.replace(weaponType, weaponsPointsMap.get(weaponType) + points);
-        else throw new NoSuchWeaponException();
+    public void addInjury(WeaponType wt){}
+
+    public int getTimesKiller() {
+        return timesKiller;
     }
 
-    public void takePointsForWeapon(WeaponType weaponType, int points) throws NoSuchWeaponException{
-        if (weaponsPointsMap.containsKey(weaponType)) weaponsPointsMap.replace(weaponType, weaponsPointsMap.get(weaponType) - points);
-        else throw new NoSuchWeaponException();
+    public void setTimesKiller(int timesKiller) {
+        this.timesKiller = timesKiller;
     }
 
+    public void incTimesKiller()
+    {
+        this.timesKiller++;
 
-    public boolean isSabreCompetitor(){
-        fSabreParticipant.setValue(!weaponsPointsMap.keySet().contains(WeaponType.SABRE));
-        if (!weaponsPointsMap.keySet().contains(WeaponType.SABRE)) return false;
-        return true;
     }
 
-    public boolean isSmallSwordCompetitor(){
-        fSmallSwordParticipant.setValue(!weaponsPointsMap.keySet().contains(WeaponType.SMALL_SWORD));
-        if (!weaponsPointsMap.keySet().contains(WeaponType.SMALL_SWORD)) return false;
-        return true;
-    }
-
-    public boolean isRapierCompetitor(){
-        fRapierParticipant.setValue(!weaponsPointsMap.keySet().contains(WeaponType.RAPIER));
-        if (!weaponsPointsMap.keySet().contains(WeaponType.RAPIER)) return false;
-        return true;
-    }
 
 
 }

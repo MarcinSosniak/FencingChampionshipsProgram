@@ -26,7 +26,7 @@
     <Text style="-fx-font-size: 14" text="data waznosci licencji" GridPane.rowIndex="12" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
     <TextField fx:id="competitorLicenceDate"  GridPane.fillWidth="TRUE" GridPane.rowIndex="13" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP"/>
 
-    <Button fx:id="cancelButton" text="anuluj --" onAction="#cancelEditCompetitor" GridPane.halignment="LEFT"  GridPane.valignment="TOP" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.columnIndex="1"/>
+    <Button fx:id="cancelButton" text="anuluj --" onAction="#cancelEditCompetitor" style="-fx-background-color: grey" GridPane.halignment="LEFT"  GridPane.valignment="TOP" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.columnIndex="1"/>
     <Button fx:id="editButton" text="edytuj +-" onAction="#editCompetitor" style="-fx-background-color: green" GridPane.valignment="TOP" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.columnIndex="1"/>
 
 

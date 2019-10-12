@@ -1,4 +1,10 @@
 package model;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import model.FightDrawing.FightDrawStrategy;
+import model.FightDrawing.FightDrawStrategyPicker;
+import model.KillerDrawing.KillerRandomizerStrategyPicker;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,25 +14,33 @@ public class Round {
     private int groupSize;
     // last cut-off
     private FightDrawStrategy fightDrawStrategy;
-    private List<Fight> fights;
+    private ObservableList<CompetitionGroup> groups=null;
+    private ObservableList<Participant> participants;
 
-    public Round(int roundNumber, int groupSize, FightDrawStrategy fightDrawStrategy){
+    public ObservableList<Participant> getParticipants() {
+        return participants;
+    }
+
+
+    public ObservableList<CompetitionGroup> getGroups() {
+        return groups;
+    }
+
+    public Round(int roundNumber, int groupSize,ArrayList<Participant> participants, FightDrawStrategyPicker fightDrawStrategyPicker){
         this.roundNumber = roundNumber;
         this.groupSize = groupSize;
-        this.fightDrawStrategy = fightDrawStrategy;
-        this.fights = new ArrayList<>();
+        this.fightDrawStrategy = fightDrawStrategyPicker.pick(KillerRandomizerStrategyPicker.KillerRandomizerStrategy());
+        this.participants= FXCollections.observableArrayList(participants);
+        sortGroups();
     }
 
     public int getGroupSize() { return groupSize; }
 
     public int getRoundNumber() { return roundNumber; }
 
-    public void addFightToRound(Fight fight) {fights.add(fight); }
-
-    public void drawFightsForRound(){
-        List<Fight> fights = fightDrawStrategy.drawFightsForRound(this);
-        for (Fight fight: fights) addFightToRound(fight);
+    private void sortGroups()
+    {
+        groups = FXCollections.observableArrayList(fightDrawStrategy.drawFightsForRound(groupSize,participants));
     }
-
     //count points
 }
