@@ -58,7 +58,7 @@ public class EditCompetitorController implements Initializable {
             competitorFRapier.setSelected(toEdit.fRapierParticipantProperty().getValue());
             competitorFSabre.setSelected(toEdit.fSabreParticipantProperty().getValue());
             competitorFMainReferee.setSelected(toEdit.getJudgeState() == JudgeState.MAIN_JUDGE);
-            competitorLicenceDate.setText(new SimpleDateFormat("dd-MM-yyyy").format(toEdit.licenseExpDateProperty()));
+            competitorLicenceDate.setText(new SimpleDateFormat("dd-MM-yyyy").format(toEdit.licenseExpDateProperty().getValue()));
         }
     }
 
