@@ -2,12 +2,11 @@ package model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.KillerDrawing.DummyKillerRandomizationStartegy;
 import model.enums.JudgeState;
 import model.enums.WeaponType;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class DataGenerator {
 

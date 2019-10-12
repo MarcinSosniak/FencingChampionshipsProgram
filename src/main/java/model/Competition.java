@@ -1,9 +1,13 @@
 package model;
 
 import javafx.collections.ObservableList;
+import model.KillerDrawing.KillerRandomizerStrategy;
+import javafx.collections.ObservableList;
 import model.enums.WeaponType;
 import model.exceptions.NoSuchCompetitionException;
+import model.KillerDrawing.KillerRandomizerStrategy;
 import java.util.List;
+
 
 public class Competition {
 
