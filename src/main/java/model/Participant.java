@@ -79,6 +79,7 @@ public class Participant {
     private StringProperty locationGroup;
     private ObjectProperty<JudgeState> judgeState;
     private ObjectProperty<Date> licenseExpDate;
+    private int timesKiller=0;
 
 
     /** for table view required */
@@ -168,7 +169,19 @@ public class Participant {
         else throw new NoSuchWeaponException();
     }
 
-    public void addInjury(WeaponType wt){
+    public void addInjury(WeaponType wt){}
+
+    public int getTimesKiller() {
+        return timesKiller;
+    }
+
+    public void setTimesKiller(int timesKiller) {
+        this.timesKiller = timesKiller;
+    }
+
+    public void incTimesKiller()
+    {
+        this.timesKiller++;
 
     }
 

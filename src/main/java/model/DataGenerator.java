@@ -2,7 +2,7 @@ package model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.KillerDrawing.DummyKillerRandomizationStartegy;
+import model.KillerDrawing.RandomKillerRandomizationStrategy;
 import model.enums.JudgeState;
 import model.enums.WeaponType;
 
@@ -56,7 +56,7 @@ public class DataGenerator {
         ObservableList<WeaponCompetition> lwc = FXCollections.observableArrayList();
         lwc.addAll(wcRapier,wcSabre,wcSmallSwaord);
 
-        return new Competition(lwc,wholeParticipants,new DummyKillerRandomizationStartegy());
+        return new Competition(lwc,wholeParticipants,new RandomKillerRandomizationStrategy());
     }
 
 

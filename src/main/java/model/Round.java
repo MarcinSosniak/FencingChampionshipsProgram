@@ -3,6 +3,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.FightDrawing.FightDrawStrategy;
 import model.FightDrawing.FightDrawStrategyPicker;
+import model.KillerDrawing.KillerRandomizerStrategyPicker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class Round {
     public Round(int roundNumber, int groupSize,ArrayList<Participant> participants, FightDrawStrategyPicker fightDrawStrategyPicker){
         this.roundNumber = roundNumber;
         this.groupSize = groupSize;
-        this.fightDrawStrategy = fightDrawStrategyPicker.pick();
+        this.fightDrawStrategy = fightDrawStrategyPicker.pick(KillerRandomizerStrategyPicker.KillerRandomizerStrategy());
         this.participants= FXCollections.observableArrayList(participants);
         sortGroups();
     }
