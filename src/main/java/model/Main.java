@@ -1,12 +1,12 @@
 package model;
 
 import controller.ApplicationController;
-import controller.CompetitorsViewController;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
+import java.util.Scanner;
+
+import model.config.ConfigReader;
+import util.HumanReadableFatalError;
 
 public class Main extends Application {
     private Stage primaryStage;
@@ -28,7 +28,18 @@ public class Main extends Application {
     }
 
 
-    public static void main(String[] args) {
-        launch(args);
+    public static void main(String[] args)  {
+        try {
+            ConfigReader.init("src/main/resources/cfg/default.cfg","src/main/resources/cfg/test.cfg");
+            launch(args);
+        }
+        catch(HumanReadableFatalError ex)
+        {
+            System.out.println(ex.getMessage());
+            System.out.println("press enter to exit");
+            Scanner scan= new Scanner(System.in);
+            scan.nextLine();
+            System.exit(2);
+        }
     }
 }
