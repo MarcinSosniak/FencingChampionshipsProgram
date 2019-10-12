@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+
+<!--TODO: refactor with bottom link-->
+<!-- TODO: https://stackoverflow.com/questions/12830402/javafx-2-buttons-size-fill-width-and-are-each-same-width-->
 
 <!--not using menu because we doen;t have any dropdown so it is senseless-->
 <HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.MenuBarController" >

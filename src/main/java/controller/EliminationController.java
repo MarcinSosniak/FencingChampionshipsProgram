@@ -9,10 +9,7 @@ import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import model.Competition;
 import model.Participant;
@@ -98,10 +95,12 @@ public class EliminationController {
 
         /* Rows preparation */
             RowConstraints row1 = new RowConstraints(); /* For table and button controller*/
-            RowConstraints row2 = new RowConstraints(); /* For groups and fight results */
+            RowConstraints row2 = new RowConstraints(); /* For groups  */
+            RowConstraints row3 = new RowConstraints(); /* Fight results */
             row1.setPercentHeight(40);
-            row2.setPercentHeight(60);
-        mainTabPane.getRowConstraints().addAll(row1,row2);
+            row2.setPercentHeight(30);
+            row2.setPercentHeight(30);
+        mainTabPane.getRowConstraints().addAll(row1,row2,row3);
 
 
         /* Columns preparation */
@@ -117,6 +116,15 @@ public class EliminationController {
 
     private GridPane prepareTableViewPane(WeaponType wt){
         GridPane tableViewGridPane = new GridPane();
+
+        RowConstraints rc = new RowConstraints();
+        rc.setVgrow(Priority.ALWAYS);
+        tableViewGridPane.getRowConstraints().add(rc);
+
+        ColumnConstraints cc = new ColumnConstraints();
+        cc.setHgrow(Priority.ALWAYS);
+        tableViewGridPane.getColumnConstraints().add(cc);
+
 
         TableView tv = new TableView();
         tv.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -169,8 +177,6 @@ public class EliminationController {
 
     }
 
-    /* TODO: Do i need to call update after data set? */
-
     private GridPane prepareButtonPane(){
         GridPane paneForButtons = new GridPane();
 
@@ -183,25 +189,25 @@ public class EliminationController {
 
         Button nextRoundButton = new Button();
         nextRoundButton.setText("Next Round");
-        nextRoundButton.setStyle("-fx-background-color: pink");
+        nextRoundButton.setStyle("-fx-background-color: pink ; -fx-padding: 10; -fx-alignment: CENTER;");
         nextRoundButton.setOnAction( x -> System.out.format("Implement me\n"));
         GridPane.setConstraints(nextRoundButton,0,0);
 
         Button competitionStatus = new Button();
         competitionStatus.setText("AddMeTextFromEnum");
-        competitionStatus.setStyle("-fx-background-color: yellow");
+        competitionStatus.setStyle("-fx-background-color: yellow; -fx-padding: 10;");
         competitionStatus.setOnAction( x -> System.out.format("Implement me\n"));
         GridPane.setConstraints(competitionStatus,0,1);
 
         Button addPoints = new Button();
         addPoints.setText("Add Points");
-        addPoints.setStyle("-fx-background-color: green");
+        addPoints.setStyle("-fx-background-color: green; -fx-padding: 10;");
         addPoints.setOnAction( x -> System.out.format("Implement me\n"));
         GridPane.setConstraints(addPoints,0,2);
 
         Button substractPoints = new Button();
         substractPoints.setText("SubstractPoints");
-        substractPoints.setStyle("-fx-background-color: blue");
+        substractPoints.setStyle("-fx-background-color: blue; -fx-padding: 10;");
         substractPoints.setOnAction( x -> System.out.format("Implement me\n"));
         GridPane.setConstraints(substractPoints,0,3);
 
@@ -210,6 +216,24 @@ public class EliminationController {
         paneForButtons.getChildren().addAll(nextRoundButton,competitionStatus,addPoints,substractPoints);
 
         return paneForButtons;
+    }
+
+    /* TODO: Implement me*/
+    private ScrollPane prepareGroupPane(){
+        ScrollPane groupScrollPane = new ScrollPane();
+        GridPane.setConstraints(groupScrollPane,0,1,2,1);
+
+
+        return new ScrollPane();
+    }
+
+    /* TODO: implement me*/
+    private ScrollPane prepareResultPane(){
+        ScrollPane groupScrollPane = new ScrollPane();
+        GridPane.setConstraints(groupScrollPane,0,2,2,1);
+
+
+        return new ScrollPane();
     }
 
     private Tab initTab( WeaponType wt){
@@ -222,26 +246,20 @@ public class EliminationController {
             GridPane buttonPane = prepareButtonPane();
 
         /* Add Group panel */
-
+            ScrollPane groupPane = prepareGroupPane();
 
         /* Add Result Panel */
-
+            ScrollPane resultPane = prepareResultPane();
 
         /* Add to main tab pane */
-        mainTabPane.getChildren().addAll(tableViewPane,buttonPane);
+            mainTabPane.getChildren().addAll(tableViewPane,buttonPane,groupPane,resultPane);
 
 
 
-
-
-
-
-
-        Tab tabToRet = new Tab();
-        tabToRet.setText(wt.toString());
-        tabToRet.setContent(mainTabPane);
-
-
+        /* Add content to tab*/
+            Tab tabToRet = new Tab();
+            tabToRet.setText(wt.toString());
+            tabToRet.setContent(mainTabPane);
 
 
         return tabToRet;
