@@ -55,6 +55,20 @@ public class Round {
         }
     }
 
+    public Round(WeaponCompetition myWeaponCompetition,int roundNumber, int groupSize,ArrayList<Participant> participants, FightDrawStrategyPicker fightDrawStrategyPicker){
+        this.myWeaponCompetition=myWeaponCompetition;
+        this.roundNumber = roundNumber;
+        this.groupSize = groupSize;
+        this.participantExcpectedFightNumber=groupSize-1;
+        this.fightDrawStrategy = fightDrawStrategyPicker.pick(KillerRandomizerStrategyPicker.KillerRandomizerStrategy());
+        this.participants= FXCollections.observableArrayList(participants);
+        for(Participant p : participants)
+        {
+            participantFightNumber.put(p,0);
+            roundScore.put(p,new RationalNumber(0));
+        }
+    }
+
     public CommandStack getCStack() {return getMyWeaponCompetition().getcStack();}
 
     public int getGroupSize() { return groupSize; }

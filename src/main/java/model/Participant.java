@@ -4,11 +4,13 @@ import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
+import model.command.Command;
 import model.enums.JudgeState;
 import model.enums.WeaponType;
 import model.exceptions.NoSuchWeaponException;
 
 import java.security.InvalidParameterException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -81,6 +83,10 @@ public class Participant {
     private ObjectProperty<Date> licenseExpDate;
     private int timesKiller=0;
 
+
+    private BooleanProperty fSabreInjury=new SimpleBooleanProperty(false);
+    private BooleanProperty fRapierInjury=new SimpleBooleanProperty(false);
+    private BooleanProperty fSmallSwordInjury=new SimpleBooleanProperty(false);
 
     /** for table view required */
     private BooleanProperty fSmallSwordParticipant;
@@ -169,7 +175,9 @@ public class Participant {
         else throw new NoSuchWeaponException();
     }
 
-    public void addInjury(WeaponType wt){}
+    public void addInjury(WeaponType wt,WeaponCompetition wc){wc.getcStack().executeCommand(new CommandAddInjury(wt,wc));}
+
+    public void addInjuries(List<WeaponType> wt,WeaponCompetition wc){wc.getcStack().executeCommand(new CommandAddInjury(wt,wc));}
 
     public int getTimesKiller() {
         return timesKiller;
@@ -186,5 +194,84 @@ public class Participant {
     }
 
 
+    public class CommandAddInjury   implements Command {
+        @Override
+        public void execute() {
+            oldFSabreInjury=fSabreInjury.get();
+            oldFRapierInjury=fRapierInjury.get();
+            oldFSmallSwordInjury=fSmallSwordInjury.get();
+            fSabreInjury.set(_fSabreInjury);
+            fRapierInjury.set(_fRapierInjury);
+            fSmallSwordInjury.set(_fSmallSwordInjury);
+            commandsUsedList=competition.invalidateParticipant(Participant.this);
+            for(Command c : commandsUsedList)
+            {
+                c.execute();
+            }
+            Collections.reverse(commandsUsedList);
+        }
+
+        @Override
+        public void undo() {
+            fSabreInjury.set(oldFSabreInjury);
+            fRapierInjury.set(oldFRapierInjury);
+            fSmallSwordInjury.set(oldFSmallSwordInjury);
+            for (Command c : commandsUsedList) {
+                c.undo();
+            }
+            Collections.reverse(commandsUsedList);
+        }
+
+        @Override
+        public void redo() {
+            oldFSabreInjury=fSabreInjury.get();
+            oldFRapierInjury=fRapierInjury.get();
+            oldFSmallSwordInjury=fSmallSwordInjury.get();
+            fSabreInjury.set(_fSabreInjury);
+            fRapierInjury.set(_fRapierInjury);
+            fSmallSwordInjury.set(_fSmallSwordInjury);
+            for(Command c : commandsUsedList)
+            {
+                c.redo();
+            }
+            Collections.reverse(commandsUsedList);
+        }
+
+        private boolean oldFSabreInjury=false;
+        private boolean oldFRapierInjury=false;
+        private boolean oldFSmallSwordInjury=false;
+        private boolean _fSabreInjury=false; /** _ To differentie them for fSabreInjury in the outer class**/
+        private boolean _fRapierInjury=false;
+        private boolean _fSmallSwordInjury=false;
+        private WeaponCompetition competition;
+        private List<Command> commandsUsedList=null;
+
+
+        private CommandAddInjury(List<WeaponType> weaponList,WeaponCompetition competition)
+        {
+            this.competition=competition;
+            if(weaponList.contains(WeaponType.SABRE))
+                _fSabreInjury=true;
+            if(weaponList.contains(WeaponType.RAPIER))
+                _fRapierInjury=true;
+            if(weaponList.contains(WeaponType.SMALL_SWORD))
+                _fSmallSwordInjury=true;
+        }
+
+        private CommandAddInjury(WeaponType single,WeaponCompetition competition)
+        {
+            this.competition=competition;
+            if(single==WeaponType.SABRE)
+                _fSabreInjury=true;
+            else if(single==WeaponType.RAPIER)
+                _fRapierInjury=true;
+            else if(single==WeaponType.SMALL_SWORD)
+                _fSmallSwordInjury=true;
+        }
+
+
+
+
+    }
 
 }

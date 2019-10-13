@@ -56,14 +56,21 @@ public  class Fight {
         this.score.setValue(score);
     }
 
-    public void setFightScoreDirect(FightScore score)
+    public boolean fHasResult(){return score.get()==FightScore.NULL_STATE;}
+
+    public void commandSetFightScoreDirect(FightScore score)
     {
         round.getCStack().executeCommand(new CommandAddBattleResult(this,score));
     }
 
-    public void setWinner(Participant winner) // DO NOT OUTSIDE OF COMMAND_ADD_BATTLE_RESULT
+    public void commandSetWinner(Participant winner) // DO NOT OUTSIDE OF COMMAND_ADD_BATTLE_RESULT
     {
         round.getCStack().executeCommand(new CommandAddBattleResult(this,winner));
+    }
+
+    public Command getCommandSetLooser(Participant p) /**does NOT. I REPEAT DOES NOT PUT IN COMMAND STACK. FOR USE IN OTHER COMMANDS ONLY**/
+    {
+        return new CommandAddBattleResult(this,p,true);
     }
 
     private FightScore getScoreWithWinner(Participant winner) // doesn't set anything
@@ -75,6 +82,17 @@ public  class Fight {
         else
             throw new IllegalArgumentException("participant missmatch, one to be winner is not in fight");
     }
+
+    private FightScore getScoreWithLoser(Participant loser) // doesn't set anything
+    {
+        if(firstParticipant.equals(loser))
+            return FightScore.WON_SECOND;
+        else if(secondParticipant.equals(loser))
+            return FightScore.WON_FIRST;
+        else
+            throw new IllegalArgumentException("participant missmatch, one to be winner is not in fight");
+    }
+
 
 
     public void setDouble()
@@ -169,6 +187,14 @@ public  class Fight {
             this.fight=fight;
             scoreToSet=score;
         }
+
+        /**creates fight command add battle result using loser particpent instead of winner**/
+        public CommandAddBattleResult(Fight fight, Participant looser, boolean DUMMY_ARGUMENT_USE_LOOSER_NOT_WINNER)
+        {
+            this.fight=fight;
+            scoreToSet=fight.getScoreWithLoser(looser);
+        }
+
     }
 
 

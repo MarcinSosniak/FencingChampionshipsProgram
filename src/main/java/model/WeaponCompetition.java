@@ -2,7 +2,10 @@ package model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.command.Command;
 import model.enums.WeaponType;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class WeaponCompetition {
@@ -38,5 +41,24 @@ public class WeaponCompetition {
 
     public CommandStack getcStack() { return cStack; }
 
+    /**DOES NOT ACTAULLY DO ANYTHING**/
+    public List<Command> invalidateParticipant(Participant p) /** DO NOT CALL UNLESS THOURGH COMMAND **/
+    {
+        List<Command> out = new ArrayList<>();
+        for(CompetitionGroup g : (rounds.get(rounds.size()-1).getGroups()))
+        {
+            if(g.fInGroup(p))
+            {
+                for(Fight fight : g.getFightsList())
+                {
+                    if(!fight.fHasResult() && fight.fIn(p))
+                    {
+                        out.add(fight.getCommandSetLooser(p));
+                    }
+                }
+            }
+        }
+        return out;
+    }
 
 }
