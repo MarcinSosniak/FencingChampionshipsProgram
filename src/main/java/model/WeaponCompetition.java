@@ -2,6 +2,7 @@ package model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.FightDrawing.FightDrawStrategyPicker;
 import model.command.Command;
 import model.enums.WeaponType;
 
@@ -41,6 +42,11 @@ public class WeaponCompetition {
 
     public CommandStack getcStack() { return cStack; }
 
+    public FightDrawStrategyPicker getFightDrawStrategyPicker()
+    {
+        return  new FightDrawStrategyPicker();
+    }
+
     /**DOES NOT ACTAULLY DO ANYTHING**/
     public List<Command> invalidateParticipant(Participant p) /** DO NOT CALL UNLESS THOURGH COMMAND **/
     {
@@ -59,6 +65,46 @@ public class WeaponCompetition {
             }
         }
         return out;
+    }
+
+    // WEAPON COMP ROUDN CREATOR
+
+    public class roundCreator
+    {
+        private boolean fRoundReady=false;
+        private Round round;
+        private List<Participant> participantsForRound;
+        private List<Participant> participantsFromLastRound;
+        private int groupSize;
+        private int particpantsNeeded;
+
+        public void startRound()
+        {
+            if(!fRoundReady)
+                throw new IllegalStateException("Round cannot be started, resolve overtime/runoff/playoff");
+            WeaponCompetition.this.rounds.add(round);
+        }
+
+        public boolean getfRoundReady()
+        {
+            return fRoundReady;
+        }
+
+        public List<Participant> getParticipantsForPlayoff()
+        {
+            return null;
+        }
+
+        /**
+         * throw no errors if particpantsNeeded > amount of paritcpants in lastRound
+         * last round may be null
+          **/
+        public roundCreator(int groupSize, int particpantsNeeded, Round lastRound)
+        {
+            ;
+        }
+
+
     }
 
 }

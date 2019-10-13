@@ -36,13 +36,13 @@ public class AddInjuryController {
     @FXML
     private void confirm(){
         if(!SabreInjury.isDisable() && SabreInjury.isSelected()){
-            p.addInjury(WeaponType.SABRE);
+            p.addInjury(WeaponType.SABRE,null);
         }
         if(!RapierInjury.isDisable() && RapierInjury.isSelected()){
-            p.addInjury(WeaponType.RAPIER);
+            p.addInjury(WeaponType.RAPIER,null);
         }
         if(!SmallSwordInjury.isDisable() && SmallSwordInjury.isSelected()){
-            p.addInjury(WeaponType.SMALL_SWORD);
+            p.addInjury(WeaponType.SMALL_SWORD,null);
         }
 
         Stage toClose = (Stage) confirmButton.getScene().getWindow();
