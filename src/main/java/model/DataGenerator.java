@@ -44,19 +44,10 @@ public class DataGenerator {
         ObservableList sabreParticipants = DataGenerator.generateWeaponParticipants(WeaponType.SABRE,2);
         ObservableList smallSwordParticipants = DataGenerator.generateWeaponParticipants(WeaponType.SMALL_SWORD,3);
 
-        ObservableList wholeParticipants = FXCollections.observableArrayList();
-        wholeParticipants.addAll(rapierParticipants);
-        wholeParticipants.addAll(sabreParticipants);
-        wholeParticipants.addAll(smallSwordParticipants);
-
-        WeaponCompetition wcSabre = new WeaponCompetition(WeaponType.SABRE,sabreParticipants);
-        WeaponCompetition wcRapier = new WeaponCompetition(WeaponType.RAPIER,rapierParticipants);
-        WeaponCompetition wcSmallSwaord = new WeaponCompetition(WeaponType.SMALL_SWORD,smallSwordParticipants);
-
-        ObservableList<WeaponCompetition> lwc = FXCollections.observableArrayList();
-        lwc.addAll(wcRapier,wcSabre,wcSmallSwaord);
-
-        return new Competition(lwc,wholeParticipants,new RandomKillerRandomizationStrategy());
+        return Competition.init(new util.Pair<ObservableList<Participant>,WeaponType>(rapierParticipants,WeaponType.RAPIER),
+                                new util.Pair<ObservableList<Participant>,WeaponType>(sabreParticipants,WeaponType.SABRE),
+                                new util.Pair<ObservableList<Participant>,WeaponType>(smallSwordParticipants,WeaponType.SMALL_SWORD),
+                                new RandomKillerRandomizationStrategy());
     }
 
 

@@ -82,7 +82,8 @@ public class WeaponCompetition {
         {
             if(!fRoundReady)
                 throw new IllegalStateException("Round cannot be started, resolve overtime/runoff/playoff");
-            WeaponCompetition.this.rounds.add(round);
+            round.drawGroups();
+            cStack.executeCommand(new AddRoundCommand(round));
         }
 
         public boolean getfRoundReady()
@@ -101,10 +102,34 @@ public class WeaponCompetition {
           **/
         public roundCreator(int groupSize, int particpantsNeeded, Round lastRound)
         {
-            ;
+
+        }
+    }
+
+    private class AddRoundCommand implements Command
+    {
+
+        @Override
+        public void execute() {
+            rounds.add(_round);
         }
 
+        @Override
+        public void undo() {
+            rounds.remove(rounds.size()-1);
+        }
 
+        @Override
+        public void redo() {
+            execute();
+        }
+
+        private Round _round;
+
+        public AddRoundCommand(Round round)
+        {
+            this._round=round;
+        }
     }
 
 }
