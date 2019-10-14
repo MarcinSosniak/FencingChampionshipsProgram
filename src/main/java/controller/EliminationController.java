@@ -7,11 +7,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import model.Competition;
+import model.CompetitionGroup;
 import model.Participant;
 import model.enums.WeaponType;
 import model.exceptions.NoSuchCompetitionException;
@@ -177,7 +179,7 @@ public class EliminationController {
 
     }
 
-    private GridPane prepareButtonPane(){
+    private GridPane prepareButtonPane(WeaponType wt){
         GridPane paneForButtons = new GridPane();
 
         RowConstraints row0 = new RowConstraints(); row0.setPercentHeight(25);
@@ -194,7 +196,12 @@ public class EliminationController {
         GridPane.setConstraints(nextRoundButton,0,0);
 
         Button competitionStatus = new Button();
-        competitionStatus.setText("AddMeTextFromEnum");
+        try{
+            competitionStatus.setText(this.competition.getWeaponCompetition(wt).getWeaponCompetitionState().toString());
+        } catch (NoSuchCompetitionException e){
+            e.printStackTrace();
+            competitionStatus.setText("UnknownCompetitionState");
+        }
         competitionStatus.setStyle("-fx-background-color: yellow; -fx-padding: 10;");
         competitionStatus.setOnAction( x -> System.out.format("Implement me\n"));
         GridPane.setConstraints(competitionStatus,0,1);
@@ -219,9 +226,11 @@ public class EliminationController {
     }
 
     /* TODO: Implement me*/
-    private ScrollPane prepareGroupPane(){
+    private ScrollPane prepareCompetitionGroupPane(){
         ScrollPane groupScrollPane = new ScrollPane();
         GridPane.setConstraints(groupScrollPane,0,1,2,1);
+        /* get competition group */
+        CompetitionGroup cg = null;
 
 
         return new ScrollPane();
@@ -229,8 +238,8 @@ public class EliminationController {
 
     /* TODO: implement me*/
     private ScrollPane prepareResultPane(){
-        ScrollPane groupScrollPane = new ScrollPane();
-        GridPane.setConstraints(groupScrollPane,0,2,2,1);
+        ScrollPane resultScrollPane = new ScrollPane();
+        GridPane.setConstraints(resultScrollPane,0,2,2,1);
 
 
         return new ScrollPane();
@@ -243,16 +252,16 @@ public class EliminationController {
             GridPane tableViewPane = prepareTableViewPane(wt);
 
         /* Add button panel */
-            GridPane buttonPane = prepareButtonPane();
+            GridPane buttonPane = prepareButtonPane(wt);
 
         /* Add Group panel */
-            ScrollPane groupPane = prepareGroupPane();
+           // ScrollPane groupPane = prepareGroupPane();
 
         /* Add Result Panel */
-            ScrollPane resultPane = prepareResultPane();
+            //ScrollPane resultPane = prepareResultPane();
 
         /* Add to main tab pane */
-            mainTabPane.getChildren().addAll(tableViewPane,buttonPane,groupPane,resultPane);
+            mainTabPane.getChildren().addAll(tableViewPane,buttonPane);
 
 
 
