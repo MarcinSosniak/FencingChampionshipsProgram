@@ -93,5 +93,9 @@ public class Round {
         roundScore.put(p,roundScore.get(p).multiply(pScoreMultiplier.multiply(points)));
 
     }
-    //count points
+
+    public RationalNumber getParticpantScore(Participant p)
+    {
+        return roundScore.get(p);
+    }
 }

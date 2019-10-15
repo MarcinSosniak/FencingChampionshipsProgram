@@ -170,6 +170,17 @@ public class Participant {
 
     public JudgeState getJudgeState(){ return judgeState.get(); }
 
+    public boolean isInjured(WeaponType wt)
+    {
+        if(wt==WeaponType.RAPIER)
+            return fRapierInjury.get();
+        if(wt==WeaponType.SABRE)
+            return fSabreInjury.get();
+        if(wt==WeaponType.SMALL_SWORD)
+            return fSmallSwordInjury.get();
+        throw new IllegalStateException("hue");
+    }
+
     public IntegerProperty getPointsForWeaponProperty(WeaponType type) throws NoSuchWeaponException {
         if(weaponPointsProperty.containsKey(type)) return weaponPointsProperty.get(type);
         else throw new NoSuchWeaponException();

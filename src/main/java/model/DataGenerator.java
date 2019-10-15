@@ -7,6 +7,8 @@ import model.enums.JudgeState;
 import model.enums.WeaponType;
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 public class DataGenerator {
 
@@ -44,11 +46,17 @@ public class DataGenerator {
         ObservableList sabreParticipants = DataGenerator.generateWeaponParticipants(WeaponType.SABRE,2);
         ObservableList smallSwordParticipants = DataGenerator.generateWeaponParticipants(WeaponType.SMALL_SWORD,3);
 
-        return Competition.init(new util.Pair<ObservableList<Participant>,WeaponType>(rapierParticipants,WeaponType.RAPIER),
+        Competition comp = Competition.init(new util.Pair<ObservableList<Participant>,WeaponType>(rapierParticipants,WeaponType.RAPIER),
                                 new util.Pair<ObservableList<Participant>,WeaponType>(sabreParticipants,WeaponType.SABRE),
                                 new util.Pair<ObservableList<Participant>,WeaponType>(smallSwordParticipants,WeaponType.SMALL_SWORD),
                                 new RandomKillerRandomizationStrategy());
+        for(WeaponCompetition wc :  comp.getWeaponCompetitions())
+        {
+            wc.startFirstRound();
+        }
+        return comp;
     }
+
 
 
 

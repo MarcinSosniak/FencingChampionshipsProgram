@@ -7,8 +7,8 @@ import java.util.Comparator;
 
 public class RationalNumber {
 
-    private int num;
-    private int denom =1;
+    private final int num;
+    private final int denom;
     public RationalNumber(int numerator, int denominator)
     {
         if(denominator==0)
@@ -20,8 +20,10 @@ public class RationalNumber {
 
     public RationalNumber(int number)
     {
-        num=number;
+        num=number; denom=1;
     }
+
+    public RationalNumber() {num=0; denom=1;}
 
     public RationalNumber multiply(RationalNumber other)
     {
@@ -67,7 +69,7 @@ public class RationalNumber {
 
     public RationalNumber substract(RationalNumber other) {return add(other.inverse());}
     public RationalNumber substract(int other) {return add(-1*other);}
-    /** **/
+    /** implemtns '>' operator. Return 1,0,-1 **/
     public static int compare(RationalNumber first,RationalNumber scnd)
     {
         RationalNumber left = new RationalNumber(first.num*scnd.denom, first.denom*scnd.denom);
@@ -80,8 +82,20 @@ public class RationalNumber {
         return 0;
     }
 
+    public static boolean greater(RationalNumber left,RationalNumber right)
+    {
+        return compare(left,right)==1;
+    }
 
-    public static RNComparator getComparator() {return new RNComparator();}
+    public static boolean lesser(RationalNumber left,RationalNumber right)
+    {
+        return compare(left,right)==-1;
+    }
+    /**
+     * equals should work normally since it's always reduced
+     *
+     */
+    public static Comparator<RationalNumber> getComparator() {return new RNComparator();}
 
     public static class RNComparator implements Comparator<RationalNumber>
     {

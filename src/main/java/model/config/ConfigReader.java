@@ -158,14 +158,14 @@ public class ConfigReader {
                 {
                     tags.put(currentTag,currentTagVars);
                 }
-                currentTag=line.substring(1,line.length()-1);
+                currentTag=line.substring(1,line.length()-1).toUpperCase();
                 currentTagVars=new TagVariables();
             }
             else
             {
                 String[] splitedLine= line.split(" ");
                 try {
-                    currentTagVars.set(splitedLine[0], splitedLine[1]);
+                    currentTagVars.set(splitedLine[0].toUpperCase(), splitedLine[1]);
                 }
                 catch (ArrayIndexOutOfBoundsException ex)
                 {
@@ -195,14 +195,14 @@ public class ConfigReader {
                 {
                     tags.put(currentTag,currentTagVars);
                 }
-                currentTag=line.substring(1,line.length()-1);
+                currentTag=line.substring(1,line.length()-1).toUpperCase();
                 currentTagVars=new TagVariables();
             }
             else
             {
                 String[] splitedLine= line.split(" ");
                 try {
-                    currentTagVars.set(splitedLine[0], splitedLine[1]);
+                    currentTagVars.set(splitedLine[0].toUpperCase(), splitedLine[1]);
                 }
                 catch (ArrayIndexOutOfBoundsException ex)
                 {
