@@ -1,20 +1,19 @@
 package controller;
 
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
-import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import model.Competition;
-import model.CompetitionGroup;
-import model.Participant;
+import model.*;
+import model.enums.FightScore;
 import model.enums.WeaponType;
 import model.exceptions.NoSuchCompetitionException;
 import model.exceptions.NoSuchWeaponException;
@@ -225,24 +224,175 @@ public class EliminationController {
         return paneForButtons;
     }
 
-    /* TODO: Implement me*/
-    private ScrollPane prepareCompetitionGroupPane(){
+    /* TODO: check and set title in the middle*/
+    /* Lets assume that groups will be displayed (3/2) x N */
+    private ScrollPane prepareCompetitionGroupPane(WeaponType wt,int columns){
         ScrollPane groupScrollPane = new ScrollPane();
-        GridPane.setConstraints(groupScrollPane,0,1,2,1);
-        /* get competition group */
-        CompetitionGroup cg = null;
+        GridPane.setConstraints(groupScrollPane,0,1,columns,1);
+        GridPane gridPaneForGroups = new GridPane();
+
+        try{
+             ObservableList<CompetitionGroup> cgl = this.competition.getWeaponCompetition(wt).getCompetitionGroups();
+             int rows = (cgl.size() % columns == 0) ?  cgl.size()/columns + 1:  cgl.size()/columns + 2;
+
+            /* Create rows and columns for group panel */
+                /* row for title */
+                RowConstraints rc = new RowConstraints();
+                rc.setPercentHeight(10.0/rows);
+                gridPaneForGroups.getRowConstraints().add(rc);
+
+                 for(int i=0;i<rows;i++){
+                     rc = new RowConstraints();
+                     rc.setPercentHeight(100.0/rows);
+                     gridPaneForGroups.getRowConstraints().add(rc);
+                 }
+                 for(int i =0;i<columns;i++){
+                     ColumnConstraints cc = new ColumnConstraints();
+                     cc.setPercentWidth(1.0/columns);
+                     gridPaneForGroups.getColumnConstraints().add(cc);
+                 }
+
+             /* Add group label */
+                Text text = new Text();
+                text.setText("Groups");
+                text.setTextAlignment(TextAlignment.CENTER);
+                GridPane.setConstraints(text,0,0,2,1);
 
 
-        return new ScrollPane();
+             /* Create table view for each group */
+             int currentRow = 1;
+             int groupsAdded = 0;
+             //System.out.format("1 \n");
+             for(CompetitionGroup competitionGroup: cgl){
+                 System.out.format(competitionGroup.getGroupID() + "1 \n");
+                 TableView tableForGroup = new TableView();
+                 GridPane.setConstraints(tableForGroup,groupsAdded%columns,currentRow);
+                 tableForGroup.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+                 TableColumn<Participant,String> tc = new TableColumn("GROUP " + competitionGroup.getGroupID());
+                 tc.setCellValueFactory( x -> new SimpleStringProperty(x.getValue().nameProperty() + " " + x.getValue().surnameProperty()));
+                 tableForGroup.getColumns().addAll(tc);
+                 tableForGroup.setItems(competitionGroup.getGroupParticipants());//
+                 groupsAdded ++;
+                 if(groupsAdded % columns == 0){
+                     currentRow ++;
+                 }
+                 gridPaneForGroups.getChildren().add(tableForGroup);
+             }
+            gridPaneForGroups.getChildren().add(text);
+            groupScrollPane.setContent(gridPaneForGroups);
+            return groupScrollPane;
+        } catch (NoSuchCompetitionException e){
+            e.printStackTrace();
+            System.out.format("Error while loading groups\n");
+            return new ScrollPane();
+        }
     }
 
-    /* TODO: implement me*/
-    private ScrollPane prepareResultPane(){
+    /* TODO: make better title*/
+    private ScrollPane prepareResultPane(WeaponType wt,int columns){
         ScrollPane resultScrollPane = new ScrollPane();
         GridPane.setConstraints(resultScrollPane,0,2,2,1);
 
+        try {
+            GridPane gridPaneForFights = new GridPane();
+            ObservableList<CompetitionGroup> groups = this.competition.getWeaponCompetition(wt).getCompetitionGroups();
 
-        return new ScrollPane();
+
+            int rows = groups.size() % columns == 0 ? (groups.size()/columns) + 1: (groups.size()/columns + 2);
+
+            /* Create rows and columns for result panel */
+                /* row for title */
+                RowConstraints rc = new RowConstraints();
+                rc.setPercentHeight(10.0/rows);
+                gridPaneForFights.getRowConstraints().add(rc);
+
+                for(int i=0;i<rows;i++){
+                    rc = new RowConstraints();
+                    rc.setPercentHeight(100.0/rows);
+                    gridPaneForFights.getRowConstraints().add(rc);
+                }
+                for(int i =0;i<columns;i++){
+                    ColumnConstraints cc = new ColumnConstraints();
+                    cc.setPercentWidth(1.0/columns);
+                    gridPaneForFights.getColumnConstraints().add(cc);
+                }
+
+            /* Add group label */
+                Text text = new Text();
+                text.setText("Fight Results");
+                text.setTextAlignment(TextAlignment.CENTER);
+                GridPane.setConstraints(text,0,0,columns,1);
+
+
+
+            for(int i=0;i<groups.size();i++){
+                int currentRow = (i+1)/columns + 1;
+                int currentColumn = i % columns;
+                CompetitionGroup cg = groups.get(i);
+                TableView tableForGroupFights = new TableView();
+                GridPane.setConstraints(tableForGroupFights,currentColumn,currentRow);
+                tableForGroupFights.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+                tableForGroupFights.setItems(cg.getFightsList());
+
+                TableColumn<Fight,String> firstParticipant = new TableColumn<>();
+                TableColumn<Fight,String> doubleColumn = new TableColumn<>();
+                TableColumn<Fight,String> secondParticipant = new TableColumn<>();
+
+                firstParticipant.setText("First");
+                doubleColumn.setText("X");
+                firstParticipant.setText("Second");
+
+                firstParticipant.setCellValueFactory( f -> new SimpleStringProperty(f.getValue().getFirstParticipant().nameProperty() + " " + f.getValue().getFirstParticipant().surnameProperty()));
+                secondParticipant.setCellValueFactory( f -> new SimpleStringProperty(f.getValue().getSecondParticipant().nameProperty() + " " + f.getValue().getSecondParticipant().surnameProperty()));
+                doubleColumn.setCellValueFactory( f -> new SimpleStringProperty("x"));
+
+
+                firstParticipant.setCellFactory( tc -> {
+                    TableCell<Fight,String> cell = new TableCell<>();
+                    Fight f = (Fight) cell.getTableRow().getItem();
+                    cell.setOnMouseClicked( e -> {
+                        if(e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty() ){
+                            f.commandSetFightScoreDirect(FightScore.WON_FIRST);
+                        }
+                    });
+                    return cell;
+                });
+
+                secondParticipant.setCellFactory( tc -> {
+                    TableCell<Fight,String> cell = new TableCell<>();
+                    Fight f = (Fight) cell.getTableRow().getItem();
+                    cell.setOnMouseClicked( e -> {
+                        if(e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty() ){
+                            f.commandSetFightScoreDirect(FightScore.WON_SECOND);
+                        }
+                    });
+                    return cell;
+                });
+
+                doubleColumn.setCellFactory( tc -> {
+                    TableCell<Fight,String> cell = new TableCell<>();
+                    Fight f = (Fight) cell.getTableRow().getItem();
+                    cell.setOnMouseClicked( e -> {
+                        if(e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty() ){
+                            f.commandSetFightScoreDirect(FightScore.DOUBLE);
+                        }
+                    });
+                    return cell;
+                });
+
+                tableForGroupFights.getColumns().addAll(firstParticipant,doubleColumn,secondParticipant);
+                gridPaneForFights.getChildren().add(tableForGroupFights);
+            }
+            gridPaneForFights.getChildren().add(text);
+            resultScrollPane.setContent(gridPaneForFights);
+
+            return resultScrollPane;
+
+        } catch (NoSuchCompetitionException e) {
+            System.out.format("No weapon competition\n");
+            e.printStackTrace();
+            return new ScrollPane();
+        }
     }
 
     private Tab initTab( WeaponType wt){
@@ -255,13 +405,13 @@ public class EliminationController {
             GridPane buttonPane = prepareButtonPane(wt);
 
         /* Add Group panel */
-           // ScrollPane groupPane = prepareGroupPane();
+           ScrollPane groupPane = prepareCompetitionGroupPane(wt,3);
 
         /* Add Result Panel */
-            //ScrollPane resultPane = prepareResultPane();
+            ScrollPane resultPane = prepareResultPane(wt,3);
 
         /* Add to main tab pane */
-            mainTabPane.getChildren().addAll(tableViewPane,buttonPane);
+            mainTabPane.getChildren().addAll(tableViewPane,buttonPane,groupPane,resultPane);
 
 
 
