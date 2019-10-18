@@ -1,4 +1,8 @@
 package model;
+import javafx.beans.property.IntegerProperty;
+import model.command.Command;
+import model.enums.WeaponType;
+import model.exceptions.NoSuchWeaponException;
 import util.RationalNumber;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -7,6 +11,7 @@ import model.FightDrawing.FightDrawStrategy;
 import model.FightDrawing.FightDrawStrategyPicker;
 import model.KillerDrawing.KillerRandomizerStrategyPicker;
 
+import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +27,7 @@ public class Round {
     private ObservableMap<Participant, RationalNumber> roundScore = FXCollections.observableHashMap();
     private Map<Participant,Integer> participantFightNumber= new HashMap<>();
     private int participantExcpectedFightNumber; // size of group -1
+
 
     public WeaponCompetition getMyWeaponCompetition() {
         return myWeaponCompetition;
@@ -41,6 +47,14 @@ public class Round {
 
     public ObservableList<CompetitionGroup> getGroups() {
         return groups;
+    }
+
+    public void commandAddPointsToParticipant(Participant p, int pointsNumber) {
+        this.getCStack().executeCommand(new ChangePointsCommand(p, pointsNumber, true));
+    }
+
+    public void commandSubtractPointsToParticipant(Participant p, int pointsNumber) {
+        this.getCStack().executeCommand(new ChangePointsCommand(p, pointsNumber, false));
     }
 
     public Round(int roundNumber, int groupSize,ArrayList<Participant> participants, FightDrawStrategyPicker fightDrawStrategyPicker){
@@ -95,8 +109,47 @@ public class Round {
 
     }
 
+    public void addRoundScorePointsForParticipant (Participant p, int points){
+        roundScore.get(p).add(points);
+    }
+
+    public void subtractRoundScorePointsForParticipant (Participant p, int points){
+        roundScore.get(p).substract(points);
+    }
+
     public RationalNumber getParticpantScore(Participant p)
     {
         return roundScore.get(p);
+    }
+
+
+    private class ChangePointsCommand implements Command {
+
+        private Participant participant;
+        private int pointsNumber;
+        private boolean ifAdd;
+
+        @Override
+        public void execute() {
+            if (ifAdd) addRoundScorePointsForParticipant(participant, pointsNumber);
+            else subtractRoundScorePointsForParticipant(participant, pointsNumber);
+        }
+
+        @Override
+        public void undo() {
+            if (ifAdd) subtractRoundScorePointsForParticipant(participant, pointsNumber);
+            else addRoundScorePointsForParticipant(participant, pointsNumber);
+        }
+
+        @Override
+        public void redo() {
+            execute();
+        }
+
+        public ChangePointsCommand(Participant participant, int pointsNumber, boolean ifAdd) {
+            this.participant = participant;
+            this.pointsNumber = pointsNumber;
+            this.ifAdd = ifAdd;
+        }
     }
 }

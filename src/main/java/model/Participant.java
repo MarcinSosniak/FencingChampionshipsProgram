@@ -201,11 +201,9 @@ public class Participant {
     public void incTimesKiller()
     {
         this.timesKiller++;
-
     }
 
-
-    public class CommandAddInjury   implements Command {
+    public class CommandAddInjury implements Command {
         @Override
         public void execute() {
             oldFSabreInjury=fSabreInjury.get();
