@@ -1,5 +1,7 @@
 package controller;
 
+import javafx.beans.Observable;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -42,7 +44,7 @@ import model.exceptions.NoSuchWeaponException;
  * ALL OF THIS IS IN ONE TAB TAB SWITCH WHOLE CONTEXT*/
 
 
-
+/*TODO: add color setting */
 
 public class EliminationController {
 
@@ -248,7 +250,7 @@ public class EliminationController {
                  }
                  for(int i =0;i<columns;i++){
                      ColumnConstraints cc = new ColumnConstraints();
-                     cc.setPercentWidth(1.0/columns);
+                     cc.setPercentWidth(100.0/columns);
                      gridPaneForGroups.getColumnConstraints().add(cc);
                  }
 
@@ -297,7 +299,6 @@ public class EliminationController {
             GridPane gridPaneForFights = new GridPane();
             ObservableList<CompetitionGroup> groups = this.competition.getWeaponCompetition(wt).getCompetitionGroups();
 
-
             int rows = groups.size() % columns == 0 ? (groups.size()/columns) + 1: (groups.size()/columns + 2);
 
             /* Create rows and columns for result panel */
@@ -313,26 +314,29 @@ public class EliminationController {
                 }
                 for(int i =0;i<columns;i++){
                     ColumnConstraints cc = new ColumnConstraints();
-                    cc.setPercentWidth(1.0/columns);
+                    cc.setPercentWidth(100.0/columns);
                     gridPaneForFights.getColumnConstraints().add(cc);
                 }
 
-            /* Add group label */
+            /* Add result label */
                 Text text = new Text();
                 text.setText("Fight Results");
                 text.setTextAlignment(TextAlignment.CENTER);
                 GridPane.setConstraints(text,0,0,columns,1);
 
 
-
             for(int i=0;i<groups.size();i++){
                 int currentRow = (i+1)/columns + 1;
                 int currentColumn = i % columns;
                 CompetitionGroup cg = groups.get(i);
+                //ObjectProperty<CompetitionGroup> cg = new SimpleObjectProperty<>(groups.get(i));
+
+
                 TableView tableForGroupFights = new TableView();
                 GridPane.setConstraints(tableForGroupFights,currentColumn,currentRow);
                 tableForGroupFights.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-                tableForGroupFights.setItems(cg.getFightsList());
+                //tableForGroupFights.setItems(cg.getFightsList());
+                tableForGroupFights.setItems(FXCollections.observableList(cg.getFightsList()));
 
                 TableColumn<Fight,String> firstParticipant = new TableColumn<>();
                 TableColumn<Fight,String> doubleColumn = new TableColumn<>();
