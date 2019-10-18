@@ -13,7 +13,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import Util.*;
 import util.RationalNumber;
 
 public class WeaponCompetition {
@@ -96,6 +95,10 @@ public class WeaponCompetition {
         rc.startRound();
     }
 
+    public Round getLastRound()
+    {
+        return rounds.get(rounds.size()-1);
+    }
 
     // WEAPON COMP ROUDN CREATOR
 

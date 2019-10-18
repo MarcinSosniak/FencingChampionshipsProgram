@@ -42,9 +42,14 @@ public class DataGenerator {
 
     /** TODO: make it more complicated */
     static public Competition generateSampleCompetition(){
-        ObservableList rapierParticipants = DataGenerator.generateWeaponParticipants(WeaponType.RAPIER,1);
-        ObservableList sabreParticipants = DataGenerator.generateWeaponParticipants(WeaponType.SABRE,2);
-        ObservableList smallSwordParticipants = DataGenerator.generateWeaponParticipants(WeaponType.SMALL_SWORD,3);
+        ObservableList rapierParticipants = DataGenerator.generateWeaponParticipants(WeaponType.RAPIER,11);
+        rapierParticipants.addAll(DataGenerator.generateWeaponParticipants(WeaponType.RAPIER,12));
+
+        ObservableList sabreParticipants = DataGenerator.generateWeaponParticipants(WeaponType.SABRE,21);
+        sabreParticipants.addAll(DataGenerator.generateWeaponParticipants(WeaponType.SABRE,22));
+
+        ObservableList smallSwordParticipants = DataGenerator.generateWeaponParticipants(WeaponType.SMALL_SWORD,31);
+        smallSwordParticipants.addAll(DataGenerator.generateWeaponParticipants(WeaponType.SMALL_SWORD,32));
 
         Competition comp = Competition.init(new util.Pair<ObservableList<Participant>,WeaponType>(rapierParticipants,WeaponType.RAPIER),
                                 new util.Pair<ObservableList<Participant>,WeaponType>(sabreParticipants,WeaponType.SABRE),
@@ -53,6 +58,11 @@ public class DataGenerator {
         for(WeaponCompetition wc :  comp.getWeaponCompetitions())
         {
             wc.startFirstRound();
+        }
+        System.out.println("hue");
+        for ( CompetitionGroup g: comp.getWeaponCompetitions().get(0).getLastRound().getGroups())
+        {
+            System.out.println("Size of group: " + g.getFightsList().size());
         }
         return comp;
     }

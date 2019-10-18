@@ -8,6 +8,7 @@ import model.FightDrawing.FightDrawStrategyPicker;
 import model.KillerDrawing.KillerRandomizerStrategyPicker;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Round {
@@ -19,7 +20,7 @@ public class Round {
     private ObservableList<CompetitionGroup> groups=null;
     private ObservableList<Participant> participants;
     private ObservableMap<Participant, RationalNumber> roundScore = FXCollections.observableHashMap();
-    private Map<Participant,Integer> participantFightNumber;
+    private Map<Participant,Integer> participantFightNumber= new HashMap<>();
     private int participantExcpectedFightNumber; // size of group -1
 
     public WeaponCompetition getMyWeaponCompetition() {
