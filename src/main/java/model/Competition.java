@@ -88,14 +88,14 @@ public class Competition {
                                    KillerRandomizerStrategy killerRandomizerStrategy)
     {
         if(instance!=null)
-            throw new InvalidStateException("Cannot reiintialize Comeptitions");
+            throw new InvalidStateException("Cannot reinitialize Comeptitions");
         instance= new Competition(participants1,participants2,participants3,killerRandomizerStrategy);
         return instance;
     }
     public  static Competition init(Competition deserilized)
     {
         if(instance!=null)
-            throw new InvalidStateException("Cannot reiintialize Comeptitions");
+            throw new InvalidStateException("Cannot reinitialize Comeptitions");
         instance=deserilized;
         return instance;
     }

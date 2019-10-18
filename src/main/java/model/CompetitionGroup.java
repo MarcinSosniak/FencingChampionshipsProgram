@@ -18,6 +18,7 @@ public class CompetitionGroup {
         fightsList = FXCollections.observableArrayList(fights);
     }
 
+
     public boolean fInGroup(Participant part)
     {
         for(Fight fight : fightsList)
