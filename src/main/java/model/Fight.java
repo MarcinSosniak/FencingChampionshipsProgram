@@ -4,11 +4,13 @@ package model;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import model.command.Command;
+import model.command.CommandAddBattleResult;
 import model.config.ConfigReader;
 import model.enums.FightScore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 public  class Fight {
     private ObjectProperty<Participant> firstParticipant= new SimpleObjectProperty<>();
@@ -51,8 +53,9 @@ public  class Fight {
     public FightScore getScore() { return score.get(); }
 
 
-    private void setFightScore(FightScore score)
+    public void setFightScore(CommandAddBattleResult.ValidInvocationChecker validInvocationChecker, FightScore score)
     {
+        Objects.requireNonNull(validInvocationChecker);
         this.score.setValue(score);
     }
 
@@ -73,8 +76,10 @@ public  class Fight {
         return new CommandAddBattleResult(this,p,true);
     }
 
-    private FightScore getScoreWithWinner(Participant winner) // doesn't set anything
+    public FightScore getScoreWithWinner(CommandAddBattleResult.ValidInvocationChecker validInvocationChecker,
+                                         Participant winner) // doesn't set anything
     {
+        Objects.requireNonNull(validInvocationChecker);
         if(firstParticipant.equals(winner))
             return FightScore.WON_FIRST;
         else if(secondParticipant.equals(winner))
@@ -83,8 +88,10 @@ public  class Fight {
             throw new IllegalArgumentException("participant missmatch, one to be winner is not in fight");
     }
 
-    private FightScore getScoreWithLoser(Participant loser) // doesn't set anything
+    public FightScore getScoreWithLoser(CommandAddBattleResult.ValidInvocationChecker validInvocationChecker,
+                                        Participant loser) // doesn't set anything
     {
+        Objects.requireNonNull(validInvocationChecker);
         if(firstParticipant.equals(loser))
             return FightScore.WON_SECOND;
         else if(secondParticipant.equals(loser))
@@ -119,8 +126,9 @@ public  class Fight {
             return null;
     }
 
-    private void updateRoundScore(boolean reverse)
+    public void updateRoundScore(CommandAddBattleResult.ValidInvocationChecker validInvocationChecker, boolean reverse)
     {
+        Objects.requireNonNull(validInvocationChecker);
         int multiplier=1;
         if(reverse)
             multiplier=-1;
@@ -143,58 +151,6 @@ public  class Fight {
             round.addPointsFromFight(firstParticipant.get(),multiplier*loosePoints);
             round.addPointsFromFight(secondParticipant.get(),multiplier*winPoints);
         }
-    }
-
-    private class CommandAddBattleResult implements Command {
-        @Override
-        public void execute() {
-            oldScore=fight.getScore();
-            if(oldScore!= FightScore.NULL_STATE)
-                fight.updateRoundScore(true); // reverse previous change
-            fight.setFightScore(scoreToSet);
-            if(fight.getScore()!= FightScore.NULL_STATE)
-            fight.updateRoundScore(false);
-        }
-
-        @Override
-        public void undo() {
-            if(fight.getScore()!=scoreToSet)
-                throw new IllegalStateException("This error means that there is a bug. Something was changed outside " +
-                        "of command stack and/or element is missing from stack");
-            if(fight.getScore() != FightScore.NULL_STATE)
-                fight.updateRoundScore(true); // if we changed
-            fight.setFightScore(oldScore);
-            if(fight.getScore() != FightScore.NULL_STATE)
-                fight.updateRoundScore(false);
-        }
-
-        @Override
-        public void redo() {
-            execute();
-        }
-
-        private final FightScore scoreToSet;
-        private final Fight fight;
-        private FightScore oldScore= FightScore.NULL_STATE;
-        public CommandAddBattleResult(Fight fight, Participant winner)
-        {
-            this.fight=fight;
-            scoreToSet=fight.getScoreWithWinner(winner);
-        }
-
-        public CommandAddBattleResult(Fight fight, FightScore score)
-        {
-            this.fight=fight;
-            scoreToSet=score;
-        }
-
-        /**creates fight command add battle result using loser particpent instead of winner**/
-        public CommandAddBattleResult(Fight fight, Participant looser, boolean DUMMY_ARGUMENT_USE_LOOSER_NOT_WINNER)
-        {
-            this.fight=fight;
-            scoreToSet=fight.getScoreWithLoser(looser);
-        }
-
     }
 
 
