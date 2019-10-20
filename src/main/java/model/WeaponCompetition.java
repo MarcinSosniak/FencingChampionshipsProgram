@@ -6,6 +6,7 @@ import model.FightDrawing.FightDrawStrategyPicker;
 import model.command.Command;
 import model.config.ConfigReader;
 import model.config.ConfigUtils;
+import model.enums.CompetitionState;
 import model.enums.WeaponType;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import util.RationalNumber;
 public class WeaponCompetition {
 
     private final  WeaponType weaponType;
+    private CompetitionState competitionState;
     private ObservableList<Participant> participants;
     private ObservableList<Round> rounds;
     private final CommandStack cStack= new CommandStack();
@@ -26,6 +28,7 @@ public class WeaponCompetition {
         this.weaponType = weaponType;
         this.participants = participants;
         this.rounds = FXCollections.observableArrayList();
+        this.competitionState = CompetitionState.INITIAL_STATE;
     }
 
     public void addParticipantToWeaponCompetition (Participant participant){ participants.add(participant); }
@@ -40,6 +43,10 @@ public class WeaponCompetition {
 
     public WeaponType getWeaponType(){
         return this.weaponType;
+    }
+
+    public CompetitionState getWeaponCompetitionState(){
+        return this.competitionState;
     }
 
     public List<Participant> getParticipants(){

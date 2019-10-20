@@ -234,7 +234,7 @@ public class EliminationController {
         GridPane gridPaneForGroups = new GridPane();
 
         try{
-             ObservableList<CompetitionGroup> cgl = this.competition.getWeaponCompetition(wt).getCompetitionGroups();
+             ObservableList<CompetitionGroup> cgl = this.competition.getWeaponCompetition(wt).getLastRound().getGroups();
              int rows = (cgl.size() % columns == 0) ?  cgl.size()/columns + 1:  cgl.size()/columns + 2;
 
             /* Create rows and columns for group panel */
@@ -297,7 +297,8 @@ public class EliminationController {
 
         try {
             GridPane gridPaneForFights = new GridPane();
-            ObservableList<CompetitionGroup> groups = this.competition.getWeaponCompetition(wt).getCompetitionGroups();
+            //ObservableList<CompetitionGroup> groups = this.competition.getWeaponCompetition(wt).getCompetitionGroups();
+            ObservableList<CompetitionGroup> groups = this.competition.getWeaponCompetition(wt).getLastRound().getGroups();
 
             int rows = groups.size() % columns == 0 ? (groups.size()/columns) + 1: (groups.size()/columns + 2);
 
