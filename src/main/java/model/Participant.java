@@ -7,7 +7,6 @@ import model.command.CommandAddInjury;
 import model.enums.JudgeState;
 import model.enums.WeaponType;
 import model.exceptions.NoSuchWeaponException;
-import org.omg.CORBA.Object;
 import util.RationalNumber;
 
 import java.security.InvalidParameterException;
@@ -40,6 +39,9 @@ public class Participant {
     private BooleanProperty fSmallSwordInjury = new SimpleBooleanProperty(false);
 
 
+    public  Participant(){}
+
+
     public Participant(String name, String surname, String location, String locationGroup, String judgeState, String licenceExpDate)
             throws ParseException
     {
@@ -58,8 +60,10 @@ public class Participant {
         this.weaponPointsProperty = FXCollections.observableHashMap();
     }
 
+
+
     public Date createDateFromString(String dateS) throws ParseException{
-        DateFormat format = new SimpleDateFormat("dd-mm-yyyy", new Locale("pl"));
+        DateFormat format = new SimpleDateFormat("dd-MM-yyyy", new Locale("pl"));
         Date date = format.parse(dateS);
         return date;
     }
@@ -202,4 +206,23 @@ public class Participant {
         Objects.requireNonNull(checker);
         this.fSmallSwordInjury.set(fSmallSwordInjury);
     }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj != null && obj instanceof Participant)
+            return (this.name.toString().equals(((Participant) obj).name.toString())
+                    && this.surname.toString().equals(((Participant) obj).surname.toString())
+                    && this.location.toString().equals(((Participant) obj).location.toString())
+                    && this.locationGroup.toString().equals(((Participant) obj).locationGroup.toString())
+                    && this.judgeState.toString().equals(((Participant) obj).judgeState.toString())
+                    && this.licenseExpDate.toString().equals(((Participant) obj).licenseExpDate.toString()));
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.name.hashCode() * 4 + this.surname.hashCode() * 17 +
+            this.locationGroup.hashCode() + this.location.hashCode() * 2 +
+            this.judgeState.hashCode() + this.licenseExpDate.hashCode() * 3;}
 }

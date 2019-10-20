@@ -1,19 +1,14 @@
 package model;
-import javafx.beans.property.IntegerProperty;
-import model.command.ChangePointsCommand;
-import model.command.Command;
-import model.enums.WeaponType;
-import model.exceptions.NoSuchWeaponException;
-import org.omg.CORBA.Object;
-import util.RationalNumber;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import model.FightDrawing.FightDrawStrategy;
 import model.FightDrawing.FightDrawStrategyPicker;
 import model.KillerDrawing.KillerRandomizerStrategyPicker;
+import model.command.ChangePointsCommand;
+import util.RationalNumber;
 
-import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;

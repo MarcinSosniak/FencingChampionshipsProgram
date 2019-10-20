@@ -1,26 +1,37 @@
 package model;
 
 import com.google.gson.Gson;
+import org.hildan.fxgson.FxGson;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ObjectDeserializer {
+public class PersistenceManager {
 
-    public static <T> List<T> convertFromJsonArray(String sJson, Class<T> tClass){
+    public static String serializeObjectsArrayToJson(ArrayList arrayList){
+        Gson gson = FxGson.create();
+        return gson.toJson(arrayList);
+    }
+
+    public static Participant[] convertJsonToParticipantArray(String json){
+        Gson gson = FxGson.create();
+        return  gson.fromJson(json, Participant[].class);
+    }
+
+
+    public static <T> List<T> deserializeFromJsonArray(String sJson, Class<T> tClass){
         try{
-            Gson gson = new Gson();
+            Gson gson = FxGson.create();
             List<T> objectsList = new ArrayList<>();
 
             JSONArray jsonArray = new JSONArray(sJson);
 
             for(int i=0; i < jsonArray.length(); i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                System.out.println(jsonObject.toString());
                 gson.fromJson(jsonObject.toString(), tClass);
-                System.out.println("pp");
                 objectsList.add(gson.fromJson(jsonObject.toString(), tClass));
             }
             return objectsList;
