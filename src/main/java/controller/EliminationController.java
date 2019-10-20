@@ -271,7 +271,7 @@ public class EliminationController {
                  GridPane.setConstraints(tableForGroup,groupsAdded%columns,currentRow);
                  tableForGroup.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
                  TableColumn<Participant,String> tc = new TableColumn("GROUP " + competitionGroup.getGroupID());
-                 tc.setCellValueFactory( x -> new SimpleStringProperty(x.getValue().nameProperty() + " " + x.getValue().surnameProperty()));
+                 tc.setCellValueFactory( x -> new SimpleStringProperty(x.getValue().nameProperty().getValue() + " " + x.getValue().surnameProperty().getValue()));
                  tableForGroup.getColumns().addAll(tc);
                  tableForGroup.setItems(competitionGroup.getGroupParticipants());//
                  groupsAdded ++;
@@ -345,18 +345,23 @@ public class EliminationController {
 
                 firstParticipant.setText("First");
                 doubleColumn.setText("X");
-                firstParticipant.setText("Second");
+                secondParticipant.setText("Second");
 
-                firstParticipant.setCellValueFactory( f -> new SimpleStringProperty(f.getValue().getFirstParticipant().nameProperty() + " " + f.getValue().getFirstParticipant().surnameProperty()));
-                secondParticipant.setCellValueFactory( f -> new SimpleStringProperty(f.getValue().getSecondParticipant().nameProperty() + " " + f.getValue().getSecondParticipant().surnameProperty()));
+                firstParticipant.setCellValueFactory( f -> new SimpleStringProperty(f.getValue().getFirstParticipant().nameProperty().getValue() + " " + f.getValue().getFirstParticipant().surnameProperty().getValue()));
+                secondParticipant.setCellValueFactory( f -> new SimpleStringProperty(f.getValue().getSecondParticipant().nameProperty().getValue() + " " + f.getValue().getSecondParticipant().surnameProperty().getValue()));
                 doubleColumn.setCellValueFactory( f -> new SimpleStringProperty("x"));
 
-
                 firstParticipant.setCellFactory( tc -> {
-                    TableCell<Fight,String> cell = new TableCell<>();
-                    Fight f = (Fight) cell.getTableRow().getItem();
+                    TableCell<Fight,String> cell = new TableCell<Fight,String>(){
+                        @Override
+                        protected void updateItem(String item, boolean empty) {
+                            super.updateItem(item, empty) ;
+                            setText(empty ? null : item);
+                        }
+                    };
                     cell.setOnMouseClicked( e -> {
                         if(e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty() ){
+                            Fight f = (Fight) cell.getTableRow().getItem();
                             f.commandSetFightScoreDirect(FightScore.WON_FIRST);
                         }
                     });
@@ -364,10 +369,16 @@ public class EliminationController {
                 });
 
                 secondParticipant.setCellFactory( tc -> {
-                    TableCell<Fight,String> cell = new TableCell<>();
-                    Fight f = (Fight) cell.getTableRow().getItem();
+                    TableCell<Fight,String> cell = new TableCell<Fight,String>(){
+                        @Override
+                        protected void updateItem(String item, boolean empty) {
+                            super.updateItem(item, empty) ;
+                            setText(empty ? null : item);
+                        }
+                    };
                     cell.setOnMouseClicked( e -> {
                         if(e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty() ){
+                            Fight f = (Fight) cell.getTableRow().getItem();
                             f.commandSetFightScoreDirect(FightScore.WON_SECOND);
                         }
                     });
@@ -375,10 +386,16 @@ public class EliminationController {
                 });
 
                 doubleColumn.setCellFactory( tc -> {
-                    TableCell<Fight,String> cell = new TableCell<>();
-                    Fight f = (Fight) cell.getTableRow().getItem();
+                    TableCell<Fight,String> cell = new TableCell<Fight,String>(){
+                        @Override
+                        protected void updateItem(String item, boolean empty) {
+                            super.updateItem(item, empty) ;
+                            setText(empty ? null : item);
+                        }
+                    };
                     cell.setOnMouseClicked( e -> {
                         if(e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty() ){
+                            Fight f = (Fight) cell.getTableRow().getItem();
                             f.commandSetFightScoreDirect(FightScore.DOUBLE);
                         }
                     });
