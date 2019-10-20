@@ -84,14 +84,14 @@ public class EliminationController {
 
         name.setCellValueFactory(x -> x.getValue().nameProperty());
         surname.setCellValueFactory(x -> x.getValue().surnameProperty());
-        points.setCellValueFactory(x -> {
+       /* points.setCellValueFactory(x -> {
                 try {
                     return x.getValue().getPointsForWeaponProperty(wt).asObject();
                 } catch (NoSuchWeaponException e) {
                     e.printStackTrace();
                     return new SimpleObjectProperty<>(new Integer(0));
                 }
-        });
+        });*/
         group.setCellValueFactory(x -> {
             try{
                 String g = competition.getWeaponCompetition(wt).groupForParticipant(x.getValue());

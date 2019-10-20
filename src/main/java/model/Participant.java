@@ -11,8 +11,12 @@ import org.omg.CORBA.Object;
 import util.RationalNumber;
 
 import java.security.InvalidParameterException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class Participant {
@@ -36,13 +40,16 @@ public class Participant {
     private BooleanProperty fSmallSwordInjury = new SimpleBooleanProperty(false);
 
 
-    public Participant(String name, String surname, String location, String locationGroup, JudgeState judgeState, Date licenceExpDate){
+    public Participant(String name, String surname, String location, String locationGroup, String judgeState, String licenceExpDate)
+            throws ParseException
+    {
         this.name            = new SimpleStringProperty(name);
         this.surname         = new SimpleStringProperty(surname);
         this.location        = new SimpleStringProperty(location);
         this.locationGroup   = new SimpleStringProperty(locationGroup);
-        this.judgeState      = new SimpleObjectProperty<>(judgeState);
-        this.licenseExpDate  = new SimpleObjectProperty<>(licenceExpDate);
+
+        this.judgeState      = new SimpleObjectProperty<>(setJudgeStateFromString(judgeState));   // STRING MAY BE INCORRECT
+        this.licenseExpDate  = new SimpleObjectProperty<>(createDateFromString(licenceExpDate));
 
         this.fSmallSwordParticipant = new SimpleBooleanProperty(false);
         this.fSabreParticipant = new SimpleBooleanProperty(false);
@@ -50,6 +57,19 @@ public class Participant {
 
         this.weaponPointsProperty = FXCollections.observableHashMap();
     }
+
+    public Date createDateFromString(String dateS) throws ParseException{
+        DateFormat format = new SimpleDateFormat("dd-mm-yyyy", new Locale("pl"));
+        Date date = format.parse(dateS);
+        return date;
+    }
+
+    public JudgeState setJudgeStateFromString(String judgeS){
+        if (judgeS.equals(JudgeState.NON_JUDGE.toString()) || judgeS.equals(JudgeState.MAIN_JUDGE.toString()))
+            return JudgeState.valueOf(judgeS);
+        throw new IllegalArgumentException("Incorrect judge state string");
+    }
+
 
     public void setName(String name) {
         this.name.set(name);

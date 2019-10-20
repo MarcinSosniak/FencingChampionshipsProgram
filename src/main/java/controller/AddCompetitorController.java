@@ -50,7 +50,8 @@ public class AddCompetitorController {
     public void addNewCompetitor(){
         System.out.format("addNewCompetitor\n");
         try{
-            Participant toAdd = new Participant(competitorName.getText(),competitorSurname.getText(),competitorDivision.getText(),competitorGroup.getText(),competitorFMainReferee.isSelected()? JudgeState.MAIN_JUDGE:JudgeState.NON_JUDGE,new SimpleDateFormat("dd-MM-yyyy").parse(competitorLicenceDate.getText()));
+            Participant toAdd = new Participant(competitorName.getText(),competitorSurname.getText(),
+                    competitorDivision.getText(),competitorGroup.getText(),competitorFMainReferee.isSelected()? "MAIN_JUDGE": "NON_JUDGE", competitorLicenceDate.getText());
             toAdd.setfSmallSwordParticipant(competitorFSmallSword.isSelected());
             toAdd.setfRapierParticipant(competitorFRapier.isSelected());
             toAdd.setfSabreParticipant(competitorFSabre.isSelected());
