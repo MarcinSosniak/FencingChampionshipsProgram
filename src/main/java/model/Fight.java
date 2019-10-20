@@ -7,6 +7,7 @@ import model.command.Command;
 import model.command.CommandAddBattleResult;
 import model.config.ConfigReader;
 import model.enums.FightScore;
+import org.omg.CORBA.Object;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,16 +62,17 @@ public  class Fight {
 
     public boolean fHasResult(){return score.get()==FightScore.NULL_STATE;}
 
-    public void commandSetFightScoreDirect(FightScore score)
-    {
+    public void commandSetFightScoreDirect(FightScore score) {
         round.getCStack().executeCommand(new CommandAddBattleResult(this,score));
     }
 
-    public void commandSetWinner(Participant winner) // DO NOT OUTSIDE OF COMMAND_ADD_BATTLE_RESULT
-    {
+    public void commandSetWinner(CommandAddBattleResult.ValidInvocationChecker checker, Participant winner){
+        Objects.requireNonNull(checker);
         round.getCStack().executeCommand(new CommandAddBattleResult(this,winner));
     }
 
+
+    // ???????
     public Command getCommandSetLooser(Participant p) /**does NOT. I REPEAT DOES NOT PUT IN COMMAND STACK. FOR USE IN OTHER COMMANDS ONLY**/
     {
         return new CommandAddBattleResult(this,p,true);
@@ -102,10 +104,10 @@ public  class Fight {
 
 
 
-    public void setDouble()
-    {
+    public void setDouble(){
         score.set(FightScore.DOUBLE);
     }
+
     public boolean fIn(Participant part)
     {
         if (part.equals(firstParticipant) || part.equals(secondParticipant))

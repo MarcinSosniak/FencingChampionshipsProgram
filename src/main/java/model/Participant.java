@@ -7,10 +7,13 @@ import model.command.CommandAddInjury;
 import model.enums.JudgeState;
 import model.enums.WeaponType;
 import model.exceptions.NoSuchWeaponException;
+import org.omg.CORBA.Object;
+import util.RationalNumber;
 
 import java.security.InvalidParameterException;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class Participant {
 
@@ -26,7 +29,7 @@ public class Participant {
     private BooleanProperty fSmallSwordParticipant;
     private BooleanProperty fSabreParticipant;
     private BooleanProperty fRapierParticipant;
-    private ObservableMap<WeaponType,IntegerProperty> weaponPointsProperty;
+    private ObservableMap<WeaponType, util.RationalNumber> weaponPointsProperty;
 
     private BooleanProperty fSabreInjury = new SimpleBooleanProperty(false);
     private BooleanProperty fRapierInjury = new SimpleBooleanProperty(false);
@@ -68,7 +71,7 @@ public class Participant {
         if (!this.fSmallSwordParticipant.getValue().equals(fSmallSwordParticipant)) {
             if (this.weaponPointsProperty.containsKey(WeaponType.SMALL_SWORD) && !fSmallSwordParticipant)
                 this.weaponPointsProperty.remove(WeaponType.SMALL_SWORD);
-            else this.weaponPointsProperty.put(WeaponType.SMALL_SWORD,new SimpleIntegerProperty(0));
+            else this.weaponPointsProperty.put(WeaponType.SMALL_SWORD, new RationalNumber(0));
 
             this.fSmallSwordParticipant.setValue(fSmallSwordParticipant);
         }
@@ -78,7 +81,7 @@ public class Participant {
         if (!this.fSabreParticipant.getValue().equals(fSabreParticipant)) {
             if (this.weaponPointsProperty.containsKey(WeaponType.SABRE) && !fSabreParticipant)
                 this.weaponPointsProperty.remove(WeaponType.SABRE);
-            else this.weaponPointsProperty.put(WeaponType.SABRE,new SimpleIntegerProperty(0));
+            else this.weaponPointsProperty.put(WeaponType.SABRE, new RationalNumber(0));
 
             this.fSabreParticipant.setValue(fSabreParticipant);
         }
@@ -88,7 +91,7 @@ public class Participant {
         if (!this.fRapierParticipant.getValue().equals(fRapierParticipant)){
             if (this.weaponPointsProperty.containsKey(WeaponType.RAPIER) && !fRapierParticipant)
                 this.weaponPointsProperty.remove(WeaponType.RAPIER);
-            else this.weaponPointsProperty.put(WeaponType.RAPIER,new SimpleIntegerProperty(0));
+            else this.weaponPointsProperty.put(WeaponType.RAPIER, new RationalNumber(0));
 
             this.fRapierParticipant.setValue(fRapierParticipant);
         }
@@ -139,7 +142,7 @@ public class Participant {
     public JudgeState getJudgeState(){ return judgeState.get(); }
 
 
-    public IntegerProperty getPointsForWeaponProperty(WeaponType type) throws NoSuchWeaponException {
+    public RationalNumber getPointsForWeaponProperty(WeaponType type) throws NoSuchWeaponException {
         if(weaponPointsProperty.containsKey(type)) return weaponPointsProperty.get(type);
         else throw new NoSuchWeaponException();
     }
@@ -159,8 +162,24 @@ public class Participant {
         throw new IllegalStateException("Invalid state");
     }
 
-    public void addInjury(WeaponType wt,WeaponCompetition wc){wc.getcStack().executeCommand(new CommandAddInjury(this, wt,wc));}
+    public void addInjury(WeaponType wt, WeaponCompetition wc){wc.getcStack().executeCommand(new CommandAddInjury(this, wt, wc));}
 
-    public void addInjuries(List<WeaponType> wt,WeaponCompetition wc){wc.getcStack().executeCommand(new CommandAddInjury(this, wt,wc));}
+    public void addInjuries(List<WeaponType> wt,WeaponCompetition wc){wc.getcStack().executeCommand(new CommandAddInjury(this, wt, wc));}
 
+
+    // SHOULD BE SET ONLY THROUGH COMMAND
+    public void setfRapierInjury(CommandAddInjury.ValidInvocationChecker checker, boolean fRapierInjury) {
+        Objects.requireNonNull(checker);
+        this.fRapierInjury.set(fRapierInjury);
+    }
+
+    public void setfSabreInjury(CommandAddInjury.ValidInvocationChecker checker, boolean fSabreInjury) {
+        Objects.requireNonNull(checker);
+        this.fSabreInjury.set(fSabreInjury);
+    }
+
+    public void setfSmallSwordInjury(CommandAddInjury.ValidInvocationChecker checker, boolean fSmallSwordInjury) {
+        Objects.requireNonNull(checker);
+        this.fSmallSwordInjury.set(fSmallSwordInjury);
+    }
 }

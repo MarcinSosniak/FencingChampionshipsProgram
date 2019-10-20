@@ -12,16 +12,14 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import Util.*;
 import util.RationalNumber;
 
 public class WeaponCompetition {
 
-    private final  WeaponType weaponType;
+    private final WeaponType weaponType;
     private ObservableList<Participant> participants;
     private ObservableList<Round> rounds;
-    private final CommandStack cStack= new CommandStack();
+    private final CommandStack cStack = new CommandStack();
 
     public WeaponCompetition(WeaponType weaponType, ObservableList<Participant> participants){
         this.weaponType = weaponType;
@@ -35,6 +33,7 @@ public class WeaponCompetition {
 
     public void addRound(Round round){ rounds.add(round.setMyWeaponCompetition(this).drawGroups()); }
 
+    
     public String groupForParticipant(Participant p){
         return "a";
     }
@@ -55,17 +54,12 @@ public class WeaponCompetition {
     }
 
     /**DOES NOT ACTAULLY DO ANYTHING**/
-    public List<Command> invalidateParticipant(Participant p) /** DO NOT CALL UNLESS THOURGH COMMAND **/
-    {
+    public List<Command> invalidateParticipant(Participant p) /** DO NOT CALL UNLESS THOURGH COMMAND **/ {
         List<Command> out = new ArrayList<>();
-        for(CompetitionGroup g : (rounds.get(rounds.size()-1).getGroups()))
-        {
-            if(g.fInGroup(p))
-            {
-                for(Fight fight : g.getFightsList())
-                {
-                    if(!fight.fHasResult() && fight.fIn(p))
-                    {
+        for(CompetitionGroup g : (rounds.get(rounds.size()-1).getGroups())) {
+            if(g.fInGroup(p)) {
+                for(Fight fight : g.getFightsList()) {
+                    if(!fight.fHasResult() && fight.fIn(p)) {
                         out.add(fight.getCommandSetLooser(p));
                     }
                 }
@@ -74,31 +68,26 @@ public class WeaponCompetition {
         return out;
     }
 
-    public util.RationalNumber getParticpantScore(Participant p)
-    {
+    public util.RationalNumber getParticipantScore(Participant p) {
         util.RationalNumber out= new RationalNumber();
-        for (Round round : rounds)
-        {
-            out= out.add(round.getParticpantScore(p));
+        for (Round round : rounds) {
+            out = out.add(round.getParticpantScore(p));
         }
         return out;
     }
 
-    public void startFirstRound()
-    {
+    public void startFirstRound() {
         RoundCreator rc = new RoundCreator(participants);
         rc.startRound();
     }
 
-    public void startFirstRound(int gropuSize)
-    {
-        RoundCreator rc = new RoundCreator(participants,gropuSize);
+    public void startFirstRound(int gropuSize) {
+        RoundCreator rc = new RoundCreator(participants, gropuSize);
         rc.startRound();
     }
 
 
     // WEAPON COMP ROUDN CREATOR
-
     public class RoundCreator
     {
         private boolean fRoundReady=false;
@@ -164,16 +153,16 @@ public class WeaponCompetition {
             participantsEligible.sort(new Comparator<Participant>() {
                 @Override
                 public int compare(Participant o1, Participant o2) {
-                    return RationalNumber.compare(getParticpantScore(o1),getParticpantScore(o2)); // this *should* favour greater value
+                    return RationalNumber.compare(getParticipantScore(o1),getParticipantScore(o2)); // this *should* favour greater value
                 }
             });
 
-            RationalNumber cutoff= getParticpantScore(participantsEligible.get(particpantsNeeded-1));
+            RationalNumber cutoff= getParticipantScore(participantsEligible.get(particpantsNeeded-1));
             participantsForRound.addAll(participantsEligible.stream()
-                    .filter(x -> RationalNumber.greater(getParticpantScore(x),cutoff))
+                    .filter(x -> RationalNumber.greater(getParticipantScore(x),cutoff))
                     .collect(Collectors.toList()));
             participantsForPlayoff.addAll(participantsEligible.stream()
-                    .filter(x -> getParticpantScore(x).equals(cutoff))
+                    .filter(x -> getParticipantScore(x).equals(cutoff))
                     .collect(Collectors.toList()));
             if(participantsForPlayoff.size() + participantsForRound.size()== particpantsNeeded)
             {
