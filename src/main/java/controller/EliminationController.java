@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
@@ -98,12 +99,10 @@ public class EliminationController {
 
         /* Rows preparation */
             RowConstraints row1 = new RowConstraints(); /* For table and button controller*/
-            RowConstraints row2 = new RowConstraints(); /* For groups  */
-            RowConstraints row3 = new RowConstraints(); /* Fight results */
-            row1.setPercentHeight(40);
-            row2.setPercentHeight(30);
-            row2.setPercentHeight(30);
-        mainTabPane.getRowConstraints().addAll(row1,row2,row3);
+            RowConstraints row2 = new RowConstraints(); /* For groups and fight */
+            row1.setPercentHeight(25);
+            row2.setPercentHeight(75);
+        mainTabPane.getRowConstraints().addAll(row1,row2);
 
 
         /* Columns preparation */
@@ -228,9 +227,9 @@ public class EliminationController {
 
     /* TODO: check and set title in the middle*/
     /* Lets assume that groups will be displayed (3/2) x N */
-    private ScrollPane prepareCompetitionGroupPane(WeaponType wt,int columns){
-        ScrollPane groupScrollPane = new ScrollPane();
-        GridPane.setConstraints(groupScrollPane,0,1,columns,1);
+    private VBox prepareCompetitionGroupPane(WeaponType wt,int columns){
+        VBox groupScrollPane = new VBox();
+        //GridPane.setConstraints(groupScrollPane,0,1,columns,1);
         GridPane gridPaneForGroups = new GridPane();
 
         try{
@@ -281,23 +280,22 @@ public class EliminationController {
                  gridPaneForGroups.getChildren().add(tableForGroup);
              }
             gridPaneForGroups.getChildren().add(text);
-            groupScrollPane.setContent(gridPaneForGroups);
+             groupScrollPane.getChildren().add(gridPaneForGroups);
             return groupScrollPane;
         } catch (NoSuchCompetitionException e){
             e.printStackTrace();
             System.out.format("Error while loading groups\n");
-            return new ScrollPane();
+            return new VBox();
         }
     }
 
     /* TODO: make better title*/
-    private ScrollPane prepareResultPane(WeaponType wt,int columns){
-        ScrollPane resultScrollPane = new ScrollPane();
-        GridPane.setConstraints(resultScrollPane,0,2,2,1);
+    private VBox prepareResultPane(WeaponType wt,int columns){
+        VBox resultScrollPane = new VBox();
+        //GridPane.setConstraints(resultScrollPane,0,2,2,1);
 
         try {
             GridPane gridPaneForFights = new GridPane();
-            //ObservableList<CompetitionGroup> groups = this.competition.getWeaponCompetition(wt).getCompetitionGroups();
             ObservableList<CompetitionGroup> groups = this.competition.getWeaponCompetition(wt).getLastRound().getGroups();
 
             int rows = groups.size() % columns == 0 ? (groups.size()/columns) + 1: (groups.size()/columns + 2);
@@ -334,6 +332,7 @@ public class EliminationController {
 
 
                 TableView tableForGroupFights = new TableView();
+                tableForGroupFights.setPadding(new Insets(5, 5, 5, 5));
                 GridPane.setConstraints(tableForGroupFights,currentColumn,currentRow);
                 tableForGroupFights.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
                 //tableForGroupFights.setItems(cg.getFightsList());
@@ -406,19 +405,21 @@ public class EliminationController {
                 gridPaneForFights.getChildren().add(tableForGroupFights);
             }
             gridPaneForFights.getChildren().add(text);
-            resultScrollPane.setContent(gridPaneForFights);
 
+            resultScrollPane.getChildren().add(gridPaneForFights);
             return resultScrollPane;
 
         } catch (NoSuchCompetitionException e) {
             System.out.format("No weapon competition\n");
             e.printStackTrace();
-            return new ScrollPane();
+            return new VBox();
         }
     }
 
     private Tab initTab( WeaponType wt){
         GridPane mainTabPane = prepareGridPaneForTab();
+        VBox v = new VBox();
+        GridPane.setConstraints(v,0,1,2,1);
 
         /* Add tableView pane */
             GridPane tableViewPane = prepareTableViewPane(wt);
@@ -427,13 +428,16 @@ public class EliminationController {
             GridPane buttonPane = prepareButtonPane(wt);
 
         /* Add Group panel */
-           ScrollPane groupPane = prepareCompetitionGroupPane(wt,3);
+           VBox groupPane = prepareCompetitionGroupPane(wt,3);
 
         /* Add Result Panel */
-            ScrollPane resultPane = prepareResultPane(wt,3);
+            VBox resultPane = prepareResultPane(wt,3);
 
         /* Add to main tab pane */
-            mainTabPane.getChildren().addAll(tableViewPane,buttonPane,groupPane,resultPane);
+
+            v.getChildren().addAll(groupPane,resultPane);
+            mainTabPane.getChildren().addAll(tableViewPane,buttonPane,v);
+
 
 
 
@@ -441,7 +445,6 @@ public class EliminationController {
             Tab tabToRet = new Tab();
             tabToRet.setText(wt.toString());
             tabToRet.setContent(mainTabPane);
-
 
         return tabToRet;
     }
