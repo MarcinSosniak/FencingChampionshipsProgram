@@ -187,16 +187,20 @@ public class EliminationController {
         RowConstraints row1 = new RowConstraints(); row1.setPercentHeight(25);
         RowConstraints row2 = new RowConstraints(); row2.setPercentHeight(25);
         RowConstraints row3 = new RowConstraints(); row3.setPercentHeight(25);
+        ColumnConstraints cc = new ColumnConstraints(); cc.setPercentWidth(100);
 
         paneForButtons.getRowConstraints().addAll(row0,row1,row2,row3);
+        paneForButtons.getColumnConstraints().addAll(cc);
 
         Button nextRoundButton = new Button();
+        nextRoundButton.setMaxSize(1000,1000);
         nextRoundButton.setText("Next Round");
-        nextRoundButton.setStyle("-fx-background-color: pink ; -fx-padding: 10; -fx-alignment: CENTER;");
+        nextRoundButton.setStyle("-fx-background-color: pink ; -fx-padding: 10;");
         nextRoundButton.setOnAction( x -> System.out.format("Implement me\n"));
         GridPane.setConstraints(nextRoundButton,0,0);
 
         Button competitionStatus = new Button();
+        competitionStatus.setMaxSize(1000,1000);
         try{
             competitionStatus.setText(this.competition.getWeaponCompetition(wt).getWeaponCompetitionState().toString());
         } catch (NoSuchCompetitionException e){
@@ -208,14 +212,16 @@ public class EliminationController {
         GridPane.setConstraints(competitionStatus,0,1);
 
         Button addPoints = new Button();
+        addPoints.setMaxSize(1000,1000);
         addPoints.setText("Add Points");
         addPoints.setStyle("-fx-background-color: green; -fx-padding: 10;");
         addPoints.setOnAction( x -> System.out.format("Implement me\n"));
         GridPane.setConstraints(addPoints,0,2);
 
         Button substractPoints = new Button();
+        substractPoints.setMaxSize(1000,1000);
         substractPoints.setText("SubstractPoints");
-        substractPoints.setStyle("-fx-background-color: blue; -fx-padding: 10;");
+        substractPoints.setStyle("-fx-background-color: grey; -fx-padding: 10;");
         substractPoints.setOnAction( x -> System.out.format("Implement me\n"));
         GridPane.setConstraints(substractPoints,0,3);
 
