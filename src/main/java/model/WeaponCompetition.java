@@ -146,7 +146,7 @@ public class WeaponCompetition {
             if(winners.size() +participantsForRound.size() != particpantsNeeded )
                 throw new IllegalStateException("winners list is too short or to large");
             participantsForRound.addAll(winners);
-            _round= new Round(rounds.size()-1,groupSize,participantsForRound,getFightDrawStrategyPicker());
+            _round= new Round(WeaponCompetition.this,rounds.size()-1,groupSize,participantsForRound,getFightDrawStrategyPicker());
             fRoundReady=true;
         }
 
@@ -168,7 +168,7 @@ public class WeaponCompetition {
             {
                 participantsForRound.addAll(participantsEligible);
                 fRoundReady=true;
-                _round = new Round(rounds.size()-1,groupSize,participantsEligible,getFightDrawStrategyPicker());
+                _round = new Round(WeaponCompetition.this,rounds.size()-1,groupSize,participantsEligible,getFightDrawStrategyPicker());
                 return;
             }
             participantsEligible.sort(new Comparator<Participant>() {
@@ -189,7 +189,7 @@ public class WeaponCompetition {
             {
                 participantsForRound.addAll(participantsForPlayoff);
                 fRoundReady=true;
-                _round = new Round(rounds.size(),groupSize,participantsForRound,getFightDrawStrategyPicker());
+                _round = new Round(WeaponCompetition.this,rounds.size(),groupSize,participantsForRound,getFightDrawStrategyPicker());
                 return;
             }
             fRoundReady=false;
@@ -200,7 +200,7 @@ public class WeaponCompetition {
             if(rounds.size() > 0)
                 throw  new IllegalStateException("use this to construct only the first round");
             participantsForRound.addAll(participants);
-            _round=new Round(0,groupSize,participantsForRound,getFightDrawStrategyPicker());
+            _round=new Round(WeaponCompetition.this,0,groupSize,participantsForRound,getFightDrawStrategyPicker());
             fRoundReady=true;
         }
 
@@ -210,7 +210,7 @@ public class WeaponCompetition {
                 throw  new IllegalStateException("use this to construct only the first round");
             int groupSize = ConfigReader.getInstance().getIntValue(ConfigUtils.getWeaponTag(weaponType),"START_GROUP_SIZE");
             participantsForRound.addAll(participants);
-            _round=new Round(0,groupSize,participantsForRound,getFightDrawStrategyPicker());
+            _round=new Round(WeaponCompetition.this,0,groupSize,participantsForRound,getFightDrawStrategyPicker());
             fRoundReady=true;
         }
 

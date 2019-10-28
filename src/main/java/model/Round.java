@@ -57,7 +57,8 @@ public class Round {
         this.getCStack().executeCommand(new ChangePointsCommand(p, pointsNumber, false));
     }
 
-    public Round(int roundNumber, int groupSize,ArrayList<Participant> participants, FightDrawStrategyPicker fightDrawStrategyPicker){
+    //depriciated
+    private Round(int roundNumber, int groupSize,ArrayList<Participant> participants, FightDrawStrategyPicker fightDrawStrategyPicker){
         this.roundNumber = roundNumber;
         this.groupSize = groupSize;
         this.participantExcpectedFightNumber=groupSize-1;
@@ -105,8 +106,10 @@ public class Round {
     public void addPointsFromFight(Participant p, int points)
     {
         RationalNumber pScoreMultiplier = new RationalNumber(participantExcpectedFightNumber,participantFightNumber.get(p));
-        roundScore.put(p,roundScore.get(p).multiply(pScoreMultiplier.multiply(points)));
-
+        RationalNumber old_score= roundScore.get(p);
+        RationalNumber points_to_add=pScoreMultiplier.multiply(points);
+        RationalNumber after_add=old_score.add(points_to_add);
+        roundScore.put(p,after_add);
     }
 
     public void addRoundScorePointsForParticipant (Participant p, int points){
