@@ -31,6 +31,21 @@ public class DataGenerator {
         participants.add(new Participant("Name2"+xD,"Surname2","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date()));
         participants.add(new Participant("Name3"+xD,"Surname3","Location3","lacationGroup3", JudgeState.NON_JUDGE,new Date()));
         participants.add(new Participant("Name4"+xD,"Surname4","Location4","lacationGroup4", JudgeState.NON_JUDGE,new Date()));
+        participants.add(new Participant("Judge2"+xD,"Surname","Location","lacationGroup", JudgeState.MAIN_JUDGE,new Date()));
+        participants.add(new Participant("Name12"+xD,"Surname1","Location1","lacationGroup1", JudgeState.NON_JUDGE,new Date()));
+        participants.add(new Participant("Name22"+xD,"Surname2","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date()));
+        participants.add(new Participant("Name32"+xD,"Surname3","Location3","lacationGroup3", JudgeState.NON_JUDGE,new Date()));
+        participants.add(new Participant("Name42"+xD,"Surname4","Location4","lacationGroup4", JudgeState.NON_JUDGE,new Date()));
+        participants.add(new Participant("Judge3"+xD,"Surname","Location","lacationGroup", JudgeState.MAIN_JUDGE,new Date()));
+        participants.add(new Participant("Name13"+xD,"Surname1","Location1","lacationGroup1", JudgeState.NON_JUDGE,new Date()));
+        participants.add(new Participant("Name23"+xD,"Surname2","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date()));
+        participants.add(new Participant("Name33"+xD,"Surname3","Location3","lacationGroup3", JudgeState.NON_JUDGE,new Date()));
+        participants.add(new Participant("Name43"+xD,"Surname4","Location4","lacationGroup4", JudgeState.NON_JUDGE,new Date()));
+        participants.add(new Participant("Judge5"+xD,"Surname","Location","lacationGroup", JudgeState.MAIN_JUDGE,new Date()));
+        participants.add(new Participant("Name15"+xD,"Surname1","Location1","lacationGroup1", JudgeState.NON_JUDGE,new Date()));
+        participants.add(new Participant("Name25"+xD,"Surname2","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date()));
+        participants.add(new Participant("Name35"+xD,"Surname3","Location3","lacationGroup3", JudgeState.NON_JUDGE,new Date()));
+        participants.add(new Participant("Name45"+xD,"Surname4","Location4","lacationGroup4", JudgeState.NON_JUDGE,new Date()));
 
         for(Participant x : participants){
             x.setfWeaponParticipant(wt,true);

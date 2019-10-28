@@ -227,9 +227,10 @@ public class EliminationController {
 
     /* TODO: check and set title in the middle*/
     /* Lets assume that groups will be displayed (3/2) x N */
-    private VBox prepareCompetitionGroupPane(WeaponType wt,int columns){
-        VBox groupScrollPane = new VBox();
-        //GridPane.setConstraints(groupScrollPane,0,1,columns,1);
+    private ScrollPane prepareCompetitionGroupPane(WeaponType wt,int columns){
+        ScrollPane scrollPaneForVBOX = new ScrollPane();
+        VBox vBoxPane = new VBox();
+        GridPane.setConstraints(scrollPaneForVBOX,0,1,columns,1);
         GridPane gridPaneForGroups = new GridPane();
 
         try{
@@ -279,20 +280,22 @@ public class EliminationController {
                  }
                  gridPaneForGroups.getChildren().add(tableForGroup);
              }
-            gridPaneForGroups.getChildren().add(text);
-             groupScrollPane.getChildren().add(gridPaneForGroups);
-            return groupScrollPane;
+             gridPaneForGroups.getChildren().add(text);
+             vBoxPane.getChildren().add(gridPaneForGroups);
+             scrollPaneForVBOX.setContent(vBoxPane);
+            return scrollPaneForVBOX;
         } catch (NoSuchCompetitionException e){
             e.printStackTrace();
             System.out.format("Error while loading groups\n");
-            return new VBox();
+            return new ScrollPane();
         }
     }
 
     /* TODO: make better title*/
-    private VBox prepareResultPane(WeaponType wt,int columns){
-        VBox resultScrollPane = new VBox();
-        //GridPane.setConstraints(resultScrollPane,0,2,2,1);
+    private ScrollPane prepareResultPane(WeaponType wt,int columns){
+        ScrollPane scrollPaneForVBOX = new ScrollPane();
+        VBox vBoxPane = new VBox();
+        GridPane.setConstraints(scrollPaneForVBOX,0,2,2,1);
 
         try {
             GridPane gridPaneForFights = new GridPane();
@@ -406,13 +409,14 @@ public class EliminationController {
             }
             gridPaneForFights.getChildren().add(text);
 
-            resultScrollPane.getChildren().add(gridPaneForFights);
-            return resultScrollPane;
+            vBoxPane.getChildren().add(gridPaneForFights);
+            scrollPaneForVBOX.setContent(vBoxPane);
+            return scrollPaneForVBOX;
 
         } catch (NoSuchCompetitionException e) {
             System.out.format("No weapon competition\n");
             e.printStackTrace();
-            return new VBox();
+            return new ScrollPane();
         }
     }
 
@@ -428,10 +432,10 @@ public class EliminationController {
             GridPane buttonPane = prepareButtonPane(wt);
 
         /* Add Group panel */
-           VBox groupPane = prepareCompetitionGroupPane(wt,3);
+           ScrollPane groupPane = prepareCompetitionGroupPane(wt,3);
 
         /* Add Result Panel */
-            VBox resultPane = prepareResultPane(wt,3);
+            ScrollPane resultPane = prepareResultPane(wt,3);
 
         /* Add to main tab pane */
 
