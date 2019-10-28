@@ -229,6 +229,8 @@ public class EliminationController {
     /* Lets assume that groups will be displayed (3/2) x N */
     private ScrollPane prepareCompetitionGroupPane(WeaponType wt,int columns){
         ScrollPane scrollPaneForVBOX = new ScrollPane();
+        scrollPaneForVBOX.fitToWidthProperty();
+        scrollPaneForVBOX.setFitToWidth(true);
        // VBox vBoxPane = new VBox();
         GridPane.setConstraints(scrollPaneForVBOX,0,1,columns,1);
         GridPane gridPaneForGroups = new GridPane();
@@ -296,13 +298,16 @@ public class EliminationController {
     private ScrollPane prepareResultPane(WeaponType wt,int columns){
         ScrollPane scrollPaneForVBOX = new ScrollPane();
         scrollPaneForVBOX.fitToWidthProperty();
+        scrollPaneForVBOX.setFitToWidth(true);
         //VBox vBoxPane = new VBox();
         GridPane.setConstraints(scrollPaneForVBOX,0,2,2,1);
 
         try {
             GridPane gridPaneForFights = new GridPane();
+
             //gridPaneForFights.setMaxWidth(10000);
             //gridPaneForFights.setMinWidth(1980);
+           // gridPaneForFights.setPrefWidth();
 
             //gridPaneForFights.setMinSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
 
@@ -314,7 +319,7 @@ public class EliminationController {
             /* Create rows and columns for result panel */
                 /* row for title */
                 RowConstraints rc = new RowConstraints();
-                rc.setVgrow(Priority.ALWAYS);
+                //rc.setVgrow(Priority.ALWAYS);
                 rc.setPercentHeight(10.0/rows);
                 gridPaneForFights.getRowConstraints().add(rc);
 
@@ -326,7 +331,7 @@ public class EliminationController {
                 }
                 for(int i =0;i<columns;i++){
                     ColumnConstraints cc = new ColumnConstraints();
-                    cc.setHgrow(Priority.SOMETIMES);
+                    cc.setHgrow(Priority.ALWAYS);
                     cc.setPercentWidth(100.0/columns);
                     gridPaneForFights.getColumnConstraints().add(cc);
                 }
@@ -347,7 +352,7 @@ public class EliminationController {
 
                 TableView tableForGroupFights = new TableView();
 
-                GridPane.setFillWidth(tableForGroupFights,true);
+//                GridPane.setFillWidth(tableForGroupFights,true);
 
                 tableForGroupFights.setPadding(new Insets(5, 5, 5, 5));
                 GridPane.setConstraints(tableForGroupFights,currentColumn,currentRow);
@@ -455,8 +460,6 @@ public class EliminationController {
 
             v.getChildren().addAll(groupPane,resultPane);
             mainTabPane.getChildren().addAll(tableViewPane,buttonPane,v);
-
-
 
 
         /* Add content to tab*/
