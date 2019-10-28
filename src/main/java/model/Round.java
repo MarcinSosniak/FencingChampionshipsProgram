@@ -1,5 +1,7 @@
 package model;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import model.command.Command;
 import model.enums.WeaponType;
 import model.exceptions.NoSuchWeaponException;
@@ -24,7 +26,7 @@ public class Round {
     private FightDrawStrategy fightDrawStrategy;
     private ObservableList<CompetitionGroup> groups=null;
     private ObservableList<Participant> participants;
-    private ObservableMap<Participant, RationalNumber> roundScore = FXCollections.observableHashMap();
+    private ObservableMap<Participant, ObjectProperty<RationalNumber>> roundScore = FXCollections.observableHashMap();
     private Map<Participant,Integer> participantFightNumber= new HashMap<>();
     private int participantExcpectedFightNumber; // size of group -1
 
@@ -67,7 +69,7 @@ public class Round {
         for(Participant p : participants)
         {
             participantFightNumber.put(p,0);
-            roundScore.put(p,new RationalNumber(0));
+            roundScore.put(p,new SimpleObjectProperty<>(new RationalNumber(0)));
         }
     }
 
@@ -81,7 +83,7 @@ public class Round {
         for(Participant p : participants)
         {
             participantFightNumber.put(p,0);
-            roundScore.put(p,new RationalNumber(0));
+            roundScore.put(p,new SimpleObjectProperty<>(new RationalNumber(0)));
         }
     }
 
@@ -106,21 +108,25 @@ public class Round {
     public void addPointsFromFight(Participant p, int points)
     {
         RationalNumber pScoreMultiplier = new RationalNumber(participantExcpectedFightNumber,participantFightNumber.get(p));
-        RationalNumber old_score= roundScore.get(p);
+        RationalNumber participant_score= roundScore.get(p).get();
         RationalNumber points_to_add=pScoreMultiplier.multiply(points);
-        RationalNumber after_add=old_score.add(points_to_add);
-        roundScore.put(p,after_add);
+        RationalNumber after_add=participant_score.add(points_to_add);
+        participant_score.set(after_add);
     }
 
     public void addRoundScorePointsForParticipant (Participant p, int points){
-        roundScore.get(p).add(points);
+        roundScore.get(p).get().add(points);
     }
 
     public void subtractRoundScorePointsForParticipant (Participant p, int points){
-        roundScore.get(p).substract(points);
+        roundScore.get(p).get().substract(points);
     }
 
     public RationalNumber getParticpantScore(Participant p)
+    {
+        return roundScore.get(p).get();
+    }
+    public ObjectProperty<RationalNumber> getParticpantScoreProperty(Participant p)
     {
         return roundScore.get(p);
     }

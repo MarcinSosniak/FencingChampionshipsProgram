@@ -20,6 +20,7 @@ import model.enums.FightScore;
 import model.enums.WeaponType;
 import model.exceptions.NoSuchCompetitionException;
 import model.exceptions.NoSuchWeaponException;
+import util.RationalNumber;
 
 /**|-------------------------------------------------------------------------|
  * |         PEOPLE(resizeable)          |   Control button Pane?            |
@@ -134,17 +135,17 @@ public class EliminationController {
 
         TableColumn<Participant,String> name = new TableColumn<Participant,String>("Name");
         TableColumn<Participant,String> surname = new TableColumn<Participant,String>("Surname");
-        TableColumn<Participant,Integer> points = new TableColumn<Participant,Integer>("Points");
+        TableColumn<Participant,RationalNumber> points = new TableColumn<Participant, RationalNumber>("Points");
         TableColumn<Participant,String> group = new TableColumn<Participant,String>("Group");
 
         name.setCellValueFactory(x -> x.getValue().nameProperty());
         surname.setCellValueFactory(x -> x.getValue().surnameProperty());
         points.setCellValueFactory(x -> {
             try {
-                return x.getValue().getPointsForWeaponProperty(wt).asObject();
+                return x.getValue().getPointsForWeaponPropertyLastRound(wt);
             } catch (NoSuchWeaponException e) {
                 e.printStackTrace();
-                return new SimpleObjectProperty<>(new Integer(0));
+                return new SimpleObjectProperty<>(new RationalNumber(0));
             }
         });
         group.setCellValueFactory(x -> {
