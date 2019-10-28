@@ -7,8 +7,8 @@ import java.util.Comparator;
 
 public class RationalNumber {
 
-    private final int num;
-    private final int denom;
+    private int num;
+    private int denom;
     public RationalNumber(int numerator, int denominator)
     {
         if(denominator==0)
@@ -104,5 +104,21 @@ public class RationalNumber {
         public int compare(RationalNumber o1, RationalNumber o2) {
             return RationalNumber.compare(o1,o2);
         }
+    }
+
+    @Override
+    public String toString()
+    {
+        if(denom==1)
+        {
+            return String.valueOf(num);
+        }
+        return String.format("%d/%d",num,denom);
+    }
+
+    public void set(RationalNumber other)
+    {
+        this.num=other.num;
+        this.denom=other.denom;
     }
 }

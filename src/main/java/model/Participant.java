@@ -8,6 +8,7 @@ import model.command.Command;
 import model.enums.JudgeState;
 import model.enums.WeaponType;
 import model.exceptions.NoSuchWeaponException;
+import util.RationalNumber;
 
 import java.security.InvalidParameterException;
 import java.util.Collections;
@@ -181,9 +182,15 @@ public class Participant {
         throw new IllegalStateException("hue");
     }
 
-    public IntegerProperty getPointsForWeaponProperty(WeaponType type) throws NoSuchWeaponException {
-        if(weaponPointsProperty.containsKey(type)) return weaponPointsProperty.get(type);
-        else throw new NoSuchWeaponException();
+    public ObjectProperty<RationalNumber> getPointsForWeaponPropertyLastRound(WeaponType type) throws NoSuchWeaponException {
+        try
+        {
+            return Competition.getInstance().getWeaponCompetition(type).getLastRound().getParticpantScoreProperty(this);
+        }
+        catch (Exception ex)
+        {
+            throw new NoSuchWeaponException();
+        }
     }
 
     public void addInjury(WeaponType wt,WeaponCompetition wc){wc.getcStack().executeCommand(new CommandAddInjury(wt,wc));}
