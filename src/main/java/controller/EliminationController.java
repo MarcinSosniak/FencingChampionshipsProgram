@@ -229,7 +229,7 @@ public class EliminationController {
     /* Lets assume that groups will be displayed (3/2) x N */
     private ScrollPane prepareCompetitionGroupPane(WeaponType wt,int columns){
         ScrollPane scrollPaneForVBOX = new ScrollPane();
-        VBox vBoxPane = new VBox();
+       // VBox vBoxPane = new VBox();
         GridPane.setConstraints(scrollPaneForVBOX,0,1,columns,1);
         GridPane gridPaneForGroups = new GridPane();
 
@@ -251,6 +251,7 @@ public class EliminationController {
                  for(int i =0;i<columns;i++){
                      ColumnConstraints cc = new ColumnConstraints();
                      cc.setPercentWidth(100.0/columns);
+                     cc.setHgrow(Priority.ALWAYS);
                      gridPaneForGroups.getColumnConstraints().add(cc);
                  }
 
@@ -281,8 +282,8 @@ public class EliminationController {
                  gridPaneForGroups.getChildren().add(tableForGroup);
              }
              gridPaneForGroups.getChildren().add(text);
-             vBoxPane.getChildren().add(gridPaneForGroups);
-             scrollPaneForVBOX.setContent(vBoxPane);
+            // vBoxPane.getChildren().add(gridPaneForGroups);
+             scrollPaneForVBOX.setContent(gridPaneForGroups);
             return scrollPaneForVBOX;
         } catch (NoSuchCompetitionException e){
             e.printStackTrace();
@@ -294,11 +295,18 @@ public class EliminationController {
     /* TODO: make better title*/
     private ScrollPane prepareResultPane(WeaponType wt,int columns){
         ScrollPane scrollPaneForVBOX = new ScrollPane();
-        VBox vBoxPane = new VBox();
+        scrollPaneForVBOX.fitToWidthProperty();
+        //VBox vBoxPane = new VBox();
         GridPane.setConstraints(scrollPaneForVBOX,0,2,2,1);
 
         try {
             GridPane gridPaneForFights = new GridPane();
+            //gridPaneForFights.setMaxWidth(10000);
+            //gridPaneForFights.setMinWidth(1980);
+
+            //gridPaneForFights.setMinSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+
+
             ObservableList<CompetitionGroup> groups = this.competition.getWeaponCompetition(wt).getLastRound().getGroups();
 
             int rows = groups.size() % columns == 0 ? (groups.size()/columns) + 1: (groups.size()/columns + 2);
@@ -306,16 +314,19 @@ public class EliminationController {
             /* Create rows and columns for result panel */
                 /* row for title */
                 RowConstraints rc = new RowConstraints();
+                rc.setVgrow(Priority.ALWAYS);
                 rc.setPercentHeight(10.0/rows);
                 gridPaneForFights.getRowConstraints().add(rc);
 
                 for(int i=0;i<rows;i++){
                     rc = new RowConstraints();
+                    rc.setVgrow(Priority.ALWAYS);
                     rc.setPercentHeight(100.0/rows);
                     gridPaneForFights.getRowConstraints().add(rc);
                 }
                 for(int i =0;i<columns;i++){
                     ColumnConstraints cc = new ColumnConstraints();
+                    cc.setHgrow(Priority.SOMETIMES);
                     cc.setPercentWidth(100.0/columns);
                     gridPaneForFights.getColumnConstraints().add(cc);
                 }
@@ -335,6 +346,9 @@ public class EliminationController {
 
 
                 TableView tableForGroupFights = new TableView();
+
+                GridPane.setFillWidth(tableForGroupFights,true);
+
                 tableForGroupFights.setPadding(new Insets(5, 5, 5, 5));
                 GridPane.setConstraints(tableForGroupFights,currentColumn,currentRow);
                 tableForGroupFights.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -409,8 +423,8 @@ public class EliminationController {
             }
             gridPaneForFights.getChildren().add(text);
 
-            vBoxPane.getChildren().add(gridPaneForFights);
-            scrollPaneForVBOX.setContent(vBoxPane);
+            //vBoxPane.getChildren().add(gridPaneForFights);
+            scrollPaneForVBOX.setContent(gridPaneForFights);
             return scrollPaneForVBOX;
 
         } catch (NoSuchCompetitionException e) {
