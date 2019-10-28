@@ -465,6 +465,7 @@ public class EliminationController {
 
         /* Add content to tab*/
             Tab tabToRet = new Tab();
+            tabToRet.setClosable(false);
             tabToRet.setText(wt.toString());
             tabToRet.setContent(mainTabPane);
 
