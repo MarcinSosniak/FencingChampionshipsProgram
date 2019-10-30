@@ -6,10 +6,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
@@ -263,10 +265,13 @@ public class EliminationController {
                  }
 
              /* Add group label */
-                Text text = new Text();
-                text.setText("Groups");
+                Label text = new Label("Groups");
                 text.setTextAlignment(TextAlignment.CENTER);
-                GridPane.setConstraints(text,0,0,2,1);
+                text.setStyle("-fx-alignment: CENTER;");
+                text.setFont(new Font(20));
+                GridPane.setConstraints(text,0,0,3,1);
+                //GridPane.setFillWidth(text,true);
+                GridPane.setHalignment(text, HPos.CENTER);
 
 
              /* Create table view for each group */
@@ -335,11 +340,13 @@ public class EliminationController {
                 }
 
             /* Add result label */
-                Text text = new Text();
-                text.setText("Fight Results");
+                Label text = new Label("Fight Results");
                 text.setTextAlignment(TextAlignment.CENTER);
+                text.setStyle("-fx-alignment: CENTER;");
+                text.setFont(new Font(20));
                 GridPane.setConstraints(text,0,0,columns,1);
-
+                GridPane.setHalignment(text, HPos.CENTER);
+                GridPane.setFillHeight(text,true);
 
             for(int i=0;i<groups.size();i++){
                 int currentRow = (i+1)/columns + 1;
