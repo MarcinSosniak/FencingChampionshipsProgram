@@ -242,7 +242,7 @@ public class EliminationController {
 
         try{
              ObservableList<CompetitionGroup> cgl = this.competition.getWeaponCompetition(wt).getLastRound().getGroups();
-             int rows = (cgl.size() % columns == 0) ?  cgl.size()/columns + 1:  cgl.size()/columns + 2;
+             int rows = (cgl.size() % columns == 0) ?  cgl.size()/columns :  cgl.size()/columns + 1;
 
             /* Create rows and columns for group panel */
                 /* row for title */
@@ -312,7 +312,7 @@ public class EliminationController {
 
             ObservableList<CompetitionGroup> groups = this.competition.getWeaponCompetition(wt).getLastRound().getGroups();
 
-            int rows = groups.size() % columns == 0 ? (groups.size()/columns) + 1: (groups.size()/columns + 2);
+            int rows = groups.size() % columns == 0 ? (groups.size()/columns) : (groups.size()/columns + 1);
 
             /* Create rows and columns for result panel */
                 /* row for title */
