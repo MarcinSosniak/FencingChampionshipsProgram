@@ -384,7 +384,7 @@ public class EliminationController {
                     cell.setOnMouseClicked( e -> {
                         if(e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty() ){
                             cell.getTableRow().getChildrenUnmodifiable().get(1).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
-                            cell.getTableRow().getChildrenUnmodifiable().get(2).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
+                            cell.getTableRow().getChildrenUnmodifiable().get(2).setStyle("-fx-alignment: CENTER; -fx-background-color: red;");
                             cell.setStyle("-fx-alignment: CENTER; -fx-background-color: green;");
                             Fight f = (Fight) cell.getTableRow().getItem();
                             f.commandSetFightScoreDirect(FightScore.WON_FIRST);
@@ -403,7 +403,7 @@ public class EliminationController {
                     };
                     cell.setOnMouseClicked( e -> {
                         if(e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty() ){
-                            cell.getTableRow().getChildrenUnmodifiable().get(0).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
+                            cell.getTableRow().getChildrenUnmodifiable().get(0).setStyle("-fx-alignment: CENTER; -fx-background-color: red;");
                             cell.getTableRow().getChildrenUnmodifiable().get(1).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
                             cell.setStyle("-fx-alignment: CENTER; -fx-background-color: green;");
                             Fight f = (Fight) cell.getTableRow().getItem();
@@ -423,9 +423,9 @@ public class EliminationController {
                     };
                     cell.setOnMouseClicked( e -> {
                         if(e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty() ){
-                            cell.getTableRow().getChildrenUnmodifiable().get(0).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
-                            cell.getTableRow().getChildrenUnmodifiable().get(2).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
-                            cell.setStyle("-fx-alignment: CENTER; -fx-background-color: red;");
+                            cell.getTableRow().getChildrenUnmodifiable().get(0).setStyle("-fx-alignment: CENTER; -fx-background-color: red;");
+                            cell.getTableRow().getChildrenUnmodifiable().get(2).setStyle("-fx-alignment: CENTER; -fx-background-color: red;");
+                            cell.setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
                             Fight f = (Fight) cell.getTableRow().getItem();
                             f.commandSetFightScoreDirect(FightScore.DOUBLE);
                         }
