@@ -390,11 +390,19 @@ public class EliminationController {
                     };
                     cell.setOnMouseClicked( e -> {
                         if(e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty() ){
-                            cell.getTableRow().getChildrenUnmodifiable().get(1).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
-                            cell.getTableRow().getChildrenUnmodifiable().get(2).setStyle("-fx-alignment: CENTER; -fx-background-color: red;");
-                            cell.setStyle("-fx-alignment: CENTER; -fx-background-color: green;");
                             Fight f = (Fight) cell.getTableRow().getItem();
-                            f.commandSetFightScoreDirect(FightScore.WON_FIRST);
+                            if(f.getScore().equals(FightScore.WON_FIRST)){
+                                cell.getTableRow().getChildrenUnmodifiable().get(1).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
+                                cell.getTableRow().getChildrenUnmodifiable().get(2).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
+                                cell.setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
+                                f.commandSetFightScoreDirect(FightScore.NULL_STATE);
+                            }else {
+                                cell.getTableRow().getChildrenUnmodifiable().get(1).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
+                                cell.getTableRow().getChildrenUnmodifiable().get(2).setStyle("-fx-alignment: CENTER; -fx-background-color: red;");
+                                cell.setStyle("-fx-alignment: CENTER; -fx-background-color: green;");
+                                f.commandSetFightScoreDirect(FightScore.WON_FIRST);
+                            }
+
                         }
                     });
                     return cell;
@@ -410,11 +418,18 @@ public class EliminationController {
                     };
                     cell.setOnMouseClicked( e -> {
                         if(e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty() ){
-                            cell.getTableRow().getChildrenUnmodifiable().get(0).setStyle("-fx-alignment: CENTER; -fx-background-color: red;");
-                            cell.getTableRow().getChildrenUnmodifiable().get(1).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
-                            cell.setStyle("-fx-alignment: CENTER; -fx-background-color: green;");
                             Fight f = (Fight) cell.getTableRow().getItem();
-                            f.commandSetFightScoreDirect(FightScore.WON_SECOND);
+                            if(f.getScore().equals(FightScore.WON_SECOND)){
+                                cell.getTableRow().getChildrenUnmodifiable().get(0).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
+                                cell.getTableRow().getChildrenUnmodifiable().get(1).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
+                                cell.setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
+                                f.commandSetFightScoreDirect(FightScore.NULL_STATE);
+                            }else{
+                                cell.getTableRow().getChildrenUnmodifiable().get(0).setStyle("-fx-alignment: CENTER; -fx-background-color: red;");
+                                cell.getTableRow().getChildrenUnmodifiable().get(1).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
+                                cell.setStyle("-fx-alignment: CENTER; -fx-background-color: green;");
+                                f.commandSetFightScoreDirect(FightScore.WON_SECOND);
+                            }
                         }
                     });
                     return cell;
@@ -430,11 +445,18 @@ public class EliminationController {
                     };
                     cell.setOnMouseClicked( e -> {
                         if(e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty() ){
-                            cell.getTableRow().getChildrenUnmodifiable().get(0).setStyle("-fx-alignment: CENTER; -fx-background-color: red;");
-                            cell.getTableRow().getChildrenUnmodifiable().get(2).setStyle("-fx-alignment: CENTER; -fx-background-color: red;");
-                            cell.setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
                             Fight f = (Fight) cell.getTableRow().getItem();
-                            f.commandSetFightScoreDirect(FightScore.DOUBLE);
+                            if(f.getScore().equals(FightScore.DOUBLE)){
+                                cell.getTableRow().getChildrenUnmodifiable().get(0).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
+                                cell.getTableRow().getChildrenUnmodifiable().get(2).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
+                                cell.setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
+                                f.commandSetFightScoreDirect(FightScore.NULL_STATE);
+                            }else {
+                                cell.getTableRow().getChildrenUnmodifiable().get(0).setStyle("-fx-alignment: CENTER; -fx-background-color: red;");
+                                cell.getTableRow().getChildrenUnmodifiable().get(2).setStyle("-fx-alignment: CENTER; -fx-background-color: red;");
+                                cell.setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
+                                f.commandSetFightScoreDirect(FightScore.DOUBLE);
+                            }
                         }
                     });
                     return cell;
