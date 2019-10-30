@@ -1,7 +1,5 @@
 package controller;
 
-import javafx.beans.Observable;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -312,13 +310,6 @@ public class EliminationController {
         try {
             GridPane gridPaneForFights = new GridPane();
 
-            //gridPaneForFights.setMaxWidth(10000);
-            //gridPaneForFights.setMinWidth(1980);
-           // gridPaneForFights.setPrefWidth();
-
-            //gridPaneForFights.setMinSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
-
-
             ObservableList<CompetitionGroup> groups = this.competition.getWeaponCompetition(wt).getLastRound().getGroups();
 
             int rows = groups.size() % columns == 0 ? (groups.size()/columns) + 1: (groups.size()/columns + 2);
@@ -354,23 +345,26 @@ public class EliminationController {
                 int currentRow = (i+1)/columns + 1;
                 int currentColumn = i % columns;
                 CompetitionGroup cg = groups.get(i);
-                //ObjectProperty<CompetitionGroup> cg = new SimpleObjectProperty<>(groups.get(i));
-
 
                 TableView tableForGroupFights = new TableView();
-
-//                GridPane.setFillWidth(tableForGroupFights,true);
 
                 tableForGroupFights.setPadding(new Insets(5, 5, 5, 5));
                 GridPane.setConstraints(tableForGroupFights,currentColumn,currentRow);
                 tableForGroupFights.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-                //tableForGroupFights.setItems(cg.getFightsList());
                 tableForGroupFights.setItems(FXCollections.observableList(cg.getFightsList()));
 
                 TableColumn<Fight,String> firstParticipant = new TableColumn<>();
                 TableColumn<Fight,String> doubleColumn = new TableColumn<>();
                 TableColumn<Fight,String> secondParticipant = new TableColumn<>();
 
+                doubleColumn.setMinWidth(19);
+                doubleColumn.setMaxWidth(20);
+
+                doubleColumn.setStyle("-fx-alignment: CENTER");
+                firstParticipant.setStyle("-fx-alignment: CENTER");
+                secondParticipant.setStyle("-fx-alignment: CENTER");
+
+                /*TODO: Remove header from table */
                 firstParticipant.setText("First");
                 doubleColumn.setText("X");
                 secondParticipant.setText("Second");
@@ -389,6 +383,9 @@ public class EliminationController {
                     };
                     cell.setOnMouseClicked( e -> {
                         if(e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty() ){
+                            cell.getTableRow().getChildrenUnmodifiable().get(1).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
+                            cell.getTableRow().getChildrenUnmodifiable().get(2).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
+                            cell.setStyle("-fx-alignment: CENTER; -fx-background-color: green;");
                             Fight f = (Fight) cell.getTableRow().getItem();
                             f.commandSetFightScoreDirect(FightScore.WON_FIRST);
                         }
@@ -406,6 +403,9 @@ public class EliminationController {
                     };
                     cell.setOnMouseClicked( e -> {
                         if(e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty() ){
+                            cell.getTableRow().getChildrenUnmodifiable().get(0).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
+                            cell.getTableRow().getChildrenUnmodifiable().get(1).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
+                            cell.setStyle("-fx-alignment: CENTER; -fx-background-color: green;");
                             Fight f = (Fight) cell.getTableRow().getItem();
                             f.commandSetFightScoreDirect(FightScore.WON_SECOND);
                         }
@@ -423,6 +423,9 @@ public class EliminationController {
                     };
                     cell.setOnMouseClicked( e -> {
                         if(e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty() ){
+                            cell.getTableRow().getChildrenUnmodifiable().get(0).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
+                            cell.getTableRow().getChildrenUnmodifiable().get(2).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
+                            cell.setStyle("-fx-alignment: CENTER; -fx-background-color: red;");
                             Fight f = (Fight) cell.getTableRow().getItem();
                             f.commandSetFightScoreDirect(FightScore.DOUBLE);
                         }
