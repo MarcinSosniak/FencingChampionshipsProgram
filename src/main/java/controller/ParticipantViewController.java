@@ -8,8 +8,10 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import model.CompetitionGroup;
 import model.Fight;
@@ -32,21 +34,21 @@ public class ParticipantViewController {
         Text vs = new Text(" VS ");
         Text second = new Text(fight.getSecondParticipant().getName() + " " + fight.getSecondParticipant().getSurname());
         if (fight.getScore().equals(FightScore.WON_FIRST)) {
-            first.setStyle("-fx-text-fill: GREEN");
-            vs.setStyle("-fx-text-fill: BLACK");
-            second.setStyle("-fx-text-fill: BLACK");
+            first.setFill(Color.GREEN);
+            vs.setFill(Color.BLACK);
+            second.setFill(Color.BLACK);
         } else if (fight.getScore().equals(FightScore.WON_SECOND)) {
-            first.setStyle("-fx-text-fill: BLACK");
-            vs.setStyle("-fx-text-fill: BLACK");
-            second.setStyle("-fx-text-fill: GREEN");
+            first.setFill(Color.BLACK);
+            vs.setFill(Color.BLACK);
+            second.setFill(Color.GREEN);
         } else if (fight.getScore().equals(FightScore.DOUBLE)) {
-            first.setStyle("-fx-text-fill: RED");
-            vs.setStyle("-fx-text-fill: BLACK");
-            second.setStyle("-fx-text-fill: RED");
+            first.setFill(Color.RED);
+            vs.setFill(Color.BLACK);
+            second.setFill(Color.RED);
         } else {
-            first.setStyle("-fx-text-fill: BLACK");
-            vs.setStyle("-fx-text-fill: BLACK");
-            second.setStyle("-fx-text-fill: BLACK");
+            first.setFill(Color.BLACK);
+            vs.setFill(Color.BLACK);
+            second.setFill(Color.BLACK);
         }
         textFlow.getChildren().addAll(first, vs, second);
         return textFlow;
@@ -54,6 +56,8 @@ public class ParticipantViewController {
 
     private ScrollPane prepareGroupPane(int columns) {
         ScrollPane scrollPane = new ScrollPane();
+        scrollPane.fitToWidthProperty();
+        scrollPane.setFitToWidth(true);
         GridPane.setConstraints(scrollPane, 0, 0);
         /* TODO: Add grid pane inside scroll pane to include tables*/
         ObservableList<CompetitionGroup> competitionGroups = this.currentRound.getGroups();
@@ -94,26 +98,24 @@ public class ParticipantViewController {
                 return new TableCell<Fight, Fight>() {
                     @Override
                     protected void updateItem(Fight fight, boolean empty) {
-                        System.out.format("xDDDD");
                         super.updateItem(fight, empty);
                         if (fight == null || empty) {
                             setText(null);
                             setStyle("");
                         } else {
-                            System.out.format("xDDDD");
                             TextFlow textFlow = prepareTextFlowFromFight(fight);
+                            this.setPrefHeight(textFlow.getLayoutBounds().getHeight()+40);
                             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                             setGraphic(textFlow);
                         }
                     }
                 };
             });
+
+            tableViewForGroupFights.getColumns().addAll(oneVStwo);
             gridPane.getChildren().addAll(tableViewForGroupFights);
             i++;
         }
-
-        scrollPane.fitToWidthProperty();
-        scrollPane.setFitToWidth(true);
         scrollPane.setContent(gridPane);
         return scrollPane;
     }
@@ -127,6 +129,7 @@ public class ParticipantViewController {
         Text lastWrittenScore = new Text("Ostatnio wpisany wynik\n");
         lastWrittenScore.setFont(new Font(20));
         TextFlow textFlow = prepareTextFlowFromFight(fight);
+        textFlow.setTextAlignment(TextAlignment.CENTER);
         vBox.getChildren().addAll(lastWrittenScore, textFlow);
         return vBox;
     }

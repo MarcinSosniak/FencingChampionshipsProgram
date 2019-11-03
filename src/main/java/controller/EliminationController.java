@@ -315,7 +315,6 @@ public class EliminationController {
         ScrollPane scrollPaneForVBOX = new ScrollPane();
         scrollPaneForVBOX.fitToWidthProperty();
         scrollPaneForVBOX.setFitToWidth(true);
-        //VBox vBoxPane = new VBox();
         GridPane.setConstraints(scrollPaneForVBOX, 0, 2, 2, 1);
 
         try {
