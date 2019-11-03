@@ -3,7 +3,7 @@
 <?import javafx.geometry.Insets?>
 
 
-<GridPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.ParticipantViewController">
+<GridPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.ParticipantViewController" fx:id="mainPane">
     <padding>
         <Insets bottom="3"/>
     </padding>

@@ -3,6 +3,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import model.command.Command;
+import model.enums.FightScore;
 import model.enums.WeaponType;
 import model.exceptions.NoSuchWeaponException;
 import util.RationalNumber;
@@ -29,7 +30,11 @@ public class Round {
     private ObservableMap<Participant, ObjectProperty<RationalNumber>> roundScore = FXCollections.observableHashMap();
     private Map<Participant,Integer> participantFightNumber= new HashMap<>();
     private int participantExcpectedFightNumber; // size of group -1
+    private SimpleObjectProperty<Fight> lastModyfiedFight;
 
+    public Fight getLastModyfiedFight() {
+        return lastModyfiedFight.get();
+    }
 
     public WeaponCompetition getMyWeaponCompetition() {
         return myWeaponCompetition;
@@ -45,7 +50,6 @@ public class Round {
     public ObservableList<Participant> getParticipants() {
         return participants;
     }
-
 
     public ObservableList<CompetitionGroup> getGroups() {
         return groups;
@@ -66,6 +70,9 @@ public class Round {
         this.participantExcpectedFightNumber=groupSize-1;
         this.fightDrawStrategy = fightDrawStrategyPicker.pick(KillerRandomizerStrategyPicker.KillerRandomizerStrategy());
         this.participants= FXCollections.observableArrayList(participants);
+        /*TODO: Refactor */
+        this.lastModyfiedFight = new SimpleObjectProperty<>(new Fight(this,participants.get(1),participants.get(2)));
+        lastModyfiedFight.get().commandSetFightScoreDirect(FightScore.WON_FIRST);
         for(Participant p : participants)
         {
             participantFightNumber.put(p,0);

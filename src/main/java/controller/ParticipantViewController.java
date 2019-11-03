@@ -1,26 +1,18 @@
 package controller;
 
-
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.HPos;
+import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
-
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
-
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import model.CompetitionGroup;
 import model.Fight;
-import model.Participant;
 import model.Round;
 import model.enums.FightScore;
 
@@ -29,6 +21,36 @@ import model.enums.FightScore;
 public class ParticipantViewController {
 
     private Round currentRound;
+
+    @FXML
+    GridPane mainPane;
+
+
+    private TextFlow prepareTextFlowFromFight(Fight fight) {
+        TextFlow textFlow = new TextFlow();
+        Text first = new Text(fight.getFirstParticipant().getName() + " " + fight.getFirstParticipant().getSurname());
+        Text vs = new Text(" VS ");
+        Text second = new Text(fight.getSecondParticipant().getName() + " " + fight.getSecondParticipant().getSurname());
+        if (fight.getScore().equals(FightScore.WON_FIRST)) {
+            first.setStyle("-fx-text-fill: GREEN");
+            vs.setStyle("-fx-text-fill: BLACK");
+            second.setStyle("-fx-text-fill: BLACK");
+        } else if (fight.getScore().equals(FightScore.WON_SECOND)) {
+            first.setStyle("-fx-text-fill: BLACK");
+            vs.setStyle("-fx-text-fill: BLACK");
+            second.setStyle("-fx-text-fill: GREEN");
+        } else if (fight.getScore().equals(FightScore.DOUBLE)) {
+            first.setStyle("-fx-text-fill: RED");
+            vs.setStyle("-fx-text-fill: BLACK");
+            second.setStyle("-fx-text-fill: RED");
+        } else {
+            first.setStyle("-fx-text-fill: BLACK");
+            vs.setStyle("-fx-text-fill: BLACK");
+            second.setStyle("-fx-text-fill: BLACK");
+        }
+        textFlow.getChildren().addAll(first, vs, second);
+        return textFlow;
+    }
 
     private ScrollPane prepareGroupPane(int columns) {
         ScrollPane scrollPane = new ScrollPane();
@@ -79,28 +101,7 @@ public class ParticipantViewController {
                             setText(null);
                             setStyle("");
                         } else {
-                            TextFlow textFlow = new TextFlow();
-                            Text first = new Text(fight.getFirstParticipant().getName() + " " + fight.getFirstParticipant().getSurname());
-                            Text vs = new Text(" VS ");
-                            Text second = new Text(fight.getSecondParticipant().getName() + " " + fight.getSecondParticipant().getSurname());
-                            if (fight.getScore().equals(FightScore.WON_FIRST)) {
-                                first.setStyle("-fx-text-fill: GREEN");
-                                vs.setStyle("-fx-text-fill: BLACK");
-                                second.setStyle("-fx-text-fill: BLACK");
-                            } else if (fight.getScore().equals(FightScore.WON_SECOND)) {
-                                first.setStyle("-fx-text-fill: BLACK");
-                                vs.setStyle("-fx-text-fill: BLACK");
-                                second.setStyle("-fx-text-fill: GREEN");
-                            } else if (fight.getScore().equals(FightScore.DOUBLE)) {
-                                first.setStyle("-fx-text-fill: RED");
-                                vs.setStyle("-fx-text-fill: BLACK");
-                                second.setStyle("-fx-text-fill: RED");
-                            } else {
-                                first.setStyle("-fx-text-fill: BLACK");
-                                vs.setStyle("-fx-text-fill: BLACK");
-                                second.setStyle("-fx-text-fill: BLACK");
-                            }
-                            textFlow.getChildren().addAll(first, vs, second);
+                            TextFlow textFlow = prepareTextFlowFromFight(fight);
                             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                             setGraphic(textFlow);
                         }
@@ -110,15 +111,27 @@ public class ParticipantViewController {
             i++;
         }
 
-
         return new ScrollPane();
     }
 
     /* Prepare last text add the bottom */
+    private VBox prepareLastFightPane() {
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.CENTER);
+        GridPane.setConstraints(vBox, 0, 1);
+        Fight fight = this.currentRound.getLastModyfiedFight();
+        Text lastWrittenScore = new Text("Ostatnio wpisany wynik\n");
+        lastWrittenScore.setFont(new Font(20));
+        TextFlow textFlow = prepareTextFlowFromFight(fight);
+        vBox.getChildren().addAll(lastWrittenScore, textFlow);
+        return vBox;
+    }
 
 
     public void update() {
         ScrollPane groupPane = prepareGroupPane(3);
+        VBox vBox = prepareLastFightPane();
+        mainPane.getChildren().addAll(groupPane, vBox);
     }
 
     public void setData(Round round) {
