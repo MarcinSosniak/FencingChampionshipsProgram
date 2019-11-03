@@ -61,6 +61,21 @@ public class ApplicationController {
             System.out.format("Cannot load main FXML\n");
         }
 
+//        /** Competitors View */
+//        try{
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/participantView.fxml"));
+//            Parent root = loader.load();
+//            Competition c = DataGenerator.generateSampleCompetition();
+//            ParticipantViewController controller = (ParticipantViewController) loader.getController();
+//            controller.setData(c.getSingleWeaponCompetition(WeaponType.SABRE).getLastRound());
+//            primaryStage.setScene(new Scene(root));
+//            this.currentStage = primaryStage;
+//            primaryStage.show();
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            System.out.format("Cannot load main FXML\n");
+//        }
+
     }
 
     public Stage renderAddNewCompetitor(String source, String title , boolean fWindowModal, ObservableList<Participant> participants) {

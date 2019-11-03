@@ -77,7 +77,7 @@ public class ParticipantViewController {
         int i = 0;
         /* Create each table for Competition group */
         for (CompetitionGroup cg : competitionGroups) {
-            int currentRow = (i + 1) / columns + 1;
+            int currentRow = (i) / columns;
             int currentColumn = i % columns;
             TableView<Fight> tableViewForGroupFights = new TableView<>();
             tableViewForGroupFights.setPadding(new Insets(5, 5, 5, 5));
@@ -92,15 +92,15 @@ public class ParticipantViewController {
             oneVStwo.setCellValueFactory(f -> new SimpleObjectProperty<Fight>(f.getValue()));
             oneVStwo.setCellFactory(column -> {
                 return new TableCell<Fight, Fight>() {
-
                     @Override
                     protected void updateItem(Fight fight, boolean empty) {
+                        System.out.format("xDDDD");
                         super.updateItem(fight, empty);
-
                         if (fight == null || empty) {
                             setText(null);
                             setStyle("");
                         } else {
+                            System.out.format("xDDDD");
                             TextFlow textFlow = prepareTextFlowFromFight(fight);
                             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                             setGraphic(textFlow);
@@ -108,10 +108,14 @@ public class ParticipantViewController {
                     }
                 };
             });
+            gridPane.getChildren().addAll(tableViewForGroupFights);
             i++;
         }
 
-        return new ScrollPane();
+        scrollPane.fitToWidthProperty();
+        scrollPane.setFitToWidth(true);
+        scrollPane.setContent(gridPane);
+        return scrollPane;
     }
 
     /* Prepare last text add the bottom */

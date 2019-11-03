@@ -355,7 +355,7 @@ public class EliminationController {
             GridPane.setFillHeight(text, true);
 
             for (int i = 0; i < groups.size(); i++) {
-                int currentRow = (i + 1) / columns + 1;
+                int currentRow = i/ columns + 1;
                 int currentColumn = i % columns;
                 CompetitionGroup cg = groups.get(i);
 

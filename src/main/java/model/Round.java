@@ -33,7 +33,7 @@ public class Round {
     private SimpleObjectProperty<Fight> lastModyfiedFight;
 
     public Fight getLastModyfiedFight() {
-        return lastModyfiedFight.get();
+        return this.groups.get(0).getFightsList().get(0);
     }
 
     public WeaponCompetition getMyWeaponCompetition() {
@@ -71,8 +71,7 @@ public class Round {
         this.fightDrawStrategy = fightDrawStrategyPicker.pick(KillerRandomizerStrategyPicker.KillerRandomizerStrategy());
         this.participants= FXCollections.observableArrayList(participants);
         /*TODO: Refactor */
-        this.lastModyfiedFight = new SimpleObjectProperty<>(new Fight(this,participants.get(1),participants.get(2)));
-        lastModyfiedFight.get().commandSetFightScoreDirect(FightScore.WON_FIRST);
+        this.lastModyfiedFight = new SimpleObjectProperty<>();
         for(Participant p : participants)
         {
             participantFightNumber.put(p,0);
@@ -87,6 +86,8 @@ public class Round {
         this.participantExcpectedFightNumber=groupSize-1;
         this.fightDrawStrategy = fightDrawStrategyPicker.pick(KillerRandomizerStrategyPicker.KillerRandomizerStrategy());
         this.participants= FXCollections.observableArrayList(participants);
+        /*TODO: Refactor */
+        this.lastModyfiedFight = new SimpleObjectProperty<>();
         for(Participant p : participants)
         {
             participantFightNumber.put(p,0);
