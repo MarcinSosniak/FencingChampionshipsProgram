@@ -51,19 +51,16 @@ public class ParticipantViewController {
             second.setFill(Color.BLACK);
         }
         textFlow.getChildren().addAll(first, vs, second);
+        textFlow.setTextAlignment(TextAlignment.CENTER);
         return textFlow;
     }
 
-    private ScrollPane prepareGroupPane(int columns) {
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.fitToWidthProperty();
-        scrollPane.setFitToWidth(true);
-        GridPane.setConstraints(scrollPane, 0, 0);
-        /* TODO: Add grid pane inside scroll pane to include tables*/
+    private GridPane prepareGroupPane(int columns) {
         ObservableList<CompetitionGroup> competitionGroups = this.currentRound.getGroups();
 
         int rows = competitionGroups.size() % columns == 0 ? (competitionGroups.size() / columns) : (competitionGroups.size() / columns + 1);
         GridPane gridPane = new GridPane();
+        GridPane.setConstraints(gridPane, 0, 0);
 
         for (int i = 0; i < rows; i++) {
             RowConstraints rc = new RowConstraints();
@@ -75,6 +72,7 @@ public class ParticipantViewController {
         for (int i = 0; i < columns; i++) {
             ColumnConstraints cc = new ColumnConstraints();
             cc.setHgrow(Priority.ALWAYS);
+            cc.setPrefWidth(2000);
             cc.setPercentWidth(100.0 / columns);
             gridPane.getColumnConstraints().add(cc);
         }
@@ -104,7 +102,7 @@ public class ParticipantViewController {
                             setStyle("");
                         } else {
                             TextFlow textFlow = prepareTextFlowFromFight(fight);
-                            this.setPrefHeight(textFlow.getLayoutBounds().getHeight()+40);
+                            this.setPrefHeight(textFlow.getLayoutBounds().getHeight());
                             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                             setGraphic(textFlow);
                         }
@@ -116,8 +114,8 @@ public class ParticipantViewController {
             gridPane.getChildren().addAll(tableViewForGroupFights);
             i++;
         }
-        scrollPane.setContent(gridPane);
-        return scrollPane;
+        GridPane.setFillWidth(gridPane,true);
+        return gridPane;
     }
 
     /* Prepare last text add the bottom */
@@ -129,21 +127,20 @@ public class ParticipantViewController {
         Text lastWrittenScore = new Text("Ostatnio wpisany wynik\n");
         lastWrittenScore.setFont(new Font(20));
         TextFlow textFlow = prepareTextFlowFromFight(fight);
-        textFlow.setTextAlignment(TextAlignment.CENTER);
         vBox.getChildren().addAll(lastWrittenScore, textFlow);
         return vBox;
     }
 
 
-    public void update() {
-        ScrollPane groupPane = prepareGroupPane(3);
+    public void update(int columns) {
+        GridPane groupPane = prepareGroupPane(columns);
         VBox vBox = prepareLastFightPane();
         mainPane.getChildren().addAll(groupPane, vBox);
     }
 
     public void setData(Round round) {
         this.currentRound = round;
-        this.update();
+        this.update(round.getGroups().size()/2 + round.getGroups().size()%2);
     }
 
 

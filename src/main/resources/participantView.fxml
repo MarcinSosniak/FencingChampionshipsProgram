@@ -2,13 +2,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-
-<GridPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.ParticipantViewController" fx:id="mainPane">
+<!--ten rosnie-->
+<GridPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.ParticipantViewController" fx:id="mainPane" style="-fx-border-color: green; -fx-alignment: center;">
     <padding>
         <Insets bottom="3"/>
     </padding>
     <rowConstraints>
-        <RowConstraints percentHeight="80"/>
-        <RowConstraints percentHeight="20" />
+        <RowConstraints percentHeight="92"/>
+        <RowConstraints percentHeight="8"/>
     </rowConstraints>
 </GridPane>
