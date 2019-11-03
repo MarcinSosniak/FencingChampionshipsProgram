@@ -9,10 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.scene.text.TextFlow;
+import javafx.scene.text.*;
 import model.CompetitionGroup;
 import model.Fight;
 import model.Round;
@@ -28,11 +25,15 @@ public class ParticipantViewController {
     GridPane mainPane;
 
 
-    private TextFlow prepareTextFlowFromFight(Fight fight) {
+    private TextFlow prepareTextFlowFromFight(Fight fight, double size) {
         TextFlow textFlow = new TextFlow();
         Text first = new Text(fight.getFirstParticipant().getName() + " " + fight.getFirstParticipant().getSurname());
         Text vs = new Text(" VS ");
         Text second = new Text(fight.getSecondParticipant().getName() + " " + fight.getSecondParticipant().getSurname());
+        //first.setFont(new Font());
+        first.setFont(Font.font("Calibri", size));
+        vs.setFont(Font.font("Calibri", size));
+        second.setFont(Font.font("Calibri", size));
         if (fight.getScore().equals(FightScore.WON_FIRST)) {
             first.setFill(Color.GREEN);
             vs.setFill(Color.BLACK);
@@ -101,8 +102,8 @@ public class ParticipantViewController {
                             setText(null);
                             setStyle("");
                         } else {
-                            TextFlow textFlow = prepareTextFlowFromFight(fight);
-                            this.setPrefHeight(textFlow.getLayoutBounds().getHeight());
+                            TextFlow textFlow = prepareTextFlowFromFight(fight, 18);
+                            this.setPrefHeight(40+textFlow.getLayoutBounds().getHeight());
                             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
                             setGraphic(textFlow);
                         }
@@ -114,7 +115,7 @@ public class ParticipantViewController {
             gridPane.getChildren().addAll(tableViewForGroupFights);
             i++;
         }
-        GridPane.setFillWidth(gridPane,true);
+        GridPane.setFillWidth(gridPane, true);
         return gridPane;
     }
 
@@ -126,7 +127,7 @@ public class ParticipantViewController {
         Fight fight = this.currentRound.getLastModyfiedFight();
         Text lastWrittenScore = new Text("Ostatnio wpisany wynik\n");
         lastWrittenScore.setFont(new Font(20));
-        TextFlow textFlow = prepareTextFlowFromFight(fight);
+        TextFlow textFlow = prepareTextFlowFromFight(fight, 25);
         vBox.getChildren().addAll(lastWrittenScore, textFlow);
         return vBox;
     }
@@ -140,7 +141,7 @@ public class ParticipantViewController {
 
     public void setData(Round round) {
         this.currentRound = round;
-        this.update(round.getGroups().size()/2 + round.getGroups().size()%2);
+        this.update(round.getGroups().size() / 2 + round.getGroups().size() % 2);
     }
 
 
