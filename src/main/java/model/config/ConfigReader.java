@@ -17,11 +17,11 @@ public class ConfigReader {
             String var=vars.get(varName);
             if (var!=null)
             {
-                if (var.equals("Y"))
+                if (var.equals("Y") || var.equals("T"))
                 {
                     return true;
                 }
-                else if (var.equals("N")) {
+                else if (var.equals("N") || var.equals("F")) {
                     return false;
                 }
                 throw new IllegalStateException("Value was not boolean");
@@ -73,11 +73,31 @@ public class ConfigReader {
                 sbuilder.append("\n");
             }
         }
+
+        public void weakFill(TagVariables other)
+        {
+            for(Map.Entry<String,String> entry : other.vars.entrySet())
+            {
+                if(!vars.containsKey(entry.getKey()))
+                {
+                    vars.put(entry.getKey(),entry.getValue());
+                }
+            }
+        }
+
+        public void strongFill(TagVariables other)
+        {
+            for(Map.Entry<String,String> entry : other.vars.entrySet())
+            {
+                vars.put(entry.getKey(),entry.getValue());
+            }
+        }
+
     }
 
     private static ConfigReader instance=null;
-    private static int MAX_IO_RETRIES = 5;
-    private static int IO_COOLDOWN_TIME_MS = 200; // if we have to retry how long to wait ?
+    private static final int MAX_IO_RETRIES = 5;
+    private static final int IO_COOLDOWN_TIME_MS = 200; // if we have to retry how long to wait ?
 
     private HashMap<String,TagVariables> tags = new HashMap<>();
 
@@ -152,11 +172,20 @@ public class ConfigReader {
         while(line != null)
         {
             line=line.trim();
-            if (line.startsWith("["))
+            if(line.startsWith("#") || line.startsWith("//"))
+            {
+                ;
+            }
+            else if (line.startsWith("["))
             {
                 if(currentTag!= null)
                 {
-                    tags.put(currentTag,currentTagVars);
+                    if(tags.containsKey(currentTag))
+                    {
+                        tags.get(currentTag).weakFill(currentTagVars);
+                    }
+                    else
+                        tags.put(currentTag,currentTagVars);
                 }
                 currentTag=line.substring(1,line.length()-1).toUpperCase();
                 currentTagVars=new TagVariables();
@@ -175,8 +204,12 @@ public class ConfigReader {
             line=reader.readLine();
         }
         if (currentTag != null)
-            if(!tags.containsKey(currentTag))
-                tags.put(currentTag,currentTagVars);
+        {
+            if (tags.containsKey(currentTag)) {
+                tags.get(currentTag).weakFill(currentTagVars);
+            } else
+                tags.put(currentTag, currentTagVars);
+        }
     }
 
     private void fillOverride(String filePath) throws FileNotFoundException,IOException
@@ -189,11 +222,20 @@ public class ConfigReader {
         while(line != null)
         {
             line=line.trim();
-            if (line.startsWith("["))
+            if(line.startsWith("#") || line.startsWith("//"))
+            {
+                ;
+            }
+            else if (line.startsWith("["))
             {
                 if(currentTag!= null)
                 {
-                    tags.put(currentTag,currentTagVars);
+                    if(tags.containsKey(currentTag))
+                    {
+                        tags.get(currentTag).strongFill(currentTagVars);
+                    }
+                    else
+                        tags.put(currentTag,currentTagVars);
                 }
                 currentTag=line.substring(1,line.length()-1).toUpperCase();
                 currentTagVars=new TagVariables();
@@ -212,7 +254,12 @@ public class ConfigReader {
             line=reader.readLine();
         }
         if (currentTag != null)
-            tags.put(currentTag,currentTagVars);
+        {
+            if (tags.containsKey(currentTag)) {
+                tags.get(currentTag).strongFill(currentTagVars);
+            } else
+                tags.put(currentTag, currentTagVars);
+        }
     }
 
 
