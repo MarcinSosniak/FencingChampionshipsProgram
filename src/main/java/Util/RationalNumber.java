@@ -13,9 +13,21 @@ public class RationalNumber {
     {
         if(denominator==0)
             throw new IllegalArgumentException("Cannot divide by 0");
+
+        boolean minus =false;
+        if(numerator < 0) {
+            numerator = -numerator;
+            minus=true;
+        }
+        if(denominator < 0) {
+            denominator = -denominator;
+            minus = !minus;
+        }
         int GCD = BigInteger.valueOf(numerator).gcd(BigInteger.valueOf(denominator)).intValue();
         this.num=numerator/GCD;
         this.denom =denominator/GCD;
+        if (minus)
+            this.num=-this.num;
     }
 
     public RationalNumber(int number)
@@ -24,6 +36,14 @@ public class RationalNumber {
     }
 
     public RationalNumber() {num=0; denom=1;}
+
+    @Override
+    public boolean equals(Object obj) {
+        if(! (obj instanceof  RationalNumber))
+            return false;
+        RationalNumber other= (RationalNumber) obj;
+        return num==other.num && denom==other.denom;
+    }
 
     public RationalNumber multiply(RationalNumber other)
     {
@@ -91,10 +111,8 @@ public class RationalNumber {
     {
         return compare(left,right)==-1;
     }
-    /**
-     * equals should work normally since it's always reduced
-     *
-     */
+
+
     public static Comparator<RationalNumber> getComparator() {return new RNComparator();}
 
     public static class RNComparator implements Comparator<RationalNumber>
@@ -113,7 +131,17 @@ public class RationalNumber {
         {
             return String.valueOf(num);
         }
-        return String.format("%d/%d",num,denom);
+        else if (num < denom  ) // if num == denom, then denom == 1 due to reduction on creation
+        {
+            return String.format("%d/%d",num,denom);
+        }
+        else
+        {
+            int overflow = num / denom;
+            int num_without_overflow = num - denom * overflow;
+            return String.format("%d %d/%d",overflow,num_without_overflow,denom);
+        }
+
     }
 
     public void set(RationalNumber other)

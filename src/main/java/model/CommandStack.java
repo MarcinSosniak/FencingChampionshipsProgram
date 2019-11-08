@@ -21,6 +21,8 @@ public class CommandStack {
     }
 
     public void redo() {
+        if(undoStack.size() < 1)
+            throw  new IllegalStateException("nothing to redo");
         Command command = undoStack.get(undoStack.size()-1);
         command.redo();
         undoStack.remove(undoStack.size()-1);
@@ -28,6 +30,8 @@ public class CommandStack {
     }
 
     public void undo() {
+        if(commandStack.size() < 1)
+            throw  new IllegalStateException("nothing to undo");
         Command command = commandStack.get(commandStack.size()-1);
         command.undo();
         commandStack.remove(commandStack.size()-1);
