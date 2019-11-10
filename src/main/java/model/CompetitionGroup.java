@@ -9,24 +9,40 @@ import java.util.List;
 public class CompetitionGroup {
 
     private ObservableList<Fight> fightsList;
-    public ObservableList<Fight> getFightsList() {
-        return fightsList;
-    }
+    private ObservableList<Participant> groupParticipants;
+    private String groupID;
 
     public CompetitionGroup(List<Fight> fights)
     {
-        fightsList = FXCollections.observableArrayList(fights);
+        this.groupID = "a";
+        this.fightsList = FXCollections.observableArrayList(fights);
+        this.groupParticipants = FXCollections.observableArrayList();
+        for(Fight f: fightsList){
+            if(!this.groupParticipants.contains(f.getFirstParticipant())){
+                this.groupParticipants.add(f.getFirstParticipant());
+            }
+            if(!this.groupParticipants.contains(f.getSecondParticipant())){
+                this.groupParticipants.add(f.getSecondParticipant());
+            }
+        }
+    }
+
+    public ObservableList<Fight> getFightsList() {
+        return fightsList;
     }
 
 
     public boolean fInGroup(Participant part)
     {
-        for(Fight fight : fightsList)
-        {
-            if(fight.fIn(part))
-                return true;
-        }
-        return false;
+        return this.groupParticipants.contains(part);
+    }
+
+    public ObservableList<Participant> getGroupParticipants(){
+        return this.groupParticipants;
+    }
+
+    public String getGroupID(){
+        return this.groupID;
     }
 
 }

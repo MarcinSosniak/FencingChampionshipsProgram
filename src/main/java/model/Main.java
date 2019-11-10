@@ -31,6 +31,7 @@ public class Main extends Application {
 
         try {
             ConfigReader.init("src/main/resources/cfg/default.cfg","src/main/resources/cfg/test.cfg");
+         //   DataGenerator.generateSampleCompetition();
             launch(args);
         }
         catch(util.HumanReadableFatalError ex)

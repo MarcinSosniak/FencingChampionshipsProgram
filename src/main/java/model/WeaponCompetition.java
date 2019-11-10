@@ -6,17 +6,21 @@ import model.FightDrawing.FightDrawStrategyPicker;
 import model.command.Command;
 import model.config.ConfigReader;
 import model.config.ConfigUtils;
+import model.enums.CompetitionState;
 import model.enums.WeaponType;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import util.RationalNumber;
 
 public class WeaponCompetition {
 
     private final WeaponType weaponType;
+    private final  WeaponType weaponType;
+    private CompetitionState competitionState;
     private ObservableList<Participant> participants;
     private ObservableList<Round> rounds;
     private final CommandStack cStack = new CommandStack();
@@ -33,13 +37,17 @@ public class WeaponCompetition {
 
     public void addRound(Round round){ rounds.add(round.setMyWeaponCompetition(this).drawGroups()); }
 
-    
+
     public String groupForParticipant(Participant p){
         return "a";
     }
 
     public WeaponType getWeaponType(){
         return this.weaponType;
+    }
+
+    public CompetitionState getWeaponCompetitionState(){
+        return this.competitionState;
     }
 
     public List<Participant> getParticipants(){
@@ -86,8 +94,13 @@ public class WeaponCompetition {
         rc.startRound();
     }
 
+    public Round getLastRound()
+    {
+        return rounds.get(rounds.size()-1);
+    }
 
     // WEAPON COMP ROUDN CREATOR
+
     public class RoundCreator
     {
         private boolean fRoundReady=false;
@@ -125,7 +138,7 @@ public class WeaponCompetition {
             if(winners.size() +participantsForRound.size() != particpantsNeeded )
                 throw new IllegalStateException("winners list is too short or to large");
             participantsForRound.addAll(winners);
-            _round= new Round(rounds.size()-1,groupSize,participantsForRound,getFightDrawStrategyPicker());
+            _round= new Round(WeaponCompetition.this,rounds.size()-1,groupSize,participantsForRound,getFightDrawStrategyPicker());
             fRoundReady=true;
         }
 
@@ -153,16 +166,16 @@ public class WeaponCompetition {
             participantsEligible.sort(new Comparator<Participant>() {
                 @Override
                 public int compare(Participant o1, Participant o2) {
-                    return RationalNumber.compare(getParticipantScore(o1),getParticipantScore(o2)); // this *should* favour greater value
+                    return RationalNumber.compare(getParticpantScore(o1),getParticpantScore(o2)); // this *should* favour greater value
                 }
             });
 
-            RationalNumber cutoff= getParticipantScore(participantsEligible.get(particpantsNeeded-1));
+            RationalNumber cutoff= getParticpantScore(participantsEligible.get(particpantsNeeded-1));
             participantsForRound.addAll(participantsEligible.stream()
-                    .filter(x -> RationalNumber.greater(getParticipantScore(x),cutoff))
+                    .filter(x -> RationalNumber.greater(getParticpantScore(x),cutoff))
                     .collect(Collectors.toList()));
             participantsForPlayoff.addAll(participantsEligible.stream()
-                    .filter(x -> getParticipantScore(x).equals(cutoff))
+                    .filter(x -> getParticpantScore(x).equals(cutoff))
                     .collect(Collectors.toList()));
             if(participantsForPlayoff.size() + participantsForRound.size()== particpantsNeeded)
             {

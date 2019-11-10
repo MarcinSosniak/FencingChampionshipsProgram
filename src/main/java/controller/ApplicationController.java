@@ -28,22 +28,22 @@ public class ApplicationController {
         this.primaryStage.setTitle("Inzynierka Szermierka");
 
         /** Competitors View */
-        try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/competitorsView.fxml"));
-            Parent root = loader.load();
-            /** In case if the controller is needed */
-            CompetitorsViewController competitorsViewController = (CompetitorsViewController) loader.getController();
-            /** Generating competitiors data, later init controller with empty list */
+//        try{
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/competitorsView.fxml"));
+//            Parent root = loader.load();
+//            /** In case if the controller is needed */
+//            CompetitorsViewController competitorsViewController = (CompetitorsViewController) loader.getController();
+//            /** Generating competitiors data, later init controller with empty list */
+//
+//            primaryStage.setScene(new Scene(root));
+//            this.currentStage = primaryStage;
+//            primaryStage.show();
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            System.out.format("Cannot load main FXML\n");
+//        }
 
-            primaryStage.setScene(new Scene(root));
-            this.currentStage = primaryStage;
-            primaryStage.show();
-        }catch (Exception e){
-            e.printStackTrace();
-            System.out.format("Cannot load main FXML\n");
-        }
-
-        /** Elimination Controller */
+//        /** Elimination Controller */
 //        try{
 //            FXMLLoader loader = new FXMLLoader(getClass().getResource("/elimination.fxml"));
 //            Parent root = loader.load();
@@ -60,6 +60,21 @@ public class ApplicationController {
 //            e.printStackTrace();
 //            System.out.format("Cannot load main FXML\n");
 //        }
+
+        /** Competitors View */
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/participantView.fxml"));
+            Parent root = loader.load();
+            Competition c = DataGenerator.generateSampleCompetition();
+            ParticipantViewController controller = (ParticipantViewController) loader.getController();
+            controller.setData(c.getSingleWeaponCompetition(WeaponType.SABRE).getLastRound());
+            primaryStage.setScene(new Scene(root));
+            this.currentStage = primaryStage;
+            primaryStage.show();
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.format("Cannot load main FXML\n");
+        }
 
     }
 

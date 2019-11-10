@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<!--ten rosnie-->
+<GridPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.ParticipantViewController" fx:id="mainPane" style="-fx-border-color: green; -fx-alignment: center;">
+    <padding>
+        <Insets bottom="3"/>
+    </padding>
+    <rowConstraints>
+        <RowConstraints percentHeight="92"/>
+        <RowConstraints percentHeight="8"/>
+    </rowConstraints>
+</GridPane>
