@@ -62,11 +62,11 @@ public class PersistenceManagerTest {
     @Test
     public void convertJsonToParticipantArray() {
         String json =
-        "[{\"name\":\"Marcin\",\"surname\":\"Kowalski\"," +
-                "\"location\":\"KRK\",\"locationGroup\":\"A\",\"judgeState\":\"NON_JUDGE\"," +
-                "\"licenseExpDate\":\"Jul 23, 2020 12:00:00 AM\",\"timesKiller\":0,\"fSmallSwordParticipant\":false," +
-                "\"fSabreParticipant\":false,\"fRapierParticipant\":false,\"weaponPointsProperty\":{},\"fSabreInjury\":false," +
-                "\"fRapierInjury\":false,\"fSmallSwordInjury\":false},{\"name\":\"Paulina\",\"surname\":\"Nowak\",\"location\":\"KRK\",\"locationGroup\":\"B\",\"judgeState\":\"MAIN_JUDGE\",\"licenseExpDate\":\"Jul 23, 2020 12:00:00 AM\",\"timesKiller\":0,\"fSmallSwordParticipant\":false,\"fSabreParticipant\":false,\"fRapierParticipant\":false,\"weaponPointsProperty\":{},\"fSabreInjury\":false,\"fRapierInjury\":false,\"fSmallSwordInjury\":false}]";
+                "[{\"name\":\"Marcin\",\"surname\":\"Kowalski\"," +
+                        "\"location\":\"KRK\",\"locationGroup\":\"A\",\"judgeState\":\"NON_JUDGE\"," +
+                        "\"licenseExpDate\":\"Jul 23, 2020 12:00:00 AM\",\"timesKiller\":0,\"fSmallSwordParticipant\":false," +
+                        "\"fSabreParticipant\":false,\"fRapierParticipant\":false,\"weaponPointsProperty\":{},\"fSabreInjury\":false," +
+                        "\"fRapierInjury\":false,\"fSmallSwordInjury\":false},{\"name\":\"Paulina\",\"surname\":\"Nowak\",\"location\":\"KRK\",\"locationGroup\":\"B\",\"judgeState\":\"MAIN_JUDGE\",\"licenseExpDate\":\"Jul 23, 2020 12:00:00 AM\",\"timesKiller\":0,\"fSmallSwordParticipant\":false,\"fSabreParticipant\":false,\"fRapierParticipant\":false,\"weaponPointsProperty\":{},\"fSabreInjury\":false,\"fRapierInjury\":false,\"fSmallSwordInjury\":false}]";
 
         Participant[] participants = PersistenceManager.convertJsonToParticipantArray(json);
         System.out.println(participants[0].getLicenseExpDate().toString());
