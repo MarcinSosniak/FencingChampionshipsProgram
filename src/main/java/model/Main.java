@@ -3,9 +3,10 @@ package model;
 import controller.ApplicationController;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import model.config.ConfigReader;
-
 import java.util.Scanner;
+
+import model.config.ConfigReader;
+import util.HumanReadableFatalError;
 
 public class Main extends Application {
     private Stage primaryStage;
@@ -28,13 +29,12 @@ public class Main extends Application {
 
 
     public static void main(String[] args)  {
-
         try {
             ConfigReader.init("src/main/resources/cfg/default.cfg","src/main/resources/cfg/test.cfg");
-         //   DataGenerator.generateSampleCompetition();
+            //   DataGenerator.generateSampleCompetition();
             launch(args);
         }
-        catch(util.HumanReadableFatalError ex)
+        catch(HumanReadableFatalError ex)
         {
             System.out.println(ex.getMessage());
             System.out.println("press enter to exit");

@@ -41,6 +41,21 @@ public class Participant {
 
     public  Participant(){}
 
+    public Participant(String name, String surname, String location, String locationGroup, JudgeState judgeState, Date licenceExpDate){
+        this.name            = new SimpleStringProperty(name);
+        this.surname         = new SimpleStringProperty(surname);
+        this.location        = new SimpleStringProperty(location);
+        this.locationGroup   = new SimpleStringProperty(locationGroup);
+        this.judgeState      = new SimpleObjectProperty<>(judgeState);
+        this.licenseExpDate  = new SimpleObjectProperty<>(licenceExpDate);
+
+        this.fSmallSwordParticipant = new SimpleBooleanProperty(false);
+        this.fSabreParticipant = new SimpleBooleanProperty(false);
+        this.fRapierParticipant = new SimpleBooleanProperty(false);
+
+        this.weaponPointsProperty = FXCollections.observableHashMap();
+    }
+
 
     public Participant(String name, String surname, String location, String locationGroup, String judgeState, String licenceExpDate)
             throws ParseException
@@ -205,6 +220,17 @@ public class Participant {
     public void setfSmallSwordInjury(CommandAddInjury.ValidInvocationChecker checker, boolean fSmallSwordInjury) {
         Objects.requireNonNull(checker);
         this.fSmallSwordInjury.set(fSmallSwordInjury);
+    }
+
+    public ObjectProperty<RationalNumber> getPointsForWeaponPropertyLastRound(WeaponType type) throws NoSuchWeaponException {
+        try
+        {
+            return Competition.getInstance().getSingleWeaponCompetition(type).getLastRound().getParticpantScoreProperty(this);
+        }
+        catch (Exception ex)
+        {
+            throw new NoSuchWeaponException();
+        }
     }
 
 

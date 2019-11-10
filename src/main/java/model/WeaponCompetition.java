@@ -3,7 +3,9 @@ package model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.FightDrawing.FightDrawStrategyPicker;
+import model.command.AddRoundCommand;
 import model.command.Command;
+import model.command.CommandAddInjury;
 import model.config.ConfigReader;
 import model.config.ConfigUtils;
 import model.enums.CompetitionState;
@@ -12,31 +14,35 @@ import model.enums.WeaponType;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import util.RationalNumber;
 
 public class WeaponCompetition {
 
-    private final WeaponType weaponType;
     private final  WeaponType weaponType;
     private CompetitionState competitionState;
     private ObservableList<Participant> participants;
     private ObservableList<Round> rounds;
-    private final CommandStack cStack = new CommandStack();
+    private final CommandStack cStack= new CommandStack();
 
     public WeaponCompetition(WeaponType weaponType, ObservableList<Participant> participants){
         this.weaponType = weaponType;
         this.participants = participants;
         this.rounds = FXCollections.observableArrayList();
+        this.competitionState = CompetitionState.INITIAL_STATE;
     }
 
-    public void addParticipantToWeaponCompetition (Participant participant){ participants.add(participant); }
+    public void addRound(AddRoundCommand.ValidInvocationChecker validInvocationChecker, Round round){
+        Objects.requireNonNull(validInvocationChecker);
+        rounds.add(round.setMyWeaponCompetition(this).drawGroups());
+    }
 
-    public void removeParticipantFromWeaponCompetition (Participant participant){ participants.remove(participant); }
-
-    public void addRound(Round round){ rounds.add(round.setMyWeaponCompetition(this).drawGroups()); }
-
+    public void removeRound(AddRoundCommand.ValidInvocationChecker validInvocationChecker){
+        Objects.requireNonNull(validInvocationChecker);
+        rounds.remove(rounds.size()-1);
+    }
 
     public String groupForParticipant(Participant p){
         return "a";
@@ -61,13 +67,14 @@ public class WeaponCompetition {
         return  new FightDrawStrategyPicker();
     }
 
-    /**DOES NOT ACTAULLY DO ANYTHING**/
-    public List<Command> invalidateParticipant(Participant p) /** DO NOT CALL UNLESS THOURGH COMMAND **/ {
+    /** prepares list of commands to execute **/
+    public List<Command> invalidateParticipant(CommandAddInjury.ValidInvocationChecker checker, Participant p) {
+        Objects.requireNonNull(checker);
         List<Command> out = new ArrayList<>();
-        for(CompetitionGroup g : (rounds.get(rounds.size()-1).getGroups())) {
-            if(g.fInGroup(p)) {
-                for(Fight fight : g.getFightsList()) {
-                    if(!fight.fHasResult() && fight.fIn(p)) {
+        for (CompetitionGroup g : (rounds.get(rounds.size()-1).getGroups())) {
+            if (g.fInGroup(p)) {
+                for (Fight fight : g.getFightsList()) {
+                    if (!fight.fHasResult() && fight.fIn(p)) {
                         out.add(fight.getCommandSetLooser(p));
                     }
                 }
@@ -76,10 +83,11 @@ public class WeaponCompetition {
         return out;
     }
 
-    public util.RationalNumber getParticipantScore(Participant p) {
+    public util.RationalNumber getParticpantScore(Participant p) {
         util.RationalNumber out= new RationalNumber();
-        for (Round round : rounds) {
-            out = out.add(round.getParticpantScore(p));
+        for (Round round : rounds)
+        {
+            out= out.add(round.getParticpantScore(p));
         }
         return out;
     }
@@ -89,8 +97,9 @@ public class WeaponCompetition {
         rc.startRound();
     }
 
-    public void startFirstRound(int gropuSize) {
-        RoundCreator rc = new RoundCreator(participants, gropuSize);
+    public void startFirstRound(int gropuSize)
+    {
+        RoundCreator rc = new RoundCreator(participants,gropuSize);
         rc.startRound();
     }
 
@@ -99,8 +108,8 @@ public class WeaponCompetition {
         return rounds.get(rounds.size()-1);
     }
 
-    // WEAPON COMP ROUDN CREATOR
 
+    // WEAPON COMP ROUND CREATOR
     public class RoundCreator
     {
         private boolean fRoundReady=false;
@@ -115,7 +124,7 @@ public class WeaponCompetition {
             if(!fRoundReady)
                 throw new IllegalStateException("Round cannot be started, resolve overtime/runoff/playoff");
             _round.drawGroups();
-            cStack.executeCommand(new AddRoundCommand(_round));
+            cStack.executeCommand(new AddRoundCommand(WeaponCompetition.this, _round));
         }
 
         public boolean getfRoundReady()
@@ -145,7 +154,7 @@ public class WeaponCompetition {
         /**
          * throw no errors if particpantsNeeded > amount of paritcpants in lastRound
          *
-          **/
+         **/
         public RoundCreator(int groupSize, int particpantsNeeded)
         {
             this.groupSize=groupSize;
@@ -154,13 +163,13 @@ public class WeaponCompetition {
             lastRound=rounds.get(rounds.size()-1);
             ArrayList<Participant> participantsEligible= new ArrayList<>(
                     lastRound.getParticipants().stream()
-                    .filter(x -> x.isInjured(weaponType)).collect(Collectors.toList()));
+                            .filter(x -> x.isInjured(weaponType)).collect(Collectors.toList()));
 
             if (participantsEligible.size() <= particpantsNeeded)
             {
                 participantsForRound.addAll(participantsEligible);
                 fRoundReady=true;
-                _round = new Round(rounds.size()-1,groupSize,participantsEligible,getFightDrawStrategyPicker());
+                _round = new Round(WeaponCompetition.this,rounds.size()-1,groupSize,participantsEligible,getFightDrawStrategyPicker());
                 return;
             }
             participantsEligible.sort(new Comparator<Participant>() {
@@ -181,7 +190,7 @@ public class WeaponCompetition {
             {
                 participantsForRound.addAll(participantsForPlayoff);
                 fRoundReady=true;
-                _round = new Round(rounds.size(),groupSize,participantsForRound,getFightDrawStrategyPicker());
+                _round = new Round(WeaponCompetition.this,rounds.size(),groupSize,participantsForRound,getFightDrawStrategyPicker());
                 return;
             }
             fRoundReady=false;
@@ -192,7 +201,7 @@ public class WeaponCompetition {
             if(rounds.size() > 0)
                 throw  new IllegalStateException("use this to construct only the first round");
             participantsForRound.addAll(participants);
-            _round=new Round(0,groupSize,participantsForRound,getFightDrawStrategyPicker());
+            _round=new Round(WeaponCompetition.this,0,groupSize,participantsForRound,getFightDrawStrategyPicker());
             fRoundReady=true;
         }
 
@@ -202,7 +211,7 @@ public class WeaponCompetition {
                 throw  new IllegalStateException("use this to construct only the first round");
             int groupSize = ConfigReader.getInstance().getIntValue(ConfigUtils.getWeaponTag(weaponType),"START_GROUP_SIZE");
             participantsForRound.addAll(participants);
-            _round=new Round(0,groupSize,participantsForRound,getFightDrawStrategyPicker());
+            _round=new Round(WeaponCompetition.this,0,groupSize,participantsForRound,getFightDrawStrategyPicker());
             fRoundReady=true;
         }
 
@@ -211,30 +220,5 @@ public class WeaponCompetition {
     }
 
 
-    private class AddRoundCommand implements Command
-    {
-
-        @Override
-        public void execute() {
-            rounds.add(_round);
-        }
-
-        @Override
-        public void undo() {
-            rounds.remove(rounds.size()-1);
-        }
-
-        @Override
-        public void redo() {
-            execute();
-        }
-
-        private Round _round;
-
-        public AddRoundCommand(Round round)
-        {
-            this._round=round;
-        }
-    }
 
 }

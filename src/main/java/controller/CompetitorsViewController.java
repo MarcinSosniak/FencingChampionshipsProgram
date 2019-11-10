@@ -13,7 +13,6 @@ import model.Participant;
 import model.enums.JudgeState;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -104,11 +103,7 @@ public class CompetitorsViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
 
-        try {
-            this.setParticipants(DataGenerator.generateParticipants(1));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        this.setParticipants(DataGenerator.generateParticipants(1));
         competitorsTable.setItems(participants);
         setRightClickOnCompetitor(competitorsTable);
 

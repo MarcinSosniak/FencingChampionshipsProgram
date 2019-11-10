@@ -86,9 +86,9 @@ public class EliminationController {
         this.weaponCompetitionParticipants = FXCollections.observableHashMap();
         for (WeaponType wt : WeaponType.values()) {
             try {
-                this.weaponCompetitionParticipants.put(wt, FXCollections.observableArrayList(this.competition.getWeaponCompetition(wt).getParticipants()));
+                this.weaponCompetitionParticipants.put(wt, FXCollections.observableArrayList(this.competition.getSingleWeaponCompetition(wt).getParticipants()));
 
-            } catch (NoSuchCompetitionException e) {
+            } catch (IllegalStateException e) {
                 e.printStackTrace();
                 System.out.format("No " + wt.toString() + " competitions\n");
             }
@@ -151,9 +151,9 @@ public class EliminationController {
         });
         group.setCellValueFactory(x -> {
             try {
-                String g = competition.getWeaponCompetition(wt).groupForParticipant(x.getValue());
+                String g = competition.getSingleWeaponCompetition(wt).groupForParticipant(x.getValue());
                 return new SimpleStringProperty(g);
-            } catch (NoSuchCompetitionException e) {
+            } catch (IllegalStateException e) {
                 e.printStackTrace();
                 return new SimpleStringProperty("NoSuchCompetitionException");
             }
@@ -208,8 +208,8 @@ public class EliminationController {
         Button competitionStatus = new Button();
         competitionStatus.setMaxSize(1000, 1000);
         try {
-            competitionStatus.setText(this.competition.getWeaponCompetition(wt).getWeaponCompetitionState().toString());
-        } catch (NoSuchCompetitionException e) {
+            competitionStatus.setText(this.competition.getSingleWeaponCompetition(wt).getWeaponCompetitionState().toString());
+        } catch (IllegalStateException e) {
             e.printStackTrace();
             competitionStatus.setText("UnknownCompetitionState");
         }
@@ -249,7 +249,7 @@ public class EliminationController {
         GridPane gridPaneForGroups = new GridPane();
 
         try {
-            ObservableList<CompetitionGroup> cgl = this.competition.getWeaponCompetition(wt).getLastRound().getGroups();
+            ObservableList<CompetitionGroup> cgl = this.competition.getSingleWeaponCompetition(wt).getLastRound().getGroups();
             int rows = (cgl.size() % columns == 0) ? cgl.size() / columns : cgl.size() / columns + 1;
 
             /* Create rows and columns for group panel */
@@ -303,7 +303,7 @@ public class EliminationController {
             // vBoxPane.getChildren().add(gridPaneForGroups);
             scrollPaneForVBOX.setContent(gridPaneForGroups);
             return scrollPaneForVBOX;
-        } catch (NoSuchCompetitionException e) {
+        } catch (IllegalStateException e) {
             e.printStackTrace();
             System.out.format("Error while loading groups\n");
             return new ScrollPane();
@@ -320,7 +320,7 @@ public class EliminationController {
         try {
             GridPane gridPaneForFights = new GridPane();
 
-            ObservableList<CompetitionGroup> groups = this.competition.getWeaponCompetition(wt).getLastRound().getGroups();
+            ObservableList<CompetitionGroup> groups = this.competition.getSingleWeaponCompetition(wt).getLastRound().getGroups();
 
             int rows = groups.size() % columns == 0 ? (groups.size() / columns) : (groups.size() / columns + 1);
 
@@ -476,7 +476,7 @@ public class EliminationController {
             scrollPaneForVBOX.setContent(gridPaneForFights);
             return scrollPaneForVBOX;
 
-        } catch (NoSuchCompetitionException e) {
+        } catch (IllegalStateException e) {
             System.out.format("No weapon competition\n");
             e.printStackTrace();
             return new ScrollPane();

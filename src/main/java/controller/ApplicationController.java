@@ -68,6 +68,7 @@ public class ApplicationController {
             Competition c = DataGenerator.generateSampleCompetition();
             ParticipantViewController controller = (ParticipantViewController) loader.getController();
             controller.setData(c.getSingleWeaponCompetition(WeaponType.SABRE).getLastRound());
+
             primaryStage.setScene(new Scene(root));
             this.currentStage = primaryStage;
             primaryStage.show();

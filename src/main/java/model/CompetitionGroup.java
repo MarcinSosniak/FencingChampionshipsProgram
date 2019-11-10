@@ -12,8 +12,7 @@ public class CompetitionGroup {
     private ObservableList<Participant> groupParticipants;
     private String groupID;
 
-    public CompetitionGroup(List<Fight> fights)
-    {
+    public CompetitionGroup(List<Fight> fights) {
         this.groupID = "a";
         this.fightsList = FXCollections.observableArrayList(fights);
         this.groupParticipants = FXCollections.observableArrayList();
@@ -26,23 +25,21 @@ public class CompetitionGroup {
             }
         }
     }
-
-    public ObservableList<Fight> getFightsList() {
-        return fightsList;
-    }
-
-
-    public boolean fInGroup(Participant part)
-    {
-        return this.groupParticipants.contains(part);
+    public String getGroupID(){
+        return this.groupID;
     }
 
     public ObservableList<Participant> getGroupParticipants(){
         return this.groupParticipants;
     }
 
-    public String getGroupID(){
-        return this.groupID;
+    public boolean fInGroup(Participant part)
+    {
+        return this.groupParticipants.contains(part);
+    }
+
+    public ObservableList<Fight> getFightsList() {
+        return fightsList;
     }
 
 }

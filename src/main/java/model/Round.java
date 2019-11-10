@@ -33,7 +33,7 @@ public class Round {
     private ObservableMap<Participant, ObjectProperty<RationalNumber>> roundScore = FXCollections.observableHashMap();
     private Map<Participant,Integer> participantFightNumber= new HashMap<>();
     private int participantExcpectedFightNumber; // size of group -1
-    private WeaponCompetition myWeaponCompetition= null;
+    private WeaponCompetition myWeaponCompetition;
     private SimpleObjectProperty<Fight> lastModyfiedFight;
 
     public Fight getLastModyfiedFight() {
@@ -41,34 +41,6 @@ public class Round {
         return this.groups.get(0).getFightsList().get(0);
     }
 
-    public Round(WeaponCompetition myWeaponCompetition,int roundNumber, int groupSize,ArrayList<Participant> participants, FightDrawStrategyPicker fightDrawStrategyPicker){
-        this.myWeaponCompetition=myWeaponCompetition;
-    public WeaponCompetition getMyWeaponCompetition() {
-        return myWeaponCompetition;
-    }
-
-    public Round setMyWeaponCompetition(WeaponCompetition myWeaponCompetition) {
-        this.myWeaponCompetition = myWeaponCompetition;
-        return this;
-    }
-
-    private  WeaponCompetition myWeaponCompetition= null;
-
-    public ObservableList<Participant> getParticipants() {
-        return participants;
-    }
-
-    public ObservableList<CompetitionGroup> getGroups() {
-        return groups;
-    }
-
-    public void commandAddPointsToParticipant(Participant p, int pointsNumber) {
-        this.getCStack().executeCommand(new ChangePointsCommand(p, pointsNumber, true));
-    }
-
-    public void commandSubtractPointsToParticipant(Participant p, int pointsNumber) {
-        this.getCStack().executeCommand(new ChangePointsCommand(p, pointsNumber, false));
-    }
 
     //depriciated
     private Round(int roundNumber, int groupSize,ArrayList<Participant> participants, FightDrawStrategyPicker fightDrawStrategyPicker){
@@ -86,7 +58,8 @@ public class Round {
         }
     }
 
-    public Round(int roundNumber, int groupSize,ArrayList<Participant> participants, FightDrawStrategyPicker fightDrawStrategyPicker){
+    public Round(WeaponCompetition myWeaponCompetition,int roundNumber, int groupSize,ArrayList<Participant> participants, FightDrawStrategyPicker fightDrawStrategyPicker){
+        this.myWeaponCompetition=myWeaponCompetition;
         this.roundNumber = roundNumber;
         this.groupSize = groupSize;
         this.participantExcpectedFightNumber=groupSize-1;
@@ -119,7 +92,8 @@ public class Round {
         return groups;
     }
 
-    public CommandStack getCStack() {return getMyWeaponCompetition().getcStack();}
+    public CommandStack getCStack() {
+        return getMyWeaponCompetition().getcStack();}
 
     public int getGroupSize() { return groupSize; }
 
@@ -142,12 +116,11 @@ public class Round {
         RationalNumber points_to_add=pScoreMultiplier.multiply(points);
         RationalNumber after_add=participant_score.add(points_to_add);
         participant_score.set(after_add);
-        roundScore.put(p,roundScore.get(p).multiply(pScoreMultiplier.multiply(points)));
     }
 
     public RationalNumber getParticpantScore(Participant p)
     {
-        return roundScore.get(p);
+        return roundScore.get(p).get();
     }
 
 
@@ -155,61 +128,24 @@ public class Round {
         this.getCStack().executeCommand(new ChangePointsCommand(this, p, pointsNumber, true));
     }
 
-    public void addRoundScorePointsForParticipant (Participant p, int points){
-        roundScore.get(p).get().add(points);
     public void subtractPointsFromParticipant(Participant p, RationalNumber pointsNumber) {
         this.getCStack().executeCommand(new ChangePointsCommand(this, p, pointsNumber, false));
     }
 
     public void addRoundScorePoints (ChangePointsCommand.ValidInvocationChecker checker, Participant p, RationalNumber points){
         Objects.requireNonNull(checker);
-        roundScore.get(p).add(points);
+        roundScore.get(p).get().add(points);
     }
 
-    public void subtractRoundScorePointsForParticipant (Participant p, int points){
-        roundScore.get(p).get().substract(points);
+
     public void subtractRoundScorePoints (ChangePointsCommand.ValidInvocationChecker checker, Participant p, RationalNumber points){
         Objects.requireNonNull(checker);
-        roundScore.get(p).substract(points);
+        roundScore.get(p).get().substract(points);
     }
 
-    public RationalNumber getParticpantScore(Participant p)
-    {
-        return roundScore.get(p).get();
-    }
+
     public ObjectProperty<RationalNumber> getParticpantScoreProperty(Participant p)
     {
         return roundScore.get(p);
-    }
-
-
-    private class ChangePointsCommand implements Command {
-
-        private Participant participant;
-        private int pointsNumber;
-        private boolean ifAdd;
-
-        @Override
-        public void execute() {
-            if (ifAdd) addRoundScorePointsForParticipant(participant, pointsNumber);
-            else subtractRoundScorePointsForParticipant(participant, pointsNumber);
-        }
-
-        @Override
-        public void undo() {
-            if (ifAdd) subtractRoundScorePointsForParticipant(participant, pointsNumber);
-            else addRoundScorePointsForParticipant(participant, pointsNumber);
-        }
-
-        @Override
-        public void redo() {
-            execute();
-        }
-
-        public ChangePointsCommand(Participant participant, int pointsNumber, boolean ifAdd) {
-            this.participant = participant;
-            this.pointsNumber = pointsNumber;
-            this.ifAdd = ifAdd;
-        }
     }
 }

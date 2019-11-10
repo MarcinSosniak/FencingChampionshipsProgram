@@ -50,7 +50,7 @@ public class CommandAddInjury implements Command {
         participant.setfSabreInjury(validInvocationChecker, _fSabreInjury);
         participant.setfSmallSwordInjury(validInvocationChecker, _fSmallSwordInjury);
 
-        commandsUsedList = competition.invalidateParticipant(participant);
+        commandsUsedList = competition.invalidateParticipant(validInvocationChecker, participant);
         for(Command c : commandsUsedList) {
             c.execute();
         }
