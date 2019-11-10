@@ -3,7 +3,6 @@ package model.KillerDrawing;
 import model.KillerDrawing.KillerRandomizerStrategy;
 import model.Participant;
 import model.enums.JudgeState;
-import sun.plugin.dom.exception.InvalidStateException;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -71,7 +70,7 @@ public class RandomKillerRandomizationStrategy implements KillerRandomizerStrate
     {
         if (killers.size() < fightsNeededPerPerson)
         { //
-            throw new InvalidStateException("There is not enought killers. Single killer would have to fight with the same opnent more than once");
+            throw new IllegalStateException("There is not enought killers. Single killer would have to fight with the same opnent more than once");
         }
         Collections.shuffle(killers);
         Iterator<Participant> iter= killers.iterator();

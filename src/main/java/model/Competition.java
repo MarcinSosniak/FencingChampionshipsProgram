@@ -6,8 +6,7 @@ import model.KillerDrawing.KillerRandomizerStrategy;
 import javafx.collections.ObservableList;
 import model.enums.WeaponType;
 import model.exceptions.NoSuchCompetitionException;
-import model.KillerDrawing.KillerRandomizerStrategy;
-import sun.plugin.dom.exception.InvalidStateException;
+
 
 import java.util.List;
 
@@ -88,14 +87,14 @@ public class Competition {
                                    KillerRandomizerStrategy killerRandomizerStrategy)
     {
         if(instance!=null)
-            throw new InvalidStateException("Cannot reinitialize Comeptitions");
+            throw new IllegalStateException("Cannot reinitialize Comeptitions");
         instance= new Competition(participants1,participants2,participants3,killerRandomizerStrategy);
         return instance;
     }
     public  static Competition init(Competition deserilized)
     {
         if(instance!=null)
-            throw new InvalidStateException("Cannot reinitialize Comeptitions");
+            throw new IllegalStateException("Cannot reinitialize Comeptitions");
         instance=deserilized;
         return instance;
     }
