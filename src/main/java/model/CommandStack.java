@@ -4,11 +4,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.command.Command;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class CommandStack {
+public class CommandStack implements Serializable {
 
     private ArrayList<Command> commandStack = new ArrayList<>();
     private ArrayList<Command> undoStack = new ArrayList<>();
@@ -41,4 +42,23 @@ public class CommandStack {
     public List<Command> getCommandStack() {
         return commandStack;
     }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj != null && obj instanceof CommandStack) {
+            if (this.commandStack.size() != ((CommandStack) obj).commandStack.size()) return false;
+            for (int i=0; i<((CommandStack) obj).commandStack.size(); i++){
+                if (! this.commandStack.get(i).equals(((CommandStack) obj).commandStack.get(i))) return false;
+            }
+
+            if (this.undoStack.size() != ((CommandStack) obj).undoStack.size()) return false;
+            for (int i=0; i<((CommandStack) obj).undoStack.size(); i++){
+                if (! this.undoStack.get(i).equals(((CommandStack) obj).undoStack.get(i))) return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
 }

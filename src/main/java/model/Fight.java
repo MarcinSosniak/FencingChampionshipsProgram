@@ -7,13 +7,16 @@ import model.command.Command;
 import model.command.CommandAddBattleResult;
 import model.config.ConfigReader;
 import model.enums.FightScore;
-import org.omg.CORBA.Object;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
-public  class Fight {
+public  class Fight implements Serializable {
     private ObjectProperty<Participant> firstParticipant= new SimpleObjectProperty<>();
     private ObjectProperty<Participant> secondParticipant = new SimpleObjectProperty<>();
     private ObjectProperty<FightScore> score = new SimpleObjectProperty<>();
@@ -153,6 +156,36 @@ public  class Fight {
             round.addPointsFromFight(firstParticipant.get(),multiplier*loosePoints);
             round.addPointsFromFight(secondParticipant.get(),multiplier*winPoints);
         }
+    }
+
+    private void writeObject(ObjectOutputStream stream) throws IOException {
+        stream.writeObject(firstParticipant.get());
+        stream.writeObject(secondParticipant.get());
+        stream.writeObject(score.get());
+        stream.writeObject(round);
+    }
+
+    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+        firstParticipant = new SimpleObjectProperty<>((Participant) stream.readObject());
+        secondParticipant = new SimpleObjectProperty<>((Participant) stream.readObject());
+        score = new SimpleObjectProperty<>((FightScore) stream.readObject());
+        round = (Round) stream.readObject();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj != null && obj instanceof Fight){
+            return this.firstParticipant.get().equals(((Fight) obj).firstParticipant.get()) &&
+                    this.secondParticipant.get().equals(((Fight) obj).secondParticipant.get()); //&&
+                  //  this.score.get().equals(((Fight) obj).score.get());
+        }
+
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.firstParticipant.hashCode() * 8 + this.secondParticipant.hashCode();
     }
 
 

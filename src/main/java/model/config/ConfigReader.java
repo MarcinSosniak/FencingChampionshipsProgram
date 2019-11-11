@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.util.*;
 
 public class ConfigReader {
+
+    public ConfigReader(){}
+
     private class TagVariables
     {
         private HashMap<String,String> vars = new HashMap<>();
@@ -101,7 +104,7 @@ public class ConfigReader {
 
     private HashMap<String,TagVariables> tags = new HashMap<>();
 
-    private ConfigReader() { throw new IllegalStateException(); } // DO NOT CALL THIS
+    //private ConfigReader() { throw new IllegalStateException(); } // DO NOT CALL THIS
     // in better language we would use ConfigReader() = delete;
 
     private ConfigReader(String defaultConfigFilePath, String overrideConfigFilePath) throws FileNotFoundException,IOException,IllegalArgumentException
@@ -270,6 +273,11 @@ public class ConfigReader {
             return instance;
         }
         throw new IllegalStateException("Not initilized");
+    }
+
+    public static void setDeserializedInstance(ConfigReader deserialized){
+        if (instance == null) instance = deserialized;
+        else throw new IllegalStateException("multiple initializations");
     }
 
     public static void init(String defaultConfigFilePath,String overrideConfigFilePath) throws HumanReadableFatalError

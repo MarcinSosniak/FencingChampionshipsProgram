@@ -1,5 +1,6 @@
 package model.enums;
 
+
 public enum WeaponType {
     RAPIER,
     SABRE,

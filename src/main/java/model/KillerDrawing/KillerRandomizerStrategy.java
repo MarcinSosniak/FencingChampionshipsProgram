@@ -2,11 +2,11 @@ package model.KillerDrawing;
 
 import model.Participant;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.List;
 
-public interface KillerRandomizerStrategy {
-
+public interface KillerRandomizerStrategy extends Serializable{
     List<List<Participant>>  drawKiller(List<Participant> participants, int opnentLessParticipantsCount, int fightsNeededCount);
 }
 

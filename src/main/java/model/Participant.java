@@ -9,16 +9,17 @@ import model.enums.WeaponType;
 import model.exceptions.NoSuchWeaponException;
 import util.RationalNumber;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.security.InvalidParameterException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 
-public class Participant {
+public class Participant implements Serializable{
 
     private StringProperty name;
     private StringProperty surname;
@@ -38,9 +39,6 @@ public class Participant {
     private BooleanProperty fRapierInjury = new SimpleBooleanProperty(false);
     private BooleanProperty fSmallSwordInjury = new SimpleBooleanProperty(false);
 
-
-    public  Participant(){}
-
     public Participant(String name, String surname, String location, String locationGroup, JudgeState judgeState, Date licenceExpDate){
         this.name            = new SimpleStringProperty(name);
         this.surname         = new SimpleStringProperty(surname);
@@ -52,14 +50,15 @@ public class Participant {
         this.fSmallSwordParticipant = new SimpleBooleanProperty(false);
         this.fSabreParticipant = new SimpleBooleanProperty(false);
         this.fRapierParticipant = new SimpleBooleanProperty(false);
-
         this.weaponPointsProperty = FXCollections.observableHashMap();
+       // weaponPointsProperty.put(WeaponType.RAPIER, new RationalNumber(6));
     }
 
 
     public Participant(String name, String surname, String location, String locationGroup, String judgeState, String licenceExpDate)
             throws ParseException
     {
+
         this.name            = new SimpleStringProperty(name);
         this.surname         = new SimpleStringProperty(surname);
         this.location        = new SimpleStringProperty(location);
@@ -67,11 +66,9 @@ public class Participant {
 
         this.judgeState      = new SimpleObjectProperty<>(setJudgeStateFromString(judgeState));   // STRING MAY BE INCORRECT
         this.licenseExpDate  = new SimpleObjectProperty<>(createDateFromString(licenceExpDate));
-
         this.fSmallSwordParticipant = new SimpleBooleanProperty(false);
         this.fSabreParticipant = new SimpleBooleanProperty(false);
         this.fRapierParticipant = new SimpleBooleanProperty(false);
-
         this.weaponPointsProperty = FXCollections.observableHashMap();
     }
 
@@ -80,6 +77,7 @@ public class Participant {
     public Date createDateFromString(String dateS) throws ParseException{
         DateFormat format = new SimpleDateFormat("dd-MM-yyyy", new Locale("pl"));
         Date date = format.parse(dateS);
+        System.out.println("date: " + date.toString());
         return date;
     }
 
@@ -250,5 +248,44 @@ public class Participant {
     public int hashCode() {
         return this.name.hashCode() * 4 + this.surname.hashCode() * 17 +
             this.locationGroup.hashCode() + this.location.hashCode() * 2 +
-            this.judgeState.hashCode() + this.licenseExpDate.hashCode() * 3;}
+            this.judgeState.hashCode() + this.licenseExpDate.hashCode() * 3;
+    }
+
+    private void writeObject(ObjectOutputStream stream) throws IOException {
+        stream.writeObject(name.get());
+        stream.writeObject(surname.get());
+        stream.writeObject(location.get());
+        stream.writeObject(locationGroup.get());
+        stream.writeObject(judgeState.get());
+        stream.writeObject(licenseExpDate.get());
+        stream.writeBoolean(fSmallSwordParticipant.get());
+        stream.writeBoolean(fRapierParticipant.get());
+        stream.writeBoolean(fSabreParticipant.get());
+        stream.writeBoolean(fRapierInjury.get());
+        stream.writeBoolean(fSabreInjury.get());
+        stream.writeBoolean(fSmallSwordInjury.get());
+        stream.writeInt(timesKiller);
+        Map<WeaponType, util.RationalNumber> weaponPoints = new HashMap<>();
+        weaponPointsProperty.forEach((wt, wp) -> weaponPoints.put(wt, wp));
+        stream.writeObject(weaponPoints);
+    }
+
+    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+        name = new SimpleStringProperty((String) stream.readObject());
+        surname = new SimpleStringProperty((String) stream.readObject());
+        location = new SimpleStringProperty((String) stream.readObject());
+        locationGroup = new SimpleStringProperty((String) stream.readObject());
+        judgeState = new SimpleObjectProperty<>((JudgeState) stream.readObject());
+        licenseExpDate = new SimpleObjectProperty<>((Date) stream.readObject());
+        fSmallSwordParticipant = new SimpleBooleanProperty(stream.readBoolean());
+        fRapierParticipant = new SimpleBooleanProperty(stream.readBoolean());
+        fSabreParticipant = new SimpleBooleanProperty(stream.readBoolean());
+        fRapierInjury = new SimpleBooleanProperty(stream.readBoolean());
+        fSabreInjury = new SimpleBooleanProperty(stream.readBoolean());
+        fSmallSwordInjury = new SimpleBooleanProperty(stream.readBoolean());
+        timesKiller = stream.readInt();
+        weaponPointsProperty = FXCollections.observableHashMap();
+        Map<WeaponType, RationalNumber> m = (Map<WeaponType, RationalNumber>) stream.readObject();
+        m.forEach((wt, wp) -> weaponPointsProperty.put(wt, wp));
+    }
 }

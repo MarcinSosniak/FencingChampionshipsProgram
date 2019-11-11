@@ -1,9 +1,10 @@
 package util;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Comparator;
 
-public class RationalNumber {
+public class RationalNumber implements Serializable {
 
     private int num;
     private int denom;
