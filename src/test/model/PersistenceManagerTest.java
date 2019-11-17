@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 public class PersistenceManagerTest {
 
     String json;
-    Participant p1; Participant p2; Participant p3; Participant p4;
+    Participant p1; Participant p2; Participant p3; Participant p4; Participant p5; Participant p6;
     ConfigReader configReader;
     Competition competition;
 
@@ -49,15 +49,18 @@ public class PersistenceManagerTest {
         p2 = new Participant("Paulina", "Nowak", "KRK", "B", "MAIN_JUDGE", "23-07-2020");
         p3 = new Participant("Name3","Surname3","Location1","lacationGroup1", JudgeState.NON_JUDGE,new Date());
         p4 = new Participant("Name4","Surname4","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date());
+        p5 = new Participant("Kot","Kiti","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date());
+        p6 = new Participant("Mak","XD","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date());
+
 
         ObservableList rapierParticipants = FXCollections.observableArrayList();
-        rapierParticipants.add(p1); rapierParticipants.add(p2); rapierParticipants.add(p4);
+        rapierParticipants.add(p1); rapierParticipants.add(p2); rapierParticipants.add(p4); rapierParticipants.add(p5); rapierParticipants.add(p6);
 
         ObservableList sabreParticipants = FXCollections.observableArrayList();
-        sabreParticipants.add(p2);// sabreParticipants.add(p4);
+        sabreParticipants.add(p2); sabreParticipants.add(p4); sabreParticipants.add(p1); sabreParticipants.add(p3); sabreParticipants.add(p2);
 
         ObservableList smallSwordParticipants = FXCollections.observableArrayList();
-        smallSwordParticipants.add(p1); //smallSwordParticipants.add(p3); smallSwordParticipants.add(p2);
+        smallSwordParticipants.add(p1); smallSwordParticipants.add(p3); smallSwordParticipants.add(p2);  smallSwordParticipants.add(p5); smallSwordParticipants.add(p6);
 
         competition = new Competition(
                 new util.Pair<ObservableList<Participant>, WeaponType>(rapierParticipants, WeaponType.RAPIER),

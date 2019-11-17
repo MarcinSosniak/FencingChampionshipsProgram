@@ -78,8 +78,8 @@ public class CompetitorsViewController implements Initializable {
     @FXML
     public void startCompetition() {
         for (WeaponCompetition weaponCompetition: Competition.getInstance().getWeaponCompetitions()){
-            weaponCompetition.getParticipantsObservableList().
-                    addAll(DataGenerator.generateWeaponParticipants(weaponCompetition.getWeaponType(), 7));
+//            weaponCompetition.getParticipantsObservableList().
+//                    addAll(DataGenerator.generateWeaponParticipants(weaponCompetition.getWeaponType(), 7));
             weaponCompetition.startFirstRound(5);
 
         }
