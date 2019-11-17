@@ -69,6 +69,8 @@ public class CheckPointManager {
         int minutes =  ZonedDateTime.now(ZoneId.of("Europe/Warsaw") ).getMinute();
         int seconds =  ZonedDateTime.now(ZoneId.of("Europe/Warsaw") ).getSecond();
 
+        if (Competition.getInstance().getCompetitionName() != null)
+            return Competition.getInstance().getCompetitionName() + "_" + +hour+"-"+minutes+"-"+seconds;
         return  "saves/"+day +"-"+month +"-"+year+"__"+hour+"-"+minutes+"-"+seconds;
     }
 

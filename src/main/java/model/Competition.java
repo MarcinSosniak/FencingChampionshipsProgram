@@ -18,6 +18,7 @@ public class Competition implements Serializable {
     private ObservableList<WeaponCompetition> weaponCompetitions = FXCollections.observableArrayList();
     private ObservableList<Participant> participants = FXCollections.observableArrayList();
     private KillerRandomizerStrategy killerRandomizerStrategy;
+    private String competitionName;
 
 
     public Competition(util.Pair<ObservableList<Participant>,WeaponType> participants1,
@@ -134,4 +135,7 @@ public class Competition implements Serializable {
         return weaponCompetitions.stream().filter(wc -> wc.getWeaponType().equals(wt)).findFirst().get();
     }
 
+    public String getCompetitionName() { return competitionName; }
+
+    public void setCompetitionName(String competitionName) { this.competitionName = competitionName; }
 }

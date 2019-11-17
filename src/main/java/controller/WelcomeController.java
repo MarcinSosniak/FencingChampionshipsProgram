@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -30,9 +31,6 @@ public class WelcomeController implements Initializable {
     }
 
     public void goNext(){
-       // System.out.println(newCompetitionName);
-        System.out.println(newCompetitionName.getText());
-
         ObservableList rapierParticipants = FXCollections.observableArrayList();
         ObservableList sabreParticipants = FXCollections.observableArrayList();
         ObservableList smallSwordParticipants = FXCollections.observableArrayList();
@@ -43,6 +41,9 @@ public class WelcomeController implements Initializable {
                 new util.Pair<ObservableList<Participant>,WeaponType>(smallSwordParticipants, WeaponType.SMALL_SWORD),
                 new RandomKillerRandomizationStrategy()
         );
+
+        if (!newCompetitionName.getText().equals("nazwa zawodów (yyyy-mm-dd_miasto)"))
+            Competition.getInstance().setCompetitionName(newCompetitionName.getText());
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/competitorsView.fxml"));
         new Button();
