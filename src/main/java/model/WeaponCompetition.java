@@ -25,6 +25,7 @@ import util.RationalNumber;
 
 public class WeaponCompetition implements Serializable {
 
+    private static final long serialVersionUID = 5;
     private WeaponType weaponType; // was final
     private CompetitionState competitionState;
     private ObservableList<Participant> participants;

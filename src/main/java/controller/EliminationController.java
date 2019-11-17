@@ -79,6 +79,9 @@ public class EliminationController implements Initializable {
     private TableView sabreTableView;
     private TableView smallSwordTableView;
 
+    @FXML
+    MenuBarController menuBarController;
+
     public EliminationController() {
     }
 
@@ -146,18 +149,9 @@ public class EliminationController implements Initializable {
 
         TableView tv = new TableView();
         switch (wt){
-            case SABRE: {
-                sabreTableView = tv;
-                break;
-            }
-            case SMALL_SWORD: {
-                smallSwordTableView = tv;
-                break;
-            }
-            case RAPIER: {
-                rapierTableView = tv;
-                break;
-            }
+            case SABRE: { sabreTableView = tv; break; }
+            case SMALL_SWORD: { smallSwordTableView = tv; break; }
+            case RAPIER: { rapierTableView = tv; break; }
         }
 
        // tv.se

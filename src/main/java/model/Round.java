@@ -28,6 +28,7 @@ import java.util.Objects;
 
 public class Round implements Serializable {
 
+    private static final long serialVersionUID = 4;
     private int roundNumber;
     private int groupSize;
     // last cut-off
@@ -139,8 +140,11 @@ public class Round implements Serializable {
 
     public void addRoundScorePoints (ChangePointsCommand.ValidInvocationChecker checker, Participant p, RationalNumber points){
         Objects.requireNonNull(checker);
-        this.getMyWeaponCompetition().getParticipants().remove(p);
-        //roundScore.get(p).get().add(points);
+        RationalNumber newPoints = roundScore.get(p).get().add(points);
+        roundScore.replace(p, new SimpleObjectProperty<>(newPoints));
+        //p.se(myWeaponCompetition.getWeaponType(),);
+
+        System.out.println("in ADD: " + roundScore.get(p).get());
     }
 
 

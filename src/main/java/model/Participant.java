@@ -3,6 +3,7 @@ package model;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
+import model.command.ChangePointsCommand;
 import model.command.CommandAddInjury;
 import model.enums.JudgeState;
 import model.enums.WeaponType;
@@ -22,6 +23,7 @@ import java.util.*;
 
 public class Participant implements Serializable{
 
+    private static final long serialVersionUID = 3;
     private StringProperty name;
     private StringProperty surname;
     private StringProperty location;
@@ -52,7 +54,6 @@ public class Participant implements Serializable{
         this.fSabreParticipant = new SimpleBooleanProperty(false);
         this.fRapierParticipant = new SimpleBooleanProperty(false);
         this.weaponPointsProperty = FXCollections.observableHashMap();
-       // weaponPointsProperty.put(WeaponType.RAPIER, new RationalNumber(6));
     }
 
 
@@ -183,6 +184,11 @@ public class Participant implements Serializable{
     public RationalNumber getPointsForWeaponProperty(WeaponType type) throws NoSuchWeaponException {
         if(weaponPointsProperty.containsKey(type)) return weaponPointsProperty.get(type);
         else throw new NoSuchWeaponException();
+    }
+
+    public void setPointsForWeapon(ChangePointsCommand.ValidInvocationChecker checker, WeaponType type, RationalNumber points){
+        Objects.requireNonNull(checker);
+        if (weaponPointsProperty.containsKey(type)) weaponPointsProperty.replace(type, points);
     }
 
 

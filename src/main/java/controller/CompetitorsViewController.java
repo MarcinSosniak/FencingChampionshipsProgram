@@ -80,7 +80,9 @@ public class CompetitorsViewController implements Initializable {
         for (WeaponCompetition weaponCompetition: Competition.getInstance().getWeaponCompetitions()){
 //            weaponCompetition.getParticipantsObservableList().
 //                    addAll(DataGenerator.generateWeaponParticipants(weaponCompetition.getWeaponType(), 7));
-            weaponCompetition.startFirstRound(5);
+
+            // start first round
+            if (weaponCompetition.getLastRound() == null) weaponCompetition.startFirstRound(5);
 
         }
         try{

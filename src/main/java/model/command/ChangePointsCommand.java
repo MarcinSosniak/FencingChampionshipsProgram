@@ -25,6 +25,7 @@ public class ChangePointsCommand implements Command {
         if (ifAdd) {
             System.out.println("here");
             round.addRoundScorePoints(checker, participant, pointsNumber);
+            participant.setPointsForWeapon(checker, round.getMyWeaponCompetition().getWeaponType(), pointsNumber);
         }
         else round.subtractRoundScorePoints(checker, participant, pointsNumber);
     }

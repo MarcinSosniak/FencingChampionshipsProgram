@@ -46,13 +46,28 @@ public class AddPointsController {
 
     public void addPoints(){
         System.out.println("spinner: " + spinner.getValue());
-        round.addPointsToParticipant(participant,  new RationalNumber((int)(spinner.getValue() * 10)));
+        System.out.println(round.getMyWeaponCompetition().getWeaponType());
+
+        round.addPointsToParticipant(participant, new RationalNumber((int)(spinner.getValue() * 10), 10));
         Stage toClose = (Stage) confirmButton.getScene().getWindow();
         try {
             System.out.println(participant.getName() + " " + participant.getPointsForWeaponProperty(round.getMyWeaponCompetition().getWeaponType()));
         } catch (NoSuchWeaponException e) { e.printStackTrace(); }
         toClose.close();
-        System.out.println(el.weaponCompetitionParticipants.containsKey(participant));
 
+        // ONLY FOR TEST
+//        try{
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/elimination.fxml"));
+//            Parent root = loader.load();
+//
+//            EliminationController ec = (EliminationController) loader.getController();
+//            ec.setData();
+//            ApplicationController.primaryStage.setScene(new Scene(root));
+//            ApplicationController.primaryStage.show();
+//
+//        }catch (Exception e) {
+//            e.printStackTrace();
+//            System.out.format("Cannot load main FXML\n");
+//        }
     }
 }

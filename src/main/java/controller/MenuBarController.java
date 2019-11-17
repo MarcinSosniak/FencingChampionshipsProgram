@@ -3,6 +3,9 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import model.CheckPointManager;
+import model.Competition;
+import model.WeaponCompetition;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -22,9 +25,15 @@ public class MenuBarController implements Initializable {
     @FXML
     Button adminMode;
 
+    private WeaponCompetition wc;
+
+    public void setData(WeaponCompetition wc){
+        this.wc = wc;
+    }
+
     @FXML
     public void save(){
-        System.out.format("save (TODO:implement me)\n");
+        CheckPointManager.createCheckPoint();
     }
     @FXML
     public void saveAs(){
@@ -32,11 +41,13 @@ public class MenuBarController implements Initializable {
     }
     @FXML
     public void undo(){
-        System.out.format("undo (TODO:implement me)\n");
+        System.out.format("undo\n");
+        wc.getcStack().undo();
     }
     @FXML
     public void redo(){
-        System.out.format("redo (TODO:implement me)\n");
+        System.out.format("redo\n");
+        wc.getcStack().redo();
     }
     @FXML
     public void exportResults(){

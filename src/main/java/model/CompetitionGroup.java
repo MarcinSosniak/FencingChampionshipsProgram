@@ -15,6 +15,7 @@ public class CompetitionGroup implements Serializable {
     private ObservableList<Fight> fightsList;
     private ObservableList<Participant> groupParticipants;
     private String groupID;
+    private static final long serialVersionUID = 1;
 
     public CompetitionGroup(List<Fight> fights) {
         this.groupID = "a";
