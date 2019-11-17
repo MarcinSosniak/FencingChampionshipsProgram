@@ -2,6 +2,8 @@ package controller;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
@@ -85,16 +87,16 @@ public class EliminationController implements Initializable {
     ObservableList<TableRow> sabreRows = FXCollections.observableArrayList();
     ObservableList<TableRow> smallSwordRows = FXCollections.observableArrayList();
 
-    EventType type = new EventType("disableRest");
-    MyEvent myEvent = new MyEvent(type);
-
-    private class MyEvent extends Event{
-        private Participant p;
-
-        public MyEvent(EventType<? extends Event> eventType) { super(eventType); }
-        public Participant getP() { return p; }
-        public void setP(Participant p) { this.p = p; }
-    }
+//    EventType type = new EventType("disableRest");
+//    MyEvent myEvent = new MyEvent(type);
+//
+//    private class MyEvent extends Event{
+//        private Participant p;
+//
+//        public MyEvent(EventType<? extends Event> eventType) { super(eventType); }
+//        public Participant getP() { return p; }
+//        public void setP(Participant p) { this.p = p; }
+//    }
 
 
     @FXML
@@ -115,6 +117,20 @@ public class EliminationController implements Initializable {
         tabPane.getTabs().add(rapierTab);
         tabPane.getTabs().add(sabreTab);
         tabPane.getTabs().add(smallSwordTab);
+        // first value
+        menuBarController.setData(Competition.getInstance().getSingleWeaponCompetition(WeaponType.RAPIER));
+        // change tab handler
+        tabPane.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+            int selectedIndex = newValue.intValue();
+            System.out.println("XXXXD here: " + selectedIndex);
+            if (selectedIndex == 0)
+                menuBarController.setData(Competition.getInstance().getSingleWeaponCompetition(WeaponType.RAPIER));
+            else if (selectedIndex == 1)
+                menuBarController.setData(Competition.getInstance().getSingleWeaponCompetition(WeaponType.SABRE));
+            else if (selectedIndex == 2)
+                menuBarController.setData(Competition.getInstance().getSingleWeaponCompetition(WeaponType.SMALL_SWORD));
+        });
+
     }
 
     public void setData() {

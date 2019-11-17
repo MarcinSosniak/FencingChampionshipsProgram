@@ -38,8 +38,14 @@ public class ChangePointsCommand implements Command {
 
     @Override
     public void undo() {
-        if (ifAdd) round.subtractRoundScorePoints(checker, participant, pointsNumber);
-        else round.addRoundScorePoints(checker, participant, pointsNumber);
+        if (ifAdd) {
+            round.subtractRoundScorePoints(checker, participant, pointsNumber);
+            participant.subtractPointsFromWeapon(checker, round.getMyWeaponCompetition().getWeaponType(), pointsNumber);
+        }
+        else {
+            round.addRoundScorePoints(checker, participant, pointsNumber);
+            participant.addPointsForWeapon(checker, round.getMyWeaponCompetition().getWeaponType(), pointsNumber);
+        }
     }
 
     @Override
