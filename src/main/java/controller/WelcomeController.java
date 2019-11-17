@@ -10,16 +10,23 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import model.CheckPointManager;
 import model.Competition;
 import model.DataGenerator;
 import model.KillerDrawing.RandomKillerRandomizationStrategy;
 import model.Participant;
+import model.config.ConfigReader;
 import model.enums.WeaponType;
+import util.HumanReadableFatalError;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 public class WelcomeController implements Initializable {
 
@@ -27,13 +34,35 @@ public class WelcomeController implements Initializable {
     private TextField newCompetitionName;
 
     public void selectCompetition(){
-        System.out.format("selectCompetition (TODO:implement me)\n");
+        Stage stage = new Stage();
+        File file = new File("saves");
+        file.mkdir();
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setInitialDirectory(file);
+        directoryChooser.setTitle("Wybierz katalog z zawodami");
+        File selectedDirectory = directoryChooser.showDialog(stage);
+        System.out.println(selectedDirectory.getPath());
+
+        if (selectedDirectory != null) {
+            String[] parts = selectedDirectory.getPath().split(Pattern.quote("\\"));
+            if (parts[parts.length -2].equals("saves")) {
+                String targetDirectoryName = parts[parts.length - 1];
+                System.out.println(targetDirectoryName);
+                CheckPointManager.readFromCheckPoint("saves/"+targetDirectoryName);
+                loadCompetitorsView();
+            }
+        }
     }
 
     public void goNext(){
         ObservableList rapierParticipants = FXCollections.observableArrayList();
         ObservableList sabreParticipants = FXCollections.observableArrayList();
         ObservableList smallSwordParticipants = FXCollections.observableArrayList();
+
+        try {
+            ConfigReader.init("src/main/resources/cfg/default.cfg","src/main/resources/cfg/test.cfg");
+        }
+        catch (HumanReadableFatalError humanReadableFatalError) { humanReadableFatalError.printStackTrace(); }
 
         Competition.init(
                 new util.Pair<ObservableList<Participant>,WeaponType>(rapierParticipants, WeaponType.RAPIER),
@@ -44,7 +73,10 @@ public class WelcomeController implements Initializable {
 
         if (!newCompetitionName.getText().equals("nazwa zawodów (yyyy-mm-dd_miasto)"))
             Competition.getInstance().setCompetitionName(newCompetitionName.getText());
+        loadCompetitorsView();
+    }
 
+    private void loadCompetitorsView(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/competitorsView.fxml"));
         new Button();
         Parent root = null;

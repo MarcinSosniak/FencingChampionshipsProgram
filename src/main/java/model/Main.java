@@ -29,18 +29,6 @@ public class Main extends Application {
 
 
     public static void main(String[] args)  {
-        try {
-            ConfigReader.init("src/main/resources/cfg/default.cfg","src/main/resources/cfg/test.cfg");
-            //   DataGenerator.generateSampleCompetition();
-            launch(args);
-        }
-        catch(HumanReadableFatalError ex)
-        {
-            System.out.println(ex.getMessage());
-            System.out.println("press enter to exit");
-            Scanner scan= new Scanner(System.in);
-            scan.nextLine();
-            System.exit(2);
-        }
+        launch(args);
     }
 }

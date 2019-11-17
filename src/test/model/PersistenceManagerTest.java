@@ -50,17 +50,14 @@ public class PersistenceManagerTest {
         p3 = new Participant("Name3","Surname3","Location1","lacationGroup1", JudgeState.NON_JUDGE,new Date());
         p4 = new Participant("Name4","Surname4","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date());
 
-        ObservableList<Participant> participants = FXCollections.observableArrayList();
-        participants.add(p1); participants.add(p2); participants.add(p3); participants.add(p4);
-
         ObservableList rapierParticipants = FXCollections.observableArrayList();
         rapierParticipants.add(p1); rapierParticipants.add(p2); rapierParticipants.add(p4);
 
         ObservableList sabreParticipants = FXCollections.observableArrayList();
-        sabreParticipants.add(p2); sabreParticipants.add(p4);
+        sabreParticipants.add(p2);// sabreParticipants.add(p4);
 
         ObservableList smallSwordParticipants = FXCollections.observableArrayList();
-        smallSwordParticipants.add(p1); smallSwordParticipants.add(p3); smallSwordParticipants.add(p2);
+        smallSwordParticipants.add(p1); //smallSwordParticipants.add(p3); smallSwordParticipants.add(p2);
 
         competition = new Competition(
                 new util.Pair<ObservableList<Participant>, WeaponType>(rapierParticipants, WeaponType.RAPIER),
@@ -99,7 +96,7 @@ public class PersistenceManagerTest {
 
     @Test
     public void test(){
-        String filename = "file.bin";
+        String filename = "competition.bin";
 
         // Serialization
         try {
@@ -123,7 +120,7 @@ public class PersistenceManagerTest {
         catch(IOException ex) { System.out.println("IOException while deserialization " + ex.toString()); }
         catch(ClassNotFoundException ex) { System.out.println("ClassNotFoundException is caught"); }
         assertEquals(competition, c);
-        new File(filename).delete();
+        //new File(filename).delete();
     }
 
 }

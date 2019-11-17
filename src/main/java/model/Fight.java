@@ -21,6 +21,7 @@ public  class Fight implements Serializable {
     private ObjectProperty<Participant> secondParticipant = new SimpleObjectProperty<>();
     private ObjectProperty<FightScore> score = new SimpleObjectProperty<>();
     private Round round;
+
     public Fight(Round round,Participant first, Participant second){
         this.round=round;
         this.firstParticipant.setValue(first);

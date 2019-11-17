@@ -79,6 +79,7 @@ public class ConfigReader {
 
     public static void init(String defaultConfigFilePath,String overrideConfigFilePath) throws HumanReadableFatalError
     {
+        System.out.println("in init");
         if(instance!=null)
             throw new IllegalStateException("multiple initializations");
         try {

@@ -36,6 +36,8 @@ public class WeaponCompetition implements Serializable {
         this.participants = participants;
         this.rounds = FXCollections.observableArrayList();
         this.competitionState = CompetitionState.INITIAL_STATE;
+
+        for (Participant p: participants) p.setfWeaponParticipant(weaponType, true);
     }
 
     @Override

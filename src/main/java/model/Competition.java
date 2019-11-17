@@ -20,6 +20,9 @@ public class Competition implements Serializable {
     private KillerRandomizerStrategy killerRandomizerStrategy;
     private String competitionName;
 
+    private static final long serialVersionUID = 6529685098267757690L;
+
+
 
     public Competition(util.Pair<ObservableList<Participant>,WeaponType> participants1,
                         util.Pair<ObservableList<Participant>,WeaponType> participants2,
