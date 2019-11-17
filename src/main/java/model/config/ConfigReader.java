@@ -20,6 +20,10 @@ public class ConfigReader {
     //private ConfigReader() { throw new IllegalStateException(); } // DO NOT CALL THIS
     // in better language we would use ConfigReader() = delete;
 
+    public static void nullInstance(){
+        ConfigReader.instance = null;
+    }
+
     private ConfigReader(String defaultConfigFilePath, String overrideConfigFilePath) throws FileNotFoundException,IOException,IllegalArgumentException
     {
         if(defaultConfigFilePath==null && overrideConfigFilePath==null)

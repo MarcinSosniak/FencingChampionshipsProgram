@@ -13,6 +13,7 @@ import model.Competition;
 import model.DataGenerator;
 import model.Participant;
 import model.WeaponCompetition;
+import model.config.ConfigReader;
 import model.enums.JudgeState;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -63,6 +64,7 @@ public class CompetitorsViewController implements Initializable {
     @FXML
     public void goBack(){
         Competition.nullInstance();
+        ConfigReader.nullInstance();
         ApplicationController.getApplicationController().initRootLayouts();
     }
 
