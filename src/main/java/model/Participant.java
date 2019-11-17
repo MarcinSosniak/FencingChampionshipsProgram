@@ -191,11 +191,19 @@ public class Participant implements Serializable{
         else throw new NoSuchWeaponException();
     }
 
-    public void setPointsForWeapon(ChangePointsCommand.ValidInvocationChecker checker, WeaponType type, RationalNumber points){
+    public void addPointsForWeapon(ChangePointsCommand.ValidInvocationChecker checker, WeaponType type, RationalNumber points){
         Objects.requireNonNull(checker);
         if (weaponPointsProperty.containsKey(type)) {
-            System.out.println("replacing points in partcipant");
+            System.out.println("adding points in partcipant");
             weaponPointsProperty.get(type).setValue(weaponPointsProperty.get(type).get().add(points));
+        }
+    }
+
+    public void subtractPointsFromWeapon(ChangePointsCommand.ValidInvocationChecker checker, WeaponType type, RationalNumber points){
+        Objects.requireNonNull(checker);
+        if (weaponPointsProperty.containsKey(type)) {
+            System.out.println("subtract points in partcipant");
+            weaponPointsProperty.get(type).setValue(weaponPointsProperty.get(type).get().substract(points));
         }
     }
 

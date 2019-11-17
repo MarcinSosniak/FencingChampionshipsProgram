@@ -15,7 +15,7 @@
       </Spinner>
       <Button fx:id="cancelButton" onAction="#cancelAddingPoints" layoutX="23.0" layoutY="154.0" mnemonicParsing="false" text="anuluj" />
       <Button fx:id="confirmButton" onAction="#addPoints" layoutX="214.0" layoutY="154.0" mnemonicParsing="false" text="ok" />
-      <Text layoutX="77.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ile punktów dodać" wrappingWidth="136.80329132080078">
+      <Text layoutX="77.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ile punktów dodać?" wrappingWidth="136.80329132080078">
          <font>
             <Font size="13.0" />
          </font>

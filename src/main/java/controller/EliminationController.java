@@ -272,9 +272,9 @@ public class EliminationController implements Initializable {
                 case SMALL_SWORD: { p = (Participant) smallSwordTableView.getSelectionModel().getSelectedItem(); break; }
                 case SABRE: { p = (Participant) sabreTableView.getSelectionModel().getSelectedItem(); break; }
             }
-            System.out.println(p.getName());
+            //System.out.println(p.getName());
             AddPointsController addPointsController = (AddPointsController) loader.getController();
-            addPointsController.setData(p, Competition.getInstance().getWeaponCompetition(wt).getLastRound(), this);
+            addPointsController.setData(p, Competition.getInstance().getWeaponCompetition(wt).getLastRound());
         });
         GridPane.setConstraints(addPoints, 0, 2);
 
@@ -282,7 +282,26 @@ public class EliminationController implements Initializable {
         substractPoints.setMaxSize(1000, 1000);
         substractPoints.setText("SubstractPoints");
         //substractPoints.setStyle("-fx-background-color: grey; -fx-padding: 10;");
-        substractPoints.setOnAction(x -> System.out.format("Implement me\n"));
+
+        substractPoints.setOnAction(x -> {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/subtractPoints.fxml"));
+            Parent root = null;
+            try { root = loader.load(); }
+            catch (IOException ex) { System.out.println("error while subtracting points");}
+            Stage childStage = new Stage();
+            childStage.setScene(new Scene(root));
+            childStage.show();
+
+            Participant p = null;
+            switch (wt){
+                case RAPIER: {p = (Participant) rapierTableView.getSelectionModel().getSelectedItem(); break; }
+                case SMALL_SWORD: { p = (Participant) smallSwordTableView.getSelectionModel().getSelectedItem(); break; }
+                case SABRE: { p = (Participant) sabreTableView.getSelectionModel().getSelectedItem(); break; }
+            }
+            //System.out.println(p.getName());
+            SubtractPointsController subtractPointsController = (SubtractPointsController) loader.getController();
+            subtractPointsController.setData(p, Competition.getInstance().getWeaponCompetition(wt).getLastRound());
+        });
         GridPane.setConstraints(substractPoints, 0, 3);
 
         GridPane.setConstraints(paneForButtons, 1, 0);

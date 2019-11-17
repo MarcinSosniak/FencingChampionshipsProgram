@@ -18,7 +18,7 @@ import model.exceptions.NoSuchWeaponException;
 import util.RationalNumber;
 
 
-public class AddPointsController {
+public class SubtractPointsController {
 
     @FXML
     Spinner<Double> spinner;
@@ -31,24 +31,23 @@ public class AddPointsController {
     private Participant participant;
     private Round round;
 
-    public AddPointsController(){}
+    public SubtractPointsController(){}
 
     public void setData(Participant participant, Round round){
         this.participant = participant;
         this.round = round;
     }
 
-    public void cancelAddingPoints(){
+    public void cancelSubtractPoints(){
         Stage toClose = (Stage) cancelButton.getScene().getWindow();
         toClose.close();
-        System.out.format("cancelAddingPoints\n");
+        System.out.format("cancelSubtractPoints\n");
     }
 
-    public void addPoints(){
+    public void subtractPoints(){
         System.out.println("spinner: " + spinner.getValue());
-        System.out.println(round.getMyWeaponCompetition().getWeaponType());
 
-        round.addPointsToParticipant(participant, new RationalNumber((int)(spinner.getValue() * 10), 10));
+        round.subtractPointsFromParticipant(participant, new RationalNumber((int)(spinner.getValue() * 10), 10));
         Stage toClose = (Stage) confirmButton.getScene().getWindow();
         try {
             System.out.println(participant.getName() + " " + participant.getPointsForWeaponProperty(round.getMyWeaponCompetition().getWeaponType()));

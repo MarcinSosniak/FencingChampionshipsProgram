@@ -22,12 +22,15 @@ public class ChangePointsCommand implements Command {
 
     @Override
     public void execute() {
+        System.out.println("Executing changePointsCommand");
         if (ifAdd) {
-            System.out.println("here");
             round.addRoundScorePoints(checker, participant, pointsNumber);
-            participant.setPointsForWeapon(checker, round.getMyWeaponCompetition().getWeaponType(), pointsNumber);
+            participant.addPointsForWeapon(checker, round.getMyWeaponCompetition().getWeaponType(), pointsNumber);
         }
-        else round.subtractRoundScorePoints(checker, participant, pointsNumber);
+        else {
+            round.subtractRoundScorePoints(checker, participant, pointsNumber);
+            participant.subtractPointsFromWeapon(checker, round.getMyWeaponCompetition().getWeaponType(), pointsNumber);
+        }
     }
 
     @Override
