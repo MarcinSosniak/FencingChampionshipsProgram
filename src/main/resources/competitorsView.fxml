@@ -9,7 +9,9 @@
 <?import javafx.geometry.Insets?>
 
 <GridPane prefHeight="431.0" prefWidth="616.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CompetitorsViewController">
-    <fx:include fx:id="menubar" source="menuBar.fxml" GridPane.rowIndex="0" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS" fillHeight="true"/>
+    <fx:include fx:id="menuBar" source="menuBar.fxml" GridPane.rowIndex="0" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS" fillHeight="true" />
+
+
     <TableView fx:id="competitorsTable" GridPane.rowIndex="1">
         <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -39,7 +41,7 @@
        </GridPane.margin>
     </Button>
     <Button text="+ dodaj nowego zawodnika" onAction="#addNewCompetitor" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
-    <Button text="ROZPOCZNIJ ZAWODY"  GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" style="-fx-background-color: green" onAction="#startCompetition" GridPane.rowIndex="2">
+    <Button text="ROZPOCZNIJ ZAWODY" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" style="-fx-background-color: green" onAction="#startCompetition" GridPane.rowIndex="2">
             <GridPane.margin>
                 <Insets right="5"/>
             </GridPane.margin>

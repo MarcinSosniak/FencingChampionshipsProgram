@@ -5,22 +5,34 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import model.*;
+import model.command.ChangePointsCommand;
 import model.enums.FightScore;
 import model.enums.WeaponType;
 import model.exceptions.NoSuchCompetitionException;
 import model.exceptions.NoSuchWeaponException;
 import util.RationalNumber;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * |-------------------------------------------------------------------------|
@@ -50,13 +62,10 @@ import util.RationalNumber;
 
 /*TODO: add color setting */
 
-public class EliminationController {
-
-
-    private Competition competition;
+public class EliminationController implements Initializable {
 
     @FXML
-    private ObservableMap<WeaponType, ObservableList<Participant>> weaponCompetitionParticipants;
+    ObservableMap<WeaponType, ObservableList<Participant>> weaponCompetitionParticipants;
     @FXML
     private TabPane tabPane;
     @FXML
@@ -66,9 +75,15 @@ public class EliminationController {
     @FXML
     private Tab smallSwordTab;
 
+    private TableView rapierTableView;
+    private TableView sabreTableView;
+    private TableView smallSwordTableView;
 
     public EliminationController() {
+    }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle){
     }
 
 
@@ -81,12 +96,11 @@ public class EliminationController {
         tabPane.getTabs().add(smallSwordTab);
     }
 
-    public void setData(Competition competition) {
-        this.competition = competition;
+    public void setData() {
         this.weaponCompetitionParticipants = FXCollections.observableHashMap();
         for (WeaponType wt : WeaponType.values()) {
             try {
-                this.weaponCompetitionParticipants.put(wt, FXCollections.observableArrayList(this.competition.getSingleWeaponCompetition(wt).getParticipants()));
+                this.weaponCompetitionParticipants.put(wt, FXCollections.observableArrayList(Competition.getInstance().getSingleWeaponCompetition(wt).getParticipants()));
 
             } catch (IllegalStateException e) {
                 e.printStackTrace();
@@ -115,10 +129,10 @@ public class EliminationController {
         mainTabPane.getColumnConstraints().addAll(column1, column2);
 
         return mainTabPane;
-
     }
 
     private GridPane prepareTableViewPane(WeaponType wt) {
+
         GridPane tableViewGridPane = new GridPane();
 
         RowConstraints rc = new RowConstraints();
@@ -131,6 +145,22 @@ public class EliminationController {
 
 
         TableView tv = new TableView();
+        switch (wt){
+            case SABRE: {
+                sabreTableView = tv;
+                break;
+            }
+            case SMALL_SWORD: {
+                smallSwordTableView = tv;
+                break;
+            }
+            case RAPIER: {
+                rapierTableView = tv;
+                break;
+            }
+        }
+
+       // tv.se
         tv.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tv.setItems(weaponCompetitionParticipants.get(wt));
 
@@ -151,7 +181,7 @@ public class EliminationController {
         });
         group.setCellValueFactory(x -> {
             try {
-                String g = competition.getSingleWeaponCompetition(wt).groupForParticipant(x.getValue());
+                String g = Competition.getInstance().getSingleWeaponCompetition(wt).groupForParticipant(x.getValue());
                 return new SimpleStringProperty(g);
             } catch (IllegalStateException e) {
                 e.printStackTrace();
@@ -162,11 +192,19 @@ public class EliminationController {
         tv.getColumns().addAll(name, surname, group, points);
 
         tv.setRowFactory(row -> {
+
             TableRow<Participant> tableRow = new TableRow<>();
             tableRow.setOnMouseClicked(event -> {
+                System.out.println("miauuuuuuuuuuuu");
+                Participant p = (Participant) tv.getSelectionModel().getSelectedItem();
+                System.out.println(p.getName());
+                System.out.println(tableRow.getItem().getName());
+
+
+                System.out.println(event.getButton().toString());
                 if (event.getButton().equals(MouseButton.SECONDARY) && !tableRow.isEmpty()) {
                     System.out.format("Right click on add injury\n");
-                    Participant p = tableRow.getItem();
+
                     Stage childScene = ApplicationController.getApplicationController().renderAddInjury("/addInjury.fxml", "Add_Injury", true, p);
                     childScene.showAndWait();
                 }
@@ -201,33 +239,55 @@ public class EliminationController {
         Button nextRoundButton = new Button();
         nextRoundButton.setMaxSize(1000, 1000);
         nextRoundButton.setText("Next Round");
-        nextRoundButton.setStyle("-fx-background-color: pink ; -fx-padding: 10;");
-        nextRoundButton.setOnAction(x -> System.out.format("Implement me\n"));
+        //nextRoundButton.setStyle("-fx-background-color: pink ; -fx-padding: 10;");
+        nextRoundButton.setOnAction(x -> {
+            System.out.format("Implement me\n");
+        });
+
         GridPane.setConstraints(nextRoundButton, 0, 0);
 
         Button competitionStatus = new Button();
         competitionStatus.setMaxSize(1000, 1000);
         try {
-            competitionStatus.setText(this.competition.getSingleWeaponCompetition(wt).getWeaponCompetitionState().toString());
+            competitionStatus.setText(Competition.getInstance().getSingleWeaponCompetition(wt).getWeaponCompetitionState().toString());
         } catch (IllegalStateException e) {
             e.printStackTrace();
             competitionStatus.setText("UnknownCompetitionState");
         }
-        competitionStatus.setStyle("-fx-background-color: yellow; -fx-padding: 10;");
+        //competitionStatus.setStyle("-fx-background-color: yellow; -fx-padding: 10;");
         competitionStatus.setOnAction(x -> System.out.format("Implement me\n"));
         GridPane.setConstraints(competitionStatus, 0, 1);
 
         Button addPoints = new Button();
         addPoints.setMaxSize(1000, 1000);
         addPoints.setText("Add Points");
-        addPoints.setStyle("-fx-background-color: green; -fx-padding: 10;");
-        addPoints.setOnAction(x -> System.out.format("Implement me\n"));
+        //addPoints.setStyle("-fx-background-color: green; -fx-padding: 10;");
+
+        addPoints.setOnAction(x -> {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/addPoints.fxml"));
+            Parent root = null;
+            try { root = loader.load(); }
+            catch (IOException ex) { System.out.println("error while adding points");}
+            Stage childStage = new Stage();
+            childStage.setScene(new Scene(root));
+            childStage.show();
+
+            Participant p = null;
+            switch (wt){
+                case RAPIER: {p = (Participant) rapierTableView.getSelectionModel().getSelectedItem(); break; }
+                case SMALL_SWORD: { p = (Participant) smallSwordTableView.getSelectionModel().getSelectedItem(); break; }
+                case SABRE: { p = (Participant) sabreTableView.getSelectionModel().getSelectedItem(); break; }
+            }
+            System.out.println(p.getName());
+            AddPointsController addPointsController = (AddPointsController) loader.getController();
+            addPointsController.setData(p, Competition.getInstance().getWeaponCompetition(wt).getLastRound(), this);
+        });
         GridPane.setConstraints(addPoints, 0, 2);
 
         Button substractPoints = new Button();
         substractPoints.setMaxSize(1000, 1000);
         substractPoints.setText("SubstractPoints");
-        substractPoints.setStyle("-fx-background-color: grey; -fx-padding: 10;");
+        //substractPoints.setStyle("-fx-background-color: grey; -fx-padding: 10;");
         substractPoints.setOnAction(x -> System.out.format("Implement me\n"));
         GridPane.setConstraints(substractPoints, 0, 3);
 
@@ -249,7 +309,9 @@ public class EliminationController {
         GridPane gridPaneForGroups = new GridPane();
 
         try {
-            ObservableList<CompetitionGroup> cgl = this.competition.getSingleWeaponCompetition(wt).getLastRound().getGroups();
+            Round lastRound = Competition.getInstance().getSingleWeaponCompetition(wt).getLastRound();
+
+            ObservableList<CompetitionGroup> cgl = Competition.getInstance().getSingleWeaponCompetition(wt).getLastRound().getGroups();
             int rows = (cgl.size() % columns == 0) ? cgl.size() / columns : cgl.size() / columns + 1;
 
             /* Create rows and columns for group panel */
@@ -303,6 +365,7 @@ public class EliminationController {
             // vBoxPane.getChildren().add(gridPaneForGroups);
             scrollPaneForVBOX.setContent(gridPaneForGroups);
             return scrollPaneForVBOX;
+
         } catch (IllegalStateException e) {
             e.printStackTrace();
             System.out.format("Error while loading groups\n");
@@ -319,8 +382,9 @@ public class EliminationController {
 
         try {
             GridPane gridPaneForFights = new GridPane();
+            Round lastRound = Competition.getInstance().getSingleWeaponCompetition(wt).getLastRound();
 
-            ObservableList<CompetitionGroup> groups = this.competition.getSingleWeaponCompetition(wt).getLastRound().getGroups();
+            ObservableList<CompetitionGroup> groups = lastRound.getGroups();
 
             int rows = groups.size() % columns == 0 ? (groups.size() / columns) : (groups.size() / columns + 1);
 
@@ -490,6 +554,13 @@ public class EliminationController {
 
         /* Add tableView pane */
         GridPane tableViewPane = prepareTableViewPane(wt);
+
+//        tableViewPane.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent e) {
+//                System.out.println("kot");
+//            }
+//        });
 
         /* Add button panel */
         GridPane buttonPane = prepareButtonPane(wt);

@@ -14,6 +14,7 @@ public class ChangePointsCommand implements Command {
     private boolean ifAdd;
 
     public ChangePointsCommand(Round round, Participant participant, util.RationalNumber pointsNumber, boolean ifAdd) {
+        this.round = round;
         this.participant = participant;
         this.pointsNumber = pointsNumber;
         this.ifAdd = ifAdd;
@@ -21,7 +22,10 @@ public class ChangePointsCommand implements Command {
 
     @Override
     public void execute() {
-        if (ifAdd) round.addRoundScorePoints(checker, participant, pointsNumber);
+        if (ifAdd) {
+            System.out.println("here");
+            round.addRoundScorePoints(checker, participant, pointsNumber);
+        }
         else round.subtractRoundScorePoints(checker, participant, pointsNumber);
     }
 

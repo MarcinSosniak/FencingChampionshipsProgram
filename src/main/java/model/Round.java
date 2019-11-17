@@ -139,7 +139,8 @@ public class Round implements Serializable {
 
     public void addRoundScorePoints (ChangePointsCommand.ValidInvocationChecker checker, Participant p, RationalNumber points){
         Objects.requireNonNull(checker);
-        roundScore.get(p).get().add(points);
+        this.getMyWeaponCompetition().getParticipants().remove(p);
+        //roundScore.get(p).get().add(points);
     }
 
 

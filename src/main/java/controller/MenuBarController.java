@@ -2,10 +2,25 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class MenuBarController implements Initializable {
+
+    @FXML
+    Button save;
+    @FXML
+    Button saveAs;
+    @FXML
+    Button redo;
+    @FXML
+    Button undo;
+    @FXML
+    Button exportResults;
+    @FXML
+    Button adminMode;
 
     @FXML
     public void save(){

@@ -9,6 +9,7 @@ import model.enums.WeaponType;
 import model.exceptions.NoSuchWeaponException;
 import util.RationalNumber;
 
+import javax.swing.text.html.ImageView;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -199,7 +200,10 @@ public class Participant implements Serializable{
         throw new IllegalStateException("Invalid state");
     }
 
-    public void addInjury(WeaponType wt, WeaponCompetition wc){wc.getcStack().executeCommand(new CommandAddInjury(this, wt, wc));}
+    public void addInjury(WeaponType wt, WeaponCompetition wc){
+        System.out.println("1: " + wc == null);
+        System.out.println(wc.getcStack() == null);
+        wc.getcStack().executeCommand(new CommandAddInjury(this, wt, wc));}
 
     public void addInjuries(List<WeaponType> wt,WeaponCompetition wc){wc.getcStack().executeCommand(new CommandAddInjury(this, wt, wc));}
 
@@ -220,13 +224,13 @@ public class Participant implements Serializable{
         this.fSmallSwordInjury.set(fSmallSwordInjury);
     }
 
+
     public ObjectProperty<RationalNumber> getPointsForWeaponPropertyLastRound(WeaponType type) throws NoSuchWeaponException {
-        try
-        {
+        try {
+            System.out.println("tuuuuuuuu");
             return Competition.getInstance().getSingleWeaponCompetition(type).getLastRound().getParticpantScoreProperty(this);
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             throw new NoSuchWeaponException();
         }
     }

@@ -166,7 +166,8 @@ public class WeaponCompetition implements Serializable {
 
     public Round getLastRound()
     {
-        return rounds.get(rounds.size()-1);
+        if (rounds.size() > 0) return rounds.get(rounds.size()-1);
+        return null;
     }
 
 
@@ -264,4 +265,5 @@ public class WeaponCompetition implements Serializable {
             fRoundReady = true;
         }
     }
+    public ObservableList<Participant> getParticipantsObservableList(){ return participants; }
 }

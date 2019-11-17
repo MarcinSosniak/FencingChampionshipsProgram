@@ -4,11 +4,11 @@
 
 <HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.MenuBarController" >
     <children>
-        <Button text="Zapisz" fx:id="Save" HBox.hgrow="ALWAYS" onAction="#save" maxHeight="Infinity"/>
-        <Button text="Zapisz jako" fx:id="Save_as" HBox.hgrow="ALWAYS" onAction="#saveAs" maxHeight="Infinity"/>
-        <Button text="Cofnij" fx:id="Undo" HBox.hgrow="ALWAYS" onAction="#undo" maxHeight="Infinity"/>
-        <Button text="Ponów" fx:id="Redo" HBox.hgrow="ALWAYS" onAction="#redo" maxHeight="Infinity"/>
-        <Button text="Eksportuj wyniki" fx:id="Export_results" HBox.hgrow="ALWAYS" onAction="#exportResults" maxHeight="Infinity"/>
-        <Button text="Tryb administratora" fx:id="Admin_mode" HBox.hgrow="ALWAYS" onAction="#adminModeOn" maxHeight="Infinity"/>
+        <Button text="Zapisz" fx:id="save" HBox.hgrow="ALWAYS" onAction="#save" maxHeight="Infinity"/>
+        <Button text="Zapisz jako" fx:id="saveAs" HBox.hgrow="ALWAYS" onAction="#saveAs" maxHeight="Infinity"/>
+        <Button text="Cofnij" fx:id="undo" HBox.hgrow="ALWAYS" onAction="#undo" maxHeight="Infinity"/>
+        <Button text="Ponów" fx:id="redo" HBox.hgrow="ALWAYS" onAction="#redo" maxHeight="Infinity"/>
+        <Button text="Eksportuj wyniki" fx:id="exportResults" HBox.hgrow="ALWAYS" onAction="#exportResults" maxHeight="Infinity"/>
+        <Button text="Tryb administratora" fx:id="adminMode" HBox.hgrow="ALWAYS" onAction="#adminModeOn" maxHeight="Infinity"/>
     </children>
 </HBox>

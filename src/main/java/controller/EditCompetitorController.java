@@ -14,7 +14,6 @@ import java.util.ResourceBundle;
 
 public class EditCompetitorController implements Initializable {
 
-
     @FXML
     private Participant toEdit;
 

@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.Competition;
 import model.Participant;
 import model.enums.WeaponType;
 
@@ -36,13 +37,13 @@ public class AddInjuryController {
     @FXML
     private void confirm(){
         if(!SabreInjury.isDisable() && SabreInjury.isSelected()){
-            p.addInjury(WeaponType.SABRE,null);
+            p.addInjury(WeaponType.SABRE, Competition.getInstance().getSingleWeaponCompetition(WeaponType.SABRE));
         }
         if(!RapierInjury.isDisable() && RapierInjury.isSelected()){
-            p.addInjury(WeaponType.RAPIER,null);
+            p.addInjury(WeaponType.RAPIER,Competition.getInstance().getSingleWeaponCompetition(WeaponType.RAPIER));
         }
         if(!SmallSwordInjury.isDisable() && SmallSwordInjury.isSelected()){
-            p.addInjury(WeaponType.SMALL_SWORD,null);
+            p.addInjury(WeaponType.SMALL_SWORD,Competition.getInstance().getSingleWeaponCompetition(WeaponType.SMALL_SWORD));
         }
 
         Stage toClose = (Stage) confirmButton.getScene().getWindow();

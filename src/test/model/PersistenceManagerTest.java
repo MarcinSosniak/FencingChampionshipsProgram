@@ -62,7 +62,7 @@ public class PersistenceManagerTest {
         ObservableList smallSwordParticipants = FXCollections.observableArrayList();
         smallSwordParticipants.add(p1); smallSwordParticipants.add(p3); smallSwordParticipants.add(p2);
 
-        competition =  new Competition(
+        competition = new Competition(
                 new util.Pair<ObservableList<Participant>, WeaponType>(rapierParticipants, WeaponType.RAPIER),
                 new util.Pair<ObservableList<Participant>,WeaponType>(sabreParticipants,WeaponType.SABRE),
                 new util.Pair<ObservableList<Participant>,WeaponType>(smallSwordParticipants,WeaponType.SMALL_SWORD),

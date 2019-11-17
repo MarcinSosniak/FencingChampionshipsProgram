@@ -60,7 +60,7 @@ public class CommandAddInjury implements Command {
     @Override
     public void undo() {
         participant.setfRapierInjury(validInvocationChecker, oldFRapierInjury);
-        participant.setfSabreInjury(validInvocationChecker, oldFRapierInjury);
+        participant.setfSabreInjury(validInvocationChecker, oldSabreInjury);
         participant.setfSmallSwordInjury(validInvocationChecker, oldFSmallSwordInjury);
 
         for (Command c : commandsUsedList) {

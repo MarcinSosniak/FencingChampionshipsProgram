@@ -65,6 +65,10 @@ public class Competition implements Serializable {
         return instance;
     }
 
+    public static void nullInstance(){
+        instance = null;
+    }
+
     public List<Participant> getParticipants() { return participants; }
 
     public List<WeaponCompetition> getWeaponCompetitions() { return weaponCompetitions; }
@@ -122,6 +126,12 @@ public class Competition implements Serializable {
         weaponCompetitions = FXCollections.observableArrayList((ArrayList<WeaponCompetition>) stream.readObject());
         participants = FXCollections.observableArrayList((ArrayList<Participant>) stream.readObject());
         killerRandomizerStrategy = (KillerRandomizerStrategy) stream.readObject();
+    }
+
+    public ObservableList<Participant> getParticipantsObservableList(){ return participants; }
+
+    public WeaponCompetition getWeaponCompetition(WeaponType wt){
+        return weaponCompetitions.stream().filter(wc -> wc.getWeaponType().equals(wt)).findFirst().get();
     }
 
 }

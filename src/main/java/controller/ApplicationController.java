@@ -12,7 +12,8 @@ import model.Participant;
 import model.enums.WeaponType;
 
 public class ApplicationController {
-    private Stage primaryStage;
+
+    static Stage primaryStage;
     private Stage currentStage;
     private static ApplicationController singletonApplicationController;
     public ApplicationController(Stage primaryStage){
@@ -25,50 +26,12 @@ public class ApplicationController {
     }
 
     public void initRootLayouts(){
-        this.primaryStage.setTitle("Inzynierka Szermierka");
+        primaryStage.setTitle("Inzynierka Szermierka");
 
-        /** Competitors View */
-//        try{
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/competitorsView.fxml"));
-//            Parent root = loader.load();
-//            /** In case if the controller is needed */
-//            CompetitorsViewController competitorsViewController = (CompetitorsViewController) loader.getController();
-//            /** Generating competitiors data, later init controller with empty list */
-//
-//            primaryStage.setScene(new Scene(root));
-//            this.currentStage = primaryStage;
-//            primaryStage.show();
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            System.out.format("Cannot load main FXML\n");
-//        }
-
-//        /** Elimination Controller */
-//        try{
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/elimination.fxml"));
-//            Parent root = loader.load();
-//            /** In case if the controller is needed */
-//            Competition c = DataGenerator.generateSampleCompetition();
-//            EliminationController ec = (EliminationController) loader.getController();
-//            ec.setData(c);
-//            /** Generating competitiors data, later init controller with empty list */
-//
-//            primaryStage.setScene(new Scene(root));
-//            this.currentStage = primaryStage;
-//            primaryStage.show();
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            System.out.format("Cannot load main FXML\n");
-//        }
-
-        /** Competitors View */
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/participantView.fxml"));
-            Parent root = loader.load();
-            Competition c = DataGenerator.generateSampleCompetition();
-            ParticipantViewController controller = (ParticipantViewController) loader.getController();
-            controller.setData(c.getSingleWeaponCompetition(WeaponType.SABRE).getLastRound());
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/welcomeScreen.fxml"));
 
+            Parent root = loader.load();
             primaryStage.setScene(new Scene(root));
             this.currentStage = primaryStage;
             primaryStage.show();
@@ -79,7 +42,7 @@ public class ApplicationController {
 
     }
 
-    public Stage renderAddNewCompetitor(String source, String title , boolean fWindowModal, ObservableList<Participant> participants) {
+    public Stage renderAddNewCompetitor(String source, String title , boolean fWindowModal) {
         Stage outputStage = new Stage();
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource(source));
@@ -87,10 +50,8 @@ public class ApplicationController {
             outputStage.setScene(newScene);
             outputStage.setTitle(title);
             outputStage.initOwner(this.currentStage);
-            if (fWindowModal)
-                outputStage.initModality(Modality.WINDOW_MODAL);
-            AddCompetitorController controller = (AddCompetitorController) loader.getController();
-            controller.setData(participants);
+            if (fWindowModal) outputStage.initModality(Modality.WINDOW_MODAL);
+
         }catch (Exception e){
             System.out.format("Error while rendering add dialog");
             e.printStackTrace();

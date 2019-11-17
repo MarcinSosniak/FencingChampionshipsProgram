@@ -11,6 +11,93 @@ public class ConfigReader {
 
     public ConfigReader(){}
 
+    private static ConfigReader instance=null;
+    private static final int MAX_IO_RETRIES = 5;
+    private static final int IO_COOLDOWN_TIME_MS = 200; // if we have to retry how long to wait ?
+
+    private HashMap<String,TagVariables> tags = new HashMap<>();
+
+    //private ConfigReader() { throw new IllegalStateException(); } // DO NOT CALL THIS
+    // in better language we would use ConfigReader() = delete;
+
+    private ConfigReader(String defaultConfigFilePath, String overrideConfigFilePath) throws FileNotFoundException,IOException,IllegalArgumentException
+    {
+        if(defaultConfigFilePath==null && overrideConfigFilePath==null)
+            throw new IllegalArgumentException(" At least one config file must be specified");
+        try{
+            if(defaultConfigFilePath!=null)
+            {
+                fillWeak(defaultConfigFilePath);
+            }
+        }
+        catch (IOException ex)
+        {
+            for(int i=0; i< MAX_IO_RETRIES; i++)
+            {
+                try{
+                    Thread.sleep(IO_COOLDOWN_TIME_MS);
+                    fillWeak(defaultConfigFilePath);
+                    break; // if successfull break
+                }
+                catch (FileNotFoundException fileNotFoundEx)
+                {
+                    throw fileNotFoundEx;
+                }
+                catch (IOException|InterruptedException exInner)
+                {
+                    ;// ignore
+                }
+            }
+        }
+        try{
+            if(overrideConfigFilePath!=null)
+            {
+                fillOverride(overrideConfigFilePath);
+            }
+        }
+        catch (IOException ex)
+        {
+            for(int i=0; i< MAX_IO_RETRIES; i++)
+            {
+                try{
+                    Thread.sleep(IO_COOLDOWN_TIME_MS);
+                    fillOverride(overrideConfigFilePath);
+                    break; // if successfull break
+                }
+                catch (FileNotFoundException fileNotFoundEx)
+                {
+                    throw fileNotFoundEx;
+                }
+                catch (IOException|InterruptedException exInner)
+                {
+                    ;// ignore
+                }
+            }
+        }
+
+    }
+
+    public static void init(String defaultConfigFilePath,String overrideConfigFilePath) throws HumanReadableFatalError
+    {
+        if(instance!=null)
+            throw new IllegalStateException("multiple initializations");
+        try {
+            instance = new ConfigReader(defaultConfigFilePath, overrideConfigFilePath);
+        }
+        catch (FileNotFoundException ex)
+        {
+            throw new HumanReadableFatalError("File not found",ex);
+        }
+        catch (IOException ex)
+        {
+            throw new HumanReadableFatalError("Input Output Error",ex);
+        }
+        catch (IllegalArgumentException ex)
+        {
+            throw new HumanReadableFatalError("Invalid Argument",ex);
+        }
+    }
+
     private class TagVariables
     {
         private HashMap<String,String> vars = new HashMap<>();
@@ -98,71 +185,7 @@ public class ConfigReader {
 
     }
 
-    private static ConfigReader instance=null;
-    private static final int MAX_IO_RETRIES = 5;
-    private static final int IO_COOLDOWN_TIME_MS = 200; // if we have to retry how long to wait ?
 
-    private HashMap<String,TagVariables> tags = new HashMap<>();
-
-    //private ConfigReader() { throw new IllegalStateException(); } // DO NOT CALL THIS
-    // in better language we would use ConfigReader() = delete;
-
-    private ConfigReader(String defaultConfigFilePath, String overrideConfigFilePath) throws FileNotFoundException,IOException,IllegalArgumentException
-    {
-        if(defaultConfigFilePath==null && overrideConfigFilePath==null)
-            throw new IllegalArgumentException(" At least one config file must be specified");
-        try{
-            if(defaultConfigFilePath!=null)
-            {
-                fillWeak(defaultConfigFilePath);
-            }
-        }
-        catch (IOException ex)
-        {
-            for(int i=0; i< MAX_IO_RETRIES; i++)
-            {
-                try{
-                    Thread.sleep(IO_COOLDOWN_TIME_MS);
-                    fillWeak(defaultConfigFilePath);
-                    break; // if successfull break
-                }
-                catch (FileNotFoundException fileNotFoundEx)
-                {
-                    throw fileNotFoundEx;
-                }
-                catch (IOException|InterruptedException exInner)
-                {
-                    ;// ignore
-                }
-            }
-        }
-        try{
-            if(overrideConfigFilePath!=null)
-            {
-                fillOverride(overrideConfigFilePath);
-            }
-        }
-        catch (IOException ex)
-        {
-            for(int i=0; i< MAX_IO_RETRIES; i++)
-            {
-                try{
-                    Thread.sleep(IO_COOLDOWN_TIME_MS);
-                    fillOverride(overrideConfigFilePath);
-                    break; // if successfull break
-                }
-                catch (FileNotFoundException fileNotFoundEx)
-                {
-                    throw fileNotFoundEx;
-                }
-                catch (IOException|InterruptedException exInner)
-                {
-                    ;// ignore
-                }
-            }
-        }
-
-    }
 
 
     private void fillWeak(String filePath) throws FileNotFoundException,IOException
@@ -280,26 +303,7 @@ public class ConfigReader {
         else throw new IllegalStateException("multiple initializations");
     }
 
-    public static void init(String defaultConfigFilePath,String overrideConfigFilePath) throws HumanReadableFatalError
-    {
-        if(instance!=null)
-            throw new IllegalStateException("multiple initializations");
-        try {
-            instance = new ConfigReader(defaultConfigFilePath, overrideConfigFilePath);
-        }
-        catch (FileNotFoundException ex)
-        {
-            throw new HumanReadableFatalError("File not found",ex);
-        }
-        catch (IOException ex)
-        {
-            throw new HumanReadableFatalError("Input Output Error",ex);
-        }
-        catch (IllegalArgumentException ex)
-        {
-            throw new HumanReadableFatalError("Invalid Argument",ex);
-        }
-    }
+
 
     public boolean getBooleanValue(String tag, String name)
     {

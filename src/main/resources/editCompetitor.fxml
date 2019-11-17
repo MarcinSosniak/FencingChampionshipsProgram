@@ -10,7 +10,7 @@
 <?import javafx.scene.control.CheckBox?>
 
 <GridPane id="anchorPaneBackground" prefHeight="522.0" prefWidth="301.0" AnchorPane.topAnchor="10" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EditCompetitorController">
-    <Text fx:id="title" style="-fx-font-size: 20" text="Dodaj nowego zawodnika" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
+    <Text fx:id="title" style="-fx-font-size: 20" text="Edytuj zawodnika" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
 
     <TextField fx:id="competitorName" GridPane.fillWidth="TRUE" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>
     <TextField fx:id="competitorSurname" GridPane.fillWidth="TRUE" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER"/>

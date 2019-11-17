@@ -1,16 +1,20 @@
 package controller;
-import javafx.collections.ObservableList;
+
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
+import model.Competition;
 import model.DataGenerator;
 import model.Participant;
+import model.WeaponCompetition;
 import model.enums.JudgeState;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -19,13 +23,6 @@ import java.util.ResourceBundle;
 
 
 public class CompetitorsViewController implements Initializable {
-
-    private ObservableList<Participant> participants;
-
-    public void setParticipants(ObservableList<Participant> newParticipants){
-        this.participants = newParticipants;
-    }
-
 
     /**S: Table view fields */
     @FXML
@@ -40,11 +37,11 @@ public class CompetitorsViewController implements Initializable {
     @FXML
     TableColumn<Participant,String> group;
     @FXML
-    TableColumn<Participant,Boolean> fSmallSwordParticipant;
+    TableColumn<Participant, String> fSmallSwordParticipant;
     @FXML
-    TableColumn<Participant,Boolean> fSabreParticipant;
+    TableColumn<Participant,String> fSabreParticipant;
     @FXML
-    TableColumn<Participant,Boolean> fRapierParticipant;
+    TableColumn<Participant,String> fRapierParticipant;
     @FXML
     TableColumn<Participant, JudgeState> refereeStatus;
 
@@ -60,27 +57,60 @@ public class CompetitorsViewController implements Initializable {
     /**E: Table view fields */
 
     @FXML
+    MenuBarController menuBarController;
+
+
+    @FXML
     public void goBack(){
-        System.out.format("goBack (TODO:implement me)\n");
+        Competition.nullInstance();
+        ApplicationController.getApplicationController().initRootLayouts();
     }
 
     @FXML
     public void addNewCompetitor(){
         System.out.format("render addNewCompetitor (implemented)\n");
-        Stage childScene = ApplicationController.getApplicationController().renderAddNewCompetitor("/addCompetitor.fxml","Dodaj nowego zawodnika",true,participants);
+        Stage childScene = ApplicationController.getApplicationController().renderAddNewCompetitor("/addCompetitor.fxml","Dodaj nowego zawodnika",true);
         childScene.showAndWait();
     }
 
     @FXML
-    public void startCompetition(){
-        System.out.format("startCompetiton (TODO:implement me)\n");
-        System.out.format("Size: %d\n",participants.size());
+    public void startCompetition() {
+        for (WeaponCompetition weaponCompetition: Competition.getInstance().getWeaponCompetitions()){
+            weaponCompetition.getParticipantsObservableList().
+                    addAll(DataGenerator.generateWeaponParticipants(weaponCompetition.getWeaponType(), 7));
+            weaponCompetition.startFirstRound(5);
+
+        }
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/elimination.fxml"));
+            Parent root = loader.load();
+
+            EliminationController ec = (EliminationController) loader.getController();
+            ec.setData();
+            ApplicationController.primaryStage.setScene(new Scene(root));
+            ApplicationController.primaryStage.show();
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            System.out.format("Cannot load main FXML\n");
+        }
+//        try{
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/participantView.fxml"));
+//            Parent root = loader.load();
+//            ParticipantViewController controller = (ParticipantViewController) loader.getController();
+//            controller.setData(Competition.getInstance().getSingleWeaponCompetition(WeaponType.SABRE).getLastRound());
+//            ApplicationController.primaryStage.setScene(new Scene(root));
+//            ApplicationController.primaryStage.show();
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            System.out.format("Cannot load main FXML\n");
+//        }
     }
 
 
     private void editCompetitor(Participant toEdit){
         System.out.format("edit competitor to do implement\n");
-        Stage childScene = ApplicationController.getApplicationController().renderEditAndSetOwner("/editCompetitor.fxml","Edytuj zawodnika",true,toEdit);
+        Stage childScene = ApplicationController.getApplicationController().renderEditAndSetOwner("/editCompetitor.fxml","Edytuj zawodnika",true, toEdit);
         childScene.showAndWait();
     }
 
@@ -102,18 +132,25 @@ public class CompetitorsViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
+        System.out.println("in initialize competitorsViewController");
+        menuBarController.redo.setDisable(true);
+        menuBarController.undo.setDisable(true);
+        menuBarController.save.setDisable(true);
+        menuBarController.saveAs.setDisable(true);
+        menuBarController.exportResults.setDisable(true);
+        menuBarController.adminMode.setDisable(true);
 
-        this.setParticipants(DataGenerator.generateParticipants(1));
-        competitorsTable.setItems(participants);
+        competitorsTable.setItems(Competition.getInstance().getParticipantsObservableList());
         setRightClickOnCompetitor(competitorsTable);
 
         name.setCellValueFactory(dataValue -> dataValue.getValue().nameProperty());
         surname.setCellValueFactory(dataValue -> dataValue.getValue().surnameProperty());
         club.setCellValueFactory(dataValue -> dataValue.getValue().locationProperty());
         group.setCellValueFactory(dataValue -> dataValue.getValue().locationGroupProperty());
-        fSmallSwordParticipant.setCellValueFactory(dataValue ->dataValue.getValue().fSmallSwordParticipantProperty());
-        fSabreParticipant.setCellValueFactory(dataValue -> dataValue.getValue().fSabreParticipantProperty());
-        fRapierParticipant.setCellValueFactory(dataValue -> dataValue.getValue().fRapierParticipantProperty());
+
+        fSmallSwordParticipant.setCellValueFactory(param -> (param.getValue().fSmallSwordParticipantProperty().get() ? new SimpleObjectProperty<>("\u2713") : new SimpleObjectProperty<>("\u2718")));
+        fRapierParticipant.setCellValueFactory(param -> (param.getValue().fRapierParticipantProperty().get() ? new SimpleObjectProperty<>("\u2713") : new SimpleObjectProperty<>("\u2718")));
+        fSabreParticipant.setCellValueFactory(param -> (param.getValue().fSabreParticipantProperty().get() ? new SimpleObjectProperty<>("\u2713") : new SimpleObjectProperty<>("\u2718")));
         refereeStatus.setCellValueFactory(dataValue -> dataValue.getValue().judgeStateProperty());
 
         /*TODO: How to display points properly?? */
@@ -138,6 +175,5 @@ public class CompetitorsViewController implements Initializable {
                 }
             };
         });
-
     }
 }

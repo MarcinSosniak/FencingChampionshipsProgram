@@ -6,14 +6,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.Competition;
 import model.Participant;
 import model.enums.JudgeState;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 public class AddCompetitorController {
-
-    private ObservableList<Participant> participants;
 
     @FXML
     TextField competitorName;
@@ -38,9 +38,6 @@ public class AddCompetitorController {
     @FXML
     Button cancelButton;
 
-    public void setData(ObservableList<Participant> participants){
-        this.participants = participants;
-    }
 
     public void cancelAddNewCompetitor(){
         Stage toClose = (Stage) cancelButton.getScene().getWindow();
@@ -49,21 +46,26 @@ public class AddCompetitorController {
     }
     public void addNewCompetitor(){
         System.out.format("addNewCompetitor\n");
-        try{
-            Participant toAdd = new Participant(competitorName.getText(),competitorSurname.getText(),
+        Participant toAdd = null;
+        try {
+            toAdd = new Participant(competitorName.getText(),competitorSurname.getText(),
                     competitorDivision.getText(),competitorGroup.getText(),competitorFMainReferee.isSelected()? "MAIN_JUDGE": "NON_JUDGE", competitorLicenceDate.getText());
             toAdd.setfSmallSwordParticipant(competitorFSmallSword.isSelected());
             toAdd.setfRapierParticipant(competitorFRapier.isSelected());
             toAdd.setfSabreParticipant(competitorFSabre.isSelected());
-            participants.add(toAdd);
-        }catch (Exception e){
+
+        } catch (Exception e){
             e.printStackTrace();
             System.out.format("Something went wrong while adding competitor\n");
             /**TODO: flash this info to client */
-        }finally {
+        }
+        finally {
+            System.out.println("in confirm");
+            // add new participant to competition
+            Competition.getInstance().getParticipants().add(toAdd);
             Stage toClose = (Stage) addButton.getScene().getWindow();
             toClose.close();
         }
-
     }
+
 }
