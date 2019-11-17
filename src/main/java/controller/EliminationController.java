@@ -5,7 +5,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
+import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventTarget;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -75,13 +78,27 @@ public class EliminationController implements Initializable {
     @FXML
     Tab smallSwordTab;
 
-    TableView rapierTableView;
-    TableView sabreTableView;
-    TableView smallSwordTableView;
+    private TableView rapierTableView;
+    private TableView sabreTableView;
+    private TableView smallSwordTableView;
+    ObservableList<TableRow> rapierRows = FXCollections.observableArrayList();
+    ObservableList<TableRow> sabreRows = FXCollections.observableArrayList();
+    ObservableList<TableRow> smallSwordRows = FXCollections.observableArrayList();
+
+    EventType type = new EventType("disableRest");
+    MyEvent myEvent = new MyEvent(type);
+
+    private class MyEvent extends Event{
+        private Participant p;
+
+        public MyEvent(EventType<? extends Event> eventType) { super(eventType); }
+        public Participant getP() { return p; }
+        public void setP(Participant p) { this.p = p; }
+    }
+
 
     @FXML
     MenuBarController menuBarController;
-    private TableView rapierTableView1;
 
     public EliminationController() {
     }
@@ -190,13 +207,31 @@ public class EliminationController implements Initializable {
 
         tv.setRowFactory(row -> {
             TableRow<Participant> tableRow = new TableRow<>();
+            switch (wt){
+                case RAPIER: { rapierRows.add(tableRow); break;}
+                case SABRE:  { sabreRows.add(tableRow); break;}
+                case SMALL_SWORD:  { smallSwordRows.add(tableRow); break;}
+            }
+
+//            tableRow.addEventHandler(type, new EventHandler<Event>() {
+//                @Override
+//                public void handle(Event event) {
+//                   MyEvent myEv =  (MyEvent) event;
+//                   //tableRow.setDisable(true);
+//                   if (tableRow.getItem().equals(myEv.p)) System.out.println("oooo");
+//                   else System.out.println("holaaaaaaaaa: " + wt + " " + tableRow.getItem().getName());
+//                }
+//            });
+
             tableRow.setOnMouseClicked(event -> {
                 Participant p = (Participant) tv.getSelectionModel().getSelectedItem();
 
                 if (event.getButton().equals(MouseButton.SECONDARY) && !tableRow.isEmpty()) {
+                    //tableRow.fireEvent(myEvent);
                     System.out.format("Right click on add injury " + wt + "\n");
-                    Stage childScene = ApplicationController.getApplicationController().renderAddInjury("/addInjury.fxml", "Add_Injury", true, p, wt);
+                    Stage childScene = ApplicationController.getApplicationController().renderAddInjury("/addInjury.fxml", "Add_Injury", true, p, wt, this);
                     childScene.showAndWait();
+                    //tableRow.setDisable(true);
 
                     // usuwa po dodaniu obrazenia
                     //Competition.getInstance().getWeaponCompetition(WeaponType.RAPIER).getParticipants().remove(p);

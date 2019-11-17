@@ -33,6 +33,7 @@ public class AddInjuryController {
 
     private Participant p;
     private WeaponType wt;
+    private EliminationController el;
 
     @FXML
     private void cancel(){
@@ -44,25 +45,42 @@ public class AddInjuryController {
     private void confirm(){
         List<WeaponType> weaponTypesToSetInjury = new ArrayList<>();
 
-        if (!SabreInjury.isDisable() && SabreInjury.isSelected())
+        if (!SabreInjury.isDisable() && SabreInjury.isSelected()){
             weaponTypesToSetInjury.add(WeaponType.SABRE);
-        if (!RapierInjury.isDisable() && RapierInjury.isSelected())
+            el.sabreRows.forEach(r -> {
+                Participant participant1 = (Participant) r.getItem();
+                if (participant1 != null && participant1.getName().equals(p.getName())) r.setDisable(true);
+            });
+        }
+
+        if (!RapierInjury.isDisable() && RapierInjury.isSelected()){
             weaponTypesToSetInjury.add(WeaponType.RAPIER);
-        if(!SmallSwordInjury.isDisable() && SmallSwordInjury.isSelected())
+            el.rapierRows.forEach(r -> {
+                Participant participant1 = (Participant) r.getItem();
+                if (participant1 != null && participant1.getName().equals(p.getName())) r.setDisable(true);
+            });
+        }
+        if(!SmallSwordInjury.isDisable() && SmallSwordInjury.isSelected()){
             weaponTypesToSetInjury.add(WeaponType.SMALL_SWORD);
+            el.smallSwordRows.forEach(r -> {
+                Participant participant1 = (Participant) r.getItem();
+                if (participant1 != null && participant1.getName().equals(p.getName())) r.setDisable(true);
+            });
+        }
 
         WeaponCompetition wc =  Competition.getInstance().getWeaponCompetition(wt);
-        // execute command
         wc.getcStack().executeCommand( new CommandAddInjury(p, weaponTypesToSetInjury, wc));
+
 
         Stage toClose = (Stage) confirmButton.getScene().getWindow();
         toClose.close();
         System.out.format("confirmAddInjury\n");
     }
 
-    public void setData(Participant p, WeaponType wt) {
+    public void setData(Participant p, WeaponType wt, EliminationController el) {
         this.p = p;
         this.wt = wt;
+        this.el = el;
         this.update();
     }
 
