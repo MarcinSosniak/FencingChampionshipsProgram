@@ -81,6 +81,7 @@ public class EliminationController implements Initializable {
 
     @FXML
     MenuBarController menuBarController;
+    private TableView rapierTableView1;
 
     public EliminationController() {
     }
@@ -103,7 +104,7 @@ public class EliminationController implements Initializable {
         this.weaponCompetitionParticipants = FXCollections.observableHashMap();
         for (WeaponType wt : WeaponType.values()) {
             try {
-                this.weaponCompetitionParticipants.put(wt, FXCollections.observableArrayList(Competition.getInstance().getSingleWeaponCompetition(wt).getParticipants()));
+                this.weaponCompetitionParticipants.put(wt, Competition.getInstance().getSingleWeaponCompetition(wt).getParticipantsObservableList());
 
             } catch (IllegalStateException e) {
                 e.printStackTrace();
@@ -148,6 +149,7 @@ public class EliminationController implements Initializable {
 
 
         TableView tv = new TableView();
+
         switch (wt){
             case SABRE: { sabreTableView = tv; break; }
             case SMALL_SWORD: { smallSwordTableView = tv; break; }
@@ -185,22 +187,19 @@ public class EliminationController implements Initializable {
 
         tv.getColumns().addAll(name, surname, group, points);
 
-        tv.setRowFactory(row -> {
 
+        tv.setRowFactory(row -> {
             TableRow<Participant> tableRow = new TableRow<>();
             tableRow.setOnMouseClicked(event -> {
-                System.out.println("miauuuuuuuuuuuu");
                 Participant p = (Participant) tv.getSelectionModel().getSelectedItem();
-                System.out.println(p.getName());
-                System.out.println(tableRow.getItem().getName());
 
-
-                System.out.println(event.getButton().toString());
                 if (event.getButton().equals(MouseButton.SECONDARY) && !tableRow.isEmpty()) {
-                    System.out.format("Right click on add injury\n");
-
-                    Stage childScene = ApplicationController.getApplicationController().renderAddInjury("/addInjury.fxml", "Add_Injury", true, p);
+                    System.out.format("Right click on add injury " + wt + "\n");
+                    Stage childScene = ApplicationController.getApplicationController().renderAddInjury("/addInjury.fxml", "Add_Injury", true, p, wt);
                     childScene.showAndWait();
+
+                    // usuwa po dodaniu obrazenia
+                    //Competition.getInstance().getWeaponCompetition(WeaponType.RAPIER).getParticipants().remove(p);
                 }
             });
             return tableRow;
@@ -258,21 +257,21 @@ public class EliminationController implements Initializable {
         //addPoints.setStyle("-fx-background-color: green; -fx-padding: 10;");
 
         addPoints.setOnAction(x -> {
+            System.out.println("ON ACTION: " + wt);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/addPoints.fxml"));
             Parent root = null;
             try { root = loader.load(); }
-            catch (IOException ex) { System.out.println("error while adding points");}
+            catch (IOException ex) { System.out.println("error while loading add points");}
             Stage childStage = new Stage();
             childStage.setScene(new Scene(root));
             childStage.show();
 
             Participant p = null;
             switch (wt){
-                case RAPIER: {p = (Participant) rapierTableView.getSelectionModel().getSelectedItem(); break; }
+                case RAPIER: { p = (Participant) rapierTableView.getSelectionModel().getSelectedItem(); break; }
                 case SMALL_SWORD: { p = (Participant) smallSwordTableView.getSelectionModel().getSelectedItem(); break; }
                 case SABRE: { p = (Participant) sabreTableView.getSelectionModel().getSelectedItem(); break; }
             }
-            //System.out.println(p.getName());
             AddPointsController addPointsController = (AddPointsController) loader.getController();
             addPointsController.setData(p, Competition.getInstance().getWeaponCompetition(wt).getLastRound());
         });
@@ -298,7 +297,6 @@ public class EliminationController implements Initializable {
                 case SMALL_SWORD: { p = (Participant) smallSwordTableView.getSelectionModel().getSelectedItem(); break; }
                 case SABRE: { p = (Participant) sabreTableView.getSelectionModel().getSelectedItem(); break; }
             }
-            //System.out.println(p.getName());
             SubtractPointsController subtractPointsController = (SubtractPointsController) loader.getController();
             subtractPointsController.setData(p, Competition.getInstance().getWeaponCompetition(wt).getLastRound());
         });

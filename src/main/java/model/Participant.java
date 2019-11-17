@@ -222,28 +222,21 @@ public class Participant implements Serializable{
         throw new IllegalStateException("Invalid state");
     }
 
-    public void addInjury(WeaponType wt, WeaponCompetition wc){
-        System.out.println("1: " + wc == null);
-        System.out.println(wc.getcStack() == null);
-        wc.getcStack().executeCommand(new CommandAddInjury(this, wt, wc));}
-
-    public void addInjuries(List<WeaponType> wt,WeaponCompetition wc){wc.getcStack().executeCommand(new CommandAddInjury(this, wt, wc));}
-
 
     // SHOULD BE SET ONLY THROUGH COMMAND
     public void setfRapierInjury(CommandAddInjury.ValidInvocationChecker checker, boolean fRapierInjury) {
         Objects.requireNonNull(checker);
-        this.fRapierInjury.set(fRapierInjury);
+        this.fRapierInjury.setValue(fRapierInjury);
     }
 
     public void setfSabreInjury(CommandAddInjury.ValidInvocationChecker checker, boolean fSabreInjury) {
         Objects.requireNonNull(checker);
-        this.fSabreInjury.set(fSabreInjury);
+        this.fSabreInjury.setValue(fSabreInjury);
     }
 
     public void setfSmallSwordInjury(CommandAddInjury.ValidInvocationChecker checker, boolean fSmallSwordInjury) {
         Objects.requireNonNull(checker);
-        this.fSmallSwordInjury.set(fSmallSwordInjury);
+        this.fSmallSwordInjury.setValue(fSmallSwordInjury);
     }
 
 

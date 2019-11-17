@@ -46,8 +46,11 @@ public class SubtractPointsController {
 
     public void subtractPoints(){
         System.out.println("spinner: " + spinner.getValue());
+        RationalNumber pointsToSubtract =  new RationalNumber((int)(spinner.getValue() * 10), 10);
 
-        round.subtractPointsFromParticipant(participant, new RationalNumber((int)(spinner.getValue() * 10), 10));
+        WeaponCompetition wc = round.getMyWeaponCompetition();
+        wc.getcStack().executeCommand(new ChangePointsCommand(round, participant, pointsToSubtract, false));
+
         Stage toClose = (Stage) confirmButton.getScene().getWindow();
         try {
             System.out.println(participant.getName() + " " + participant.getPointsForWeaponProperty(round.getMyWeaponCompetition().getWeaponType()));

@@ -31,6 +31,9 @@ public class ChangePointsCommand implements Command {
             round.subtractRoundScorePoints(checker, participant, pointsNumber);
             participant.subtractPointsFromWeapon(checker, round.getMyWeaponCompetition().getWeaponType(), pointsNumber);
         }
+
+        for (Command c: round.getMyWeaponCompetition().getcStack().getCommandStack())
+            System.out.println(c);
     }
 
     @Override

@@ -130,19 +130,10 @@ public class Round implements Serializable {
     }
 
 
-    public void addPointsToParticipant(Participant p, RationalNumber pointsNumber) {
-        this.getCStack().executeCommand(new ChangePointsCommand(this, p, pointsNumber, true));
-    }
-
-    public void subtractPointsFromParticipant(Participant p, RationalNumber pointsNumber) {
-        this.getCStack().executeCommand(new ChangePointsCommand(this, p, pointsNumber, false));
-    }
-
     public void addRoundScorePoints (ChangePointsCommand.ValidInvocationChecker checker, Participant p, RationalNumber points){
         Objects.requireNonNull(checker);
         RationalNumber newPoints = roundScore.get(p).get().add(points);
         roundScore.replace(p, new SimpleObjectProperty<>(newPoints));
-        //p.se(myWeaponCompetition.getWeaponType(),);
 
         System.out.println("in ADD: " + roundScore.get(p).get());
     }

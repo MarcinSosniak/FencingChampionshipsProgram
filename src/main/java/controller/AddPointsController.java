@@ -46,9 +46,11 @@ public class AddPointsController {
 
     public void addPoints(){
         System.out.println("spinner: " + spinner.getValue());
-        System.out.println(round.getMyWeaponCompetition().getWeaponType());
+        RationalNumber pointsToAdd =  new RationalNumber((int)(spinner.getValue() * 10), 10);
 
-        round.addPointsToParticipant(participant, new RationalNumber((int)(spinner.getValue() * 10), 10));
+        WeaponCompetition wc = round.getMyWeaponCompetition();
+        wc.getcStack().executeCommand(new ChangePointsCommand(round, participant, pointsToAdd, true));
+
         Stage toClose = (Stage) confirmButton.getScene().getWindow();
         try {
             System.out.println(participant.getName() + " " + participant.getPointsForWeaponProperty(round.getMyWeaponCompetition().getWeaponType()));

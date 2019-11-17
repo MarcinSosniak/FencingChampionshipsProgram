@@ -134,6 +134,7 @@ public class WeaponCompetition implements Serializable {
     /** prepares list of commands to execute **/
     public List<Command> invalidateParticipant(CommandAddInjury.ValidInvocationChecker checker, Participant p) {
         Objects.requireNonNull(checker);
+        System.out.println("in invalidate");
         List<Command> out = new ArrayList<>();
         for (CompetitionGroup g : (rounds.get(rounds.size()-1).getGroups())) {
             if (g.fInGroup(p)) {

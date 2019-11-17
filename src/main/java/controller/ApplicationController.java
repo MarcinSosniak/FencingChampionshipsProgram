@@ -79,7 +79,7 @@ public class ApplicationController {
             return outputStage;
     }
 
-    public Stage renderAddInjury(String source, String title , boolean fWindowModal, Participant p){
+    public Stage renderAddInjury(String source, String title , boolean fWindowModal, Participant p, WeaponType wt){
         Stage outputStage = new Stage();
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource(source));
@@ -90,7 +90,7 @@ public class ApplicationController {
             if (fWindowModal)
                 outputStage.initModality(Modality.WINDOW_MODAL);
             AddInjuryController controller = (AddInjuryController) loader.getController();
-            controller.setData(p);
+            controller.setData(p, wt);
         }catch (Exception e){
             System.out.format("Error while rendering add injury dialog");
             e.printStackTrace();

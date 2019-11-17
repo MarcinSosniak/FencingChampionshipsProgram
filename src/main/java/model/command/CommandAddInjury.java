@@ -32,19 +32,14 @@ public class CommandAddInjury implements Command {
         if (weaponList.contains(WeaponType.SMALL_SWORD)) _fSmallSwordInjury = true;
     }
 
-    public CommandAddInjury(Participant p, WeaponType single, WeaponCompetition competition) {
-        this.participant = p;
-        this.competition = competition;
-        if (single == WeaponType.SABRE) _fSabreInjury = true;
-        else if(single == WeaponType.RAPIER) _fRapierInjury = true;
-        else if (single==WeaponType.SMALL_SWORD) _fSmallSwordInjury = true;
-    }
 
     @Override
     public void execute() {
+        System.out.println("in execute command add injury");
         oldSabreInjury = participant.isInjured(WeaponType.SABRE);
         oldFRapierInjury = participant.isInjured(WeaponType.RAPIER);
         oldFSmallSwordInjury = participant.isInjured(WeaponType.SMALL_SWORD);
+        System.out.println(_fRapierInjury + " " + _fSabreInjury + " " + _fSmallSwordInjury);
 
         participant.setfRapierInjury(validInvocationChecker, _fRapierInjury);
         participant.setfSabreInjury(validInvocationChecker, _fSabreInjury);
