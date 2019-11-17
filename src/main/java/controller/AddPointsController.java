@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,6 +13,7 @@ import model.Participant;
 import model.Round;
 import model.WeaponCompetition;
 import model.command.ChangePointsCommand;
+import model.enums.WeaponType;
 import model.exceptions.NoSuchWeaponException;
 import util.RationalNumber;
 
@@ -54,20 +56,6 @@ public class AddPointsController {
             System.out.println(participant.getName() + " " + participant.getPointsForWeaponProperty(round.getMyWeaponCompetition().getWeaponType()));
         } catch (NoSuchWeaponException e) { e.printStackTrace(); }
         toClose.close();
-
-        // ONLY FOR TEST
-//        try{
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/elimination.fxml"));
-//            Parent root = loader.load();
-//
-//            EliminationController ec = (EliminationController) loader.getController();
-//            ec.setData();
-//            ApplicationController.primaryStage.setScene(new Scene(root));
-//            ApplicationController.primaryStage.show();
-//
-//        }catch (Exception e) {
-//            e.printStackTrace();
-//            System.out.format("Cannot load main FXML\n");
-//        }
     }
+
 }

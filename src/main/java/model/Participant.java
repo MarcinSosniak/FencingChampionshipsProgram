@@ -36,7 +36,9 @@ public class Participant implements Serializable{
     private BooleanProperty fSmallSwordParticipant;
     private BooleanProperty fSabreParticipant;
     private BooleanProperty fRapierParticipant;
-    private ObservableMap<WeaponType, util.RationalNumber> weaponPointsProperty;
+    private ObservableMap<WeaponType, ObjectProperty<util.RationalNumber>> weaponPointsProperty;
+    private ObjectProperty<RationalNumber> rapierPoints;
+
 
     private BooleanProperty fSabreInjury = new SimpleBooleanProperty(false);
     private BooleanProperty fRapierInjury = new SimpleBooleanProperty(false);
@@ -54,6 +56,8 @@ public class Participant implements Serializable{
         this.fSabreParticipant = new SimpleBooleanProperty(false);
         this.fRapierParticipant = new SimpleBooleanProperty(false);
         this.weaponPointsProperty = FXCollections.observableHashMap();
+        this.rapierPoints = new SimpleObjectProperty<RationalNumber>(new RationalNumber(0)) {
+        };
     }
 
 
@@ -72,6 +76,7 @@ public class Participant implements Serializable{
         this.fSabreParticipant = new SimpleBooleanProperty(false);
         this.fRapierParticipant = new SimpleBooleanProperty(false);
         this.weaponPointsProperty = FXCollections.observableHashMap();
+        this.rapierPoints = new SimpleObjectProperty<>(new RationalNumber(0));
     }
 
 
@@ -110,7 +115,7 @@ public class Participant implements Serializable{
         if (!this.fSmallSwordParticipant.getValue().equals(fSmallSwordParticipant)) {
             if (this.weaponPointsProperty.containsKey(WeaponType.SMALL_SWORD) && !fSmallSwordParticipant)
                 this.weaponPointsProperty.remove(WeaponType.SMALL_SWORD);
-            else this.weaponPointsProperty.put(WeaponType.SMALL_SWORD, new RationalNumber(0));
+            else this.weaponPointsProperty.put(WeaponType.SMALL_SWORD, new SimpleObjectProperty<>(new RationalNumber(0)));
 
             this.fSmallSwordParticipant.setValue(fSmallSwordParticipant);
         }
@@ -120,8 +125,7 @@ public class Participant implements Serializable{
         if (!this.fSabreParticipant.getValue().equals(fSabreParticipant)) {
             if (this.weaponPointsProperty.containsKey(WeaponType.SABRE) && !fSabreParticipant)
                 this.weaponPointsProperty.remove(WeaponType.SABRE);
-            else this.weaponPointsProperty.put(WeaponType.SABRE, new RationalNumber(0));
-
+            else this.weaponPointsProperty.put(WeaponType.SABRE, new SimpleObjectProperty<>(new RationalNumber(0)));
             this.fSabreParticipant.setValue(fSabreParticipant);
         }
     }
@@ -130,7 +134,7 @@ public class Participant implements Serializable{
         if (!this.fRapierParticipant.getValue().equals(fRapierParticipant)){
             if (this.weaponPointsProperty.containsKey(WeaponType.RAPIER) && !fRapierParticipant)
                 this.weaponPointsProperty.remove(WeaponType.RAPIER);
-            else this.weaponPointsProperty.put(WeaponType.RAPIER, new RationalNumber(0));
+            else this.weaponPointsProperty.put(WeaponType.RAPIER, new SimpleObjectProperty<>(new RationalNumber(0)));
 
             this.fRapierParticipant.setValue(fRapierParticipant);
         }
@@ -182,13 +186,17 @@ public class Participant implements Serializable{
 
 
     public RationalNumber getPointsForWeaponProperty(WeaponType type) throws NoSuchWeaponException {
-        if(weaponPointsProperty.containsKey(type)) return weaponPointsProperty.get(type);
+        if (weaponPointsProperty.containsKey(type))
+            return weaponPointsProperty.get(type).get();
         else throw new NoSuchWeaponException();
     }
 
     public void setPointsForWeapon(ChangePointsCommand.ValidInvocationChecker checker, WeaponType type, RationalNumber points){
         Objects.requireNonNull(checker);
-        if (weaponPointsProperty.containsKey(type)) weaponPointsProperty.replace(type, points);
+        if (weaponPointsProperty.containsKey(type)) {
+            System.out.println("replacing points in partcipant");
+            weaponPointsProperty.get(type).setValue(weaponPointsProperty.get(type).get().add(points));
+        }
     }
 
 
@@ -233,8 +241,8 @@ public class Participant implements Serializable{
 
     public ObjectProperty<RationalNumber> getPointsForWeaponPropertyLastRound(WeaponType type) throws NoSuchWeaponException {
         try {
-            System.out.println("tuuuuuuuu");
-            return Competition.getInstance().getSingleWeaponCompetition(type).getLastRound().getParticpantScoreProperty(this);
+            //return rapierPoints;
+            return this.weaponPointsProperty.get(type);
         }
         catch (Exception ex) {
             throw new NoSuchWeaponException();
@@ -262,6 +270,7 @@ public class Participant implements Serializable{
     }
 
     private void writeObject(ObjectOutputStream stream) throws IOException {
+        stream.writeObject(rapierPoints.get());
         stream.writeObject(name.get());
         stream.writeObject(surname.get());
         stream.writeObject(location.get());
@@ -276,11 +285,12 @@ public class Participant implements Serializable{
         stream.writeBoolean(fSmallSwordInjury.get());
         stream.writeInt(timesKiller);
         Map<WeaponType, util.RationalNumber> weaponPoints = new HashMap<>();
-        weaponPointsProperty.forEach((wt, wp) -> weaponPoints.put(wt, wp));
+        weaponPointsProperty.forEach((wt, wp) -> weaponPoints.put(wt, wp.get()));
         stream.writeObject(weaponPoints);
     }
 
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+        rapierPoints = new SimpleObjectProperty<>((RationalNumber) stream.readObject());
         name = new SimpleStringProperty((String) stream.readObject());
         surname = new SimpleStringProperty((String) stream.readObject());
         location = new SimpleStringProperty((String) stream.readObject());
@@ -296,6 +306,6 @@ public class Participant implements Serializable{
         timesKiller = stream.readInt();
         weaponPointsProperty = FXCollections.observableHashMap();
         Map<WeaponType, RationalNumber> m = (Map<WeaponType, RationalNumber>) stream.readObject();
-        m.forEach((wt, wp) -> weaponPointsProperty.put(wt, wp));
+        m.forEach((wt, wp) -> weaponPointsProperty.put(wt, new SimpleObjectProperty<>(wp)));
     }
 }

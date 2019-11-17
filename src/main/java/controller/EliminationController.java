@@ -67,17 +67,17 @@ public class EliminationController implements Initializable {
     @FXML
     ObservableMap<WeaponType, ObservableList<Participant>> weaponCompetitionParticipants;
     @FXML
-    private TabPane tabPane;
+    TabPane tabPane;
     @FXML
-    private Tab rapierTab;
+    Tab rapierTab;
     @FXML
-    private Tab sabreTab;
+    Tab sabreTab;
     @FXML
-    private Tab smallSwordTab;
+    Tab smallSwordTab;
 
-    private TableView rapierTableView;
-    private TableView sabreTableView;
-    private TableView smallSwordTableView;
+    TableView rapierTableView;
+    TableView sabreTableView;
+    TableView smallSwordTableView;
 
     @FXML
     MenuBarController menuBarController;
@@ -154,13 +154,12 @@ public class EliminationController implements Initializable {
             case RAPIER: { rapierTableView = tv; break; }
         }
 
-       // tv.se
         tv.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tv.setItems(weaponCompetitionParticipants.get(wt));
 
         TableColumn<Participant, String> name = new TableColumn<Participant, String>("Name");
         TableColumn<Participant, String> surname = new TableColumn<Participant, String>("Surname");
-        TableColumn<Participant, RationalNumber> points = new TableColumn<Participant, RationalNumber>("Points");
+        TableColumn<Participant, RationalNumber> points = new TableColumn<>("Points");
         TableColumn<Participant, String> group = new TableColumn<Participant, String>("Group");
 
         name.setCellValueFactory(x -> x.getValue().nameProperty());
@@ -170,7 +169,8 @@ public class EliminationController implements Initializable {
                 return x.getValue().getPointsForWeaponPropertyLastRound(wt);
             } catch (NoSuchWeaponException e) {
                 e.printStackTrace();
-                return new SimpleObjectProperty<>(new RationalNumber(0));
+                return null;
+                //return new SimpleObjectProperty<>(new RationalNumber(0));
             }
         });
         group.setCellValueFactory(x -> {
@@ -541,7 +541,7 @@ public class EliminationController implements Initializable {
         }
     }
 
-    private Tab initTab(WeaponType wt) {
+    Tab initTab(WeaponType wt) {
         GridPane mainTabPane = prepareGridPaneForTab();
         VBox v = new VBox();
         GridPane.setConstraints(v, 0, 1, 2, 1);
