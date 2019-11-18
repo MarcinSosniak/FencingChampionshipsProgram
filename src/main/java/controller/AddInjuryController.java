@@ -47,29 +47,29 @@ public class AddInjuryController {
 
         if (!SabreInjury.isDisable() && SabreInjury.isSelected()){
             weaponTypesToSetInjury.add(WeaponType.SABRE);
-            el.sabreRows.forEach(r -> {
-                Participant participant1 = (Participant) r.getItem();
-                if (participant1 != null && participant1.getName().equals(p.getName())) r.setDisable(true);
-            });
+//            el.sabreRows.forEach(r -> {
+//                Participant participant1 = (Participant) r.getItem();
+//                if (participant1 != null && participant1.getName().equals(p.getName())) r.setDisable(true);
+//            });
         }
 
         if (!RapierInjury.isDisable() && RapierInjury.isSelected()){
             weaponTypesToSetInjury.add(WeaponType.RAPIER);
-            el.rapierRows.forEach(r -> {
-                Participant participant1 = (Participant) r.getItem();
-                if (participant1 != null && participant1.getName().equals(p.getName())) r.setDisable(true);
-            });
+//            el.rapierRows.forEach(r -> {
+//                Participant participant1 = (Participant) r.getItem();
+//                if (participant1 != null && participant1.getName().equals(p.getName())) r.setDisable(true);
+//            });
         }
         if(!SmallSwordInjury.isDisable() && SmallSwordInjury.isSelected()){
             weaponTypesToSetInjury.add(WeaponType.SMALL_SWORD);
-            el.smallSwordRows.forEach(r -> {
-                Participant participant1 = (Participant) r.getItem();
-                if (participant1 != null && participant1.getName().equals(p.getName())) r.setDisable(true);
-            });
+//            el.smallSwordRows.forEach(r -> {
+//                Participant participant1 = (Participant) r.getItem();
+//                if (participant1 != null && participant1.getName().equals(p.getName())) r.setDisable(true);
+//            });
         }
 
         WeaponCompetition wc =  Competition.getInstance().getWeaponCompetition(wt);
-        wc.getcStack().executeCommand( new CommandAddInjury(p, weaponTypesToSetInjury, wc));
+        wc.getcStack().executeCommand( new CommandAddInjury(p, weaponTypesToSetInjury, wc, el));
 
 
         Stage toClose = (Stage) confirmButton.getScene().getWindow();

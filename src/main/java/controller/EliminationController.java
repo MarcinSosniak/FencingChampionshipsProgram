@@ -83,9 +83,9 @@ public class EliminationController implements Initializable {
     private TableView rapierTableView;
     private TableView sabreTableView;
     private TableView smallSwordTableView;
-    ObservableList<TableRow> rapierRows = FXCollections.observableArrayList();
-    ObservableList<TableRow> sabreRows = FXCollections.observableArrayList();
-    ObservableList<TableRow> smallSwordRows = FXCollections.observableArrayList();
+    public ObservableList<TableRow> rapierRows = FXCollections.observableArrayList();
+    public ObservableList<TableRow> sabreRows = FXCollections.observableArrayList();
+    public ObservableList<TableRow> smallSwordRows = FXCollections.observableArrayList();
 
 //    EventType type = new EventType("disableRest");
 //    MyEvent myEvent = new MyEvent(type);
