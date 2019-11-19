@@ -41,7 +41,6 @@ public class WelcomeController implements Initializable {
         directoryChooser.setInitialDirectory(file);
         directoryChooser.setTitle("Wybierz katalog z zawodami");
         File selectedDirectory = directoryChooser.showDialog(stage);
-        System.out.println(selectedDirectory.getPath());
 
         if (selectedDirectory != null) {
             String[] parts = selectedDirectory.getPath().split(Pattern.quote("\\"));

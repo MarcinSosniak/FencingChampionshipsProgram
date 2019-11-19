@@ -38,9 +38,13 @@ public class CheckPointManager {
 
     }
 
-
     public static void createCheckPoint(){
         String path = getDirectionNameForSaves();
+        createCheckPoint(path);
+    }
+
+    public static void createCheckPoint(String path){
+
         new File(path).mkdir();
 
         try {

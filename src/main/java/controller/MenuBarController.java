@@ -3,10 +3,14 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import model.CheckPointManager;
 import model.Competition;
 import model.WeaponCompetition;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -37,8 +41,17 @@ public class MenuBarController implements Initializable {
     }
     @FXML
     public void saveAs(){
-        System.out.format("saveAs (TODO:implement me)\n");
+        Stage stage = new Stage();
+        File file = new File("saves");
+        file.mkdir();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(file);
+        fileChooser.setTitle("Zapisywanie jako");
+        File selectedPlace = fileChooser.showSaveDialog(stage);
+        if (selectedPlace != null)
+            CheckPointManager.createCheckPoint(selectedPlace.getPath());
     }
+
     @FXML
     public void undo(){
         System.out.format("undo\n");
