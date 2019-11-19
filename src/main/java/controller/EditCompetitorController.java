@@ -4,12 +4,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Participant;
 import model.enums.JudgeState;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class EditCompetitorController implements Initializable {
@@ -33,12 +37,14 @@ public class EditCompetitorController implements Initializable {
     CheckBox competitorFRapier;
     @FXML
     CheckBox competitorFMainReferee;
-    @FXML
-    TextField competitorLicenceDate;
+//    @FXML
+//    TextField competitorLicenceDate;
     @FXML
     Button editButton;
     @FXML
     Button cancelButton;
+    @FXML
+    DatePicker datePicker;
 
 
     public void setData(Participant p){
@@ -57,7 +63,7 @@ public class EditCompetitorController implements Initializable {
             competitorFRapier.setSelected(toEdit.fRapierParticipantProperty().getValue());
             competitorFSabre.setSelected(toEdit.fSabreParticipantProperty().getValue());
             competitorFMainReferee.setSelected(toEdit.getJudgeState() == JudgeState.MAIN_JUDGE);
-            competitorLicenceDate.setText(new SimpleDateFormat("dd-MM-yyyy").format(toEdit.licenseExpDateProperty().getValue()));
+            //competitorLicenceDate.setText(new SimpleDateFormat("dd-MM-yyyy").format(toEdit.licenseExpDateProperty().getValue()));
         }
     }
 
@@ -76,17 +82,18 @@ public class EditCompetitorController implements Initializable {
         toEdit.setfRapierParticipant(competitorFRapier.isSelected());
         toEdit.setfSabreParticipant(competitorFSabre.isSelected());
         toEdit.setJudgeState(competitorFMainReferee.isSelected() ? JudgeState.MAIN_JUDGE : JudgeState.NON_JUDGE);
-        try {
-            toEdit.setLicenseExpDate(new SimpleDateFormat("dd-MM-yyyy").parse(competitorLicenceDate.getText()));
-        }catch (Exception e){
-            e.printStackTrace();
-            System.out.format("Couldn't fomat data provide in format dd-MM-yyyy");
-        }
+        LocalDate ld = datePicker.getValue();
+        Calendar c =  Calendar.getInstance();
+        c.set(ld.getYear(), ld.getMonthValue() -1 , ld.getDayOfMonth());
+        Date date = c.getTime();
+        toEdit.setLicenseExpDate(date);
+
         Stage toClose = (Stage) editButton.getScene().getWindow();
         toClose.close();
 
         System.out.format("editCompetitor\n");
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
