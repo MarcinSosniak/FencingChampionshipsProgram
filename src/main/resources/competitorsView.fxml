@@ -36,22 +36,22 @@
         </columns>
     </TableView>
     <Button text="wróć" onAction="#goBack"  GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
-       <GridPane.margin>
-           <Insets left="5"/>
-       </GridPane.margin>
+        <GridPane.margin>
+            <Insets left="5"/>
+        </GridPane.margin>
     </Button>
     <Button text="+ dodaj nowego zawodnika" onAction="#addNewCompetitor" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
     <Button text="ROZPOCZNIJ ZAWODY" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" style="-fx-background-color: green" onAction="#startCompetition" GridPane.rowIndex="2">
-            <GridPane.margin>
-                <Insets right="5"/>
-            </GridPane.margin>
+        <GridPane.margin>
+            <Insets right="5"/>
+        </GridPane.margin>
     </Button>
     <rowConstraints>
         <RowConstraints percentHeight="3" />
         <RowConstraints percentHeight="92" />
         <RowConstraints percentHeight="5" />
     </rowConstraints>
-   <columnConstraints>
-      <ColumnConstraints />
-   </columnConstraints>
+    <columnConstraints>
+        <ColumnConstraints />
+    </columnConstraints>
 </GridPane>

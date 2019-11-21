@@ -6,12 +6,14 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import model.CheckPointManager;
 import model.Competition;
@@ -77,15 +79,13 @@ public class WelcomeController implements Initializable {
 
     private void loadCompetitorsView(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/competitorsView.fxml"));
-        new Button();
         Parent root = null;
         try {
             root = loader.load();
         }
         catch (IOException e) { e.printStackTrace(); }
 
-        ApplicationController.primaryStage.setScene(new Scene(root));
-        ApplicationController.primaryStage.show();
+        ApplicationController.primaryStage.getScene().setRoot(root);
     }
 
     @Override

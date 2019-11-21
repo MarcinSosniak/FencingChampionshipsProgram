@@ -24,121 +24,90 @@ public class ConfigReader {
         ConfigReader.instance = null;
     }
 
-    private ConfigReader(String defaultConfigFilePath, String overrideConfigFilePath) throws FileNotFoundException,IOException,IllegalArgumentException
-    {
-        if(defaultConfigFilePath==null && overrideConfigFilePath==null)
+    private ConfigReader(String defaultConfigFilePath, String overrideConfigFilePath) throws IOException, IllegalArgumentException {
+        if (defaultConfigFilePath == null && overrideConfigFilePath == null)
             throw new IllegalArgumentException(" At least one config file must be specified");
-        try{
-            if(defaultConfigFilePath!=null)
-            {
+        try {
+            if (defaultConfigFilePath != null)
                 fillWeak(defaultConfigFilePath);
-            }
         }
-        catch (IOException ex)
-        {
-            for(int i=0; i< MAX_IO_RETRIES; i++)
-            {
-                try{
+        catch (IOException ex) {
+            for(int i=0; i< MAX_IO_RETRIES; i++) {
+                try {
                     Thread.sleep(IO_COOLDOWN_TIME_MS);
                     fillWeak(defaultConfigFilePath);
                     break; // if successfull break
                 }
-                catch (FileNotFoundException fileNotFoundEx)
-                {
-                    throw fileNotFoundEx;
-                }
-                catch (IOException|InterruptedException exInner)
-                {
-                    ;// ignore
-                }
+                catch (FileNotFoundException fileNotFoundEx) { throw fileNotFoundEx; }
+                catch (IOException|InterruptedException exInner) { ; } // ignore
             }
         }
-        try{
-            if(overrideConfigFilePath!=null)
-            {
+        try {
+            if(overrideConfigFilePath != null)
                 fillOverride(overrideConfigFilePath);
-            }
         }
-        catch (IOException ex)
-        {
-            for(int i=0; i< MAX_IO_RETRIES; i++)
-            {
-                try{
+        catch (IOException ex) {
+            for(int i=0; i< MAX_IO_RETRIES; i++) {
+                try {
                     Thread.sleep(IO_COOLDOWN_TIME_MS);
                     fillOverride(overrideConfigFilePath);
                     break; // if successfull break
                 }
-                catch (FileNotFoundException fileNotFoundEx)
-                {
-                    throw fileNotFoundEx;
-                }
-                catch (IOException|InterruptedException exInner)
-                {
-                    ;// ignore
-                }
+                catch (FileNotFoundException fileNotFoundEx) { throw fileNotFoundEx; }
+                catch (IOException|InterruptedException exInner) { ;}  // ignore
             }
         }
-
     }
 
-    public static void init(String defaultConfigFilePath,String overrideConfigFilePath) throws HumanReadableFatalError
-    {
+    public static void init(String defaultConfigFilePath, String overrideConfigFilePath) throws HumanReadableFatalError {
         System.out.println("in init");
-        if(instance!=null)
+        if (instance!=null)
             throw new IllegalStateException("multiple initializations");
         try {
             instance = new ConfigReader(defaultConfigFilePath, overrideConfigFilePath);
         }
-        catch (FileNotFoundException ex)
-        {
+        catch (FileNotFoundException ex) {
             throw new HumanReadableFatalError("File not found",ex);
         }
-        catch (IOException ex)
-        {
+        catch (IOException ex) {
             throw new HumanReadableFatalError("Input Output Error",ex);
         }
-        catch (IllegalArgumentException ex)
-        {
+        catch (IllegalArgumentException ex) {
             throw new HumanReadableFatalError("Invalid Argument",ex);
         }
     }
 
-    private class TagVariables
-    {
+    private class TagVariables {
         private HashMap<String,String> vars = new HashMap<>();
 
-        public boolean getBoolean(String varName)
-        {
+        public boolean getBoolean(String varName) {
             String var=vars.get(varName);
-            if (var!=null)
-            {
+            if (var != null) {
                 if (var.equals("Y") || var.equals("T"))
-                {
                     return true;
-                }
-                else if (var.equals("N") || var.equals("F")) {
+                else if (var.equals("N") || var.equals("F"))
                     return false;
-                }
                 throw new IllegalStateException("Value was not boolean");
             }
             throw new IllegalStateException("Value was not found");
         }
 
-        public int getInt(String varName)
-        {
-            int out;
-            String var=vars.get(varName);
-            if (var!= null)
-            {
-                try
-                {
+        public int getInt(String varName) {
+            String var = vars.get(varName);
+            if (var != null) {
+                try {
                     return Integer.parseInt(var);
                 }
-                catch(NumberFormatException  ex)
-                {
+                catch(NumberFormatException  ex) {
                     throw new IllegalStateException("Value was not int");
                 }
             }
+            throw new IllegalStateException("Value was not found");
+        }
+
+        public String getString(String varName) {
+            String var = vars.get(varName);
+            if (var != null) return var;
             throw new IllegalStateException("Value was not found");
         }
 
@@ -147,15 +116,13 @@ public class ConfigReader {
             vars.put(name,value);
         }
 
-        public void setIfNotSet(String name, String value)
-        {
+        public void setIfNotSet(String name, String value) {
             if (vars.containsKey(name))
                 return;
             vars.put(name,value);
         }
 
-        public void debugStringBuilder(StringBuilder sbuilder)
-        {
+        public void debugStringBuilder(StringBuilder sbuilder) {
             Set<String> tags_names = vars.keySet();
             Iterator<String> key_it= tags_names.iterator();
             while (key_it.hasNext())
@@ -169,21 +136,15 @@ public class ConfigReader {
             }
         }
 
-        public void weakFill(TagVariables other)
-        {
-            for(Map.Entry<String,String> entry : other.vars.entrySet())
-            {
-                if(!vars.containsKey(entry.getKey()))
-                {
+        public void weakFill(TagVariables other) {
+            for (Map.Entry<String,String> entry : other.vars.entrySet()) {
+                if (!vars.containsKey(entry.getKey()))
                     vars.put(entry.getKey(),entry.getValue());
-                }
             }
         }
 
-        public void strongFill(TagVariables other)
-        {
-            for(Map.Entry<String,String> entry : other.vars.entrySet())
-            {
+        public void strongFill(TagVariables other) {
+            for(Map.Entry<String,String> entry : other.vars.entrySet()) {
                 vars.put(entry.getKey(),entry.getValue());
             }
         }
@@ -192,11 +153,8 @@ public class ConfigReader {
 
 
 
-
-    private void fillWeak(String filePath) throws FileNotFoundException,IOException
-    {
-        BufferedReader reader  = new BufferedReader(new FileReader(
-                filePath));
+    private void fillWeak(String filePath) throws IOException {
+        BufferedReader reader  = new BufferedReader(new FileReader(filePath));
         String currentTag=null;
         TagVariables currentTagVars=new TagVariables();
         String line = reader.readLine();
@@ -309,42 +267,33 @@ public class ConfigReader {
     }
 
 
-
-    public boolean getBooleanValue(String tag, String name)
-    {
-        if( !tags.containsKey(tag))
+    public boolean getBooleanValue(String tag, String name) {
+        if (!tags.containsKey(tag))
             throw new IllegalStateException("tag was not found");
         return tags.get(tag).getBoolean(name);
     }
-    public boolean getBooleanValue(String tag, String name,boolean defaultValue)
-    {
+    public boolean getBooleanValue(String tag, String name, boolean defaultValue) {
         boolean out;
-        try
-        {
+        try {
             out=getBooleanValue(tag,name);
         }
-        catch (IllegalStateException ex)
-        {
+        catch (IllegalStateException ex) {
             return defaultValue;
         }
         return out;
     }
 
-    public int getIntValue(String tag, String name)
-    {
-        if( !tags.containsKey(tag))
+    public int getIntValue(String tag, String name) {
+        if (!tags.containsKey(tag))
             throw new IllegalStateException("tag was not found");
         return tags.get(tag).getInt(name);
     }
-    public int getIntValue(String tag, String name,int defaultValue)
-    {
+    public int getIntValue(String tag, String name,int defaultValue) {
         int out;
-        try
-        {
+        try {
             out=getIntValue(tag,name);
         }
-        catch (IllegalStateException ex)
-        {
+        catch (IllegalStateException ex) {
             return defaultValue;
         }
         return out;

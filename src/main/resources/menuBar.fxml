@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 
-<HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.MenuBarController" >
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+
+<HBox xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MenuBarController">
     <children>
-        <Button text="Zapisz" fx:id="save" HBox.hgrow="ALWAYS" onAction="#save" maxHeight="Infinity"/>
-        <Button text="Zapisz jako" fx:id="saveAs" HBox.hgrow="ALWAYS" onAction="#saveAs" maxHeight="Infinity"/>
-        <Button text="Cofnij" fx:id="undo" HBox.hgrow="ALWAYS" onAction="#undo" maxHeight="Infinity"/>
-        <Button text="Ponów" fx:id="redo" HBox.hgrow="ALWAYS" onAction="#redo" maxHeight="Infinity"/>
-        <Button text="Eksportuj wyniki" fx:id="exportResults" HBox.hgrow="ALWAYS" onAction="#exportResults" maxHeight="Infinity"/>
-        <Button text="Tryb administratora" fx:id="adminMode" HBox.hgrow="ALWAYS" onAction="#adminModeOn" maxHeight="Infinity"/>
+        <Button fx:id="save" onAction="#save" text="Zapisz"  />
+        <Button fx:id="saveAs" onAction="#saveAs" text="Zapisz jako" HBox.hgrow="ALWAYS" />
+        <Button fx:id="undo" onAction="#undo" text="Cofnij" HBox.hgrow="ALWAYS" />
+        <Button fx:id="redo" onAction="#redo" text="Ponów" HBox.hgrow="ALWAYS" />
+        <Button fx:id="exportResults" onAction="#exportResults" text="Eksportuj wyniki" HBox.hgrow="ALWAYS" />
+        <Button fx:id="adminMode" onAction="#adminModeOn" text="Tryb administratora" HBox.hgrow="ALWAYS" />
+        <Button fx:id="changePassword" onAction="#changePassword"  text="Zmień hasło" />
     </children>
 </HBox>

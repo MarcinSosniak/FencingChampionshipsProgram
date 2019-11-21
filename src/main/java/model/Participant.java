@@ -56,31 +56,10 @@ public class Participant implements Serializable{
         this.fSabreParticipant = new SimpleBooleanProperty(false);
         this.fRapierParticipant = new SimpleBooleanProperty(false);
         this.weaponPointsProperty = FXCollections.observableHashMap();
-        this.rapierPoints = new SimpleObjectProperty<RationalNumber>(new RationalNumber(0)) {
-        };
+        this.rapierPoints = new SimpleObjectProperty<RationalNumber>(new RationalNumber(0));
     }
 
-
-    public Participant(String name, String surname, String location, String locationGroup, String judgeState, String licenceExpDate)
-            throws ParseException
-    {
-
-        this.name            = new SimpleStringProperty(name);
-        this.surname         = new SimpleStringProperty(surname);
-        this.location        = new SimpleStringProperty(location);
-        this.locationGroup   = new SimpleStringProperty(locationGroup);
-
-        this.judgeState      = new SimpleObjectProperty<>(setJudgeStateFromString(judgeState));   // STRING MAY BE INCORRECT
-        this.licenseExpDate  = new SimpleObjectProperty<>(createDateFromString(licenceExpDate));
-        this.fSmallSwordParticipant = new SimpleBooleanProperty(false);
-        this.fSabreParticipant = new SimpleBooleanProperty(false);
-        this.fRapierParticipant = new SimpleBooleanProperty(false);
-        this.weaponPointsProperty = FXCollections.observableHashMap();
-        this.rapierPoints = new SimpleObjectProperty<>(new RationalNumber(0));
-    }
-
-
-
+    /*
     public Date createDateFromString(String dateS) throws ParseException{
         DateFormat format = new SimpleDateFormat("dd-MM-yyyy", new Locale("pl"));
         Date date = format.parse(dateS);
@@ -92,7 +71,7 @@ public class Participant implements Serializable{
         if (judgeS.equals(JudgeState.NON_JUDGE.toString()) || judgeS.equals(JudgeState.MAIN_JUDGE.toString()))
             return JudgeState.valueOf(judgeS);
         throw new IllegalArgumentException("Incorrect judge state string");
-    }
+    }*/
 
 
     public void setName(String name) {

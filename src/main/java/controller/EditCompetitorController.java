@@ -12,6 +12,7 @@ import model.enums.JudgeState;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -49,6 +50,11 @@ public class EditCompetitorController implements Initializable {
         System.out.format("Setting data in edit dialog\n");
         toEdit = p;
         this.updateView();
+        datePicker.setValue(convertToLocalDateViaInstant(p.getLicenseExpDate()));
+    }
+
+    private LocalDate convertToLocalDateViaInstant(Date dateToConvert) {
+        return dateToConvert.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 
     private void updateView(){

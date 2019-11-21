@@ -1,6 +1,7 @@
 package controller;
 
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -15,6 +16,10 @@ import model.Participant;
 import model.WeaponCompetition;
 import model.config.ConfigReader;
 import model.enums.JudgeState;
+import model.enums.WeaponType;
+import model.exceptions.NoSuchWeaponException;
+import util.RationalNumber;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -47,11 +52,11 @@ public class CompetitorsViewController implements Initializable {
     TableColumn<Participant, JudgeState> refereeStatus;
 
     @FXML
-    TableColumn<Participant, BigDecimal> smallSwordPoints;
+    TableColumn<Participant, String> smallSwordPoints;
     @FXML
-    TableColumn<Participant, BigDecimal> sabrePoints;
+    TableColumn<Participant, String> sabrePoints;
     @FXML
-    TableColumn<Participant, BigDecimal> rapierPoints;
+    TableColumn<Participant, String> rapierPoints;
 
     @FXML
     TableColumn<Participant, Date> licence;
@@ -60,12 +65,20 @@ public class CompetitorsViewController implements Initializable {
     @FXML
     MenuBarController menuBarController;
 
+    static String tick = "\u2713";
+    static String cross = "\u2718";
+
 
     @FXML
     public void goBack(){
         Competition.nullInstance();
         ConfigReader.nullInstance();
-        ApplicationController.getApplicationController().initRootLayouts();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/welcomeScreen.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) { e.printStackTrace(); }
+        ApplicationController.primaryStage.getScene().setRoot(root);
     }
 
     @FXML
@@ -78,9 +91,6 @@ public class CompetitorsViewController implements Initializable {
     @FXML
     public void startCompetition() {
         for (WeaponCompetition weaponCompetition: Competition.getInstance().getWeaponCompetitions()){
-//            weaponCompetition.getParticipantsObservableList().
-//                    addAll(DataGenerator.generateWeaponParticipants(weaponCompetition.getWeaponType(), 7));
-
             // start first round
             if (weaponCompetition.getLastRound() == null) weaponCompetition.startFirstRound(5);
 
@@ -91,24 +101,12 @@ public class CompetitorsViewController implements Initializable {
 
             EliminationController ec = (EliminationController) loader.getController();
             ec.setData();
-            ApplicationController.primaryStage.setScene(new Scene(root));
-            ApplicationController.primaryStage.show();
+            ApplicationController.primaryStage.getScene().setRoot(root);
 
         }catch (Exception e) {
             e.printStackTrace();
             System.out.format("Cannot load main FXML\n");
         }
-//        try{
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/participantView.fxml"));
-//            Parent root = loader.load();
-//            ParticipantViewController controller = (ParticipantViewController) loader.getController();
-//            controller.setData(Competition.getInstance().getSingleWeaponCompetition(WeaponType.SABRE).getLastRound());
-//            ApplicationController.primaryStage.setScene(new Scene(root));
-//            ApplicationController.primaryStage.show();
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            System.out.format("Cannot load main FXML\n");
-//        }
     }
 
 
@@ -143,6 +141,8 @@ public class CompetitorsViewController implements Initializable {
         menuBarController.saveAs.setDisable(true);
         menuBarController.exportResults.setDisable(true);
         menuBarController.adminMode.setDisable(true);
+        menuBarController.changePassword.setDisable(true);
+
 
         competitorsTable.setItems(Competition.getInstance().getParticipantsObservableList());
         setRightClickOnCompetitor(competitorsTable);
@@ -152,15 +152,32 @@ public class CompetitorsViewController implements Initializable {
         club.setCellValueFactory(dataValue -> dataValue.getValue().locationProperty());
         group.setCellValueFactory(dataValue -> dataValue.getValue().locationGroupProperty());
 
-        fSmallSwordParticipant.setCellValueFactory(param -> (param.getValue().fSmallSwordParticipantProperty().get() ? new SimpleObjectProperty<>("\u2713") : new SimpleObjectProperty<>("\u2718")));
-        fRapierParticipant.setCellValueFactory(param -> (param.getValue().fRapierParticipantProperty().get() ? new SimpleObjectProperty<>("\u2713") : new SimpleObjectProperty<>("\u2718")));
-        fSabreParticipant.setCellValueFactory(param -> (param.getValue().fSabreParticipantProperty().get() ? new SimpleObjectProperty<>("\u2713") : new SimpleObjectProperty<>("\u2718")));
+        fSmallSwordParticipant.setCellValueFactory(param -> (param.getValue().fSmallSwordParticipantProperty().get() ? new SimpleObjectProperty<>(tick) : new SimpleObjectProperty<>(cross)));
+        fRapierParticipant.setCellValueFactory(param -> (param.getValue().fRapierParticipantProperty().get() ? new SimpleObjectProperty<>(tick) : new SimpleObjectProperty<>(cross)));
+        fSabreParticipant.setCellValueFactory(param -> (param.getValue().fSabreParticipantProperty().get() ? new SimpleObjectProperty<>(tick) : new SimpleObjectProperty<>(cross)));
         refereeStatus.setCellValueFactory(dataValue -> dataValue.getValue().judgeStateProperty());
 
-        /*TODO: How to display points properly?? */
-        //smallSwordPoints.setCellValueFactory( x ->  BooleanProperty(true));
-        //sabrePoints.setCellValueFactory(dataValue -> dataValue.getValue().);
-        //rapierPoints.setCellValueFactory(dataValue -> dataValue.getValue().);
+        sabrePoints.setCellValueFactory(dataValue -> {
+            try {
+                return new SimpleStringProperty(dataValue.getValue().getPointsForWeaponProperty(WeaponType.SABRE).toString());
+            } catch (NoSuchWeaponException e) {
+                return new SimpleStringProperty(cross);
+            }
+        });
+        rapierPoints.setCellValueFactory(dataValue -> {
+            try {
+                return new SimpleStringProperty(dataValue.getValue().getPointsForWeaponProperty(WeaponType.RAPIER).toString());
+            } catch (NoSuchWeaponException e) {
+                return new SimpleStringProperty(cross);
+            }
+        });
+        smallSwordPoints.setCellValueFactory(dataValue -> {
+            try {
+                return new SimpleStringProperty(dataValue.getValue().getPointsForWeaponProperty(WeaponType.SMALL_SWORD).toString());
+            } catch (NoSuchWeaponException e) {
+                return new SimpleStringProperty(cross);
+            }
+        });
 
         licence.setCellValueFactory(dataValue -> dataValue.getValue().licenseExpDateProperty());
         licence.setCellFactory(column -> {

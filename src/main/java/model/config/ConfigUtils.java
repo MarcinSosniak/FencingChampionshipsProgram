@@ -14,6 +14,6 @@ public class ConfigUtils {
             case SMALL_SWORD:
                 return "SMALL_SWORD";
         }
-        throw new IllegalStateException("inbalid WeaponType");
+        throw new IllegalStateException("invalid WeaponType");
     }
 }

@@ -8,6 +8,8 @@ public class RationalNumber implements Serializable {
 
     private int num;
     private int denom;
+
+
     public RationalNumber(int numerator, int denominator)
     {
         if(denominator==0)

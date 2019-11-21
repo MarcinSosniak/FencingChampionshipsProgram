@@ -14,7 +14,6 @@ import model.enums.WeaponType;
 public class ApplicationController {
 
     static Stage primaryStage;
-    private Stage currentStage;
     private static ApplicationController singletonApplicationController;
     public ApplicationController(Stage primaryStage){
         this.primaryStage = primaryStage;
@@ -30,17 +29,17 @@ public class ApplicationController {
 
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/welcomeScreen.fxml"));
-
             Parent root = loader.load();
             primaryStage.setScene(new Scene(root));
-            this.currentStage = primaryStage;
+            //this.currentStage = primaryStage;
+            primaryStage.setMaximized(true);
             primaryStage.show();
         }catch (Exception e){
             e.printStackTrace();
             System.out.format("Cannot load main FXML\n");
         }
-
     }
+
 
     public Stage renderAddNewCompetitor(String source, String title , boolean fWindowModal) {
         Stage outputStage = new Stage();
@@ -49,7 +48,6 @@ public class ApplicationController {
             Scene newScene = new Scene(loader.load());
             outputStage.setScene(newScene);
             outputStage.setTitle(title);
-            outputStage.initOwner(this.currentStage);
             if (fWindowModal) outputStage.initModality(Modality.WINDOW_MODAL);
 
         }catch (Exception e){
@@ -67,7 +65,6 @@ public class ApplicationController {
             Scene newScene = new Scene(loader.load());
             outputStage.setScene(newScene);
             outputStage.setTitle(title);
-            outputStage.initOwner(this.currentStage);
             if (fWindowModal)
                 outputStage.initModality(Modality.WINDOW_MODAL);
             EditCompetitorController controller = (EditCompetitorController) loader.getController();
@@ -86,7 +83,6 @@ public class ApplicationController {
             Scene newScene = new Scene(loader.load());
             outputStage.setScene(newScene);
             outputStage.setTitle(title);
-            outputStage.initOwner(this.currentStage);
             if (fWindowModal)
                 outputStage.initModality(Modality.WINDOW_MODAL);
             AddInjuryController controller = (AddInjuryController) loader.getController();

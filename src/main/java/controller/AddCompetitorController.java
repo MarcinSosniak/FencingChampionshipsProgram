@@ -4,14 +4,16 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.Competition;
 import model.Participant;
 import model.enums.JudgeState;
 
-import java.text.SimpleDateFormat;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 
 public class AddCompetitorController {
 
@@ -32,11 +34,11 @@ public class AddCompetitorController {
     @FXML
     CheckBox competitorFMainReferee;
     @FXML
-    TextField competitorLicenceDate;
-    @FXML
     Button addButton;
     @FXML
     Button cancelButton;
+    @FXML
+    DatePicker datePicker;
 
 
     public void cancelAddNewCompetitor(){
@@ -48,8 +50,12 @@ public class AddCompetitorController {
         System.out.format("addNewCompetitor\n");
         Participant toAdd = null;
         try {
+            LocalDate ld = datePicker.getValue();
+            Calendar c =  Calendar.getInstance();
+            c.set(ld.getYear(), ld.getMonthValue() -1 , ld.getDayOfMonth());
+            Date licenceExpDate = c.getTime();
             toAdd = new Participant(competitorName.getText(),competitorSurname.getText(),
-                    competitorDivision.getText(),competitorGroup.getText(),competitorFMainReferee.isSelected()? "MAIN_JUDGE": "NON_JUDGE", competitorLicenceDate.getText());
+                    competitorDivision.getText(),competitorGroup.getText(),competitorFMainReferee.isSelected()? JudgeState.MAIN_JUDGE: JudgeState.NON_JUDGE, licenceExpDate);
             toAdd.setfSmallSwordParticipant(competitorFSmallSword.isSelected());
             toAdd.setfRapierParticipant(competitorFRapier.isSelected());
             toAdd.setfSabreParticipant(competitorFSabre.isSelected());

@@ -25,13 +25,13 @@
 
     <CheckBox fx:id="competitorFMainReferee" text="sędzia główny" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="10" />
 
-    <Text style="-fx-font-size: 14" text="data ważności licencji:" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="12" GridPane.valignment="CENTER" />
+    <Text style="-fx-font-size: 14" text="data ważności licencji:" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="12" GridPane.valignment="CENTER" />
 
     <Button fx:id="cancelButton" onAction="#cancelEditCompetitor" style="-fx-background-color: grey" text="anuluj " GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="TOP" />
     <Button fx:id="editButton" onAction="#editCompetitor" style="-fx-background-color: green" text="zapisz" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="TOP" />
    <DatePicker fx:id="datePicker" prefHeight="25.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="13">
       <GridPane.margin>
-         <Insets left="50.0" />
+         <Insets />
       </GridPane.margin>
    </DatePicker>
 

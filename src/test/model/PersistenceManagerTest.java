@@ -45,8 +45,8 @@ public class PersistenceManagerTest {
                 "   }\n" +
                 "]\n";
 
-        p1 = new Participant("Marcin", "Kowalski", "KRK", "A", "NON_JUDGE", "23-07-2020");
-        p2 = new Participant("Paulina", "Nowak", "KRK", "B", "MAIN_JUDGE", "23-07-2020");
+        p1 = new Participant("Marcin", "Kowalski", "KRK", "A", JudgeState.NON_JUDGE,new Date());
+        p2 = new Participant("Paulina", "Nowak", "KRK", "B", JudgeState.NON_JUDGE,new Date());
         p3 = new Participant("Name3","Surname3","Location1","lacationGroup1", JudgeState.NON_JUDGE,new Date());
         p4 = new Participant("Name4","Surname4","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date());
         p5 = new Participant("Kot","Kiti","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date());
