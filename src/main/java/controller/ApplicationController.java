@@ -1,13 +1,10 @@
 package controller;
 
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import model.Competition;
-import model.DataGenerator;
 import model.Participant;
 import model.enums.WeaponType;
 
@@ -15,6 +12,7 @@ public class ApplicationController {
 
     static Stage primaryStage;
     private static ApplicationController singletonApplicationController;
+
     public ApplicationController(Stage primaryStage){
         this.primaryStage = primaryStage;
         singletonApplicationController = this;
@@ -30,8 +28,8 @@ public class ApplicationController {
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/welcomeScreen.fxml"));
             Parent root = loader.load();
+            primaryStage.getIcons().add(new javafx.scene.image.Image(ApplicationController.class.getResourceAsStream("/images/swords.png")));
             primaryStage.setScene(new Scene(root));
-            //this.currentStage = primaryStage;
             primaryStage.setMaximized(true);
             primaryStage.show();
         }catch (Exception e){
