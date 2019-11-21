@@ -79,7 +79,6 @@ public class MenuBarController implements Initializable {
 
     @FXML
     public void changePassword(){
-        System.out.format("changePassword (TODO:implement me)\n");
         Stage stage = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/passwordChange.fxml"));
 

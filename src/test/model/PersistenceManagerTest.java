@@ -66,7 +66,7 @@ public class PersistenceManagerTest {
                 new util.Pair<ObservableList<Participant>, WeaponType>(rapierParticipants, WeaponType.RAPIER),
                 new util.Pair<ObservableList<Participant>,WeaponType>(sabreParticipants,WeaponType.SABRE),
                 new util.Pair<ObservableList<Participant>,WeaponType>(smallSwordParticipants,WeaponType.SMALL_SWORD),
-                new RandomKillerRandomizationStrategy());
+                new RandomKillerRandomizationStrategy(), "");
     }
 
     @Test

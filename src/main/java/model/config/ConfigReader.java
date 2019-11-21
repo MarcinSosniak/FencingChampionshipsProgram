@@ -266,6 +266,12 @@ public class ConfigReader {
         else throw new IllegalStateException("multiple initializations");
     }
 
+    public String getStringValue(String tag, String name) {
+        if (!tags.containsKey(tag))
+            throw new IllegalStateException("tag was not found");
+        return tags.get(tag).getString(name);
+    }
+
 
     public boolean getBooleanValue(String tag, String name) {
         if (!tags.containsKey(tag))

@@ -51,6 +51,13 @@ public class ConfigReaderTest {
     }
 
     @Test
+    public void getStringValue() throws Exception{
+        setCustomConfigReader(BASE_TEST_FILE,null);
+
+        assertEquals("cat",testedReader.getStringValue("BASE","TEST_INT_TO_OVERRIDE_4"));
+    }
+
+    @Test
     public void overrideTestBoolean() throws Exception
     {
         setCustomConfigReader(BASE_TEST_FILE,null);

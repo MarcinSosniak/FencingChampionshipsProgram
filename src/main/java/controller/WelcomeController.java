@@ -65,11 +65,17 @@ public class WelcomeController implements Initializable {
         }
         catch (HumanReadableFatalError humanReadableFatalError) { humanReadableFatalError.printStackTrace(); }
 
+        String password = "";
+        try {
+            password = ConfigReader.getInstance().getStringValue("SECURITY", "PASSWORD");
+        }
+        catch (IllegalStateException ex){}
+
         Competition.init(
                 new util.Pair<ObservableList<Participant>,WeaponType>(rapierParticipants, WeaponType.RAPIER),
                 new util.Pair<ObservableList<Participant>,WeaponType>(sabreParticipants, WeaponType.SABRE),
                 new util.Pair<ObservableList<Participant>,WeaponType>(smallSwordParticipants, WeaponType.SMALL_SWORD),
-                new RandomKillerRandomizationStrategy()
+                new RandomKillerRandomizationStrategy(), password
         );
 
         if (!newCompetitionName.getText().equals("nazwa zawodów (yyyy-mm-dd_miasto)"))

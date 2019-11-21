@@ -20,6 +20,7 @@ public class Competition implements Serializable {
     private KillerRandomizerStrategy killerRandomizerStrategy;
     private String competitionName;
     private AppMode mode;
+    private String password;
 
     private static final long serialVersionUID = 6529685098267757690L;
 
@@ -28,8 +29,9 @@ public class Competition implements Serializable {
     public Competition(util.Pair<ObservableList<Participant>,WeaponType> participants1,
                         util.Pair<ObservableList<Participant>,WeaponType> participants2,
                         util.Pair<ObservableList<Participant>,WeaponType> participants3,
-                        KillerRandomizerStrategy killerRandomizerStrategy)
+                        KillerRandomizerStrategy killerRandomizerStrategy, String password)
     {
+        System.out.println("muuuuuuuuu");
         weaponCompetitions.add(new WeaponCompetition(participants1.snd(),participants1.fst()));
         weaponCompetitions.add(new WeaponCompetition(participants2.snd(),participants2.fst()));
         weaponCompetitions.add(new WeaponCompetition(participants3.snd(),participants3.fst()));
@@ -46,15 +48,16 @@ public class Competition implements Serializable {
             }
         }
         this.killerRandomizerStrategy = killerRandomizerStrategy;
+        this.password = password;
     }
 
     public static Competition init(util.Pair<ObservableList<Participant>,WeaponType> participants1,
                                    util.Pair<ObservableList<Participant>,WeaponType> participants2,
                                    util.Pair<ObservableList<Participant>,WeaponType> participants3,
-                                   KillerRandomizerStrategy killerRandomizerStrategy) {
+                                   KillerRandomizerStrategy killerRandomizerStrategy, String password) {
         if (instance != null)
             throw new IllegalStateException("Cannot reinitialize Comeptitions");
-        instance= new Competition(participants1,participants2,participants3,killerRandomizerStrategy);
+        instance= new Competition(participants1,participants2,participants3,killerRandomizerStrategy, password);
         return instance;
     }
 
@@ -117,6 +120,7 @@ public class Competition implements Serializable {
     }
 
     private void writeObject(ObjectOutputStream stream) throws IOException {
+       // stream.writeObject(password);
         ArrayList<WeaponCompetition> weaponCompetitionArrayList = new ArrayList<>();
         weaponCompetitions.forEach(wc -> weaponCompetitionArrayList.add(wc)) ;
         stream.writeObject(weaponCompetitionArrayList);
@@ -128,6 +132,7 @@ public class Competition implements Serializable {
     }
 
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+        //password = (String) stream.readObject();
         weaponCompetitions = FXCollections.observableArrayList((ArrayList<WeaponCompetition>) stream.readObject());
         participants = FXCollections.observableArrayList((ArrayList<Participant>) stream.readObject());
         killerRandomizerStrategy = (KillerRandomizerStrategy) stream.readObject();
@@ -142,4 +147,8 @@ public class Competition implements Serializable {
     public String getCompetitionName() { return competitionName; }
 
     public void setCompetitionName(String competitionName) { this.competitionName = competitionName; }
+
+    public String getPassword() { return password; }
+
+    public void setPassword(String password) { this.password = password; }
 }
