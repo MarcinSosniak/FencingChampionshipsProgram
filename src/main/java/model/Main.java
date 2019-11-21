@@ -14,17 +14,11 @@ public class Main extends Application {
 
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         appController = new ApplicationController(primaryStage);
 
         appController.initRootLayouts();
-
-//        Parent root = FXMLLoader.load(getClass().getResource("/competitorsView.fxml"));
-//
-//        primaryStage.setScene(new Scene(root));
-//
-//        primaryStage.show();
     }
 
 

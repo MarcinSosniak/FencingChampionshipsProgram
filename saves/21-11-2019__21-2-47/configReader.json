@@ -1,0 +1,27 @@
+{
+  "tags": {
+    "SECURITY": {
+      "vars": {
+        "PASSWORD": "miau"
+      }
+    },
+    "BASE_2": {
+      "vars": {
+        "TEST_BOOL_TO_OVERRIDE_1": "Y",
+        "TEST_BOOL_TO_OVERRIDE_2": "N",
+        "TEST_BOOL_2": "Y",
+        "TEST_BOOL_1": "N"
+      }
+    },
+    "BASE": {
+      "vars": {
+        "TEST_INT_TO_OVERRIDE_1": "7",
+        "TEST_INT_TO_OVERRIDE_3": "9",
+        "TEST_INT_TO_OVERRIDE_2": "-8",
+        "TEST_INT_2": "-2",
+        "TEST_INT_1": "0",
+        "TEST_INT_3": "4"
+      }
+    }
+  }
+}

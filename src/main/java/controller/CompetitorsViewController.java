@@ -85,6 +85,7 @@ public class CompetitorsViewController implements Initializable {
     public void addNewCompetitor(){
         System.out.format("render addNewCompetitor (implemented)\n");
         Stage childScene = ApplicationController.getApplicationController().renderAddNewCompetitor("/addCompetitor.fxml","Dodaj nowego zawodnika",true);
+        childScene.getIcons().add(ApplicationController.image);
         childScene.showAndWait();
     }
 
@@ -95,15 +96,14 @@ public class CompetitorsViewController implements Initializable {
             if (weaponCompetition.getLastRound() == null) weaponCompetition.startFirstRound(5);
 
         }
-        try{
+        try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/elimination.fxml"));
             Parent root = loader.load();
 
             EliminationController ec = (EliminationController) loader.getController();
             ec.setData();
             ApplicationController.primaryStage.getScene().setRoot(root);
-
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.format("Cannot load main FXML\n");
         }
@@ -113,6 +113,7 @@ public class CompetitorsViewController implements Initializable {
     private void editCompetitor(Participant toEdit){
         System.out.format("edit competitor to do implement\n");
         Stage childScene = ApplicationController.getApplicationController().renderEditAndSetOwner("/editCompetitor.fxml","Edytuj zawodnika",true, toEdit);
+        childScene.getIcons().add(ApplicationController.image);
         childScene.showAndWait();
     }
 

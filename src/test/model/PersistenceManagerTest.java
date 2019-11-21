@@ -82,6 +82,7 @@ public class PersistenceManagerTest {
         arrayList.add(p1);
         arrayList.add(p2);
         String myJson = PersistenceManager.serializeObjectsArrayToJson(arrayList);
+        System.out.println(myJson);
 
         List<Participant> participantList =
                 PersistenceManager.deserializeFromJsonArray(myJson, Participant.class, false);
@@ -89,13 +90,6 @@ public class PersistenceManagerTest {
         assertEquals(p2, participantList.get(1));
     }
 
-    @Test
-    public void deserializeFromJsonArray() {
-        List<Participant> participantList =
-                PersistenceManager.deserializeFromJsonArray(json, Participant.class, true);
-        assertEquals(p1, participantList.get(0));
-        assertEquals(p2, participantList.get(1));
-    }
 
     @Test
     public void test(){

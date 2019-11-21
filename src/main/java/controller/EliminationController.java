@@ -87,18 +87,6 @@ public class EliminationController implements Initializable {
     public ObservableList<TableRow> sabreRows = FXCollections.observableArrayList();
     public ObservableList<TableRow> smallSwordRows = FXCollections.observableArrayList();
 
-//    EventType type = new EventType("disableRest");
-//    MyEvent myEvent = new MyEvent(type);
-//
-//    private class MyEvent extends Event{
-//        private Participant p;
-//
-//        public MyEvent(EventType<? extends Event> eventType) { super(eventType); }
-//        public Participant getP() { return p; }
-//        public void setP(Participant p) { this.p = p; }
-//    }
-
-
     @FXML
     MenuBarController menuBarController;
 
@@ -205,7 +193,6 @@ public class EliminationController implements Initializable {
             } catch (NoSuchWeaponException e) {
                 e.printStackTrace();
                 return null;
-                //return new SimpleObjectProperty<>(new RationalNumber(0));
             }
         });
         group.setCellValueFactory(x -> {
@@ -229,15 +216,6 @@ public class EliminationController implements Initializable {
                 case SMALL_SWORD:  { smallSwordRows.add(tableRow); break;}
             }
 
-//            tableRow.addEventHandler(type, new EventHandler<Event>() {
-//                @Override
-//                public void handle(Event event) {
-//                   MyEvent myEv =  (MyEvent) event;
-//                   //tableRow.setDisable(true);
-//                   if (tableRow.getItem().equals(myEv.p)) System.out.println("oooo");
-//                   else System.out.println("holaaaaaaaaa: " + wt + " " + tableRow.getItem().getName());
-//                }
-//            });
 
             tableRow.setOnMouseClicked(event -> {
                 Participant p = (Participant) tv.getSelectionModel().getSelectedItem();
@@ -246,8 +224,8 @@ public class EliminationController implements Initializable {
                     //tableRow.fireEvent(myEvent);
                     System.out.format("Right click on add injury " + wt + "\n");
                     Stage childScene = ApplicationController.getApplicationController().renderAddInjury("/addInjury.fxml", "Add_Injury", true, p, wt, this);
+                    childScene.getIcons().add(ApplicationController.image);
                     childScene.showAndWait();
-                    //tableRow.setDisable(true);
 
                     // usuwa po dodaniu obrazenia
                     //Competition.getInstance().getWeaponCompetition(WeaponType.RAPIER).getParticipants().remove(p);

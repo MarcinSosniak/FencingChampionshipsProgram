@@ -45,28 +45,15 @@ public class AddInjuryController {
     private void confirm(){
         List<WeaponType> weaponTypesToSetInjury = new ArrayList<>();
 
-        if (!SabreInjury.isDisable() && SabreInjury.isSelected()){
+        if (!SabreInjury.isDisable() && SabreInjury.isSelected())
             weaponTypesToSetInjury.add(WeaponType.SABRE);
-//            el.sabreRows.forEach(r -> {
-//                Participant participant1 = (Participant) r.getItem();
-//                if (participant1 != null && participant1.getName().equals(p.getName())) r.setDisable(true);
-//            });
-        }
 
-        if (!RapierInjury.isDisable() && RapierInjury.isSelected()){
+        if (!RapierInjury.isDisable() && RapierInjury.isSelected())
             weaponTypesToSetInjury.add(WeaponType.RAPIER);
-//            el.rapierRows.forEach(r -> {
-//                Participant participant1 = (Participant) r.getItem();
-//                if (participant1 != null && participant1.getName().equals(p.getName())) r.setDisable(true);
-//            });
-        }
-        if(!SmallSwordInjury.isDisable() && SmallSwordInjury.isSelected()){
+
+        if (!SmallSwordInjury.isDisable() && SmallSwordInjury.isSelected())
             weaponTypesToSetInjury.add(WeaponType.SMALL_SWORD);
-//            el.smallSwordRows.forEach(r -> {
-//                Participant participant1 = (Participant) r.getItem();
-//                if (participant1 != null && participant1.getName().equals(p.getName())) r.setDisable(true);
-//            });
-        }
+
 
         WeaponCompetition wc =  Competition.getInstance().getWeaponCompetition(wt);
         wc.getcStack().executeCommand( new CommandAddInjury(p, weaponTypesToSetInjury, wc, el));

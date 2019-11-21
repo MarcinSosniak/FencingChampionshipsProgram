@@ -35,7 +35,9 @@ public class MenuBarController implements Initializable {
     @FXML
     Button changePassword;
 
+
     private WeaponCompetition wc;
+    private Stage stage;
 
     public void setData(WeaponCompetition wc){
         this.wc = wc;
@@ -79,7 +81,7 @@ public class MenuBarController implements Initializable {
 
     @FXML
     public void changePassword(){
-        Stage stage = new Stage();
+        stage = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/passwordChange.fxml"));
 
         Parent root = null;
@@ -87,6 +89,11 @@ public class MenuBarController implements Initializable {
         catch (IOException e) { e.printStackTrace(); }
         stage.setScene(new Scene(root));
         stage.show();
+        ApplicationController.currentStage = stage;
+    }
+
+    public void closeChangePasswordScene(){
+        stage.close();
     }
 
     @Override

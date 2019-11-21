@@ -69,7 +69,9 @@ public class WelcomeController implements Initializable {
         try {
             password = ConfigReader.getInstance().getStringValue("SECURITY", "PASSWORD");
         }
-        catch (IllegalStateException ex){}
+        catch (IllegalStateException ex){
+            ConfigReader.getInstance().setStringValue("SECURITY", "PASSWORD", "");
+        }
 
         Competition.init(
                 new util.Pair<ObservableList<Participant>,WeaponType>(rapierParticipants, WeaponType.RAPIER),

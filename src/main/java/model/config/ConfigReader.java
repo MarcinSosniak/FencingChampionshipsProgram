@@ -20,6 +20,7 @@ public class ConfigReader {
     //private ConfigReader() { throw new IllegalStateException(); } // DO NOT CALL THIS
     // in better language we would use ConfigReader() = delete;
 
+
     public static void nullInstance(){
         ConfigReader.instance = null;
     }
@@ -79,6 +80,11 @@ public class ConfigReader {
 
     private class TagVariables {
         private HashMap<String,String> vars = new HashMap<>();
+
+        public void putOrReplaceTag(String nameTag, String val){
+            if (vars.containsKey(nameTag)) vars.replace(nameTag, val);
+            vars.put(nameTag, val);
+        }
 
         public boolean getBoolean(String varName) {
             String var=vars.get(varName);
@@ -270,6 +276,19 @@ public class ConfigReader {
         if (!tags.containsKey(tag))
             throw new IllegalStateException("tag was not found");
         return tags.get(tag).getString(name);
+    }
+
+    public void setStringValue(String tag, String name, String val) {
+        if (!tags.containsKey(tag)){
+            TagVariables vars = new TagVariables();
+            vars.putOrReplaceTag(name, val);
+            tags.put(tag, vars);
+        }
+        else {
+            TagVariables vars = tags.get(tag);
+            vars.putOrReplaceTag(name, val);
+        }
+
     }
 
 

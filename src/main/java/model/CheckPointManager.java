@@ -3,6 +3,7 @@ package model;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
+import controller.ApplicationController;
 import model.config.ConfigReader;
 import java.io.*;
 import java.time.ZoneId;

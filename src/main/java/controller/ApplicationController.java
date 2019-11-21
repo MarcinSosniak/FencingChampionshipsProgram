@@ -3,6 +3,9 @@ package controller;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Participant;
@@ -11,7 +14,9 @@ import model.enums.WeaponType;
 public class ApplicationController {
 
     static Stage primaryStage;
+    static Stage currentStage;
     private static ApplicationController singletonApplicationController;
+    public static Image image = new Image(ApplicationController.class.getResourceAsStream("/images/swords.png"));
 
     public ApplicationController(Stage primaryStage){
         this.primaryStage = primaryStage;
@@ -22,13 +27,14 @@ public class ApplicationController {
         return singletonApplicationController;
     }
 
+
     public void initRootLayouts(){
         primaryStage.setTitle("Inzynierka Szermierka");
 
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/welcomeScreen.fxml"));
             Parent root = loader.load();
-            primaryStage.getIcons().add(new javafx.scene.image.Image(ApplicationController.class.getResourceAsStream("/images/swords.png")));
+            primaryStage.getIcons().add(image);
             primaryStage.setScene(new Scene(root));
             primaryStage.setMaximized(true);
             primaryStage.show();
