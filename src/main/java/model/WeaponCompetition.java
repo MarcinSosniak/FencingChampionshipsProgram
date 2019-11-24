@@ -187,6 +187,10 @@ public class WeaponCompetition implements Serializable {
         return null;
     }
 
+    public FinalRound getFinalRound()
+    {
+        return new FinalRound();
+    }
 
     // WEAPON COMP ROUND CREATOR
     public class RoundCreator {
@@ -208,10 +212,7 @@ public class WeaponCompetition implements Serializable {
             return fRoundReady;
         }
 
-        public FinalRound getFinalRound()
-        {
-            return new FinalRound();
-        }
+
 
         public List<Participant> getParticipantsForPlayoff() {
             return participantsForPlayoff;

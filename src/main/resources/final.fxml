@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<GridPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.FinalController">
+    <fx:include fx:id="menuBar" source="menuBar.fxml" GridPane.rowIndex="0" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS" fillHeight="true"/>
+    <TabPane fx:id="tabPane" GridPane.rowIndex="1" GridPane.vgrow="SOMETIMES" GridPane.hgrow="ALWAYS" >
+        <padding>
+            <Insets bottom="3"/>
+        </padding>
+    </TabPane>
+    <rowConstraints>
+        <RowConstraints percentHeight="3" />
+        <RowConstraints percentHeight="97" />
+    </rowConstraints>
+</GridPane>

@@ -38,7 +38,8 @@ import util.RationalNumber;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
+/** TODO: undo doesnt change color properly
+ * TODO: should add function set cell colors properly :) which is invoked by command controller*/
 /**
  * |-------------------------------------------------------------------------|
  * |         PEOPLE(resizeable)          |   Control button Pane?            |
@@ -495,6 +496,19 @@ public class EliminationController implements Initializable {
                         protected void updateItem(String item, boolean empty) {
                             super.updateItem(item, empty);
                             setText(empty ? null : item);
+                            if(!isEmpty()){
+                                /* Person auxPerson = getTableView().getItems().get(getIndex()); */
+                                Fight fight = getTableView().getItems().get(getIndex());
+                                if (fight.getScore().equals(FightScore.WON_FIRST)) {
+                                    setStyle("-fx-alignment: CENTER; -fx-background-color: GREEN;");
+                                } else if (fight.getScore().equals(FightScore.NULL_STATE)) {
+                                    setStyle("-fx-alignment: CENTER; -fx-background-color: TRANSPARENT;");
+                                } else {
+                                    setStyle("-fx-alignment: CENTER; -fx-background-color: RED;");
+                                }
+                            } else {
+                                setStyle("-fx-alignment: CENTER; -fx-background-color: BLACK;");
+                            }
                         }
                     };
                     cell.setOnMouseClicked(e -> {
@@ -523,6 +537,19 @@ public class EliminationController implements Initializable {
                         protected void updateItem(String item, boolean empty) {
                             super.updateItem(item, empty);
                             setText(empty ? null : item);
+                            if(!isEmpty()){
+                                /* Person auxPerson = getTableView().getItems().get(getIndex()); */
+                                Fight fight = getTableView().getItems().get(getIndex());
+                                if (fight.getScore().equals(FightScore.WON_SECOND)) {
+                                    setStyle("-fx-alignment: CENTER; -fx-background-color: GREEN;");
+                                } else if (fight.getScore().equals(FightScore.NULL_STATE)) {
+                                    setStyle("-fx-alignment: CENTER; -fx-background-color: TRANSPARENT;");
+                                } else {
+                                    setStyle("-fx-alignment: CENTER; -fx-background-color: RED;");
+                                }
+                            } else {
+                                setStyle("-fx-alignment: CENTER; -fx-background-color: BLACK;");
+                            }
                         }
                     };
                     cell.setOnMouseClicked(e -> {
@@ -550,6 +577,11 @@ public class EliminationController implements Initializable {
                         protected void updateItem(String item, boolean empty) {
                             super.updateItem(item, empty);
                             setText(empty ? null : item);
+                            if(!isEmpty()){
+                                setStyle("-fx-alignment: CENTER; -fx-background-color: TRANSPARENT;");
+                            } else {
+                                setStyle("-fx-alignment: CENTER; -fx-background-color: BLACK;");
+                            }
                         }
                     };
                     cell.setOnMouseClicked(e -> {
@@ -576,7 +608,6 @@ public class EliminationController implements Initializable {
             }
             gridPaneForFights.getChildren().add(text);
 
-            //vBoxPane.getChildren().add(gridPaneForFights);
             scrollPaneForVBOX.setContent(gridPaneForFights);
             return scrollPaneForVBOX;
 

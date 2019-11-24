@@ -58,6 +58,9 @@ public  class Fight implements Serializable {
 
     public FightScore getScore() { return score.get(); }
 
+    public String toString() {
+        return this.firstParticipant.toString() + " x " + this.secondParticipant.toString();
+    }
 
     public void setFightScore(CommandAddBattleResult.ValidInvocationChecker validInvocationChecker, FightScore score)
     {
