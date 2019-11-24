@@ -8,8 +8,7 @@
 
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="205.0" prefWidth="266.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="controller.AddPointsController"
->
+      fx:controller="controller.AddPointsController">
    <children>
       <Spinner fx:id="spinner" min="0" max="10" initialValue="1" amountToStepBy="0.5" layoutX="58.0" layoutY="87.0">
       </Spinner>

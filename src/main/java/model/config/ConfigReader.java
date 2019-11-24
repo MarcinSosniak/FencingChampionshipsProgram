@@ -318,7 +318,7 @@ public class ConfigReader {
         try {
             out=getIntValue(tag,name);
         }
-        catch (IllegalStateException ex) {
+        catch (Exception ex) {
             return defaultValue;
         }
         return out;

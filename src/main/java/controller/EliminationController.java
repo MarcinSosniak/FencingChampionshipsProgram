@@ -1,38 +1,27 @@
 package controller;
 
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.event.EventTarget;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import model.*;
-import model.command.ChangePointsCommand;
 import model.enums.FightScore;
 import model.enums.WeaponType;
-import model.exceptions.NoSuchCompetitionException;
 import model.exceptions.NoSuchWeaponException;
+import util.Pointer;
 import util.RationalNumber;
 
 import java.io.IOException;
@@ -264,7 +253,31 @@ public class EliminationController implements Initializable {
         nextRoundButton.setText("Next Round");
         //nextRoundButton.setStyle("-fx-background-color: pink ; -fx-padding: 10;");
         nextRoundButton.setOnAction(x -> {
-            System.out.format("Implement me\n");
+            System.out.format("Implement by hand\n");
+            WeaponCompetition wc = Competition.getInstance().getWeaponCompetition(wt);
+            WeaponCompetition.RoundCreator rc = null;
+            if(AppMode.getMode().fSafe()) {
+                rc = wc.prepareNewRound();
+            }
+            else
+            {
+                Pointer<WeaponCompetition.RoundCreator> p = new Pointer<>();
+
+                Stage stageroni = ApplicationController.getApplicationController().renderNextRound("/nextRound.fxml", "gimme", true, wc,p);
+                stageroni.getIcons().add(ApplicationController.image);
+                stageroni.showAndWait();
+                if (p.get()==null)
+                    return;
+                rc=p.get();
+            }
+            if (rc.getfRoundReady())
+                rc.startRound();
+            else {
+                Stage stageroni = ApplicationController.getApplicationController().renderPlayOff("/playOff.fxml", "gimme", true, rc);
+                stageroni.getIcons().add(ApplicationController.image);
+                stageroni.showAndWait();
+                rc.startRound();
+            }
         });
 
         GridPane.setConstraints(nextRoundButton, 0, 0);

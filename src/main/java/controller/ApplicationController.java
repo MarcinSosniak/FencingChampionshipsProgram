@@ -9,7 +9,9 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Participant;
+import model.WeaponCompetition;
 import model.enums.WeaponType;
+import util.Pointer;
 
 public class ApplicationController {
 
@@ -91,6 +93,42 @@ public class ApplicationController {
                 outputStage.initModality(Modality.WINDOW_MODAL);
             AddInjuryController controller = (AddInjuryController) loader.getController();
             controller.setData(p, wt, el);
+        }catch (Exception e){
+            System.out.format("Error while rendering add injury dialog");
+            e.printStackTrace();
+        }
+        return outputStage;
+    }
+
+    public Stage renderPlayOff(String source, String title , boolean fWindowModal, WeaponCompetition.RoundCreator rc){
+        Stage outputStage = new Stage();
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(source));
+            Scene newScene = new Scene(loader.load());
+            outputStage.setScene(newScene);
+            outputStage.setTitle(title);
+            if (fWindowModal)
+                outputStage.initModality(Modality.WINDOW_MODAL);
+            PlayoffController controller = (PlayoffController) loader.getController();
+            controller.setData(rc);
+        }catch (Exception e){
+            System.out.format("Error while rendering add injury dialog");
+            e.printStackTrace();
+        }
+        return outputStage;
+    }
+
+    public Stage renderNextRound(String source, String title , boolean fWindowModal, WeaponCompetition wc, Pointer<WeaponCompetition.RoundCreator> p){
+        Stage outputStage = new Stage();
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(source));
+            Scene newScene = new Scene(loader.load());
+            outputStage.setScene(newScene);
+            outputStage.setTitle(title);
+            if (fWindowModal)
+                outputStage.initModality(Modality.WINDOW_MODAL);
+            NextRoundController controller = (NextRoundController) loader.getController();
+            controller.setData(wc,p);
         }catch (Exception e){
             System.out.format("Error while rendering add injury dialog");
             e.printStackTrace();

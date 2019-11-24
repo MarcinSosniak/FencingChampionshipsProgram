@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import model.AppMode;
 import model.CheckPointManager;
 import model.Competition;
 import model.WeaponCompetition;
@@ -76,6 +77,7 @@ public class MenuBarController implements Initializable {
     }
     @FXML
     public void adminModeOn(){
+        AppMode.getMode().swap();
         System.out.format("adminModeOn (TODO:implement me)\n");
     }
 
