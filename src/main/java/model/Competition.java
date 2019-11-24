@@ -19,7 +19,6 @@ public class Competition implements Serializable {
     private ObservableList<Participant> participants = FXCollections.observableArrayList();
     private KillerRandomizerStrategy killerRandomizerStrategy;
     private String competitionName;
-    private AppMode mode;
     private String password;
 
     private static final long serialVersionUID = 6529685098267757690L;
@@ -48,6 +47,7 @@ public class Competition implements Serializable {
         }
         this.killerRandomizerStrategy = killerRandomizerStrategy;
         this.password = password;
+        AppMode.init(password);
     }
 
     public static Competition init(util.Pair<ObservableList<Participant>,WeaponType> participants1,

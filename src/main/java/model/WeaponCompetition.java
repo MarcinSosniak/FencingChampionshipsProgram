@@ -168,6 +168,19 @@ public class WeaponCompetition implements Serializable {
         rc.startRound();
     }
 
+    public RoundCreator prepareNewRound(int groupSize,int participantsCount)
+    {
+        return new RoundCreator(groupSize,participantsCount);
+    }
+
+    public RoundCreator prepareNewRound()
+    {
+        int groupSize  = ConfigReader.getInstance().getIntValue("ROUND_"+Integer.toString(rounds.size()),"GROUP_SIZE");
+        int participantsCount= ConfigReader.getInstance().getIntValue("ROUND_"+Integer.toString(rounds.size()),"PARTICIPANTS_COUNT");
+        return new RoundCreator(groupSize,participantsCount);
+    }
+
+
     public Round getLastRound()
     {
         if (rounds.size() > 0) return rounds.get(rounds.size()-1);
@@ -193,6 +206,11 @@ public class WeaponCompetition implements Serializable {
 
         public boolean getfRoundReady() {
             return fRoundReady;
+        }
+
+        public FinalRound getFinalRound()
+        {
+            return new FinalRound();
         }
 
         public List<Participant> getParticipantsForPlayoff() {
@@ -246,7 +264,7 @@ public class WeaponCompetition implements Serializable {
             if (participantsForPlayoff.size() + participantsForRound.size() == particpantsNeeded) {
                 participantsForRound.addAll(participantsForPlayoff);
                 fRoundReady = true;
-                _round = new Round(WeaponCompetition.this, rounds.size(), groupSize, participantsForRound, getFightDrawStrategyPicker());
+                _round = new Round(WeaponCompetition.this, rounds.size()-1, groupSize, participantsForRound, getFightDrawStrategyPicker());
                 return;
             }
             fRoundReady = false;
