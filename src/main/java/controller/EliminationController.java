@@ -506,8 +506,6 @@ public class EliminationController implements Initializable {
                                 } else {
                                     setStyle("-fx-alignment: CENTER; -fx-background-color: RED;");
                                 }
-                            } else {
-                                setStyle("-fx-alignment: CENTER; -fx-background-color: BLACK;");
                             }
                         }
                     };
@@ -548,7 +546,7 @@ public class EliminationController implements Initializable {
                                     setStyle("-fx-alignment: CENTER; -fx-background-color: RED;");
                                 }
                             } else {
-                                setStyle("-fx-alignment: CENTER; -fx-background-color: BLACK;");
+                                setStyle("-fx-alignment: CENTER; -fx-background-color: TRANSPARENT;");
                             }
                         }
                     };
@@ -580,7 +578,7 @@ public class EliminationController implements Initializable {
                             if(!isEmpty()){
                                 setStyle("-fx-alignment: CENTER; -fx-background-color: TRANSPARENT;");
                             } else {
-                                setStyle("-fx-alignment: CENTER; -fx-background-color: BLACK;");
+                                setStyle("-fx-alignment: CENTER; -fx-background-color: TRANSPARENT;");
                             }
                         }
                     };
