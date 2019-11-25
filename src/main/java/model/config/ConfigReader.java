@@ -167,7 +167,7 @@ public class ConfigReader {
         while(line != null)
         {
             line=line.trim();
-            if(line.startsWith("#") || line.startsWith("//"))
+            if(line.startsWith("#") || line.startsWith("//") || line.length()==0)
             {
                 ;
             }
@@ -217,7 +217,7 @@ public class ConfigReader {
         while(line != null)
         {
             line=line.trim();
-            if(line.startsWith("#") || line.startsWith("//"))
+            if(line.startsWith("#") || line.startsWith("//") || line.length()==0)
             {
                 ;
             }

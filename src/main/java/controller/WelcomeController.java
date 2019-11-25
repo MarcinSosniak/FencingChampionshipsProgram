@@ -15,11 +15,8 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import model.CheckPointManager;
-import model.Competition;
-import model.DataGenerator;
+import model.*;
 import model.KillerDrawing.RandomKillerRandomizationStrategy;
-import model.Participant;
 import model.config.ConfigReader;
 import model.enums.WeaponType;
 import util.HumanReadableFatalError;
@@ -27,7 +24,9 @@ import util.HumanReadableFatalError;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class WelcomeController implements Initializable {
@@ -82,6 +81,7 @@ public class WelcomeController implements Initializable {
 
         if (!newCompetitionName.getText().equals("nazwa zawodów (yyyy-mm-dd_miasto)"))
             Competition.getInstance().setCompetitionName(newCompetitionName.getText());
+
         loadCompetitorsView();
     }
 

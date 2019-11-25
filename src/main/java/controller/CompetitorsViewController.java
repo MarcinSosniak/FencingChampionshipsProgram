@@ -10,22 +10,24 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
-import model.Competition;
-import model.DataGenerator;
-import model.Participant;
-import model.WeaponCompetition;
+import model.*;
 import model.config.ConfigReader;
 import model.enums.JudgeState;
 import model.enums.WeaponType;
 import model.exceptions.NoSuchWeaponException;
 import util.RationalNumber;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 
 public class CompetitorsViewController implements Initializable {
@@ -97,6 +99,10 @@ public class CompetitorsViewController implements Initializable {
 
         }
         try {
+//            String json = PersistenceManager.serializeObjectsArrayToJson(new ArrayList<Participant>(Competition.getInstance().getParticipants()));
+//            try (PrintStream out = new PrintStream(new FileOutputStream("src/main/resources/participants.json"))) {
+//                out.print(json);
+//            }
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/elimination.fxml"));
             Parent root = loader.load();
 
@@ -144,6 +150,14 @@ public class CompetitorsViewController implements Initializable {
         menuBarController.adminMode.setDisable(true);
         menuBarController.changePassword.setDisable(true);
 
+//        try(Scanner scanner = new Scanner(new File("src/main/resources/participants.json"))){
+//            String json_arr = scanner.useDelimiter("\\A").next();
+//            Competition.getInstance().getParticipantsObservableList().addAll(PersistenceManager.deserializeFromJsonArray(json_arr,Participant.class,false));
+//        }
+//        catch (Exception ex)
+//        {
+//            ;
+//        }
 
         competitorsTable.setItems(Competition.getInstance().getParticipantsObservableList());
         setRightClickOnCompetitor(competitorsTable);
