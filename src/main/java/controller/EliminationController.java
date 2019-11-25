@@ -96,7 +96,7 @@ public class EliminationController implements Initializable {
         tabPane.getTabs().add(sabreTab);
         tabPane.getTabs().add(smallSwordTab);
         // first value
-        menuBarController.setData(Competition.getInstance().getSingleWeaponCompetition(WeaponType.RAPIER));
+        menuBarController.setData(Competition.getInstance().getSingleWeaponCompetition(WeaponType.SMALL_SWORD));
         // change tab handler
         tabPane.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             int selectedIndex = newValue.intValue();
@@ -278,6 +278,7 @@ public class EliminationController implements Initializable {
                 stageroni.showAndWait();
                 rc.startRound();
             }
+//            setData();
         });
 
         GridPane.setConstraints(nextRoundButton, 0, 0);

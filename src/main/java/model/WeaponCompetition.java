@@ -131,6 +131,10 @@ public class WeaponCompetition implements Serializable {
         return  new FightDrawStrategyPicker();
     }
 
+    public void addParticipants(List<Participant> participants)
+    {
+        this.participants.addAll(participants);
+    }
     /** prepares list of commands to execute **/
     public List<Command> invalidateParticipant(CommandAddInjury.ValidInvocationChecker checker, Participant p) {
         Objects.requireNonNull(checker);

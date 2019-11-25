@@ -72,6 +72,7 @@ public class WelcomeController implements Initializable {
             ConfigReader.getInstance().setStringValue("SECURITY", "PASSWORD", "");
         }
 
+
         Competition.init(
                 new util.Pair<ObservableList<Participant>,WeaponType>(rapierParticipants, WeaponType.RAPIER),
                 new util.Pair<ObservableList<Participant>,WeaponType>(sabreParticipants, WeaponType.SABRE),

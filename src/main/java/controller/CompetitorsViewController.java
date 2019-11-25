@@ -24,10 +24,7 @@ import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class CompetitorsViewController implements Initializable {
@@ -93,16 +90,35 @@ public class CompetitorsViewController implements Initializable {
 
     @FXML
     public void startCompetition() {
+        if (Competition.getInstance().getWeaponCompetition(WeaponType.SMALL_SWORD).getLastRound() == null) {
+            List<Participant> competitors_list = Competition.getInstance().getParticipants();
+            List<Participant>  small_sword_list = new ArrayList<>();
+            List<Participant>  sabre_list = new ArrayList<>();
+            List<Participant>  rapier_list = new ArrayList<>();
+            for (Participant part : competitors_list) {
+                if(part.fSmallSwordParticipantProperty().getValue())
+                    small_sword_list.add(part);
+                if(part.fSabreParticipantProperty().getValue())
+                    sabre_list.add(part);
+                if(part.fRapierParticipantProperty().getValue())
+                    rapier_list.add(part);
+            }
+            Competition comp = Competition.getInstance();
+            comp.getWeaponCompetition(WeaponType.SMALL_SWORD).addParticipants(small_sword_list);
+            comp.getWeaponCompetition(WeaponType.SABRE).addParticipants(sabre_list);
+            comp.getWeaponCompetition(WeaponType.RAPIER).addParticipants(rapier_list);
+        }
+
         for (WeaponCompetition weaponCompetition: Competition.getInstance().getWeaponCompetitions()){
             // start first round
             if (weaponCompetition.getLastRound() == null) weaponCompetition.startFirstRound(5);
 
         }
         try {
-//            String json = PersistenceManager.serializeObjectsArrayToJson(new ArrayList<Participant>(Competition.getInstance().getParticipants()));
-//            try (PrintStream out = new PrintStream(new FileOutputStream("src/main/resources/participants.json"))) {
-//                out.print(json);
-//            }
+            String json = PersistenceManager.serializeObjectsArrayToJson(new ArrayList<Participant>(Competition.getInstance().getParticipants()));
+            try (PrintStream out = new PrintStream(new FileOutputStream("src/main/resources/participants.json"))) {
+                out.print(json);
+            }
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/elimination.fxml"));
             Parent root = loader.load();
 
@@ -150,14 +166,15 @@ public class CompetitorsViewController implements Initializable {
         menuBarController.adminMode.setDisable(true);
         menuBarController.changePassword.setDisable(true);
 
-//        try(Scanner scanner = new Scanner(new File("src/main/resources/participants.json"))){
-//            String json_arr = scanner.useDelimiter("\\A").next();
-//            Competition.getInstance().getParticipantsObservableList().addAll(PersistenceManager.deserializeFromJsonArray(json_arr,Participant.class,false));
-//        }
-//        catch (Exception ex)
-//        {
-//            ;
-//        }
+        try(Scanner scanner = new Scanner(new File("src/main/resources/participants.json"))){
+            String json_arr = scanner.useDelimiter("\\A").next();
+            Competition.getInstance().getParticipantsObservableList().addAll(PersistenceManager.deserializeFromJsonArray(json_arr,Participant.class,false));
+        }
+        catch (Exception ex)
+        {
+            ;
+        }
+
 
         competitorsTable.setItems(Competition.getInstance().getParticipantsObservableList());
         setRightClickOnCompetitor(competitorsTable);
