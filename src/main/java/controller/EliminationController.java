@@ -63,12 +63,9 @@ public class EliminationController implements Initializable {
     ObservableMap<WeaponType, ObservableList<Participant>> weaponCompetitionParticipants;
     @FXML
     TabPane tabPane;
-    @FXML
-    Tab rapierTab;
-    @FXML
-    Tab sabreTab;
-    @FXML
-    Tab smallSwordTab;
+    Tab rapierTab = null;
+    Tab sabreTab = null;
+    Tab smallSwordTab = null;
 
     private TableView rapierTableView;
     private TableView sabreTableView;
@@ -89,12 +86,14 @@ public class EliminationController implements Initializable {
 
 
     public void update() {
+        if(rapierTab != null || sabreTab != null || smallSwordTab != null){
+            tabPane.getTabs().remove(0,3);
+        }
         rapierTab = initTab(WeaponType.RAPIER);
         sabreTab = initTab(WeaponType.SABRE);
         smallSwordTab = initTab(WeaponType.SMALL_SWORD);
-        tabPane.getTabs().add(rapierTab);
-        tabPane.getTabs().add(sabreTab);
-        tabPane.getTabs().add(smallSwordTab);
+
+        tabPane.getTabs().addAll(rapierTab,sabreTab,smallSwordTab);
         // first value
         menuBarController.setData(Competition.getInstance().getSingleWeaponCompetition(WeaponType.SMALL_SWORD));
         // change tab handler
@@ -270,15 +269,17 @@ public class EliminationController implements Initializable {
                     return;
                 rc=p.get();
             }
-            if (rc.getfRoundReady())
+            if (rc.getfRoundReady()) {
                 rc.startRound();
-            else {
+            }else {
                 Stage stageroni = ApplicationController.getApplicationController().renderPlayOff("/playOff.fxml", "gimme", true, rc);
                 stageroni.getIcons().add(ApplicationController.image);
                 stageroni.showAndWait();
                 rc.startRound();
             }
 //            setData();
+            /* TODO: refresh view */
+            this.setData();
         });
 
         GridPane.setConstraints(nextRoundButton, 0, 0);
