@@ -317,20 +317,23 @@ public class EliminationController implements Initializable {
 
         addPoints.setOnAction(x -> {
             System.out.println("ON ACTION: " + wt);
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/addPoints.fxml"));
-            Parent root = null;
-            try { root = loader.load(); }
-            catch (IOException ex) { System.out.println("error while loading add points");}
-            Stage childStage = new Stage();
-            childStage.setScene(new Scene(root));
-            childStage.show();
-
             Participant p = null;
             switch (wt){
                 case RAPIER: { p = (Participant) rapierTableView.getSelectionModel().getSelectedItem(); break; }
                 case SMALL_SWORD: { p = (Participant) smallSwordTableView.getSelectionModel().getSelectedItem(); break; }
                 case SABRE: { p = (Participant) sabreTableView.getSelectionModel().getSelectedItem(); break; }
             }
+            if(p == null)
+                return;
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/addPoints.fxml"));
+            Parent root = null;
+            try { root = loader.load(); }
+            catch (IOException ex) { System.out.println("error while loading add points");}
+            Stage childStage = new Stage();
+            childStage.setResizable(false);
+            childStage.setScene(new Scene(root));
+            childStage.show();
+
             AddPointsController addPointsController = (AddPointsController) loader.getController();
             addPointsController.setData(p, Competition.getInstance().getWeaponCompetition(wt).getLastRound());
         });
@@ -342,20 +345,23 @@ public class EliminationController implements Initializable {
         //substractPoints.setStyle("-fx-background-color: grey; -fx-padding: 10;");
 
         substractPoints.setOnAction(x -> {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/subtractPoints.fxml"));
-            Parent root = null;
-            try { root = loader.load(); }
-            catch (IOException ex) { System.out.println("error while subtracting points");}
-            Stage childStage = new Stage();
-            childStage.setScene(new Scene(root));
-            childStage.show();
-
             Participant p = null;
             switch (wt){
                 case RAPIER: {p = (Participant) rapierTableView.getSelectionModel().getSelectedItem(); break; }
                 case SMALL_SWORD: { p = (Participant) smallSwordTableView.getSelectionModel().getSelectedItem(); break; }
                 case SABRE: { p = (Participant) sabreTableView.getSelectionModel().getSelectedItem(); break; }
             }
+            if(p == null)
+                return;
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/subtractPoints.fxml"));
+            Parent root = null;
+            try { root = loader.load(); }
+            catch (IOException ex) { System.out.println("error while subtracting points");}
+            Stage childStage = new Stage();
+            childStage.setResizable(false);
+            childStage.setScene(new Scene(root));
+            childStage.show();
+
             SubtractPointsController subtractPointsController = (SubtractPointsController) loader.getController();
             subtractPointsController.setData(p, Competition.getInstance().getWeaponCompetition(wt).getLastRound());
         });
