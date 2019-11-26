@@ -294,7 +294,21 @@ public class EliminationController implements Initializable {
             competitionStatus.setText("UnknownCompetitionState");
         }
         //competitionStatus.setStyle("-fx-background-color: yellow; -fx-padding: 10;");
-        competitionStatus.setOnAction(x -> System.out.format("Implement me\n"));
+        competitionStatus.setOnAction(x -> {
+            System.out.format("Implement me\n");
+
+            Fight f = Competition.getInstance().getWeaponCompetition(wt).getLastRound().getGroups().get(0).getFightsList().get(0);
+            System.out.format("!!!!%s!!!!\n",f.scoreProperty().get().toString());
+            f.setDouble();
+            System.out.format("!!!!%s!!!!\n",f.scoreProperty().get().toString());
+            f.firstParticipantProperty().get().setName("xDDDD");
+
+        });
+
+
+
+
+
         GridPane.setConstraints(competitionStatus, 0, 1);
 
         Button addPoints = new Button();
@@ -484,7 +498,12 @@ public class EliminationController implements Initializable {
                 tableForGroupFights.setPadding(new Insets(5, 5, 5, 5));
                 GridPane.setConstraints(tableForGroupFights, currentColumn, currentRow);
                 tableForGroupFights.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-                tableForGroupFights.setItems(FXCollections.observableList(cg.getFightsList()));
+
+                ObservableList<Fight> fights = FXCollections.observableArrayList(Fight.extractor());
+                fights.addAll(cg.getFightsList());
+
+                //tableForGroupFights.setItems(FXCollections.observableList(cg.getFightsList()));
+                tableForGroupFights.setItems(fights);
 
                 TableColumn<Fight, String> firstParticipant = new TableColumn<>();
                 TableColumn<Fight, String> doubleColumn = new TableColumn<>();
@@ -502,8 +521,8 @@ public class EliminationController implements Initializable {
                 doubleColumn.setText("X");
                 secondParticipant.setText("Second");
 
-                firstParticipant.setCellValueFactory(f -> new SimpleStringProperty(f.getValue().getFirstParticipant().nameProperty().getValue() + " " + f.getValue().getFirstParticipant().surnameProperty().getValue()));
-                secondParticipant.setCellValueFactory(f -> new SimpleStringProperty(f.getValue().getSecondParticipant().nameProperty().getValue() + " " + f.getValue().getSecondParticipant().surnameProperty().getValue()));
+                firstParticipant.setCellValueFactory(f -> f.getValue().firstParticipantStringProperty());
+                secondParticipant.setCellValueFactory(f -> f.getValue().secondParticipantStringProperty());
                 doubleColumn.setCellValueFactory(f -> new SimpleStringProperty("x"));
 
                 firstParticipant.setCellFactory(tc -> {
@@ -515,7 +534,7 @@ public class EliminationController implements Initializable {
                             if(!isEmpty()){
                                 /* Person auxPerson = getTableView().getItems().get(getIndex()); */
                                 Fight fight = getTableView().getItems().get(getIndex());
-                                if (fight.getScore().equals(FightScore.WON_FIRST)) {
+                                if (fight.scoreProperty().get().equals(FightScore.WON_FIRST)) {
                                     setStyle("-fx-alignment: CENTER; -fx-background-color: GREEN;");
                                 } else if (fight.getScore().equals(FightScore.NULL_STATE)) {
                                     setStyle("-fx-alignment: CENTER; -fx-background-color: TRANSPARENT;");
@@ -554,7 +573,7 @@ public class EliminationController implements Initializable {
                             if(!isEmpty()){
                                 /* Person auxPerson = getTableView().getItems().get(getIndex()); */
                                 Fight fight = getTableView().getItems().get(getIndex());
-                                if (fight.getScore().equals(FightScore.WON_SECOND)) {
+                                if (fight.scoreProperty().get().equals(FightScore.WON_SECOND)) {
                                     setStyle("-fx-alignment: CENTER; -fx-background-color: GREEN;");
                                 } else if (fight.getScore().equals(FightScore.NULL_STATE)) {
                                     setStyle("-fx-alignment: CENTER; -fx-background-color: TRANSPARENT;");

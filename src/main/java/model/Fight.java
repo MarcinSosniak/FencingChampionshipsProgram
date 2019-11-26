@@ -1,14 +1,19 @@
 package model;
 
 
+import javafx.beans.Observable;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.util.Callback;
 import model.command.Command;
 import model.command.CommandAddBattleResult;
 import model.command.ValidInvocationChecker;
 import model.config.ConfigReader;
 import model.enums.FightScore;
 import model.enums.WeaponType;
+
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -18,12 +23,33 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
+
 public  class Fight implements Serializable {
     private ObjectProperty<Participant> firstParticipant= new SimpleObjectProperty<>();
     private ObjectProperty<Participant> secondParticipant = new SimpleObjectProperty<>();
     private ObjectProperty<FightScore> score = new SimpleObjectProperty<>();
+    private StringProperty firstParticipantStringProperty = new SimpleStringProperty();
+    private StringProperty secondParticipantStringProperty = new SimpleStringProperty();
     private Round round;
     private static final long serialVersionUID = 2;
+
+    public String getFirstParticipantStringProperty() {
+        return firstParticipantStringProperty.get();
+    }
+
+    public StringProperty firstParticipantStringProperty() {
+        return firstParticipantStringProperty;
+    }
+
+    public String getSecondParticipantStringProperty() {
+        return secondParticipantStringProperty.get();
+    }
+
+    public StringProperty secondParticipantStringProperty() {
+        return secondParticipantStringProperty;
+    }
+
+
 
     public Fight(Round round,Participant first, Participant second){
         this.round=round;
@@ -32,7 +58,10 @@ public  class Fight implements Serializable {
         score.setValue(FightScore.NULL_STATE);
         round.addExcpectedFightToParticipant(first);
         round.addExcpectedFightToParticipant(second);
+        this.firstParticipantStringProperty.setValue(this.getFirstParticipant().nameProperty().getValue() + " " + this.getFirstParticipant().surnameProperty().getValue());
+        this.secondParticipantStringProperty.setValue(this.getSecondParticipant().nameProperty().getValue() + " " + this.getSecondParticipant().surnameProperty().getValue());
         System.out.println("Adding participants to round  weapon : " + WeaponType.str(round.getMyWeaponCompetition().getWeaponType()));
+
     }
 
     public Participant getFirstParticipant() {
@@ -69,6 +98,8 @@ public  class Fight implements Serializable {
     public void setFightScore(ValidInvocationChecker validInvocationChecker, FightScore score)
     {
         Objects.requireNonNull(validInvocationChecker);
+        this.secondParticipantStringProperty.setValue(this.secondParticipantStringProperty().getValue());
+        this.firstParticipantStringProperty.setValue(this.firstParticipantStringProperty().getValue());
         this.score.setValue(score);
     }
 
@@ -172,6 +203,8 @@ public  class Fight implements Serializable {
         stream.writeObject(secondParticipant.get());
         stream.writeObject(score.get());
         stream.writeObject(round);
+        stream.writeObject(firstParticipantStringProperty.get());
+        stream.writeObject(secondParticipantStringProperty.get());
     }
 
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
@@ -179,6 +212,8 @@ public  class Fight implements Serializable {
         secondParticipant = new SimpleObjectProperty<>((Participant) stream.readObject());
         score = new SimpleObjectProperty<>((FightScore) stream.readObject());
         round = (Round) stream.readObject();
+        firstParticipantStringProperty = new SimpleStringProperty((String) stream.readObject());
+        secondParticipantStringProperty = new SimpleStringProperty((String) stream.readObject());
     }
 
     @Override
@@ -197,5 +232,7 @@ public  class Fight implements Serializable {
         return this.firstParticipant.hashCode() * 8 + this.secondParticipant.hashCode();
     }
 
-
+    public static Callback<Fight, Observable[]> extractor(){
+        return (Fight f) -> new Observable[]{f.scoreProperty(),f.firstParticipantProperty(),f.secondParticipantProperty(),f.secondParticipantStringProperty(),f.firstParticipantStringProperty()};
+    }
 }
