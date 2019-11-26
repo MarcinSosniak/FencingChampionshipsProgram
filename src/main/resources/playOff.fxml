@@ -8,7 +8,12 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Text?>
 
-<GridPane fx:id="basePane" prefHeight="431.0" prefWidth="616.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PlayoffController">
+<GridPane
+        prefHeight="431.0"
+        prefWidth="616.0"
+        xmlns="http://javafx.com/javafx/8.0.121"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="controller.PlayoffController">
     <rowConstraints>
         <RowConstraints percentHeight="5" />
         <RowConstraints percentHeight="10" />
@@ -26,7 +31,7 @@
     <Text fx:id="textField" textAlignment="LEFT" GridPane.columnIndex="1" GridPane.rowIndex="3" />
     <Button fx:id="okButton" alignment="CENTER_LEFT" onAction="#okPressed" GridPane.columnIndex="1" GridPane.rowIndex="4" />
     <Button fx:id="cancelButton" alignment="CENTER_RIGHT" onAction="#cancelPressed" prefHeight="29.0" prefWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-    <TableView fx:id="participantTable" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+    <TableView fx:id="participantTable" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
 
 </GridPane>

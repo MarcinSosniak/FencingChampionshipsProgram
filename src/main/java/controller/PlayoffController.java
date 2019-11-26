@@ -28,7 +28,14 @@ import java.util.ResourceBundle;
 public class PlayoffController implements Initializable {
 
     @FXML
-    GridPane basePane;
+    Text textField;
+    @FXML
+    Button okButton;
+    @FXML
+    Button cancelButton;
+    @FXML
+    TableView participantTable;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -39,7 +46,7 @@ public class PlayoffController implements Initializable {
     private ObservableList<Participant> eligble;
     private List<Participant> chosen = new ArrayList<>();
     private StringProperty text_to_display;
-    private Button ok_button = new Button();
+    private TableColumn<Participant,String> tc = new TableColumn<>();
 
     PlayoffController(WeaponCompetition.RoundCreator rc)
     {
@@ -56,6 +63,7 @@ public class PlayoffController implements Initializable {
     {
         String str= "Wybierz "+rc.getParticpantsNeededFromPlayoffs() + "\n" + "Wybrano: " + chosen.size();
         text_to_display.setValue(str);
+
     }
 
     private void self_update()
@@ -63,22 +71,37 @@ public class PlayoffController implements Initializable {
         setText();
         if(chosen==rc.getParticipantsForPlayoff())
         {
-            ok_button.setDisable(false);
+            okButton.setDisable(false);
         }
         else
         {
-            ok_button.setDisable(true);
+            okButton.setDisable(true);
         }
+
     }
+    public void okPressed()
+    {
+        rc.setPlayOffWinners(chosen);
+        Stage toClose = (Stage) okButton.getScene().getWindow();
+        toClose.close();
+        System.out.format("confirmplayoff\n");
+    }
+
+    public void cancelPressed()
+    {
+        Stage toClose = (Stage) okButton.getScene().getWindow();
+        toClose.close();
+        System.out.format("cancelPlayyof\n");
+    }
+
 
     private void update()
     {
-        TableView tv = new TableView();
-        tv.setItems(eligble);
-        GridPane.setConstraints(tv,0,0,1,2);
-        TableColumn<Participant,String> onlyColumn= new TableColumn<>();
-        onlyColumn.setCellValueFactory(p -> new SimpleStringProperty(p.getValue().getName()));
-        onlyColumn.setCellFactory(
+        text_to_display=textField.textProperty();
+        tc.setCellValueFactory(x->{
+            return new SimpleStringProperty(x.getValue().getName()+" " + x.getValue().getSurname());
+        });
+        tc.setCellFactory(
                 hue ->{
                     TableCell<Participant, String> cell = new TableCell<Participant, String>() {
                         @Override
@@ -94,42 +117,80 @@ public class PlayoffController implements Initializable {
                             {
                                 cell.setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
                                 chosen.remove(p);
-                                self_update();
-
                             }
                             else
                             {
-                                cell.setStyle("-fx-alignment: CENTER; -fx-background-color: green;");
+                                cell.setStyle("-fx-alignment: CENTER; -fx-background-color: blue;");
                                 chosen.add(p);
-                                self_update();
                             }
+                            self_update();
                         }
                     });
-             return cell;});
-        Text text  = new Text();
-        text_to_display=text.textProperty();
-        self_update();
-        GridPane.setConstraints(text,1,0);
-        ok_button.setOnAction(x->{
-            if (chosen.size()!= rc.getParticpantsNeededFromPlayoffs())
-            {
-                System.out.println("tried to klick ok_boomer and chosen was not enoug");
-            }
-            Stage toClose = (Stage) ok_button.getScene().getWindow();
-            toClose.close();
-        });
-        ok_button.setStyle("-fx-alignment: RIGHT;");
-        GridPane.setConstraints(ok_button,1,1);
-        Button cancel_button = new Button();
-        cancel_button.setOnAction(x->{
-            System.out.println("canceled choosing playoffs");
-            Stage toClose = (Stage) ok_button.getScene().getWindow();
-            toClose.close();
-        });
-        cancel_button.setStyle("-fx-alignment: RIGHT;");
-        GridPane.setConstraints(cancel_button,1,1);
-        basePane.getChildren().addAll(tv,text,ok_button,cancel_button);
-
+                    return cell;});
+        participantTable.getColumns().add(tc);
+        participantTable.setItems(eligble);
     }
+
+
+//    private void update()
+//    {
+//        TableView tv = new TableView();
+//        tv.setItems(eligble);
+//        GridPane.setConstraints(tv,0,0,1,2);
+//        TableColumn<Participant,String> onlyColumn= new TableColumn<>();
+//        onlyColumn.setCellValueFactory(p -> new SimpleStringProperty(p.getValue().getName()));
+//        onlyColumn.setCellFactory(
+//                hue ->{
+//                    TableCell<Participant, String> cell = new TableCell<Participant, String>() {
+//                        @Override
+//                        protected void updateItem(String item, boolean empty) {
+//                            super.updateItem(item, empty);
+////                            setText(empty ? null : item);
+//                        }
+//                    };
+//                    cell.setOnMouseClicked(e -> {
+//                        if (e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty()) {
+//                            Participant p  = (Participant) cell.getTableRow().getItem();
+//                            if(chosen.contains(p))
+//                            {
+//                                cell.setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
+//                                chosen.remove(p);
+//                                self_update();
+//
+//                            }
+//                            else
+//                            {
+//                                cell.setStyle("-fx-alignment: CENTER; -fx-background-color: green;");
+//                                chosen.add(p);
+//                                self_update();
+//                            }
+//                        }
+//                    });
+//             return cell;});
+//        Text text  = new Text();
+//        text_to_display=text.textProperty();
+//        self_update();
+//        GridPane.setConstraints(text,1,0);
+//        ok_button.setOnAction(x->{
+//            if (chosen.size()!= rc.getParticpantsNeededFromPlayoffs())
+//            {
+//                System.out.println("tried to klick ok_boomer and chosen was not enoug");
+//            }
+//            Stage toClose = (Stage) ok_button.getScene().getWindow();
+//            toClose.close();
+//        });
+//        ok_button.setStyle("-fx-alignment: RIGHT;");
+//        GridPane.setConstraints(ok_button,1,1);
+//        Button cancel_button = new Button();
+//        cancel_button.setOnAction(x->{
+//            System.out.println("canceled choosing playoffs");
+//            Stage toClose = (Stage) ok_button.getScene().getWindow();
+//            toClose.close();
+//        });
+//        cancel_button.setStyle("-fx-alignment: RIGHT;");
+//        GridPane.setConstraints(cancel_button,1,1);
+//        basePane.getChildren().addAll(tv,text,ok_button,cancel_button);
+//
+//    }
 
 }

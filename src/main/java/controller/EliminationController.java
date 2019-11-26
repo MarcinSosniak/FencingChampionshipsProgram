@@ -262,7 +262,6 @@ public class EliminationController implements Initializable {
             else
             {
                 Pointer<WeaponCompetition.RoundCreator> p = new Pointer<>();
-
                 Stage stageroni = ApplicationController.getApplicationController().renderNextRound("/nextRound.fxml", "gimme", true, wc,p);
                 stageroni.getIcons().add(ApplicationController.image);
                 stageroni.showAndWait();
@@ -276,7 +275,9 @@ public class EliminationController implements Initializable {
                 Stage stageroni = ApplicationController.getApplicationController().renderPlayOff("/playOff.fxml", "gimme", true, rc);
                 stageroni.getIcons().add(ApplicationController.image);
                 stageroni.showAndWait();
-                rc.startRound();
+                if(rc.getfRoundReady())
+                    rc.startRound();
+                return;
             }
 //            setData();
             /* TODO: refresh view */

@@ -124,7 +124,8 @@ public class Round implements Serializable {
         RationalNumber participant_score= roundScore.get(p).get();
         RationalNumber points_to_add=pScoreMultiplier.multiply(points);
         RationalNumber after_add=participant_score.add(points_to_add);
-        participant_score.set(after_add);
+        ObjectProperty<RationalNumber>  pscore= roundScore.get(p);
+        pscore.setValue(after_add);
         p.addPointsForWeapon(checker,myWeaponCompetition.getWeaponType(),points_to_add);
     }
 
