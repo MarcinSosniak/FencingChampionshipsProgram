@@ -2,6 +2,7 @@ package controller;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
@@ -9,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -26,6 +28,8 @@ import util.RationalNumber;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 /** TODO: undo doesnt change color properly
  * TODO: should add function set cell colors properly :) which is invoked by command controller*/
@@ -74,6 +78,9 @@ public class EliminationController implements Initializable {
     public ObservableList<TableRow> sabreRows = FXCollections.observableArrayList();
     public ObservableList<TableRow> smallSwordRows = FXCollections.observableArrayList();
 
+    private static HashMap<Fight, TableCell<Fight, String>> prtipantHashMap = new HashMap<>();
+
+
     @FXML
     MenuBarController menuBarController;
 
@@ -95,7 +102,7 @@ public class EliminationController implements Initializable {
 
         tabPane.getTabs().addAll(rapierTab,sabreTab,smallSwordTab);
         // first value
-        menuBarController.setData(Competition.getInstance().getSingleWeaponCompetition(WeaponType.SMALL_SWORD));
+        menuBarController.setData(Competition.getInstance().getSingleWeaponCompetition(WeaponType.RAPIER));
         // change tab handler
         tabPane.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
             int selectedIndex = newValue.intValue();
@@ -307,8 +314,6 @@ public class EliminationController implements Initializable {
 
 
 
-
-
         GridPane.setConstraints(competitionStatus, 0, 1);
 
         Button addPoints = new Button();
@@ -444,6 +449,57 @@ public class EliminationController implements Initializable {
         }
     }
 
+    private static void changeStyle(Fight fight, TableCell<Fight, String> cell){
+        System.out.println(fight.scoreProperty().get());
+        Node cell1 = cell.getTableRow().getChildrenUnmodifiable().get(0);
+        Node cell2 = cell.getTableRow().getChildrenUnmodifiable().get(2);
+        System.out.println("in change style");
+
+        if (fight.scoreProperty().get().equals(FightScore.WON_FIRST)) {
+            cell1.setStyle("-fx-alignment: CENTER; -fx-background-color: GREEN;");
+            cell2.setStyle("-fx-alignment: CENTER; -fx-background-color: RED;");
+        } else if (fight.getScore().equals(FightScore.NULL_STATE)) {
+            cell1.setStyle("-fx-alignment: CENTER; -fx-background-color: TRANSPARENT;");
+            cell2.setStyle("-fx-alignment: CENTER; -fx-background-color: TRANSPARENT;");
+        } else if (fight.scoreProperty().get().equals(FightScore.WON_SECOND)) {
+            cell1.setStyle("-fx-alignment: CENTER; -fx-background-color: RED;");
+            cell2.setStyle("-fx-alignment: CENTER; -fx-background-color: GREEN;");
+        }
+        if (fight.scoreProperty().get().equals(FightScore.DOUBLE)){
+            cell1.setStyle("-fx-alignment: CENTER; -fx-background-color: RED;");
+            cell2.setStyle("-fx-alignment: CENTER; -fx-background-color: RED;");
+        }
+    }
+
+    private static ListChangeListener<Fight> createListener(String listId) {
+        return (ListChangeListener.Change<? extends Fight> c) -> {
+            while (c.next()) {
+                if (c.wasAdded()) {
+                    System.out.println(listId + " added: " + c.getAddedSubList());
+                }
+                if (c.wasRemoved()) {
+                    System.out.println(listId + " removed: " + c.getRemoved());
+                }
+                if (c.wasUpdated()) {
+
+                    int index = c.getFrom() ;  // updated only one element
+                    Fight fight = c.getList().get(index);
+                    if (prtipantHashMap.containsKey(fight)){
+                        System.out.println("CONTAINS");
+                        changeStyle(fight, prtipantHashMap.get(fight));
+                    }
+                    else {
+                        System.out.println(prtipantHashMap.size());
+                        System.out.println("DOES NOT CONTAIN");
+                    }
+
+                    System.out.println(listId + " updated");
+                }
+            }
+        };
+    }
+
+
     /* TODO: make better title*/
     private ScrollPane prepareResultPane(WeaponType wt, int columns) {
         ScrollPane scrollPaneForVBOX = new ScrollPane();
@@ -500,6 +556,8 @@ public class EliminationController implements Initializable {
                 tableForGroupFights.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
                 ObservableList<Fight> fights = FXCollections.observableArrayList(Fight.extractor());
+                fights.addListener(createListener("listWithExtractor"));
+
                 fights.addAll(cg.getFightsList());
 
                 //tableForGroupFights.setItems(FXCollections.observableList(cg.getFightsList()));
@@ -519,21 +577,25 @@ public class EliminationController implements Initializable {
                 /*TODO: Remove header from table */
                 firstParticipant.setText("First");
                 doubleColumn.setText("X");
-                secondParticipant.setText("Second");
+                secondParticipant.setText("Second");;
 
                 firstParticipant.setCellValueFactory(f -> f.getValue().firstParticipantStringProperty());
                 secondParticipant.setCellValueFactory(f -> f.getValue().secondParticipantStringProperty());
                 doubleColumn.setCellValueFactory(f -> new SimpleStringProperty("x"));
 
+
                 firstParticipant.setCellFactory(tc -> {
                     TableCell<Fight, String> cell = new TableCell<Fight, String>() {
+
                         @Override
                         protected void updateItem(String item, boolean empty) {
                             super.updateItem(item, empty);
                             setText(empty ? null : item);
                             if(!isEmpty()){
+
                                 /* Person auxPerson = getTableView().getItems().get(getIndex()); */
                                 Fight fight = getTableView().getItems().get(getIndex());
+
                                 if (fight.scoreProperty().get().equals(FightScore.WON_FIRST)) {
                                     setStyle("-fx-alignment: CENTER; -fx-background-color: GREEN;");
                                 } else if (fight.getScore().equals(FightScore.NULL_STATE)) {
@@ -544,15 +606,20 @@ public class EliminationController implements Initializable {
                             }
                         }
                     };
+
+
                     cell.setOnMouseClicked(e -> {
+                        prtipantHashMap.put((Fight) cell.getTableRow().getItem(), cell);
+
                         if (e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty()) {
                             Fight f = (Fight) cell.getTableRow().getItem();
+
                             if (f.getScore().equals(FightScore.WON_FIRST)) {
                                 cell.getTableRow().getChildrenUnmodifiable().get(1).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
                                 cell.getTableRow().getChildrenUnmodifiable().get(2).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
                                 cell.setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
                                 f.commandSetFightScoreDirect(FightScore.NULL_STATE);
-                            } else {
+                              } else {
                                 cell.getTableRow().getChildrenUnmodifiable().get(1).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
                                 cell.getTableRow().getChildrenUnmodifiable().get(2).setStyle("-fx-alignment: CENTER; -fx-background-color: red;");
                                 cell.setStyle("-fx-alignment: CENTER; -fx-background-color: green;");
@@ -570,7 +637,10 @@ public class EliminationController implements Initializable {
                         protected void updateItem(String item, boolean empty) {
                             super.updateItem(item, empty);
                             setText(empty ? null : item);
+                            System.out.println(getIndex());
+
                             if(!isEmpty()){
+
                                 /* Person auxPerson = getTableView().getItems().get(getIndex()); */
                                 Fight fight = getTableView().getItems().get(getIndex());
                                 if (fight.scoreProperty().get().equals(FightScore.WON_SECOND)) {
@@ -586,6 +656,8 @@ public class EliminationController implements Initializable {
                         }
                     };
                     cell.setOnMouseClicked(e -> {
+                        prtipantHashMap.put((Fight) cell.getTableRow().getItem(), cell);
+
                         if (e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty()) {
                             Fight f = (Fight) cell.getTableRow().getItem();
                             if (f.getScore().equals(FightScore.WON_SECOND)) {
@@ -618,6 +690,7 @@ public class EliminationController implements Initializable {
                         }
                     };
                     cell.setOnMouseClicked(e -> {
+                        prtipantHashMap.put((Fight) cell.getTableRow().getItem(), cell);
                         if (e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty()) {
                             Fight f = (Fight) cell.getTableRow().getItem();
                             if (f.getScore().equals(FightScore.DOUBLE)) {

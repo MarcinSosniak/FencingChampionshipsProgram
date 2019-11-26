@@ -6,6 +6,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.util.Callback;
 import model.command.Command;
 import model.command.CommandAddBattleResult;
@@ -15,6 +16,7 @@ import model.enums.FightScore;
 import model.enums.WeaponType;
 
 
+import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -32,6 +34,8 @@ public  class Fight implements Serializable {
     private StringProperty secondParticipantStringProperty = new SimpleStringProperty();
     private Round round;
     private static final long serialVersionUID = 2;
+
+
 
     public String getFirstParticipantStringProperty() {
         return firstParticipantStringProperty.get();
@@ -232,7 +236,12 @@ public  class Fight implements Serializable {
         return this.firstParticipant.hashCode() * 8 + this.secondParticipant.hashCode();
     }
 
+
     public static Callback<Fight, Observable[]> extractor(){
-        return (Fight f) -> new Observable[]{f.scoreProperty(),f.firstParticipantProperty(),f.secondParticipantProperty(),f.secondParticipantStringProperty(),f.firstParticipantStringProperty()};
+        System.out.println("callback");
+        return (Fight f) ->
+            new Observable[]{f.score,f.firstParticipantProperty(),f.secondParticipantProperty(),f.secondParticipantStringProperty(),f.firstParticipantStringProperty()};
     }
+
+
 }

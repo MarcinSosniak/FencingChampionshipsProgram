@@ -13,6 +13,7 @@ import model.AppMode;
 import model.CheckPointManager;
 import model.Competition;
 import model.WeaponCompetition;
+import model.enums.WeaponType;
 
 import java.io.File;
 import java.io.IOException;
@@ -64,6 +65,7 @@ public class MenuBarController implements Initializable {
     @FXML
     public void undo(){
         System.out.format("undo\n");
+        System.out.println(wc.getWeaponType());
         wc.getcStack().undo();
     }
     @FXML

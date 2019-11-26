@@ -3,6 +3,7 @@ package model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.command.Command;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,9 +19,9 @@ public class CommandStack implements Serializable {
     public void executeCommand(Command command) {
         command.execute();
         commandStack.add(command);
-        System.out.println("command stack:");
-        System.out.println(commandStack.get(commandStack.size() -1));
+        System.out.println("ex command stack:");
         undoStack.clear();
+        for (int i=0; i<commandStack.size(); i++) System.out.println(commandStack.get(i));
     }
 
     public void redo() {
@@ -35,6 +36,10 @@ public class CommandStack implements Serializable {
     public void undo() {
         if(commandStack.size() < 1)
             throw  new IllegalStateException("nothing to undo");
+        System.out.println("xxxxx");
+        for (int i=0; i<commandStack.size(); i++) System.out.println(commandStack.get(i));
+        System.out.println("here");
+        System.out.println(commandStack.size()-1);
         Command command = commandStack.get(commandStack.size()-1);
         System.out.println("TRYING TO UNDO COMMAND: " + command);
         command.undo();
