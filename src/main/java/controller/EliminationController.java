@@ -29,7 +29,6 @@ import util.RationalNumber;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 /** TODO: undo doesnt change color properly
  * TODO: should add function set cell colors properly :) which is invoked by command controller*/
@@ -304,11 +303,6 @@ public class EliminationController implements Initializable {
         competitionStatus.setOnAction(x -> {
             System.out.format("Implement me\n");
 
-            Fight f = Competition.getInstance().getWeaponCompetition(wt).getLastRound().getGroups().get(0).getFightsList().get(0);
-            System.out.format("!!!!%s!!!!\n",f.scoreProperty().get().toString());
-            f.setDouble();
-            System.out.format("!!!!%s!!!!\n",f.scoreProperty().get().toString());
-            f.firstParticipantProperty().get().setName("xDDDD");
 
         });
 
@@ -592,10 +586,8 @@ public class EliminationController implements Initializable {
                             super.updateItem(item, empty);
                             setText(empty ? null : item);
                             if(!isEmpty()){
-
                                 /* Person auxPerson = getTableView().getItems().get(getIndex()); */
                                 Fight fight = getTableView().getItems().get(getIndex());
-
                                 if (fight.scoreProperty().get().equals(FightScore.WON_FIRST)) {
                                     setStyle("-fx-alignment: CENTER; -fx-background-color: GREEN;");
                                 } else if (fight.getScore().equals(FightScore.NULL_STATE)) {
@@ -606,23 +598,13 @@ public class EliminationController implements Initializable {
                             }
                         }
                     };
-
-
                     cell.setOnMouseClicked(e -> {
                         prtipantHashMap.put((Fight) cell.getTableRow().getItem(), cell);
-
                         if (e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty()) {
                             Fight f = (Fight) cell.getTableRow().getItem();
-
                             if (f.getScore().equals(FightScore.WON_FIRST)) {
-                                cell.getTableRow().getChildrenUnmodifiable().get(1).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
-                                cell.getTableRow().getChildrenUnmodifiable().get(2).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
-                                cell.setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
                                 f.commandSetFightScoreDirect(FightScore.NULL_STATE);
                               } else {
-                                cell.getTableRow().getChildrenUnmodifiable().get(1).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
-                                cell.getTableRow().getChildrenUnmodifiable().get(2).setStyle("-fx-alignment: CENTER; -fx-background-color: red;");
-                                cell.setStyle("-fx-alignment: CENTER; -fx-background-color: green;");
                                 f.commandSetFightScoreDirect(FightScore.WON_FIRST);
                             }
 
@@ -661,14 +643,8 @@ public class EliminationController implements Initializable {
                         if (e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty()) {
                             Fight f = (Fight) cell.getTableRow().getItem();
                             if (f.getScore().equals(FightScore.WON_SECOND)) {
-                                cell.getTableRow().getChildrenUnmodifiable().get(0).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
-                                cell.getTableRow().getChildrenUnmodifiable().get(1).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
-                                cell.setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
                                 f.commandSetFightScoreDirect(FightScore.NULL_STATE);
                             } else {
-                                cell.getTableRow().getChildrenUnmodifiable().get(0).setStyle("-fx-alignment: CENTER; -fx-background-color: red;");
-                                cell.getTableRow().getChildrenUnmodifiable().get(1).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
-                                cell.setStyle("-fx-alignment: CENTER; -fx-background-color: green;");
                                 f.commandSetFightScoreDirect(FightScore.WON_SECOND);
                             }
                         }
@@ -694,14 +670,8 @@ public class EliminationController implements Initializable {
                         if (e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty()) {
                             Fight f = (Fight) cell.getTableRow().getItem();
                             if (f.getScore().equals(FightScore.DOUBLE)) {
-                                cell.getTableRow().getChildrenUnmodifiable().get(0).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
-                                cell.getTableRow().getChildrenUnmodifiable().get(2).setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
-                                cell.setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
                                 f.commandSetFightScoreDirect(FightScore.NULL_STATE);
                             } else {
-                                cell.getTableRow().getChildrenUnmodifiable().get(0).setStyle("-fx-alignment: CENTER; -fx-background-color: red;");
-                                cell.getTableRow().getChildrenUnmodifiable().get(2).setStyle("-fx-alignment: CENTER; -fx-background-color: red;");
-                                cell.setStyle("-fx-alignment: CENTER; -fx-background-color: transparent;");
                                 f.commandSetFightScoreDirect(FightScore.DOUBLE);
                             }
                         }
