@@ -94,11 +94,17 @@ public class EliminationController implements Initializable {
 
     public void update() {
         if(rapierTab != null || sabreTab != null || smallSwordTab != null){
+            Integer tab = tabPane.getSelectionModel().getSelectedIndex();
             tabPane.getTabs().remove(0,3);
+            rapierTab = initTab(WeaponType.RAPIER);
+            sabreTab = initTab(WeaponType.SABRE);
+            smallSwordTab = initTab(WeaponType.SMALL_SWORD);
+            tabPane.getSelectionModel().select(tab);
+        }else{
+            rapierTab = initTab(WeaponType.RAPIER);
+            sabreTab = initTab(WeaponType.SABRE);
+            smallSwordTab = initTab(WeaponType.SMALL_SWORD);
         }
-        rapierTab = initTab(WeaponType.RAPIER);
-        sabreTab = initTab(WeaponType.SABRE);
-        smallSwordTab = initTab(WeaponType.SMALL_SWORD);
 
         tabPane.getTabs().addAll(rapierTab,sabreTab,smallSwordTab);
         // first value
