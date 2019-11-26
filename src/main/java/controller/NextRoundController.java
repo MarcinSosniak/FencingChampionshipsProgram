@@ -54,12 +54,15 @@ public class NextRoundController implements Initializable {
     private void update()
     {
         // causes nullptr exception. find how to set default number to sinner
-//        groupSize.getValueFactory().setValue(new Integer(iGroupSize));
-//        participantsCount.getValueFactory().setValue(iParticipantsCount);
+        groupSize.getValueFactory().setValue(new Integer(iGroupSize));
+        participantsCount.getValueFactory().setValue(iParticipantsCount);
         okButton.setOnAction(a ->
         {
             System.out.println("set next round");
-            out.set(wc.prepareNewRound(iGroupSize,iParticipantsCount));
+            iGroupSize=groupSize.getValue();
+            iParticipantsCount=participantsCount.getValue();
+            WeaponCompetition.RoundCreator rc = wc.prepareNewRound(iGroupSize,iParticipantsCount);
+            out.set(rc);
             Stage toClose = (Stage) okButton.getScene().getWindow();
             toClose.close();
         });

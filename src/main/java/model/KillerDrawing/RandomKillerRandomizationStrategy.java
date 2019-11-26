@@ -1,5 +1,6 @@
 package model.KillerDrawing;
 
+import javafx.scene.control.cell.PropertyValueFactoryBuilder;
 import model.KillerDrawing.KillerRandomizerStrategy;
 import model.Participant;
 import model.enums.JudgeState;
@@ -15,36 +16,62 @@ public class RandomKillerRandomizationStrategy implements KillerRandomizerStrate
     {
         List<Participant> nonJudges= participantsNotInKillerGroup.stream().filter(p-> p.getJudgeState()== JudgeState.NON_JUDGE).collect(Collectors.toList());
         List<Participant> killers = new ArrayList<>();
-        int maxKillerTimes=0;
-        for(Participant p : nonJudges)
-        {
-            if(p.getTimesKiller() > maxKillerTimes)
-                maxKillerTimes= p.getTimesKiller();
-        }
-        final int finalMaxKillerTimes= maxKillerTimes;
+        int totalFights = oponentLessParticipantsCount*fightsNeededPerPerson;
         if(nonJudges.size() < oponentLessParticipantsCount* fightsNeededPerPerson)
             return killersWithMultipleFights(nonJudges,oponentLessParticipantsCount,fightsNeededPerPerson);
         //we made sure taht there will be enough of killers so they don't have multiple fights;
 
         nonJudges.sort(new KillerComparator());
-        int killerCountMaximum = nonJudges.get(oponentLessParticipantsCount*fightsNeededPerPerson-1).getTimesKiller();
-        int toRandomMinIndex=-1; //all with low enough will be killers 100% other not so much
-        int toRandomMaxIndex=-1;
-        for(int i=0;i<i;i++)
+        Map<Integer,ArrayList<Participant>> timesKillerMap = new HashMap<>();
+
+        for(Participant part : nonJudges)
         {
-            if(toRandomMinIndex == -1 && nonJudges.get(i).getTimesKiller() == killerCountMaximum)
+            int timesKiller = part.getTimesKiller();
+            if ( ! timesKillerMap.containsKey(timesKiller))
+                timesKillerMap.put(timesKiller,new ArrayList<Participant>());
+            ArrayList<Participant> parts  = timesKillerMap.get(timesKiller);
+            parts.add(part);
+        }
+        List<Integer> sortedKeys = new ArrayList<>(timesKillerMap.keySet());
+        Collections.sort(sortedKeys);
+        for(Integer key: sortedKeys)
+        {
+            Collections.shuffle(timesKillerMap.get(key));
+        }
+
+        int totalFightsNeededCounter = totalFights;
+        for(Integer key : sortedKeys)
+        {
+            for(Participant part : timesKillerMap.get(key))
             {
-                toRandomMinIndex=i;
-            }
-            if(nonJudges.get(i).getTimesKiller() > killerCountMaximum)
-            {
-                toRandomMaxIndex=i;
-                break; // no need to search further
+                if(totalFightsNeededCounter <= 0)
+                    break;
+                killers.add(part);
+                totalFightsNeededCounter --;
             }
         }
-        killers.addAll(nonJudges.subList(0,toRandomMinIndex));
-        Collections.shuffle(nonJudges.subList(toRandomMinIndex,toRandomMaxIndex));
-        killers.addAll(nonJudges.subList(toRandomMinIndex,toRandomMaxIndex).subList(0,oponentLessParticipantsCount*fightsNeededPerPerson - killers.size()));
+
+
+//        int killerCountMaximum = nonJudges.get(oponentLessParticipantsCount*fightsNeededPerPerson-1).getTimesKiller();
+//        int toRandomMinIndex=-1; //all with low enough will be killers 100% other not so much
+//        int toRandomMaxIndex=-1;
+//        for(int i=0;i<nonJudges.size();i++)
+//        {
+//            if(toRandomMinIndex == -1 ||
+//                    nonJudges.get(i).getTimesKiller()
+//                            == killerCountMaximum)
+//            {
+//                toRandomMinIndex=i;
+//            }
+//            if(nonJudges.get(i).getTimesKiller() > killerCountMaximum)
+//            {
+//                toRandomMaxIndex=i;
+//                break; // no need to search further
+//            }
+//        }
+//        killers.addAll(nonJudges.subList(0,toRandomMinIndex));
+//        Collections.shuffle(nonJudges.subList(toRandomMinIndex,toRandomMaxIndex));
+//        killers.addAll(nonJudges.subList(toRandomMinIndex,toRandomMaxIndex).subList(0,oponentLessParticipantsCount*fightsNeededPerPerson - killers.size()));
         Collections.shuffle(killers);
 
         if(killers.size() != oponentLessParticipantsCount*fightsNeededPerPerson)

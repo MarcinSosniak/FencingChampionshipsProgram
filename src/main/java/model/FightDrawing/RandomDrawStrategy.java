@@ -24,16 +24,9 @@ public class RandomDrawStrategy extends   FightDrawStrategy{
     public List<CompetitionGroup> drawFightsForRound(Round round, int groupSize, List<Participant> participants) {
         int groupCount;
         List<CompetitionGroup> out=new ArrayList<>();
-        boolean fKillerGroup=false;
-        if(participants.size()% groupSize == 0)
-        {
-            groupCount=participants.size()/groupSize;
-        }
-        else
-        {
-            groupCount=participants.size()/groupSize;
-            fKillerGroup=true;
-        }
+        int overPariticpants=participants.size()%groupSize;
+        groupCount=participants.size()/groupSize;
+
         Collections.shuffle(participants);
         int participantsId;
         for( participantsId=0;participantsId<groupCount;participantsId++)
@@ -47,10 +40,10 @@ public class RandomDrawStrategy extends   FightDrawStrategy{
                 }
             out.add(new CompetitionGroup(fights));
         }
-        if(fKillerGroup)
+        if(overPariticpants!=0)
         {
-            List<Participant> nonKillers=participants.subList(participantsId,participants.size()-1);
-            List<Participant> eligbleKillers= participants.subList(0,participantsId);
+            List<Participant> nonKillers=participants.subList(participants.size()-overPariticpants,participants.size());
+            List<Participant> eligbleKillers= participants.subList(0,participants.size()-overPariticpants);
             List<List<Participant>> killersForParticipant = killS.drawKiller(eligbleKillers,
                     participants.size()%groupSize,
                     groupSize-(participants.size()%groupSize));
@@ -67,9 +60,11 @@ public class RandomDrawStrategy extends   FightDrawStrategy{
             for( List<Participant> killersForSingle : killersForParticipant) {
                 for (Participant killer : killersForSingle) {
                     fights.add(new Fight(round,nonKillers.get(currentNonKillerId),killer));
+                    round.addExcpectedFightToParticipant(killer);
                 }
                 currentNonKillerId++;
             }
+            out.add(new CompetitionGroup(fights));
         }
         return out;
     }

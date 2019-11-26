@@ -10,8 +10,8 @@
 
 <Pane prefHeight="369.0" prefWidth="352.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.NextRoundController">
    <children>
-      <Spinner fx:id="groupSize" layoutX="214.0" layoutY="87.0" prefHeight="25.0" prefWidth="59.0" />
-      <Spinner fx:id="participantsCount" layoutX="214.0" layoutY="137.0" prefHeight="25.0" prefWidth="59.0" />
+      <Spinner fx:id="groupSize" min="0" max="10" initialValue="0" amountToStepBy="1" layoutX="214.0" layoutY="87.0" prefHeight="25.0" prefWidth="59.0" />
+      <Spinner fx:id="participantsCount" min="0" max="100" initialValue="0" amountToStepBy="1" layoutX="214.0" layoutY="137.0" prefHeight="25.0" prefWidth="59.0" />
       <Button fx:id="okButton" layoutX="257.0" layoutY="304.0" mnemonicParsing="false" text="OK" />
       <Button fx:id="cancelButton" layoutX="39.0" layoutY="304.0" mnemonicParsing="false" text="anuluj" />
       <ChoiceBox fx:id="strategyChooser" layoutX="107.0" layoutY="232.0" prefWidth="150.0" />

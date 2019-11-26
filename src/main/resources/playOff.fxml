@@ -9,6 +9,7 @@
 <?import javafx.scene.text.Text?>
 
 <GridPane
+        fx:id="basePane"
         prefHeight="431.0"
         prefWidth="616.0"
         xmlns="http://javafx.com/javafx/8.0.121"
@@ -29,9 +30,7 @@
     </columnConstraints>
     <Label alignment="CENTER" text="Potrzebna Dogrywka" GridPane.columnIndex="1" GridPane.rowIndex="1" />
     <Text fx:id="textField" textAlignment="LEFT" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-    <Button fx:id="okButton" alignment="CENTER_LEFT" onAction="#okPressed" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-    <Button fx:id="cancelButton" alignment="CENTER_RIGHT" onAction="#cancelPressed" prefHeight="29.0" prefWidth="0.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+    <Button text="OK" fx:id="okButton" GridPane.halignment="RIGHT" onAction="#okPressed"  GridPane.columnIndex="1" GridPane.rowIndex="4" />
+    <Button text="Cancel" fx:id="cancelButton" GridPane.halignment="LEFT" onAction="#cancelPressed"  GridPane.columnIndex="1" GridPane.rowIndex="4" />
     <TableView fx:id="participantTable" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-
-
 </GridPane>

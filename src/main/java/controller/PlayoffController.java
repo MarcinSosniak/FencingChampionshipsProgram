@@ -69,7 +69,7 @@ public class PlayoffController implements Initializable {
     private void self_update()
     {
         setText();
-        if(chosen==rc.getParticipantsForPlayoff())
+        if(chosen.size()==rc.getParticpantsNeededFromPlayoffs())
         {
             okButton.setDisable(false);
         }
@@ -98,8 +98,11 @@ public class PlayoffController implements Initializable {
     private void update()
     {
         text_to_display=textField.textProperty();
+        participantTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
         tc.setCellValueFactory(x->{
-            return new SimpleStringProperty(x.getValue().getName()+" " + x.getValue().getSurname());
+            String v= x.getValue().getName()+" " + x.getValue().getSurname();
+            return new SimpleStringProperty(v);
         });
         tc.setCellFactory(
                 hue ->{
@@ -107,10 +110,13 @@ public class PlayoffController implements Initializable {
                         @Override
                         protected void updateItem(String item, boolean empty) {
                             super.updateItem(item, empty);
-//                            setText(empty ? null : item);
+                            setText(empty ? null : item);
+                            setStyle("-fx-alignment: CENTER;");
                         }
                     };
                     cell.setOnMouseClicked(e -> {
+                        if(cell.isEmpty())
+                            return;
                         if (e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty()) {
                             Participant p  = (Participant) cell.getTableRow().getItem();
                             if(chosen.contains(p))
@@ -127,8 +133,11 @@ public class PlayoffController implements Initializable {
                         }
                     });
                     return cell;});
-        participantTable.getColumns().add(tc);
+        participantTable.getColumns().removeAll();
+        participantTable.getColumns().add(0,tc);
         participantTable.setItems(eligble);
+        participantTable.setVisible(true);
+        self_update();
     }
 
 

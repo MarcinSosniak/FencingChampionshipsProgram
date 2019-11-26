@@ -277,7 +277,6 @@ public class EliminationController implements Initializable {
                 stageroni.showAndWait();
                 if(rc.getfRoundReady())
                     rc.startRound();
-                return;
             }
 //            setData();
             /* TODO: refresh view */
