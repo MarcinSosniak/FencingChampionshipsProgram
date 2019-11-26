@@ -19,6 +19,7 @@ import java.security.InvalidParameterException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import model.command.ValidInvocationChecker;
 import java.util.*;
 
 public class Participant implements Serializable{
@@ -36,7 +37,7 @@ public class Participant implements Serializable{
     private BooleanProperty fSmallSwordParticipant;
     private BooleanProperty fSabreParticipant;
     private BooleanProperty fRapierParticipant;
-    private ObservableMap<WeaponType, ObjectProperty<util.RationalNumber>> weaponPointsProperty;
+    private Map<WeaponType, ObjectProperty<util.RationalNumber>> weaponPointsProperty;
     private ObjectProperty<RationalNumber> rapierPoints;
 
 
@@ -55,7 +56,7 @@ public class Participant implements Serializable{
         this.fSmallSwordParticipant = new SimpleBooleanProperty(false);
         this.fSabreParticipant = new SimpleBooleanProperty(false);
         this.fRapierParticipant = new SimpleBooleanProperty(false);
-        this.weaponPointsProperty = FXCollections.observableHashMap();
+        this.weaponPointsProperty = new HashMap<>();
         this.rapierPoints = new SimpleObjectProperty<RationalNumber>(new RationalNumber(0));
     }
 
@@ -164,13 +165,15 @@ public class Participant implements Serializable{
     public JudgeState getJudgeState(){ return judgeState.get(); }
 
 
-    public RationalNumber getPointsForWeaponProperty(WeaponType type) throws NoSuchWeaponException {
+    public ObjectProperty<RationalNumber> getPointsForWeaponProperty(WeaponType type) throws NoSuchWeaponException {
         if (weaponPointsProperty.containsKey(type))
-            return weaponPointsProperty.get(type).get();
+            return weaponPointsProperty.get(type);
         else throw new NoSuchWeaponException();
     }
 
-    public void addPointsForWeapon(ChangePointsCommand.ValidInvocationChecker checker, WeaponType type, RationalNumber points){
+
+
+    public void addPointsForWeapon(ValidInvocationChecker checker, WeaponType type, RationalNumber points){
         Objects.requireNonNull(checker);
         if (weaponPointsProperty.containsKey(type)) {
             System.out.println("adding points in partcipant");
@@ -178,7 +181,7 @@ public class Participant implements Serializable{
         }
     }
 
-    public void subtractPointsFromWeapon(ChangePointsCommand.ValidInvocationChecker checker, WeaponType type, RationalNumber points){
+    public void subtractPointsFromWeapon(ValidInvocationChecker checker, WeaponType type, RationalNumber points){
         Objects.requireNonNull(checker);
         if (weaponPointsProperty.containsKey(type)) {
             System.out.println("subtract points in partcipant");
@@ -203,17 +206,17 @@ public class Participant implements Serializable{
 
 
     // SHOULD BE SET ONLY THROUGH COMMAND
-    public void setfRapierInjury(CommandAddInjury.ValidInvocationChecker checker, boolean fRapierInjury) {
+    public void setfRapierInjury(ValidInvocationChecker checker, boolean fRapierInjury) {
         Objects.requireNonNull(checker);
         this.fRapierInjury.setValue(fRapierInjury);
     }
 
-    public void setfSabreInjury(CommandAddInjury.ValidInvocationChecker checker, boolean fSabreInjury) {
+    public void setfSabreInjury(ValidInvocationChecker checker, boolean fSabreInjury) {
         Objects.requireNonNull(checker);
         this.fSabreInjury.setValue(fSabreInjury);
     }
 
-    public void setfSmallSwordInjury(CommandAddInjury.ValidInvocationChecker checker, boolean fSmallSwordInjury) {
+    public void setfSmallSwordInjury(ValidInvocationChecker checker, boolean fSmallSwordInjury) {
         Objects.requireNonNull(checker);
         this.fSmallSwordInjury.setValue(fSmallSwordInjury);
     }

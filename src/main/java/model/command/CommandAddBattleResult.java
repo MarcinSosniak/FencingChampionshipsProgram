@@ -6,8 +6,7 @@ import model.enums.FightScore;
 
 public class CommandAddBattleResult implements Command {
 
-    public static final class ValidInvocationChecker { private ValidInvocationChecker() {} }
-    private static final ValidInvocationChecker validInvocationChecker = new ValidInvocationChecker();
+    private static final ValidInvocationChecker validInvocationChecker = ValidInvocationChecker.getChecker();
 
     private FightScore scoreToSet;
     private final Fight fight;
@@ -37,12 +36,12 @@ public class CommandAddBattleResult implements Command {
     public void execute() {
         oldScore=fight.getScore();
         if(oldScore!= FightScore.NULL_STATE) {
-            fight.updateRoundScore(validInvocationChecker, true); // reverse previous change
+            fight.updateScore(validInvocationChecker, true); // reverse previous change
         }
         fight.setFightScore(validInvocationChecker, scoreToSet);
 
         if(fight.getScore()!= FightScore.NULL_STATE)
-            fight.updateRoundScore(validInvocationChecker, false);
+            fight.updateScore(validInvocationChecker, false);
     }
 
     @Override
@@ -51,10 +50,10 @@ public class CommandAddBattleResult implements Command {
             throw new IllegalStateException("This error means that there is a bug. Something was changed outside " +
                     "of command stack and/or element is missing from stack");
         if(fight.getScore() != FightScore.NULL_STATE)
-            fight.updateRoundScore(validInvocationChecker, true); // if we changed
+            fight.updateScore(validInvocationChecker, true); // if we changed
         fight.setFightScore(validInvocationChecker, oldScore);
         if(fight.getScore() != FightScore.NULL_STATE)
-            fight.updateRoundScore(validInvocationChecker, false);
+            fight.updateScore(validInvocationChecker, false);
     }
 
     @Override

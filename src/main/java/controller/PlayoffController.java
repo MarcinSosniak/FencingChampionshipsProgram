@@ -129,6 +129,7 @@ public class PlayoffController implements Initializable {
         cancel_button.setStyle("-fx-alignment: RIGHT;");
         GridPane.setConstraints(cancel_button,1,1);
         basePane.getChildren().addAll(tv,text,ok_button,cancel_button);
+
     }
 
 }

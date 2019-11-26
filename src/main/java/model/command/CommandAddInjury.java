@@ -10,8 +10,7 @@ import java.util.List;
 
 public class CommandAddInjury implements Command {
 
-    public static final class ValidInvocationChecker { private ValidInvocationChecker() {} }
-    private static final ValidInvocationChecker validInvocationChecker = new ValidInvocationChecker();
+    private static final ValidInvocationChecker validInvocationChecker =  ValidInvocationChecker.getChecker();
 
     private Participant participant;
     private EliminationController controller;

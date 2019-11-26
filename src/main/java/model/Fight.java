@@ -5,8 +5,10 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import model.command.Command;
 import model.command.CommandAddBattleResult;
+import model.command.ValidInvocationChecker;
 import model.config.ConfigReader;
 import model.enums.FightScore;
+import model.enums.WeaponType;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -29,6 +31,8 @@ public  class Fight implements Serializable {
         this.secondParticipant.setValue(second);
         score.setValue(FightScore.NULL_STATE);
         round.addExcpectedFightToParticipant(first);
+        round.addExcpectedFightToParticipant(second);
+        System.out.println("Adding participants to round  weapon : " + WeaponType.str(round.getMyWeaponCompetition().getWeaponType()));
     }
 
     public Participant getFirstParticipant() {
@@ -62,7 +66,7 @@ public  class Fight implements Serializable {
         return this.firstParticipant.toString() + " x " + this.secondParticipant.toString();
     }
 
-    public void setFightScore(CommandAddBattleResult.ValidInvocationChecker validInvocationChecker, FightScore score)
+    public void setFightScore(ValidInvocationChecker validInvocationChecker, FightScore score)
     {
         Objects.requireNonNull(validInvocationChecker);
         this.score.setValue(score);
@@ -74,7 +78,7 @@ public  class Fight implements Serializable {
         round.getCStack().executeCommand(new CommandAddBattleResult(this,score));
     }
 
-    public void commandSetWinner(CommandAddBattleResult.ValidInvocationChecker checker, Participant winner){
+    public void commandSetWinner(ValidInvocationChecker checker, Participant winner){
         Objects.requireNonNull(checker);
         round.getCStack().executeCommand(new CommandAddBattleResult(this,winner));
     }
@@ -86,7 +90,7 @@ public  class Fight implements Serializable {
         return new CommandAddBattleResult(this,p,true);
     }
 
-    public FightScore getScoreWithWinner(CommandAddBattleResult.ValidInvocationChecker validInvocationChecker,
+    public FightScore getScoreWithWinner(ValidInvocationChecker validInvocationChecker,
                                          Participant winner) // doesn't set anything
     {
         Objects.requireNonNull(validInvocationChecker);
@@ -98,7 +102,7 @@ public  class Fight implements Serializable {
             throw new IllegalArgumentException("participant missmatch, one to be winner is not in fight");
     }
 
-    public FightScore getScoreWithLoser(CommandAddBattleResult.ValidInvocationChecker validInvocationChecker,
+    public FightScore getScoreWithLoser(ValidInvocationChecker validInvocationChecker,
                                         Participant loser) // doesn't set anything
     {
         Objects.requireNonNull(validInvocationChecker);
@@ -136,7 +140,7 @@ public  class Fight implements Serializable {
             return null;
     }
 
-    public void updateRoundScore(CommandAddBattleResult.ValidInvocationChecker validInvocationChecker, boolean reverse)
+    public void updateScore(ValidInvocationChecker validInvocationChecker, boolean reverse)
     {
         Objects.requireNonNull(validInvocationChecker);
         int multiplier=1;
@@ -148,18 +152,18 @@ public  class Fight implements Serializable {
         int doublePoints=cfg.getIntValue("points","DOUBLE",-1);
         if (score.get() == FightScore.DOUBLE)
         {
-            round.addPointsFromFight(firstParticipant.get(),multiplier*doublePoints);
-            round.addPointsFromFight(secondParticipant.get(),multiplier*doublePoints);
+            round.addPointsFromFight(validInvocationChecker, firstParticipant.get(),multiplier*doublePoints);
+            round.addPointsFromFight(validInvocationChecker, secondParticipant.get(),multiplier*doublePoints);
         }
         if (score.get()== FightScore.WON_FIRST)
         {
-            round.addPointsFromFight(firstParticipant.get(),multiplier*winPoints);
-            round.addPointsFromFight(secondParticipant.get(),multiplier*loosePoints);
+            round.addPointsFromFight(validInvocationChecker, firstParticipant.get(),multiplier*winPoints);
+            round.addPointsFromFight(validInvocationChecker, secondParticipant.get(),multiplier*loosePoints);
         }
         if (score.get()== FightScore.WON_SECOND)
         {
-            round.addPointsFromFight(firstParticipant.get(),multiplier*loosePoints);
-            round.addPointsFromFight(secondParticipant.get(),multiplier*winPoints);
+            round.addPointsFromFight(validInvocationChecker, firstParticipant.get(),multiplier*loosePoints);
+            round.addPointsFromFight(validInvocationChecker, secondParticipant.get(),multiplier*winPoints);
         }
     }
 

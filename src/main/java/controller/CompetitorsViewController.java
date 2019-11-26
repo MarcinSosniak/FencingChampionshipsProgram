@@ -191,21 +191,21 @@ public class CompetitorsViewController implements Initializable {
 
         sabrePoints.setCellValueFactory(dataValue -> {
             try {
-                return new SimpleStringProperty(dataValue.getValue().getPointsForWeaponProperty(WeaponType.SABRE).toString());
+                return new SimpleStringProperty(dataValue.getValue().getPointsForWeaponProperty(WeaponType.SABRE).get().toString());
             } catch (NoSuchWeaponException e) {
                 return new SimpleStringProperty(cross);
             }
         });
         rapierPoints.setCellValueFactory(dataValue -> {
             try {
-                return new SimpleStringProperty(dataValue.getValue().getPointsForWeaponProperty(WeaponType.RAPIER).toString());
+                return new SimpleStringProperty(dataValue.getValue().getPointsForWeaponProperty(WeaponType.RAPIER).get().toString());
             } catch (NoSuchWeaponException e) {
                 return new SimpleStringProperty(cross);
             }
         });
         smallSwordPoints.setCellValueFactory(dataValue -> {
             try {
-                return new SimpleStringProperty(dataValue.getValue().getPointsForWeaponProperty(WeaponType.SMALL_SWORD).toString());
+                return new SimpleStringProperty(dataValue.getValue().getPointsForWeaponProperty(WeaponType.SMALL_SWORD).get().toString());
             } catch (NoSuchWeaponException e) {
                 return new SimpleStringProperty(cross);
             }

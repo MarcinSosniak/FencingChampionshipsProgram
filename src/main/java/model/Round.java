@@ -3,6 +3,8 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import model.command.Command;
+import model.command.CommandAddBattleResult;
+import model.command.ValidInvocationChecker;
 import model.enums.FightScore;
 import model.enums.WeaponType;
 import model.exceptions.NoSuchWeaponException;
@@ -35,8 +37,8 @@ public class Round implements Serializable {
     private FightDrawStrategy fightDrawStrategy;
     private ObservableList<CompetitionGroup> groups=null;
     private ObservableList<Participant> participants;
-    private ObservableMap<Participant, ObjectProperty<RationalNumber>> roundScore = FXCollections.observableHashMap();
-    private Map<Participant,Integer> participantFightNumber= new HashMap<>();
+    private Map<Participant, ObjectProperty<RationalNumber>> roundScore = FXCollections.observableHashMap();
+    private Map<Participant,Integer> participantDoubleFightNumber= new HashMap<>();
     private int participantExcpectedFightNumber; // size of group -1
     private WeaponCompetition myWeaponCompetition;
     private SimpleObjectProperty<Fight> lastModyfiedFight;
@@ -58,7 +60,7 @@ public class Round implements Serializable {
         this.lastModyfiedFight = new SimpleObjectProperty<>();
         for(Participant p : participants)
         {
-            participantFightNumber.put(p,0);
+            participantDoubleFightNumber.put(p,0);
             roundScore.put(p,new SimpleObjectProperty<>(new RationalNumber(0)));
         }
     }
@@ -74,7 +76,7 @@ public class Round implements Serializable {
         this.lastModyfiedFight = new SimpleObjectProperty<>();
         for(Participant p : participants)
         {
-            participantFightNumber.put(p,0);
+            participantDoubleFightNumber.put(p,0);
             roundScore.put(p,new SimpleObjectProperty<>(new RationalNumber(0)));
         }
         drawGroups();
@@ -112,16 +114,18 @@ public class Round implements Serializable {
     }
 
     public void addExcpectedFightToParticipant(Participant p) {
-        Integer current = participantFightNumber.get(p);
-        participantFightNumber.put(p,current+1);
+        Integer current = participantDoubleFightNumber.get(p);
+        participantDoubleFightNumber.put(p,current+1);
     }
 
-    public void addPointsFromFight(Participant p, int points) {
-        RationalNumber pScoreMultiplier = new RationalNumber(participantExcpectedFightNumber,participantFightNumber.get(p));
+    public void addPointsFromFight(ValidInvocationChecker checker, Participant p, int points) {
+        Objects.requireNonNull(checker);
+        RationalNumber pScoreMultiplier = new RationalNumber(participantExcpectedFightNumber*2,participantDoubleFightNumber.get(p));
         RationalNumber participant_score= roundScore.get(p).get();
         RationalNumber points_to_add=pScoreMultiplier.multiply(points);
         RationalNumber after_add=participant_score.add(points_to_add);
         participant_score.set(after_add);
+        p.addPointsForWeapon(checker,myWeaponCompetition.getWeaponType(),points_to_add);
     }
 
     public RationalNumber getParticpantScore(Participant p)
@@ -130,7 +134,7 @@ public class Round implements Serializable {
     }
 
 
-    public void addRoundScorePoints (ChangePointsCommand.ValidInvocationChecker checker, Participant p, RationalNumber points){
+    public void addRoundScorePoints (ValidInvocationChecker checker, Participant p, RationalNumber points){
         Objects.requireNonNull(checker);
         RationalNumber newPoints = roundScore.get(p).get().add(points);
         roundScore.replace(p, new SimpleObjectProperty<>(newPoints));
@@ -139,7 +143,7 @@ public class Round implements Serializable {
     }
 
 
-    public void subtractRoundScorePoints (ChangePointsCommand.ValidInvocationChecker checker, Participant p, RationalNumber points){
+    public void subtractRoundScorePoints (ValidInvocationChecker checker, Participant p, RationalNumber points){
         Objects.requireNonNull(checker);
         roundScore.get(p).get().substract(points);
     }
@@ -165,7 +169,7 @@ public class Round implements Serializable {
         roundScore.forEach((p, rn) -> scores.put(p, rn.get()));
         stream.writeObject(scores);
 
-        stream.writeObject(participantFightNumber);
+        stream.writeObject(participantDoubleFightNumber);
         stream.writeInt(participantExcpectedFightNumber);
         stream.writeObject(myWeaponCompetition);
         stream.writeObject(lastModyfiedFight.get());
@@ -180,7 +184,7 @@ public class Round implements Serializable {
         roundScore = FXCollections.observableHashMap();
         Map<Participant, RationalNumber> m = (Map<Participant, RationalNumber>) stream.readObject();
         m.forEach((p, r) -> roundScore.put(p, new SimpleObjectProperty<>(r)));
-        participantFightNumber = (Map<Participant,Integer>) stream.readObject();
+        participantDoubleFightNumber = (Map<Participant,Integer>) stream.readObject();
         participantExcpectedFightNumber = stream.readInt();
         myWeaponCompetition = (WeaponCompetition) stream.readObject();
         lastModyfiedFight = new SimpleObjectProperty<>((Fight) stream.readObject());

@@ -5,8 +5,8 @@ import model.Round;
 
 public class ChangePointsCommand implements Command {
 
-    public static final class ValidInvocationChecker { private ValidInvocationChecker() {} }
-    private static final ValidInvocationChecker checker = new ValidInvocationChecker();
+
+    private static final ValidInvocationChecker checker = ValidInvocationChecker.getChecker();
 
     private Participant participant;
     private Round round;

@@ -7,8 +7,8 @@ import java.util.List;
 
 public class AddRoundCommand implements Command{
 
-    public static final class ValidInvocationChecker { private ValidInvocationChecker() {} }
-    private static final ValidInvocationChecker checker = new ValidInvocationChecker();
+
+    private static final ValidInvocationChecker checker = ValidInvocationChecker.getChecker();
 
     private WeaponCompetition weaponCompetition;
     private Round roundToAdd;

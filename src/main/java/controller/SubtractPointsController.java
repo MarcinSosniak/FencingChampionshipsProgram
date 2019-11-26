@@ -53,7 +53,7 @@ public class SubtractPointsController {
 
         Stage toClose = (Stage) confirmButton.getScene().getWindow();
         try {
-            System.out.println(participant.getName() + " " + participant.getPointsForWeaponProperty(round.getMyWeaponCompetition().getWeaponType()));
+            System.out.println(participant.getName() + " " + participant.getPointsForWeaponProperty(round.getMyWeaponCompetition().getWeaponType()).get());
         } catch (NoSuchWeaponException e) { e.printStackTrace(); }
         toClose.close();
     }

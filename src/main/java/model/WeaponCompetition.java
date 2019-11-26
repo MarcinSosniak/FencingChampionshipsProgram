@@ -6,6 +6,7 @@ import model.FightDrawing.FightDrawStrategyPicker;
 import model.command.AddRoundCommand;
 import model.command.Command;
 import model.command.CommandAddInjury;
+import model.command.ValidInvocationChecker;
 import model.config.ConfigReader;
 import model.config.ConfigUtils;
 import model.enums.CompetitionState;
@@ -98,12 +99,12 @@ public class WeaponCompetition implements Serializable {
         cStack = (CommandStack) stream.readObject();
     }
 
-    public void addRound(AddRoundCommand.ValidInvocationChecker validInvocationChecker, Round round){
+    public void addRound(ValidInvocationChecker validInvocationChecker, Round round){
         Objects.requireNonNull(validInvocationChecker);
         rounds.add(round.setMyWeaponCompetition(this).drawGroups());
     }
 
-    public void removeRound(AddRoundCommand.ValidInvocationChecker validInvocationChecker){
+    public void removeRound(ValidInvocationChecker validInvocationChecker){
         Objects.requireNonNull(validInvocationChecker);
         rounds.remove(rounds.size()-1);
     }
@@ -136,7 +137,7 @@ public class WeaponCompetition implements Serializable {
         this.participants.addAll(participants);
     }
     /** prepares list of commands to execute **/
-    public List<Command> invalidateParticipant(CommandAddInjury.ValidInvocationChecker checker, Participant p) {
+    public List<Command> invalidateParticipant(ValidInvocationChecker checker, Participant p) {
         Objects.requireNonNull(checker);
         System.out.println("in invalidate");
         List<Command> out = new ArrayList<>();
@@ -212,7 +213,7 @@ public class WeaponCompetition implements Serializable {
         public void startRound() {
             if (!fRoundReady)
                 throw new IllegalStateException("Round cannot be started, resolve overtime/runoff/playoff");
-            _round.drawGroups();
+//            _round.drawGroups();
             cStack.executeCommand(new AddRoundCommand(WeaponCompetition.this, _round));
         }
 
@@ -248,7 +249,7 @@ public class WeaponCompetition implements Serializable {
             lastRound = rounds.get(rounds.size() - 1);
             ArrayList<Participant> participantsEligible = new ArrayList<>(
                     lastRound.getParticipants().stream()
-                            .filter(x -> x.isInjured(weaponType)).collect(Collectors.toList()));
+                            .filter(x -> !x.isInjured(weaponType)).collect(Collectors.toList()));
 
             if (participantsEligible.size() <= particpantsNeeded) {
                 participantsForRound.addAll(participantsEligible);

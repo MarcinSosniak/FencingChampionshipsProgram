@@ -178,7 +178,8 @@ public class EliminationController implements Initializable {
         surname.setCellValueFactory(x -> x.getValue().surnameProperty());
         points.setCellValueFactory(x -> {
             try {
-                return x.getValue().getPointsForWeaponPropertyLastRound(wt);
+//                return x.getValue().getPointsForWeaponPropertyLastRound(wt);
+                return x.getValue().getPointsForWeaponProperty(wt);
             } catch (NoSuchWeaponException e) {
                 e.printStackTrace();
                 return null;
