@@ -18,6 +18,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.*;
 import model.enums.FightScore;
@@ -237,6 +238,16 @@ public class EliminationController implements Initializable {
 
     }
 
+    private Participant getCurrentlySelectedParticipant(WeaponType wt){
+        Participant p = null;
+        switch (wt){
+            case RAPIER: { p = (Participant) rapierTableView.getSelectionModel().getSelectedItem(); break; }
+            case SMALL_SWORD: { p = (Participant) smallSwordTableView.getSelectionModel().getSelectedItem(); break; }
+            case SABRE: { p = (Participant) sabreTableView.getSelectionModel().getSelectedItem(); break; }
+        }
+        return p;
+    }
+
     private GridPane prepareButtonPane(WeaponType wt) {
         GridPane paneForButtons = new GridPane();
 
@@ -302,11 +313,7 @@ public class EliminationController implements Initializable {
         //competitionStatus.setStyle("-fx-background-color: yellow; -fx-padding: 10;");
         competitionStatus.setOnAction(x -> {
             System.out.format("Implement me\n");
-
-
         });
-
-
 
         GridPane.setConstraints(competitionStatus, 0, 1);
 
@@ -317,12 +324,7 @@ public class EliminationController implements Initializable {
 
         addPoints.setOnAction(x -> {
             System.out.println("ON ACTION: " + wt);
-            Participant p = null;
-            switch (wt){
-                case RAPIER: { p = (Participant) rapierTableView.getSelectionModel().getSelectedItem(); break; }
-                case SMALL_SWORD: { p = (Participant) smallSwordTableView.getSelectionModel().getSelectedItem(); break; }
-                case SABRE: { p = (Participant) sabreTableView.getSelectionModel().getSelectedItem(); break; }
-            }
+           Participant p = getCurrentlySelectedParticipant(wt);
             if(p == null)
                 return;
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/addPoints.fxml"));
@@ -332,6 +334,7 @@ public class EliminationController implements Initializable {
             Stage childStage = new Stage();
             childStage.setResizable(false);
             childStage.setScene(new Scene(root));
+            childStage.initModality(Modality.APPLICATION_MODAL);
             childStage.show();
 
             AddPointsController addPointsController = (AddPointsController) loader.getController();
@@ -345,12 +348,7 @@ public class EliminationController implements Initializable {
         //substractPoints.setStyle("-fx-background-color: grey; -fx-padding: 10;");
 
         substractPoints.setOnAction(x -> {
-            Participant p = null;
-            switch (wt){
-                case RAPIER: {p = (Participant) rapierTableView.getSelectionModel().getSelectedItem(); break; }
-                case SMALL_SWORD: { p = (Participant) smallSwordTableView.getSelectionModel().getSelectedItem(); break; }
-                case SABRE: { p = (Participant) sabreTableView.getSelectionModel().getSelectedItem(); break; }
-            }
+            Participant p = getCurrentlySelectedParticipant(wt);
             if(p == null)
                 return;
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/subtractPoints.fxml"));
@@ -360,6 +358,7 @@ public class EliminationController implements Initializable {
             Stage childStage = new Stage();
             childStage.setResizable(false);
             childStage.setScene(new Scene(root));
+            childStage.initModality(Modality.APPLICATION_MODAL);
             childStage.show();
 
             SubtractPointsController subtractPointsController = (SubtractPointsController) loader.getController();
