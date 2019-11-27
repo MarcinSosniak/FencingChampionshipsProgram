@@ -10,6 +10,7 @@ import model.command.ValidInvocationChecker;
 import model.config.ConfigReader;
 import model.config.ConfigUtils;
 import model.enums.CompetitionState;
+import model.enums.FightScore;
 import model.enums.WeaponType;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -20,6 +21,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import model.exceptions.NoSuchWeaponException;
 import util.RationalNumber;
 
 public class WeaponCompetition implements Serializable {
@@ -303,4 +306,74 @@ public class WeaponCompetition implements Serializable {
         }
     }
     public ObservableList<Participant> getParticipantsObservableList(){ return participants; }
+
+    /** For final results required */
+//    public void calculateResults(){
+//        /* There is only two fights in finals and two group */
+//        Fight finalFight = finalRound.get().getGroups().get(0).getFightsList().get(0);
+//        if(finalFight.getScore().equals(FightScore.WON_FIRST)){
+//            finalFight.getFirstParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(1);
+//            finalFight.getSecondParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(2);
+//        }else if (finalFight.getScore().equals(FightScore.WON_SECOND)){
+//            finalFight.getFirstParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(2);
+//            finalFight.getSecondParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(1);
+//        }else { /* Assuming that double in final round make both on 2nd place*/
+//            finalFight.getFirstParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(2);
+//            finalFight.getSecondParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(2);
+//        }
+//        /* There is only one  */
+//        Fight thirdPlaceFight = finalRound.get().getGroups().get(1).getFightsList().get(0);
+//        if(finalFight.getScore().equals(FightScore.WON_FIRST)){
+//            finalFight.getFirstParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(3);
+//            finalFight.getSecondParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(4);
+//        }else if (finalFight.getScore().equals(FightScore.WON_SECOND)){
+//            finalFight.getFirstParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(4);
+//            finalFight.getSecondParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(3);
+//        }else { /* Assuming that double in final round make both on 2nd place*/
+//            finalFight.getFirstParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(4);
+//            finalFight.getSecondParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(4);
+//        }
+//
+//        /* If first is greater than 1 */
+//        Comparator<Participant> compareByPoinst = (Participant p1,Participant p2) ->{
+//            try{
+//                RationalNumber pointsFirst = p1.getPointsForWeaponProperty(weaponType).get();
+//                RationalNumber pointsSecond = p2.getPointsForWeaponProperty(weaponType).get();
+//                return RationalNumber.compare(pointsFirst,pointsSecond);
+//            }catch (NoSuchWeaponException e){
+//                System.out.format("Some serious shit went wrong. This participant shouldn't be in the list\n");
+//                e.printStackTrace();
+//                return 0;
+//            }
+//        };
+//        participants.sort(compareByPoinst);
+//        RationalNumber lastPoints = new RationalNumber(-1000000,1);
+//
+//        int currentPlace = participants.size();
+//
+//        /* Sort should sort in ascending order that's why we start from lowest place */
+//        for(Participant p : participants){
+//            ParticipantResult.WeaponCompetitionResult weaponCompetitionResult = p.getParticipantResult().getWeaponCompetitionResult(weaponType);
+//            if (weaponCompetitionResult.getPlace() > 0){
+//                continue;
+//            }
+//            boolean fSwitchPlace = false;
+//            try{
+//                RationalNumber toCompare = p.getPointsForWeaponProperty(weaponType).get();
+//                int compare = RationalNumber.compare(toCompare,lastPoints);
+//                if (compare > 0){
+//                    fSwitchPlace = true;
+//                }
+//                lastPoints = toCompare;
+//            } catch (NoSuchWeaponException e){
+//                System.out.format("Some serious shit went wrong. This participant shouldn't be in the list\n");
+//                e.printStackTrace();
+//            }
+//
+//            if (fSwitchPlace)
+//                currentPlace --;
+//            weaponCompetitionResult.setPlace(currentPlace);
+//        }
+//
+//    }
 }

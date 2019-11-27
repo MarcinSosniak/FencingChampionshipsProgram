@@ -150,4 +150,14 @@ public class Competition implements Serializable {
     public String getPassword() { return password; }
 
     public void setPassword(String password) { this.password = password; }
+
+    /** For final results required */
+//    public void calculateResults() {
+//        for(WeaponCompetition wc: weaponCompetitions){
+//            wc.calculateResults();
+//        }
+//        /* TODO: what are the rules to calculate triathlon results */
+//
+//        /* TODO: Assign triathlon score to participant */
+//    }
 }

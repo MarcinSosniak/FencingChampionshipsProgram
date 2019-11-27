@@ -99,19 +99,22 @@ public class EliminationController implements Initializable {
 
     public void update() {
         if(rapierTab != null || sabreTab != null || smallSwordTab != null){
-            Integer tab = tabPane.getSelectionModel().getSelectedIndex();
+            int tab = tabPane.getSelectionModel().getSelectedIndex();
+            System.out.format("xD%dxD",tab);
             tabPane.getTabs().remove(0,3);
             rapierTab = initTab(WeaponType.RAPIER);
             sabreTab = initTab(WeaponType.SABRE);
             smallSwordTab = initTab(WeaponType.SMALL_SWORD);
+            tabPane.getTabs().addAll(rapierTab,sabreTab,smallSwordTab);
             tabPane.getSelectionModel().select(tab);
         }else{
             rapierTab = initTab(WeaponType.RAPIER);
             sabreTab = initTab(WeaponType.SABRE);
             smallSwordTab = initTab(WeaponType.SMALL_SWORD);
+            tabPane.getTabs().addAll(rapierTab,sabreTab,smallSwordTab);
         }
 
-        tabPane.getTabs().addAll(rapierTab,sabreTab,smallSwordTab);
+
         // first value
         menuBarController.setData(Competition.getInstance().getSingleWeaponCompetition(WeaponType.RAPIER));
         // change tab handler
@@ -289,6 +292,7 @@ public class EliminationController implements Initializable {
             if(tabPane.getTabs().size() < 4){
                 //Tab resultTab = initResultTab();
                 //tabPane.getTabs().add(resultTab);
+//                Competition.getInstance().calculateResults();
                 tabPane.getTabs().add(new Tab());
             }else{
                 calculateResultButton.setDisable(true);
