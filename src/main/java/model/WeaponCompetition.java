@@ -1,17 +1,16 @@
 package model;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.FightDrawing.FightDrawStrategyPicker;
 import model.command.AddRoundCommand;
 import model.command.Command;
-import model.command.CommandAddInjury;
 import model.command.ValidInvocationChecker;
 import model.config.ConfigReader;
 import model.config.ConfigUtils;
 import model.enums.CompetitionState;
 import model.enums.WeaponType;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -21,7 +20,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
 import util.RationalNumber;
 
 public class WeaponCompetition implements Serializable {
@@ -32,6 +30,9 @@ public class WeaponCompetition implements Serializable {
     private ObservableList<Participant> participants;
     private ObservableList<Round> rounds;
     private CommandStack cStack= new CommandStack(); // was final
+
+    private SimpleObjectProperty<Round> finalRound = null;
+    private SimpleObjectProperty<Round> semifinalRound = null;
 
     public WeaponCompetition(WeaponType weaponType, ObservableList<Participant> participants){
         this.weaponType = weaponType;
@@ -89,6 +90,8 @@ public class WeaponCompetition implements Serializable {
         rounds.forEach(r -> roundArrayList.add(r));
         stream.writeObject(roundArrayList);
         stream.writeObject(cStack);
+        stream.writeObject(semifinalRound.get());
+        stream.writeObject(finalRound.get());
     }
 
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
@@ -97,6 +100,8 @@ public class WeaponCompetition implements Serializable {
         participants = FXCollections.observableArrayList((ArrayList<Participant>) stream.readObject());
         rounds = FXCollections.observableArrayList((ArrayList<Round>) stream.readObject());
         cStack = (CommandStack) stream.readObject();
+        semifinalRound = new SimpleObjectProperty<>((Round) stream.readObject());
+        finalRound = new SimpleObjectProperty<>((Round) stream.readObject());
     }
 
     public void addRound(ValidInvocationChecker validInvocationChecker, Round round){
