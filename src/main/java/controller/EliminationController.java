@@ -1,6 +1,7 @@
 package controller;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -32,7 +33,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 /** TODO: undo doesn't change color properly
- * TODO: should add function set cell colors properly :) which is invoked by command controller*/
+ * TODO: should add function set cell colors properly :) which is invoked by command controller */
 /**
  * |-------------------------------------------------------------------------|
  * |         PEOPLE(resizeable)          |   Control button Pane?            |
@@ -71,9 +72,9 @@ public class EliminationController implements Initializable {
     Tab sabreTab = null;
     Tab smallSwordTab = null;
     /** For final results required */
-    Boolean fRapierCompetitionFinals = false;
-    Boolean fSabreCompetitionFinals = false;
-    Boolean fSmallswordCompetitionFinals = false;
+    private Boolean fRapierCompetitionFinals = false;
+    private Boolean fSabreCompetitionFinals = false;
+    private Boolean fSmallswordCompetitionFinals = false;
     Tab finalResultTab = null;
 
     private TableView rapierTableView;
@@ -284,16 +285,16 @@ public class EliminationController implements Initializable {
         calculateResultButton.setMaxSize(1000, 1000);
         calculateResultButton.setText("CalculateResults");
         calculateResultButton.setOnAction(x -> {
-            /* TODO: check if all fights has selected score */
+            /* TODO: !!! check if all fights has selected score !!! */
             /* TODO: set final round in weapon competition*/
             System.out.format("Check implementation\n");
 
             /** For final results required */
             if(tabPane.getTabs().size() < 4){
-                //Tab resultTab = initResultTab();
-                //tabPane.getTabs().add(resultTab);
-//                Competition.getInstance().calculateResults();
-                tabPane.getTabs().add(new Tab());
+                Tab resultTab = initResultTab();
+                tabPane.getTabs().add(resultTab);
+                Competition.getInstance().calculateResults();
+                //tabPane.getTabs().add(new Tab());
             }else{
                 calculateResultButton.setDisable(true);
             }
@@ -304,7 +305,6 @@ public class EliminationController implements Initializable {
         Button nextRoundButton = new Button();
         nextRoundButton.setMaxSize(1000, 1000);
         nextRoundButton.setText("Next Round");
-        //nextRoundButton.setStyle("-fx-background-color: pink ; -fx-padding: 10;");
         /*TODO: add semifinalRound to weaponCompetition
         * TODO: set fCompetitionReachedFinals */
         nextRoundButton.setOnAction(x -> {
@@ -763,93 +763,93 @@ public class EliminationController implements Initializable {
     }
 
     /** For final results required */
-//    private Tab initResultTab() {
-//
-//        /** Preparing GridPane for results */
-//        GridPane gridPane = new GridPane();
-//
-//        RowConstraints row1 = new RowConstraints();
-//        RowConstraints row2 = new RowConstraints();
-//
-//        row1.setPercentHeight(10);
-//        row2.setPercentHeight(90);
-//
-//        gridPane.getRowConstraints().addAll(row1,row2);
-//
-//
-//        ColumnConstraints column1 = new ColumnConstraints();
-//        ColumnConstraints column2 = new ColumnConstraints();
-//        ColumnConstraints column3 = new ColumnConstraints();
-//
-//        column1.setPercentWidth(5);
-//        column2.setPercentWidth(90);
-//        column3.setPercentWidth(5);
-//
-//        gridPane.getColumnConstraints().addAll(column1,column2,column3);
-//
-//        /** Preparing title */
-//        Label text = new Label("Final_Results");
-//        text.setTextAlignment(TextAlignment.CENTER);
-//        text.setStyle("-fx-alignment: CENTER;");
-//        text.setFont(new Font(20));
-//        GridPane.setConstraints(text, 1, 0);
-//        GridPane.setHalignment(text, HPos.CENTER);
-//        GridPane.setFillHeight(text, true);
-//
-//        gridPane.getChildren().add(text);
-//
-//
-//        /** Preparing table view with results */
-//        ObservableList<Participant> participants = FXCollections.observableArrayList(Competition.getInstance().getParticipants());
-//
-//        TableView tv = new TableView();
-//        tv.setItems(participants);
-//
-//        TableColumn<Participant,String> surname = new TableColumn<>();
-//        TableColumn<Participant,String> name = new TableColumn<>();
-//        TableColumn<Participant,String> smallsword = new TableColumn<>();
-//        TableColumn<Participant,String> sabre = new TableColumn<>();
-//        TableColumn<Participant,String> rapier = new TableColumn<>();
-//        TableColumn<Participant,String> triathlonOpen = new TableColumn<>();
-//        TableColumn<Participant,String> triathlonWomen = new TableColumn<>();
-//
-//        surname.setCellValueFactory( p -> new SimpleStringProperty(p.getValue().getSurname()));
-//        name.setCellValueFactory( p -> new SimpleStringProperty(p.getValue().getName()));
-//        smallsword.setCellValueFactory( p -> {
-//            StringProperty toRet = new SimpleStringProperty("-");
-//            toRet.setValue(p.getValue().getParticipantResult().getSmallSwordResults().getPoints().toString());
-//            return toRet;
-//        });
-//        sabre.setCellValueFactory( p -> {
-//            StringProperty toRet = new SimpleStringProperty("-");
-//            toRet.setValue(p.getValue().getParticipantResult().getSabreResults().getPoints().toString());
-//            return toRet;
-//        });
-//        rapier.setCellValueFactory( p -> {
-//            StringProperty toRet = new SimpleStringProperty("-");
-//            toRet.setValue(p.getValue().getParticipantResult().getRapierResults().getPoints().toString());
-//            return toRet;
-//        });
-//        triathlonOpen.setCellValueFactory( p -> {
-//            return new SimpleStringProperty(p.getValue().getParticipantResult().triathlonOpenProperty().get());
-//        });
-//        triathlonWomen.setCellValueFactory( p -> {
-//            return new SimpleStringProperty(p.getValue().getParticipantResult().triathlonWomenProperty().get());
-//        });
-//
-//        GridPane.setConstraints(tv,1,1);
-//        tv.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-//        tv.getColumns().addAll(surname,name,smallsword,sabre,rapier,triathlonOpen,triathlonWomen);
-//
-//        gridPane.getChildren().add(tv);
-//
-//
-//        Tab tabToRet = new Tab();
-//        tabToRet.setContent(gridPane);
-//        tabToRet.setClosable(false);
-//        tabToRet.setText("Final_Results");
-//
-//        return tabToRet;
-//    }
+    private Tab initResultTab() {
+
+        /** Preparing GridPane for results */
+        GridPane gridPane = new GridPane();
+
+        RowConstraints row1 = new RowConstraints();
+        RowConstraints row2 = new RowConstraints();
+
+        row1.setPercentHeight(10);
+        row2.setPercentHeight(90);
+
+        gridPane.getRowConstraints().addAll(row1,row2);
+
+
+        ColumnConstraints column1 = new ColumnConstraints();
+        ColumnConstraints column2 = new ColumnConstraints();
+        ColumnConstraints column3 = new ColumnConstraints();
+
+        column1.setPercentWidth(5);
+        column2.setPercentWidth(90);
+        column3.setPercentWidth(5);
+
+        gridPane.getColumnConstraints().addAll(column1,column2,column3);
+
+        /** Preparing title */
+        Label text = new Label("Final_Results");
+        text.setTextAlignment(TextAlignment.CENTER);
+        text.setStyle("-fx-alignment: CENTER;");
+        text.setFont(new Font(20));
+        GridPane.setConstraints(text, 1, 0);
+        GridPane.setHalignment(text, HPos.CENTER);
+        GridPane.setFillHeight(text, true);
+
+        gridPane.getChildren().add(text);
+
+
+        /** Preparing table view with results */
+        ObservableList<Participant> participants = FXCollections.observableArrayList(Competition.getInstance().getParticipants());
+
+        TableView tv = new TableView();
+        tv.setItems(participants);
+
+        TableColumn<Participant,String> surname = new TableColumn<>();
+        TableColumn<Participant,String> name = new TableColumn<>();
+        TableColumn<Participant,String> smallsword = new TableColumn<>();
+        TableColumn<Participant,String> sabre = new TableColumn<>();
+        TableColumn<Participant,String> rapier = new TableColumn<>();
+        TableColumn<Participant,String> triathlonOpen = new TableColumn<>();
+        TableColumn<Participant,String> triathlonWomen = new TableColumn<>();
+
+        surname.setCellValueFactory( p -> new SimpleStringProperty(p.getValue().getSurname()));
+        name.setCellValueFactory( p -> new SimpleStringProperty(p.getValue().getName()));
+        smallsword.setCellValueFactory( p -> {
+            StringProperty toRet = new SimpleStringProperty("-");
+            toRet.setValue(p.getValue().getParticipantResult().getSmallSwordResults().getPoints().toString());
+            return toRet;
+        });
+        sabre.setCellValueFactory( p -> {
+            StringProperty toRet = new SimpleStringProperty("-");
+            toRet.setValue(p.getValue().getParticipantResult().getSabreResults().getPoints().toString());
+            return toRet;
+        });
+        rapier.setCellValueFactory( p -> {
+            StringProperty toRet = new SimpleStringProperty("-");
+            toRet.setValue(p.getValue().getParticipantResult().getRapierResults().getPoints().toString());
+            return toRet;
+        });
+        triathlonOpen.setCellValueFactory( p -> {
+            return new SimpleStringProperty(p.getValue().getParticipantResult().triathlonOpenProperty().get());
+        });
+        triathlonWomen.setCellValueFactory( p -> {
+            return new SimpleStringProperty(p.getValue().getParticipantResult().triathlonWomenProperty().get());
+        });
+
+        GridPane.setConstraints(tv,1,1);
+        tv.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tv.getColumns().addAll(surname,name,smallsword,sabre,rapier,triathlonOpen,triathlonWomen);
+
+        gridPane.getChildren().add(tv);
+
+
+        Tab tabToRet = new Tab();
+        tabToRet.setContent(gridPane);
+        tabToRet.setClosable(false);
+        tabToRet.setText("Final_Results");
+
+        return tabToRet;
+    }
 
 }

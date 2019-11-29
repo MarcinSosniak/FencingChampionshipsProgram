@@ -41,8 +41,8 @@ public class Participant implements Serializable{
     private ObjectProperty<RationalNumber> rapierPoints;
 
      /** For final results required */
-//    private BooleanProperty fFemale = new SimpleBooleanProperty(false);
-//    private SimpleObjectProperty<ParticipantResult> participantResult = new SimpleObjectProperty<>(new ParticipantResult());
+    private BooleanProperty fFemale = new SimpleBooleanProperty(false);
+    private SimpleObjectProperty<ParticipantResult> participantResult = new SimpleObjectProperty<>(new ParticipantResult(this));
 
 
     private BooleanProperty fSabreInjury = new SimpleBooleanProperty(false);
@@ -134,21 +134,21 @@ public class Participant implements Serializable{
     }
 
     /** For final results required */
-//    public boolean isfFemale() {
-//        return fFemale.get();
-//    }
-//
-//    public BooleanProperty fFemaleProperty() {
-//        return fFemale;
-//    }
-//
-//    public ParticipantResult getParticipantResult() {
-//        return participantResult.get();
-//    }
-//
-//    public SimpleObjectProperty<ParticipantResult> participantResultProperty() {
-//        return participantResult;
-//    }
+    public boolean isfFemale() {
+        return fFemale.get();
+    }
+
+    public BooleanProperty fFemaleProperty() {
+        return fFemale;
+    }
+
+    public ParticipantResult getParticipantResult() {
+        return participantResult.get();
+    }
+
+    public SimpleObjectProperty<ParticipantResult> participantResultProperty() {
+        return participantResult;
+    }
 
 
     public String getName() { return name.get(); }
@@ -292,8 +292,8 @@ public class Participant implements Serializable{
         weaponPointsProperty.forEach((wt, wp) -> weaponPoints.put(wt, wp.get()));
         stream.writeObject(weaponPoints);
         /** For final results required */
-//        stream.writeObject(fFemale.get());
-//        stream.writeObject(participantResult.get());
+        stream.writeObject(fFemale.get());
+        stream.writeObject(participantResult.get());
     }
 
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
@@ -315,7 +315,7 @@ public class Participant implements Serializable{
         Map<WeaponType, RationalNumber> m = (Map<WeaponType, RationalNumber>) stream.readObject();
         m.forEach((wt, wp) -> weaponPointsProperty.put(wt, new SimpleObjectProperty<>(wp)));
         /** For final results required */
-//        fFemale = new SimpleBooleanProperty((Boolean) stream.readObject());
-//        participantResult = new SimpleObjectProperty<>((ParticipantResult) stream.readObject());
+        fFemale = new SimpleBooleanProperty((Boolean) stream.readObject());
+        participantResult = new SimpleObjectProperty<>((ParticipantResult) stream.readObject());
     }
 }

@@ -4,12 +4,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.KillerDrawing.KillerRandomizerStrategy;
 import model.enums.WeaponType;
+import model.exceptions.NoSuchWeaponException;
+import util.RationalNumber;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Competition implements Serializable {
@@ -152,12 +155,82 @@ public class Competition implements Serializable {
     public void setPassword(String password) { this.password = password; }
 
     /** For final results required */
-//    public void calculateResults() {
-//        for(WeaponCompetition wc: weaponCompetitions){
-//            wc.calculateResults();
-//        }
-//        /* TODO: what are the rules to calculate triathlon results */
-//
-//        /* TODO: Assign triathlon score to participant */
-//    }
+    public void calculateResults() {
+        for(WeaponCompetition wc: weaponCompetitions){
+            wc.calculateResults();
+        }
+        /* Calculating triathlon results*/
+        for(Participant p : participants){
+            ParticipantResult participantResult = p.getParticipantResult();
+            participantResult.calculateTriathlonPoints();
+        }
+        /* Now we need to set place for each triathlon */
+        Comparator<Participant> compareTriathlonOpen = (Participant p1, Participant p2) ->{
+            int point1 = p1.getParticipantResult().getTriathlonOpenPoints();
+            int point2 = p2.getParticipantResult().getTriathlonOpenPoints();
+            if (point1 == point2){
+                return 0;
+            }else if (point1 > point2){
+                return 1;
+            }else {
+                return -1;
+            }
+        };
+        Comparator<Participant> compareTriathlonWomen = (Participant p1, Participant p2) ->{
+            int point1 = p1.getParticipantResult().getTriathlonWomenPoints();
+            int point2 = p2.getParticipantResult().getTriathlonWomenPoints();
+            if (point1 == point2){
+                return 0;
+            }else if (point1 > point2){
+                return 1;
+            }else {
+                return -1;
+            }
+        };
+
+        /* Now we need to assign place to each participant in OPEN triathlon */
+        participants.sort(compareTriathlonOpen);
+        Integer currentPlace = participants.size();
+        int lastPoints = -1000;
+        int iteration = participants.size() + 1;
+
+        for(Participant p : participants){
+            iteration --;
+            boolean fSwitchPlace = false;
+            int toCompare = p.getParticipantResult().getTriathlonOpenPoints();
+            if (toCompare > lastPoints){
+                fSwitchPlace = true;
+            }
+            lastPoints = toCompare;
+            if (fSwitchPlace) {
+                currentPlace = iteration;
+            }
+            p.getParticipantResult().setTriathlonOpen(currentPlace.toString());
+        }
+
+        /* Now we need to assign place to each participant in WOMEN triathlon*/
+        participants.sort(compareTriathlonWomen);
+        currentPlace = participants.size();
+        lastPoints = -1000;
+        iteration = participants.size() + 1;
+
+        for(Participant p : participants){
+            iteration --;
+            boolean fSwitchPlace = false;
+            int toCompare = p.getParticipantResult().getTriathlonWomenPoints();
+            if (toCompare > lastPoints){
+                fSwitchPlace = true;
+            }
+            lastPoints = toCompare;
+            if (fSwitchPlace) {
+                currentPlace = iteration;
+            }
+            if(p.isfFemale()){
+                p.getParticipantResult().setTriathlonOpen("--");
+            }else{
+                p.getParticipantResult().setTriathlonOpen(currentPlace.toString());
+            }
+        }
+
+    }
 }
