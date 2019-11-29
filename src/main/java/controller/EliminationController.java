@@ -101,7 +101,6 @@ public class EliminationController implements Initializable {
     public void update() {
         if(rapierTab != null || sabreTab != null || smallSwordTab != null){
             int tab = tabPane.getSelectionModel().getSelectedIndex();
-            System.out.format("xD%dxD",tab);
             tabPane.getTabs().remove(0,3);
             rapierTab = initTab(WeaponType.RAPIER);
             sabreTab = initTab(WeaponType.SABRE);
@@ -286,8 +285,8 @@ public class EliminationController implements Initializable {
         calculateResultButton.setText("CalculateResults");
         calculateResultButton.setOnAction(x -> {
             /* TODO: !!! check if all fights has selected score !!! */
-            /* TODO: set final round in weapon competition*/
             System.out.format("Check implementation\n");
+            Competition.getInstance().getWeaponCompetition(wt).setFinalRound();
 
             /** For final results required */
             if(tabPane.getTabs().size() < 4){

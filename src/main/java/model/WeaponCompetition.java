@@ -175,10 +175,13 @@ public class WeaponCompetition implements Serializable {
         rc.startRound();
     }
 
-    public void startFirstRound(int gropuSize)
-    {
+    public void startFirstRound(int gropuSize) {
         RoundCreator rc = new RoundCreator(participants,gropuSize);
         rc.startRound();
+    }
+
+    public void setFinalRound() {
+        this.finalRound.set(this.getLastRound());
     }
 
     public RoundCreator prepareNewRound(int groupSize,int participantsCount)
