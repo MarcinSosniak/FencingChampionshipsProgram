@@ -286,7 +286,9 @@ public class EliminationController implements Initializable {
         calculateResultButton.setOnAction(x -> {
             /* TODO: !!! check if all fights has selected score !!! */
             System.out.format("Check implementation\n");
-            Competition.getInstance().getWeaponCompetition(wt).setFinalRound();
+            Competition.getInstance().getWeaponCompetition(WeaponType.RAPIER).setFinalRound();
+            Competition.getInstance().getWeaponCompetition(WeaponType.SABRE).setFinalRound();
+            Competition.getInstance().getWeaponCompetition(WeaponType.SMALL_SWORD).setFinalRound();
 
             /** For final results required */
             if(tabPane.getTabs().size() < 4){
