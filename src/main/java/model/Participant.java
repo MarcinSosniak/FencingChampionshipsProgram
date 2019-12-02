@@ -1,5 +1,6 @@
 package model;
 
+import com.google.gson.annotations.Expose;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
@@ -31,23 +32,32 @@ public class Participant implements Serializable{
     private StringProperty locationGroup;
     private ObjectProperty<JudgeState> judgeState;
     private ObjectProperty<Date> licenseExpDate;
-    private int timesKiller = 0;
+    @Expose(serialize = false)
+    private transient int timesKiller = 0;
 
     /** for table view required */
-    private BooleanProperty fSmallSwordParticipant;
-    private BooleanProperty fSabreParticipant;
-    private BooleanProperty fRapierParticipant;
-    private Map<WeaponType, ObjectProperty<util.RationalNumber>> weaponPointsProperty;
-    private ObjectProperty<RationalNumber> rapierPoints;
+    @Expose(serialize = false)
+    private transient BooleanProperty fSmallSwordParticipant;
+    @Expose(serialize = false)
+    private transient BooleanProperty fSabreParticipant;
+    @Expose(serialize = false)
+    private transient BooleanProperty fRapierParticipant;
+    @Expose(serialize = false)
+    private transient Map<WeaponType, ObjectProperty<util.RationalNumber>> weaponPointsProperty;
+    @Expose(serialize = false)
+    private transient ObjectProperty<RationalNumber> rapierPoints;
 
      /** For final results required */
     private BooleanProperty fFemale = new SimpleBooleanProperty(false);
-    private SimpleObjectProperty<ParticipantResult> participantResult = new SimpleObjectProperty<>(new ParticipantResult(this));
+    @Expose(serialize = false)
+    private transient SimpleObjectProperty<ParticipantResult> participantResult = new SimpleObjectProperty<>(new ParticipantResult(this));
 
-
-    private BooleanProperty fSabreInjury = new SimpleBooleanProperty(false);
-    private BooleanProperty fRapierInjury = new SimpleBooleanProperty(false);
-    private BooleanProperty fSmallSwordInjury = new SimpleBooleanProperty(false);
+    @Expose(serialize = false)
+    private transient BooleanProperty fSabreInjury = new SimpleBooleanProperty(false);
+    @Expose(serialize = false)
+    private transient BooleanProperty fRapierInjury = new SimpleBooleanProperty(false);
+    @Expose(serialize = false)
+    private transient BooleanProperty fSmallSwordInjury = new SimpleBooleanProperty(false);
 
     public Participant(String name, String surname, String location, String locationGroup, JudgeState judgeState, Date licenceExpDate){
         this.name            = new SimpleStringProperty(name);
