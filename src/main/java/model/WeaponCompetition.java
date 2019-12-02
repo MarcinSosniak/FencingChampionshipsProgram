@@ -184,16 +184,22 @@ public class WeaponCompetition implements Serializable {
         this.finalRound.set(this.getLastRound());
     }
 
-    public RoundCreator prepareNewRound(int groupSize,int participantsCount)
+    /* Argument in call */
+    public RoundCreator prepareNewRound(int groupSize,int participantsCount,boolean fSemiFinal)
     {
-        return new RoundCreator(groupSize,participantsCount);
+        return new RoundCreator(groupSize,participantsCount,fSemiFinal);
     }
 
+    /* From config if final */
     public RoundCreator prepareNewRound()
     {
         int groupSize  = ConfigReader.getInstance().getIntValue(WeaponType.str(weaponType)+"_ROUND_"+Integer.toString(rounds.size()),"GROUP_SIZE",3);
         int participantsCount= ConfigReader.getInstance().getIntValue(WeaponType.str(weaponType)+"_ROUND_"+Integer.toString(rounds.size()),"PARTICIPANTS_COUNT",3);
-        return new RoundCreator(groupSize,participantsCount);
+        int finalRoundNumber = ConfigReader.getInstance().getIntValue(WeaponType.str(weaponType).toUpperCase(), "FinalRoundNumber");
+        if(WeaponCompetition.this.rounds.size() == finalRoundNumber)
+            return new RoundCreator(groupSize,participantsCount,true);
+        else
+            return new RoundCreator(groupSize,participantsCount,false);
     }
 
 
@@ -207,10 +213,6 @@ public class WeaponCompetition implements Serializable {
         return rounds.size();
     }
 
-    public FinalRound getFinalRound()
-    {
-        return new FinalRound();
-    }
 
     // WEAPON COMP ROUND CREATOR
     public class RoundCreator {
@@ -220,6 +222,7 @@ public class WeaponCompetition implements Serializable {
         private ArrayList<Participant> participantsForPlayoff = new ArrayList<>();
         private int groupSize;
         private int particpantsNeeded;
+        private boolean fSemiFinal;
 
         public void startRound() {
             if (!fRoundReady)
@@ -246,16 +249,28 @@ public class WeaponCompetition implements Serializable {
             if (winners.size() + participantsForRound.size() != particpantsNeeded)
                 throw new IllegalStateException("winners list is too short or to large");
             participantsForRound.addAll(winners);
-            _round = new Round(WeaponCompetition.this, rounds.size() - 1, groupSize, participantsForRound, getFightDrawStrategyPicker());
+            boolean fFinal = WeaponCompetition.this.getLastRound().isSemiFinal();
+            _round = new Round(WeaponCompetition.this, rounds.size() - 1, groupSize, participantsForRound, getFightDrawStrategyPicker(),fFinal,this.fSemiFinal);
             fRoundReady = true;
         }
 
         /**
          * throw no errors if particpantsNeeded > amount of paritcpants in lastRound
          **/
-        public RoundCreator(int groupSize, int particpantsNeeded) {
+        public RoundCreator(int groupSize, int particpantsNeeded,boolean fSemiFinal) {
+            this.fSemiFinal=fSemiFinal;
             this.groupSize = groupSize;
             this.particpantsNeeded = particpantsNeeded;
+            if(fSemiFinal)
+            {
+                prepareSemiFinal();
+                return;
+            }
+            if(WeaponCompetition.this.getLastRound().isSemiFinal())
+            {
+                prepareFinalRound();
+                return;
+            }
             Round lastRound;
             lastRound = rounds.get(rounds.size() - 1);
             ArrayList<Participant> participantsEligible = new ArrayList<>(
@@ -265,7 +280,7 @@ public class WeaponCompetition implements Serializable {
             if (participantsEligible.size() <= particpantsNeeded) {
                 participantsForRound.addAll(participantsEligible);
                 fRoundReady = true;
-                _round = new Round(WeaponCompetition.this, rounds.size() - 1, groupSize, participantsEligible, getFightDrawStrategyPicker());
+                _round = new Round(WeaponCompetition.this, rounds.size() - 1, groupSize, participantsEligible, getFightDrawStrategyPicker(),false,false);
                 return;
             }
             participantsEligible.sort(new Comparator<Participant>() {
@@ -285,7 +300,7 @@ public class WeaponCompetition implements Serializable {
             if (participantsForPlayoff.size()== 0  || participantsForRound.size() == particpantsNeeded) {
                 participantsForRound.addAll(participantsForPlayoff);
                 fRoundReady = true;
-                _round = new Round(WeaponCompetition.this, rounds.size()-1, groupSize, participantsForRound, getFightDrawStrategyPicker());
+                _round = new Round(WeaponCompetition.this, rounds.size()-1, groupSize, participantsForRound, getFightDrawStrategyPicker(),false,false);
                 return;
             }
             fRoundReady = false;
@@ -295,16 +310,18 @@ public class WeaponCompetition implements Serializable {
             if (rounds.size() > 0)
                 throw new IllegalStateException("use this to construct only the first round");
             participantsForRound.addAll(participants);
-            _round = new Round(WeaponCompetition.this, 0, groupSize, participantsForRound, getFightDrawStrategyPicker());
+            this.fSemiFinal=fSemiFinal;
+            _round = new Round(WeaponCompetition.this, 0, groupSize, participantsForRound, getFightDrawStrategyPicker(),false,false);
             fRoundReady = true;
         }
 
         public RoundCreator(List<Participant> participants) {
+            this.fSemiFinal = fSemiFinal;
             if (rounds.size() > 0)
                 throw new IllegalStateException("use this to construct only the first round");
             int groupSize = ConfigReader.getInstance().getIntValue(ConfigUtils.getWeaponTag(weaponType), "START_GROUP_SIZE");
             participantsForRound.addAll(participants);
-            _round = new Round(WeaponCompetition.this, 0, groupSize, participantsForRound, getFightDrawStrategyPicker());
+            _round = new Round(WeaponCompetition.this, 0, groupSize, participantsForRound, getFightDrawStrategyPicker(),false,false);
             fRoundReady = true;
         }
     }

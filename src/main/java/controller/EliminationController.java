@@ -292,10 +292,11 @@ public class EliminationController implements Initializable {
 
             /** For final results required */
             if(tabPane.getTabs().size() < 4){
-                Tab resultTab = initResultTab();
-                tabPane.getTabs().add(resultTab);
+                finalResultTab = initResultTab();
+                tabPane.getTabs().add(finalResultTab);
                 Competition.getInstance().calculateResults();
                 //tabPane.getTabs().add(new Tab());
+                calculateResultButton.setDisable(true);
             }else{
                 calculateResultButton.setDisable(true);
             }
@@ -306,14 +307,8 @@ public class EliminationController implements Initializable {
         Button nextRoundButton = new Button();
         nextRoundButton.setMaxSize(1000, 1000);
         nextRoundButton.setText("Next Round");
-        /*TODO: add semifinalRound to weaponCompetition
-        * TODO: set fCompetitionReachedFinals */
         nextRoundButton.setOnAction(x -> {
             System.out.format("Implement by hand\n");
-
-            if(fRapierCompetitionFinals && fSabreCompetitionFinals && fSmallswordCompetitionFinals){
-                calculateResultButton.setDisable(false);
-            }
 
             WeaponCompetition wc = Competition.getInstance().getWeaponCompetition(wt);
             WeaponCompetition.RoundCreator rc = null;
@@ -338,6 +333,17 @@ public class EliminationController implements Initializable {
                 stageroni.showAndWait();
                 if(rc.getfRoundReady())
                     rc.startRound();
+            }
+            if(Competition.getInstance().getWeaponCompetition(wt).getLastRound().getfFinal()){
+                switch (wt){
+                    case SABRE: fSabreCompetitionFinals = true; break;
+                    case RAPIER: fRapierCompetitionFinals = true; break;
+                    case SMALL_SWORD: fSmallswordCompetitionFinals = true; break;
+                }
+                nextRoundButton.setDisable(true);
+            }
+            if(fRapierCompetitionFinals && fSabreCompetitionFinals && fSmallswordCompetitionFinals){
+                calculateResultButton.setDisable(false);
             }
             this.setData();
         });

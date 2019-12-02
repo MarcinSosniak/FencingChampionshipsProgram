@@ -1,4 +1,5 @@
 package model;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -42,6 +43,8 @@ public class Round implements Serializable {
     private int participantExcpectedFightNumber; // size of group -1
     private WeaponCompetition myWeaponCompetition;
     private SimpleObjectProperty<Fight> lastModyfiedFight;
+    private Boolean fFinal;
+    private Boolean fSemiFinal;
 
     public Fight getLastModyfiedFight() {
         this.groups.get(0).getFightsList().get(0).commandSetFightScoreDirect(FightScore.WON_SECOND);
@@ -49,23 +52,7 @@ public class Round implements Serializable {
     }
 
 
-    //depriciated
-    private Round(int roundNumber, int groupSize,ArrayList<Participant> participants, FightDrawStrategyPicker fightDrawStrategyPicker){
-        this.roundNumber = roundNumber;
-        this.groupSize = groupSize;
-        this.participantExcpectedFightNumber=groupSize-1;
-        this.fightDrawStrategy = fightDrawStrategyPicker.pick(KillerRandomizerStrategyPicker.KillerRandomizerStrategy());
-        this.participants= FXCollections.observableArrayList(participants);
-        /*TODO: Refactor */
-        this.lastModyfiedFight = new SimpleObjectProperty<>();
-        for(Participant p : participants)
-        {
-            participantDoubleFightNumber.put(p,0);
-            roundScore.put(p,new SimpleObjectProperty<>(new RationalNumber(0)));
-        }
-    }
-
-    public Round(WeaponCompetition myWeaponCompetition,int roundNumber, int groupSize,ArrayList<Participant> participants, FightDrawStrategyPicker fightDrawStrategyPicker){
+    public Round(WeaponCompetition myWeaponCompetition,int roundNumber, int groupSize,ArrayList<Participant> participants, FightDrawStrategyPicker fightDrawStrategyPicker,Boolean fFinal,Boolean fSemiFinal){
         this.myWeaponCompetition=myWeaponCompetition;
         this.roundNumber = roundNumber;
         this.groupSize = groupSize;
@@ -79,6 +66,8 @@ public class Round implements Serializable {
             participantDoubleFightNumber.put(p,0);
             roundScore.put(p,new SimpleObjectProperty<>(new RationalNumber(0)));
         }
+        this.fFinal = fFinal;
+        this.fSemiFinal = fSemiFinal;
         drawGroups();
     }
 
@@ -106,6 +95,8 @@ public class Round implements Serializable {
     public int getGroupSize() { return groupSize; }
 
     public int getRoundNumber() { return roundNumber; }
+
+    public boolean isSemiFinal() {return fSemiFinal;}
 
 
     public Round drawGroups() {
@@ -149,6 +140,9 @@ public class Round implements Serializable {
         roundScore.get(p).get().substract(points);
     }
 
+    public Boolean getfFinal() {
+        return fFinal;
+    }
 
     public ObjectProperty<RationalNumber> getParticpantScoreProperty(Participant p)
     {
@@ -174,6 +168,8 @@ public class Round implements Serializable {
         stream.writeInt(participantExcpectedFightNumber);
         stream.writeObject(myWeaponCompetition);
         stream.writeObject(lastModyfiedFight.get());
+        stream.writeObject(fFinal);
+        stream.writeObject(fSemiFinal);
     }
 
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
@@ -189,6 +185,8 @@ public class Round implements Serializable {
         participantExcpectedFightNumber = stream.readInt();
         myWeaponCompetition = (WeaponCompetition) stream.readObject();
         lastModyfiedFight = new SimpleObjectProperty<>((Fight) stream.readObject());
+        fFinal = (Boolean) stream.readObject();
+        fSemiFinal = (Boolean) stream.readObject();
     }
 
     @Override
