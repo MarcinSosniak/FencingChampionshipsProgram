@@ -48,9 +48,9 @@ public class PlayoffController implements Initializable {
     private StringProperty text_to_display;
     private TableColumn<Participant,String> tc = new TableColumn<>();
 
-    PlayoffController(WeaponCompetition.RoundCreator rc)
-    {
-    }
+//    PlayoffController(WeaponCompetition.RoundCreator rc)
+//    {
+//    }
 
     public void setData(WeaponCompetition.RoundCreator rc)
     {
