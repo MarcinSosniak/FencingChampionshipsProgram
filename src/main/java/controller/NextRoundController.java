@@ -1,20 +1,14 @@
 package controller;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.WeaponCompetition;
 import model.config.ConfigReader;
 import model.enums.WeaponType;
 import util.Pointer;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -35,6 +29,8 @@ public class NextRoundController implements Initializable {
     Button okButton;
     @FXML
     Button cancelButton;
+    @FXML
+    CheckBox fSemiFinal;
 
     private int iGroupSize=0;
     private int iParticipantsCount=0;
@@ -61,10 +57,7 @@ public class NextRoundController implements Initializable {
             System.out.println("set next round");
             iGroupSize=groupSize.getValue();
             iParticipantsCount=participantsCount.getValue();
-
-
-
-            WeaponCompetition.RoundCreator rc = wc.prepareNewRound(iGroupSize,iParticipantsCount,false);
+            WeaponCompetition.RoundCreator rc = wc.prepareNewRound(iGroupSize,iParticipantsCount,fSemiFinal.isSelected());
             out.set(rc);
             Stage toClose = (Stage) okButton.getScene().getWindow();
             toClose.close();
@@ -79,6 +72,16 @@ public class NextRoundController implements Initializable {
         strategyChooser.setItems(FXCollections.observableArrayList(
                 "default")
         );
+    }
+
+    @FXML
+    private void semiFinalCheckboxAction(){
+        boolean fDisable = fSemiFinal.isSelected();
+        groupSize.setDisable(fDisable);
+        participantsCount.setDisable(fDisable);
+        strategyChooser.setDisable(fDisable);
+        groupSize.getValueFactory().setValue(2);
+        participantsCount.getValueFactory().setValue(4);
     }
 
 

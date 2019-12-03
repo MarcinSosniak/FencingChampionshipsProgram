@@ -55,7 +55,7 @@ public class ApplicationController {
             Scene newScene = new Scene(loader.load());
             outputStage.setScene(newScene);
             outputStage.setTitle(title);
-            if (fWindowModal) outputStage.initModality(Modality.WINDOW_MODAL);
+            if (fWindowModal) outputStage.initModality(Modality.APPLICATION_MODAL);
 
         }catch (Exception e){
             System.out.format("Error while rendering add dialog");
@@ -73,7 +73,7 @@ public class ApplicationController {
             outputStage.setScene(newScene);
             outputStage.setTitle(title);
             if (fWindowModal)
-                outputStage.initModality(Modality.WINDOW_MODAL);
+                outputStage.initModality(Modality.APPLICATION_MODAL);
             EditCompetitorController controller = (EditCompetitorController) loader.getController();
             controller.setData(p);
         }catch (Exception e){
@@ -91,7 +91,7 @@ public class ApplicationController {
             outputStage.setScene(newScene);
             outputStage.setTitle(title);
             if (fWindowModal)
-                outputStage.initModality(Modality.WINDOW_MODAL);
+                outputStage.initModality(Modality.APPLICATION_MODAL);
             AddInjuryController controller = (AddInjuryController) loader.getController();
             controller.setData(p, wt, el);
         }catch (Exception e){
@@ -109,13 +109,14 @@ public class ApplicationController {
             outputStage.setScene(newScene);
             outputStage.setTitle(title);
             if (fWindowModal)
-                outputStage.initModality(Modality.WINDOW_MODAL);
+                outputStage.initModality(Modality.APPLICATION_MODAL);
             PlayoffController controller = (PlayoffController) loader.getController();
             controller.setData(rc);
         }catch (Exception e){
-            System.out.format("Error while rendering add injury dialog");
+            System.out.format("Error while rendering play off");
             e.printStackTrace();
         }
+        outputStage.setResizable(false);
         return outputStage;
     }
 
@@ -127,13 +128,14 @@ public class ApplicationController {
             outputStage.setScene(newScene);
             outputStage.setTitle(title);
             if (fWindowModal)
-                outputStage.initModality(Modality.WINDOW_MODAL);
+                outputStage.initModality(Modality.APPLICATION_MODAL);
             NextRoundController controller = (NextRoundController) loader.getController();
             controller.setData(wc,p);
         }catch (Exception e){
-            System.out.format("Error while rendering add injury dialog");
+            System.out.format("Error while rendering next round");
             e.printStackTrace();
         }
+        outputStage.setResizable(false);
         return outputStage;
     }
 

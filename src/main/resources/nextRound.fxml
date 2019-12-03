@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<Pane prefHeight="369.0" prefWidth="352.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.NextRoundController">
+<Pane maxHeight="375.0" maxWidth="352.0" minHeight="375.0" minWidth="352.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.NextRoundController">
    <children>
-      <Spinner fx:id="groupSize" min="0" max="10" initialValue="0" amountToStepBy="1" layoutX="214.0" layoutY="87.0" prefHeight="25.0" prefWidth="59.0" />
-      <Spinner fx:id="participantsCount" min="0" max="100" initialValue="0" amountToStepBy="1" layoutX="214.0" layoutY="137.0" prefHeight="25.0" prefWidth="59.0" />
+      <Spinner fx:id="groupSize" amountToStepBy="1" initialValue="0" layoutX="214.0" layoutY="87.0" max="10" min="0" prefHeight="25.0" prefWidth="59.0" />
+      <Spinner fx:id="participantsCount" amountToStepBy="1" initialValue="0" layoutX="214.0" layoutY="137.0" max="100" min="0" prefHeight="25.0" prefWidth="59.0" />
       <Button fx:id="okButton" layoutX="257.0" layoutY="304.0" mnemonicParsing="false" text="OK" />
       <Button fx:id="cancelButton" layoutX="39.0" layoutY="304.0" mnemonicParsing="false" text="anuluj" />
       <ChoiceBox fx:id="strategyChooser" layoutX="107.0" layoutY="232.0" prefWidth="150.0" />
+      <CheckBox fx:id="fSemiFinal" layoutX="116.0" layoutY="269.0" text="Next round semifinal" onAction="#semiFinalCheckboxAction"/>
       <Text layoutX="145.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Następna runda">
          <font>
             <Font size="14.0" />

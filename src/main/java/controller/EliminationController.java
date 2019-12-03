@@ -320,6 +320,7 @@ public class EliminationController implements Initializable {
                 Pointer<WeaponCompetition.RoundCreator> p = new Pointer<>();
                 Stage stageroni = ApplicationController.getApplicationController().renderNextRound("/nextRound.fxml", "gimme", true, wc,p);
                 stageroni.getIcons().add(ApplicationController.image);
+                stageroni.setResizable(false);
                 stageroni.showAndWait();
                 if (p.get()==null)
                     return;
