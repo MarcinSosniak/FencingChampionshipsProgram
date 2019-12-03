@@ -39,6 +39,11 @@ public final class AppMode {
         }
     }
 
+    public void setMode(AppMode.APP_MODE n_mode)
+    {
+        this.mode  = n_mode;
+    }
+
     static public AppMode getMode() {
         check();
         return self;

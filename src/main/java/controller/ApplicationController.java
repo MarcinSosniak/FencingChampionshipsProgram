@@ -10,6 +10,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Participant;
 import model.WeaponCompetition;
+import model.enums.TriRet;
 import model.enums.WeaponType;
 import util.Pointer;
 
@@ -136,5 +137,22 @@ public class ApplicationController {
         return outputStage;
     }
 
-
+    public Stage renderPasswordGet(String source, String title , boolean fWindowModal,String goodPassword, Pointer<TriRet> out){
+        Stage outputStage = new Stage();
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(source));
+            Scene newScene = new Scene(loader.load());
+            outputStage.setScene(newScene);
+            outputStage.setTitle(title);
+            if (fWindowModal)
+                outputStage.initModality(Modality.APPLICATION_MODAL);
+            PasswordGet controller = (PasswordGet) loader.getController();
+            controller.setData(goodPassword,out);
+        }catch (Exception e){
+            System.out.format("Error while rendering add injury dialog");
+            e.printStackTrace();
+        }
+        outputStage.setResizable(false);
+        return outputStage;
+    }
 }
