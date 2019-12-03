@@ -268,12 +268,13 @@ public class WeaponCompetition implements Serializable {
             });
             try {
                 Collections.reverse(participants);
-                Participant p1 = participants.get(0);
-                Participant p2 = participants.get(1);
-                Participant p3 = participants.get(2);
-                Participant p4 = participants.get(3);
+                List<Participant> top4current = new ArrayList<>();
+                top4current.add(participants.get(0));
+                top4current.add(participants.get(1));
+                top4current.add( participants.get(2));
+                top4current.add(participants.get(3));
 
-                RationalNumber lowestPoints = p4.getPointsForWeaponProperty(WeaponCompetition.this.weaponType).get();
+                RationalNumber lowestPoints = top4current.get(top4current.size()-1).getPointsForWeaponProperty(WeaponCompetition.this.weaponType).get();
 
                 // szukam wiekszych lub rownych od lowest points
                 int found = 0;
@@ -283,11 +284,32 @@ public class WeaponCompetition implements Serializable {
                     }
                 }
                 if(found > 4){
+                    top4current = top4current.stream().filter(p-> {
+                        try{
+                            return ! p.getPointsForWeaponProperty(WeaponCompetition.this.weaponType).get().equals(lowestPoints);
+                        }
+                        catch (Exception ex)
+                        {
+                            return false;
+                        }
+                    }).collect(Collectors.toList());
                     /* TODO: playoffs needed */
+                    this.participantsForPlayoff.addAll(participants.stream().filter(p-> {
+                        try {
+                            return p.getPointsForWeaponProperty(WeaponCompetition.this.weaponType).get().equals(lowestPoints);
+                        } catch (Exception ex) {
+                            return false;
+                        }
+                    }).collect(Collectors.toList()));
+                    this.participantsForRound.addAll(top4current);
+                    this.fRoundReady=false;
+                    return;
                 }else{ /* Should be 4 of then prepare round */
                     ArrayList<Participant> participantsToRound = new ArrayList<>();
-                    Collections.addAll(participantsToRound,p1,p2,p3,p4);
+                    this.participantsForRound.addAll(top4current);
                     this._round = new Round(WeaponCompetition.this,WeaponCompetition.this.getLastRound().getRoundNumber(),1,participantsToRound,getFightDrawStrategyPicker(),false,true);
+                    this.fRoundReady=true;
+                    return;
                 }
             }catch (NoSuchWeaponException e){
                 System.out.format("Some serious shit went wrong\n");
@@ -317,6 +339,7 @@ public class WeaponCompetition implements Serializable {
             if(fSemiFinalIsFinal){
                 Round toRet = WeaponCompetition.this.getLastRound();
                 toRet.setfFinal(true);
+                fRoundReady=true;
                 _round = toRet;
             }else{
                 /* In this case we take 2 winners and set them to one final fight
@@ -360,8 +383,8 @@ public class WeaponCompetition implements Serializable {
 
                 /* Add posibility to prepare final round */
                 toRet.prepareForFinals(cgList);
+                fRoundReady=true;
                 this._round = toRet;
-
             }
         }
 
