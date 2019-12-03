@@ -62,7 +62,9 @@ public class NextRoundController implements Initializable {
             iGroupSize=groupSize.getValue();
             iParticipantsCount=participantsCount.getValue();
 
-            WeaponCompetition.RoundCreator rc = wc.prepareNewRound(iGroupSize,iParticipantsCount);
+
+
+            WeaponCompetition.RoundCreator rc = wc.prepareNewRound(iGroupSize,iParticipantsCount,false);
             out.set(rc);
             Stage toClose = (Stage) okButton.getScene().getWindow();
             toClose.close();
