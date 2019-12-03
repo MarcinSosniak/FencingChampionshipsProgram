@@ -70,7 +70,9 @@ public class Round implements Serializable {
     }
 
     public void prepareForFinals(List<CompetitionGroup> cg){
-        this.groups = FXCollections.observableArrayList(cg);
+        this.groups.clear();
+        this.groups.addAll(cg);
+
     }
 
     public Round setMyWeaponCompetition(WeaponCompetition myWeaponCompetition) {
@@ -144,6 +146,9 @@ public class Round implements Serializable {
 
     public Boolean getfFinal() {
         return fFinal;
+    }
+    public Boolean getfSemiFinal() {
+        return fSemiFinal;
     }
 
     public ObjectProperty<RationalNumber> getParticpantScoreProperty(Participant p)

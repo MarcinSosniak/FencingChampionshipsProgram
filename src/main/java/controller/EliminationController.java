@@ -30,7 +30,9 @@ import util.RationalNumber;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 /** TODO: undo doesn't change color properly
  * TODO: should add function set cell colors properly :) which is invoked by command controller */
@@ -75,6 +77,7 @@ public class EliminationController implements Initializable {
     private Boolean fRapierCompetitionFinals = false;
     private Boolean fSabreCompetitionFinals = false;
     private Boolean fSmallswordCompetitionFinals = false;
+    private List<Button> calculateResultsButtons = new ArrayList<>();
     Tab finalResultTab = null;
 
     private TableView rapierTableView;
@@ -99,6 +102,7 @@ public class EliminationController implements Initializable {
 
 
     public void update() {
+        calculateResultsButtons = new ArrayList<>();
         if(rapierTab != null || sabreTab != null || smallSwordTab != null){
             int tab = tabPane.getSelectionModel().getSelectedIndex();
             tabPane.getTabs().remove(0,3);
@@ -280,7 +284,6 @@ public class EliminationController implements Initializable {
         paneForButtons.getColumnConstraints().addAll(cc);
 
         Button calculateResultButton = new Button();
-        calculateResultButton.setDisable(true);
         calculateResultButton.setMaxSize(1000, 1000);
         calculateResultButton.setText("CalculateResults");
         calculateResultButton.setOnAction(x -> {
@@ -301,6 +304,7 @@ public class EliminationController implements Initializable {
                 calculateResultButton.setDisable(true);
             }
         });
+        calculateResultsButtons.add(calculateResultButton);
 
         GridPane.setConstraints(calculateResultButton, 0, 1);
 
@@ -336,20 +340,41 @@ public class EliminationController implements Initializable {
                 if(rc.getfRoundReady())
                     rc.startRound();
             }
-
-            if(Competition.getInstance().getWeaponCompetition(wt).getLastRound().getfFinal()){
-                switch (wt){
-                    case SABRE: fSabreCompetitionFinals = true; break;
-                    case RAPIER: fRapierCompetitionFinals = true; break;
-                    case SMALL_SWORD: fSmallswordCompetitionFinals = true; break;
+            if(Competition.getInstance().getWeaponCompetition(wt).getLastRound().getfFinal()) {
+                switch (wt) {
+                    case SABRE:
+                        fSabreCompetitionFinals = true;
+                        break;
+                    case RAPIER:
+                        fRapierCompetitionFinals = true;
+                        break;
+                    case SMALL_SWORD:
+                        fSmallswordCompetitionFinals = true;
+                        break;
                 }
-                nextRoundButton.setDisable(true);
-            }
-            if(fRapierCompetitionFinals && fSabreCompetitionFinals && fSmallswordCompetitionFinals){
-                calculateResultButton.setDisable(false);
             }
             this.setData();
         });
+
+        switch (wt){
+            case SMALL_SWORD:
+                if(fSmallswordCompetitionFinals)
+                    nextRoundButton.setDisable(true);
+                break;
+            case RAPIER:
+                if(fRapierCompetitionFinals)
+                    nextRoundButton.setDisable(true);
+                break;
+            case SABRE:
+                if(fSabreCompetitionFinals)
+                    nextRoundButton.setDisable(true);
+                break;
+        }
+
+        if(!(fRapierCompetitionFinals && fSabreCompetitionFinals && fSmallswordCompetitionFinals)) {
+            for(Button c: calculateResultsButtons)
+                c.setDisable(true);
+        }
 
         GridPane.setConstraints(nextRoundButton, 0, 0);
 

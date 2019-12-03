@@ -17,6 +17,10 @@ public class CompetitionGroup implements Serializable {
     private String groupID;
     private static final long serialVersionUID = 1;
 
+    public void setGroupID(String groupID) {
+        this.groupID = groupID;
+    }
+
     public CompetitionGroup(List<Fight> fights) {
         this.groupID = "a";
         this.fightsList = FXCollections.observableArrayList(fights);

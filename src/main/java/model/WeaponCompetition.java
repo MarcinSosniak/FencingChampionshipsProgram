@@ -106,7 +106,8 @@ public class WeaponCompetition implements Serializable {
 
     public void addRound(ValidInvocationChecker validInvocationChecker, Round round){
         Objects.requireNonNull(validInvocationChecker);
-        rounds.add(round.setMyWeaponCompetition(this).drawGroups());
+//        rounds.add(round.setMyWeaponCompetition(this).drawGroups());
+        rounds.add(round);
     }
 
     public void removeRound(ValidInvocationChecker validInvocationChecker){
@@ -247,7 +248,7 @@ public class WeaponCompetition implements Serializable {
                 throw new IllegalStateException("winners list is too short or to large");
             participantsForRound.addAll(winners);
             boolean fFinal = WeaponCompetition.this.getLastRound().isSemiFinal();
-            _round = new Round(WeaponCompetition.this, rounds.size() - 1, groupSize, participantsForRound, getFightDrawStrategyPicker(),fFinal,this.fSemiFinal);
+            _round = new Round(WeaponCompetition.this, rounds.size(), groupSize, participantsForRound, getFightDrawStrategyPicker(),fFinal,this.fSemiFinal);
             fRoundReady = true;
         }
 
@@ -256,6 +257,8 @@ public class WeaponCompetition implements Serializable {
          **/
         private void prepareSemiFinal(){
             //take 4 with highest points
+            this.groupSize=2;
+            this.particpantsNeeded=4;
             List<Participant> participants = WeaponCompetition.this.getLastRound().getParticipants();
             participants.sort((Participant p1,Participant p2) -> {
                 try {
@@ -303,11 +306,13 @@ public class WeaponCompetition implements Serializable {
                     }).collect(Collectors.toList()));
                     this.participantsForRound.addAll(top4current);
                     this.fRoundReady=false;
+                    // whole is fine but we need to inform how many people to add
+                    this.particpantsNeeded = 4;
                     return;
                 }else{ /* Should be 4 of then prepare round */
                     ArrayList<Participant> participantsToRound = new ArrayList<>();
                     this.participantsForRound.addAll(top4current);
-                    this._round = new Round(WeaponCompetition.this,WeaponCompetition.this.getLastRound().getRoundNumber(),1,participantsToRound,getFightDrawStrategyPicker(),false,true);
+                    this._round = new Round(WeaponCompetition.this,WeaponCompetition.this.getLastRound().getRoundNumber()+1,2,participantsForRound,getFightDrawStrategyPicker(),false,true);
                     this.fRoundReady=true;
                     return;
                 }
@@ -366,7 +371,7 @@ public class WeaponCompetition implements Serializable {
 
                 ArrayList<Participant> participants = new ArrayList<>();
                 Collections.addAll(participants,pFinal1,pFinal2,pThird1,pThird2);
-                Round toRet = new Round(WeaponCompetition.this,WeaponCompetition.this.getLastRound().getRoundNumber(),1,participants,null,true,false);
+                Round toRet = new Round(WeaponCompetition.this,WeaponCompetition.this.getLastRound().getRoundNumber(),2,participants,new FightDrawStrategyPicker(true),true,false);
 
                 Fight finalFight = new Fight(toRet,pFinal1,pFinal2);
                 List<Fight> finalFightList = new ArrayList<Fight>();
@@ -377,7 +382,9 @@ public class WeaponCompetition implements Serializable {
                 thirdPlaceFightList.add(thirdPlaceFight);
 
                 CompetitionGroup cgFinal = new CompetitionGroup(finalFightList);
+                cgFinal.setGroupID("final_fight");
                 CompetitionGroup cgThird = new CompetitionGroup(thirdPlaceFightList);
+                cgThird.setGroupID("third_place_fight");
                 List<CompetitionGroup> cgList = new ArrayList<>();
                 Collections.addAll(cgList,cgFinal,cgThird);
 
