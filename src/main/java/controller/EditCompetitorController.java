@@ -100,7 +100,7 @@ public class EditCompetitorController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
-
+        datePicker.setValue(LocalDate.now());
     }
 
 }

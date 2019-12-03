@@ -2,6 +2,7 @@ package controller;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
@@ -11,11 +12,15 @@ import model.Competition;
 import model.Participant;
 import model.enums.JudgeState;
 
+import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.ResourceBundle;
 
-public class AddCompetitorController {
+public class AddCompetitorController implements Initializable {
 
     @FXML
     TextField competitorName;
@@ -39,6 +44,11 @@ public class AddCompetitorController {
     Button cancelButton;
     @FXML
     DatePicker datePicker;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources){
+        datePicker.setValue(LocalDate.now());
+    }
 
 
     public void cancelAddNewCompetitor(){

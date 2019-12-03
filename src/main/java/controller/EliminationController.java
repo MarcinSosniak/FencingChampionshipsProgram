@@ -326,6 +326,7 @@ public class EliminationController implements Initializable {
                     return;
                 rc=p.get();
             }
+
             if (rc.getfRoundReady()) {
                 rc.startRound();
             }else {
@@ -335,6 +336,7 @@ public class EliminationController implements Initializable {
                 if(rc.getfRoundReady())
                     rc.startRound();
             }
+
             if(Competition.getInstance().getWeaponCompetition(wt).getLastRound().getfFinal()){
                 switch (wt){
                     case SABRE: fSabreCompetitionFinals = true; break;

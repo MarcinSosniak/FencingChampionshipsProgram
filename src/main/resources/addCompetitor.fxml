@@ -22,15 +22,15 @@
     <TextField fx:id="competitorDivision" text="oddzial" GridPane.columnIndex="1" GridPane.fillWidth="TRUE" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
     <TextField fx:id="competitorGroup" text="grupa" GridPane.columnIndex="1" GridPane.fillWidth="TRUE" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
 
-    <CheckBox fx:id="competitorFSmallSword" text="szpada" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="6" />
-    <CheckBox fx:id="competitorFSabre" text="szabla" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="7" />
-    <CheckBox fx:id="competitorFRapier" text="rapier" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="8" />
+    <CheckBox fx:id="competitorFSmallSword" text="szpada" selected="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="6" />
+    <CheckBox fx:id="competitorFSabre" text="szabla" selected="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="7" />
+    <CheckBox fx:id="competitorFRapier" text="rapier" selected="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="8" />
 
     <CheckBox fx:id="competitorFMainReferee" text="sędzia główny" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="10" />
 
     <Text style="-fx-font-size: 14" text="data ważności licencji:" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="12" GridPane.valignment="CENTER" />
 
-    <Button fx:id="cancelButton" onAction="#cancelAddNewCompetitor" text="anuluj " GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="TOP" />
+    <Button fx:id="cancelButton" onAction="#cancelAddNewCompetitor" text="anuluj" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="TOP" />
     <Button fx:id="addButton" onAction="#addNewCompetitor" style="-fx-background-color: green" text="dodaj" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="TOP" />
    <DatePicker fx:id="datePicker" prefHeight="25.0" prefWidth="151.0" GridPane.columnIndex="1" GridPane.rowIndex="13">
       <GridPane.margin>

@@ -193,7 +193,7 @@ public class WeaponCompetition implements Serializable {
         int groupSize  = ConfigReader.getInstance().getIntValue(WeaponType.str(weaponType)+"_ROUND_"+Integer.toString(rounds.size()),"GROUP_SIZE",3);
         int participantsCount= ConfigReader.getInstance().getIntValue(WeaponType.str(weaponType)+"_ROUND_"+Integer.toString(rounds.size()),"PARTICIPANTS_COUNT",3);
         int finalRoundNumber = ConfigReader.getInstance().getIntValue(WeaponType.str(weaponType).toUpperCase(), "FINAL_ROUND_NUMBER");
-        if(WeaponCompetition.this.rounds.size() == finalRoundNumber)
+        if(WeaponCompetition.this.rounds.size() == finalRoundNumber - 1)
             return new RoundCreator(groupSize,participantsCount,true);
         else
             return new RoundCreator(groupSize,participantsCount,false);
