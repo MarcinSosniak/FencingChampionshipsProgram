@@ -16,10 +16,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import model.exceptions.NoSuchWeaponException;
@@ -257,6 +254,117 @@ public class WeaponCompetition implements Serializable {
         /**
          * throw no errors if particpantsNeeded > amount of paritcpants in lastRound
          **/
+        private void prepareSemiFinal(){
+            //take 4 with highest points
+            List<Participant> participants = WeaponCompetition.this.getLastRound().getParticipants();
+            participants.sort((Participant p1,Participant p2) -> {
+                try {
+                    RationalNumber pointp1 = p1.getPointsForWeaponProperty(WeaponCompetition.this.weaponType).get();
+                    RationalNumber pointp2 = p2.getPointsForWeaponProperty(WeaponCompetition.this.weaponType).get();
+                    return RationalNumber.compare(pointp1,pointp2);
+                }catch (NoSuchWeaponException e){
+                    return 0;
+                }
+            });
+            try {
+                Collections.reverse(participants);
+                Participant p1 = participants.get(0);
+                Participant p2 = participants.get(1);
+                Participant p3 = participants.get(2);
+                Participant p4 = participants.get(3);
+
+                RationalNumber lowestPoints = p4.getPointsForWeaponProperty(WeaponCompetition.this.weaponType).get();
+
+                // szukam wiekszych lub rownych od lowest points
+                int found = 0;
+                for(Participant p: participants){
+                    if(RationalNumber.compare(p.getPointsForWeaponProperty(WeaponCompetition.this.weaponType).get(),lowestPoints) >= 0){
+                        found ++;
+                    }
+                }
+                if(found > 4){
+                    /* TODO: playoffs needed */
+                }else{ /* Should be 4 of then prepare round */
+                    ArrayList<Participant> participantsToRound = new ArrayList<>();
+                    Collections.addAll(participantsToRound,p1,p2,p3,p4);
+                    this._round = new Round(WeaponCompetition.this,WeaponCompetition.this.getLastRound().getRoundNumber(),1,participantsToRound,getFightDrawStrategyPicker(),false,true);
+                }
+            }catch (NoSuchWeaponException e){
+                System.out.format("Some serious shit went wrong\n");
+                e.printStackTrace();
+            }
+        }
+
+        private void prepareFinalRound(){
+            //if at least one is double there is no final
+            // actualy it is BUT we know results because final round is the same as semi final round!
+            Round roundBefore = WeaponCompetition.this.getLastRound();
+            boolean fSemiFinalIsFinal = false;
+            for(CompetitionGroup g: roundBefore.getGroups()){
+                for(Fight f: g.getFightsList()){
+                    if(f.getScore() == FightScore.DOUBLE){
+                        fSemiFinalIsFinal = true;
+                        break;
+                        //actualy we could prepare here and return
+                    }
+                }
+                if(fSemiFinalIsFinal){
+                    break;
+                }
+            }
+
+            /* Round final is as semiFinal*/
+            if(fSemiFinalIsFinal){
+                Round toRet = WeaponCompetition.this.getLastRound();
+                toRet.setfFinal(true);
+                _round = toRet;
+            }else{
+                /* In this case we take 2 winners and set them to one final fight
+                * and 2 losers and set them to 3rd place fight  */
+                Participant pFinal1;
+                Participant pFinal2;
+                Participant pThird1;
+                Participant pThird2;
+                if(roundBefore.getGroups().get(0).getFightsList().get(0).getScore() == FightScore.WON_FIRST){
+                    pFinal1 = roundBefore.getGroups().get(0).getFightsList().get(0).getFirstParticipant();
+                    pThird1 = roundBefore.getGroups().get(0).getFightsList().get(0).getSecondParticipant();
+                }else{
+                    pFinal1 = roundBefore.getGroups().get(0).getFightsList().get(0).getSecondParticipant();
+                    pThird1 = roundBefore.getGroups().get(0).getFightsList().get(0).getFirstParticipant();
+                }
+
+                if(roundBefore.getGroups().get(1).getFightsList().get(0).getScore() == FightScore.WON_FIRST){
+                    pFinal2 = roundBefore.getGroups().get(1).getFightsList().get(0).getFirstParticipant();
+                    pThird2 = roundBefore.getGroups().get(1).getFightsList().get(0).getSecondParticipant();
+                }else{
+                    pFinal2 = roundBefore.getGroups().get(1).getFightsList().get(0).getSecondParticipant();
+                    pThird2 = roundBefore.getGroups().get(1).getFightsList().get(0).getFirstParticipant();
+                }
+
+                ArrayList<Participant> participants = new ArrayList<>();
+                Collections.addAll(participants,pFinal1,pFinal2,pThird1,pThird2);
+                Round toRet = new Round(WeaponCompetition.this,WeaponCompetition.this.getLastRound().getRoundNumber(),1,participants,null,true,false);
+
+                Fight finalFight = new Fight(toRet,pFinal1,pFinal2);
+                List<Fight> finalFightList = new ArrayList<Fight>();
+                finalFightList.add(finalFight);
+
+                Fight thirdPlaceFight = new Fight(toRet,pThird1,pThird2);
+                List<Fight> thirdPlaceFightList = new ArrayList<Fight>();
+                thirdPlaceFightList.add(thirdPlaceFight);
+
+                CompetitionGroup cgFinal = new CompetitionGroup(finalFightList);
+                CompetitionGroup cgThird = new CompetitionGroup(thirdPlaceFightList);
+                List<CompetitionGroup> cgList = new ArrayList<>();
+                Collections.addAll(cgList,cgFinal,cgThird);
+
+                /* Add posibility to prepare final round */
+                toRet.prepareForFinals(cgList);
+                this._round = toRet;
+
+            }
+        }
+
         public RoundCreator(int groupSize, int particpantsNeeded,boolean fSemiFinal) {
             this.fSemiFinal=fSemiFinal;
             this.groupSize = groupSize;

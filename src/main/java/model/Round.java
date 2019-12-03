@@ -1,8 +1,5 @@
 package model;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
 import model.command.Command;
 import model.command.CommandAddBattleResult;
 import model.command.ValidInvocationChecker;
@@ -24,10 +21,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.security.acl.Group;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class Round implements Serializable {
 
@@ -52,7 +46,11 @@ public class Round implements Serializable {
     }
 
 
-    public Round(WeaponCompetition myWeaponCompetition,int roundNumber, int groupSize,ArrayList<Participant> participants, FightDrawStrategyPicker fightDrawStrategyPicker,Boolean fFinal,Boolean fSemiFinal){
+    public void setfFinal(Boolean fFinal) {
+        this.fFinal = fFinal;
+    }
+
+    public Round(WeaponCompetition myWeaponCompetition, int roundNumber, int groupSize, ArrayList<Participant> participants, FightDrawStrategyPicker fightDrawStrategyPicker, Boolean fFinal, Boolean fSemiFinal){
         this.myWeaponCompetition=myWeaponCompetition;
         this.roundNumber = roundNumber;
         this.groupSize = groupSize;
@@ -69,6 +67,10 @@ public class Round implements Serializable {
         this.fFinal = fFinal;
         this.fSemiFinal = fSemiFinal;
         drawGroups();
+    }
+
+    public void prepareForFinals(List<CompetitionGroup> cg){
+        this.groups = FXCollections.observableArrayList(cg);
     }
 
     public Round setMyWeaponCompetition(WeaponCompetition myWeaponCompetition) {
