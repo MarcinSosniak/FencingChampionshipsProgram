@@ -1,6 +1,6 @@
 package util;
 
-public class HumanReadableFatalError extends Exception {
+public class HumanReadableFatalError extends RuntimeException {
 
 
     private String message;

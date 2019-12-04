@@ -49,7 +49,21 @@ public class WelcomeController implements Initializable {
                 String targetDirectoryName = parts[parts.length - 1];
                 System.out.println(targetDirectoryName);
                 CheckPointManager.readFromCheckPoint("saves/"+targetDirectoryName);
-                loadCompetitorsView();
+
+                // No need to show or read particpants.
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/elimination.fxml"));
+                    Parent root = loader.load();
+
+                    EliminationController ec = (EliminationController) loader.getController();
+                    ec.setData();
+                    ApplicationController.primaryStage.getScene().setRoot(root);
+                }
+                catch (Exception ex){
+                    throw new HumanReadableFatalError("Failed to load competitors view",ex);
+                }
+//                loadCompetitorsView();
+//                CompetitorsViewController.startCompetitionStatic(getClass().getResource("/elimination.fxml"));
             }
         }
     }
