@@ -31,8 +31,8 @@ public class WeaponCompetition implements Serializable {
     private ObservableList<Round> rounds;
     private CommandStack cStack= new CommandStack(); // was final
 
-    private SimpleObjectProperty<Round> finalRound = null;
-    private SimpleObjectProperty<Round> semifinalRound = null;
+    private SimpleObjectProperty<Round> finalRound = new SimpleObjectProperty<>(null);
+    private SimpleObjectProperty<Round> semifinalRound = new SimpleObjectProperty<>(null);
 
     public WeaponCompetition(WeaponType weaponType, ObservableList<Participant> participants){
         this.weaponType = weaponType;

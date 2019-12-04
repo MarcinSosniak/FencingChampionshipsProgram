@@ -32,24 +32,22 @@ public class Participant implements Serializable{
     private StringProperty locationGroup;
     private ObjectProperty<JudgeState> judgeState;
     private ObjectProperty<Date> licenseExpDate;
+    /** For final results required */
+    private BooleanProperty fFemale = new SimpleBooleanProperty(false);
 
     private transient int timesKiller = 0;
 
     /** for table view required */
-    private BooleanProperty fSmallSwordParticipant;
-    private BooleanProperty fSabreParticipant;
-    private BooleanProperty fRapierParticipant;
-    private Map<WeaponType, ObjectProperty<util.RationalNumber>> weaponPointsProperty;
-    private ObjectProperty<RationalNumber> rapierPoints;
+    private transient BooleanProperty fSmallSwordParticipant;
+    private transient BooleanProperty fSabreParticipant;
+    private transient BooleanProperty fRapierParticipant;
+    private transient Map<WeaponType, ObjectProperty<util.RationalNumber>> weaponPointsProperty;
 
-     /** For final results required */
-    private BooleanProperty fFemale = new SimpleBooleanProperty(false);
+    private transient SimpleObjectProperty<ParticipantResult> participantResult;
 
-    private transient SimpleObjectProperty<ParticipantResult> participantResult = new SimpleObjectProperty<>(new ParticipantResult(this));
-
-    private BooleanProperty fSabreInjury = new SimpleBooleanProperty(false);
-    private BooleanProperty fRapierInjury = new SimpleBooleanProperty(false);
-    private BooleanProperty fSmallSwordInjury = new SimpleBooleanProperty(false);
+    private transient BooleanProperty fSabreInjury = new SimpleBooleanProperty(false);
+    private transient BooleanProperty fRapierInjury = new SimpleBooleanProperty(false);
+    private transient BooleanProperty fSmallSwordInjury = new SimpleBooleanProperty(false);
 
     public Participant(String name, String surname, String location, String locationGroup, JudgeState judgeState, Date licenceExpDate){
         this.name            = new SimpleStringProperty(name);
@@ -63,9 +61,21 @@ public class Participant implements Serializable{
         this.fSabreParticipant = new SimpleBooleanProperty(false);
         this.fRapierParticipant = new SimpleBooleanProperty(false);
         this.weaponPointsProperty = new HashMap<>();
-        this.rapierPoints = new SimpleObjectProperty<RationalNumber>(new RationalNumber(0));
+        participantResult = new SimpleObjectProperty<>(new ParticipantResult(this));
     }
 
+    /** Updating only transcient fields because when we read from json we still want to read them */
+    public void update(){
+        this.timesKiller = 0;
+        this.fSmallSwordParticipant = new SimpleBooleanProperty(false);
+        this.fSabreParticipant = new SimpleBooleanProperty(false);
+        this.fRapierParticipant = new SimpleBooleanProperty(false);
+        this.weaponPointsProperty = new HashMap<>();
+        this.participantResult = new SimpleObjectProperty<>(new ParticipantResult(this));
+        this.fSabreInjury = new SimpleBooleanProperty(false);
+        this.fSmallSwordInjury = new SimpleBooleanProperty(false);
+        this.fRapierInjury = new SimpleBooleanProperty(false);
+    }
     /*
     public Date createDateFromString(String dateS) throws ParseException{
         DateFormat format = new SimpleDateFormat("dd-MM-yyyy", new Locale("pl"));
@@ -187,14 +197,11 @@ public class Participant implements Serializable{
 
     public JudgeState getJudgeState(){ return judgeState.get(); }
 
-
     public ObjectProperty<RationalNumber> getPointsForWeaponProperty(WeaponType type) throws NoSuchWeaponException {
         if (weaponPointsProperty.containsKey(type))
             return weaponPointsProperty.get(type);
         else throw new NoSuchWeaponException();
     }
-
-
 
     public void addPointsForWeapon(ValidInvocationChecker checker, WeaponType type, RationalNumber points){
         Objects.requireNonNull(checker);
@@ -212,13 +219,11 @@ public class Participant implements Serializable{
         }
     }
 
-
     public int getTimesKiller() { return timesKiller; }
 
     public void setTimesKiller(int timesKiller) { this.timesKiller = timesKiller; }
 
     public void incTimesKiller() { this.timesKiller++; }
-
 
     public boolean isInjured(WeaponType wt) {
         if (wt == WeaponType.RAPIER) return fRapierInjury.get();
@@ -226,7 +231,6 @@ public class Participant implements Serializable{
         if (wt == WeaponType.SMALL_SWORD) return fSmallSwordInjury.get();
         throw new IllegalStateException("Invalid state");
     }
-
 
     // SHOULD BE SET ONLY THROUGH COMMAND
     public void setfRapierInjury(ValidInvocationChecker checker, boolean fRapierInjury) {
@@ -243,7 +247,6 @@ public class Participant implements Serializable{
         Objects.requireNonNull(checker);
         this.fSmallSwordInjury.setValue(fSmallSwordInjury);
     }
-
 
     public ObjectProperty<RationalNumber> getPointsForWeaponPropertyLastRound(WeaponType type) throws NoSuchWeaponException {
         try {
@@ -276,7 +279,6 @@ public class Participant implements Serializable{
     }
 
     private void writeObject(ObjectOutputStream stream) throws IOException {
-        stream.writeObject(rapierPoints.get());
         stream.writeObject(name.get());
         stream.writeObject(surname.get());
         stream.writeObject(location.get());
@@ -299,7 +301,6 @@ public class Participant implements Serializable{
     }
 
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-        rapierPoints = new SimpleObjectProperty<>((RationalNumber) stream.readObject());
         name = new SimpleStringProperty((String) stream.readObject());
         surname = new SimpleStringProperty((String) stream.readObject());
         location = new SimpleStringProperty((String) stream.readObject());
