@@ -184,6 +184,7 @@ public class EliminationController implements Initializable {
 
 
         TableView tv = new TableView();
+        tv.setSelectionModel(null);
 
         switch (wt){
             case SABRE: { sabreTableView = tv; break; }
@@ -485,6 +486,7 @@ public class EliminationController implements Initializable {
             for (CompetitionGroup competitionGroup : cgl) {
                 System.out.format(competitionGroup.getGroupID() + "1 \n");
                 TableView tableForGroup = new TableView();
+                tableForGroup.setSelectionModel(null);
                 GridPane.setConstraints(tableForGroup, groupsAdded % columns, currentRow);
                 tableForGroup.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
                 TableColumn<Participant, String> tc = new TableColumn("GROUP " + competitionGroup.getGroupID());
@@ -609,6 +611,7 @@ public class EliminationController implements Initializable {
                 CompetitionGroup cg = groups.get(i);
 
                 TableView tableForGroupFights = new TableView();
+                tableForGroupFights.setSelectionModel(null);
 
                 tableForGroupFights.setPadding(new Insets(5, 5, 5, 5));
                 GridPane.setConstraints(tableForGroupFights, currentColumn, currentRow);

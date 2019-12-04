@@ -39,7 +39,7 @@ public class PlayoffController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ;
+        participantTable.setSelectionModel(null);
     }
 
     private WeaponCompetition.RoundCreator rc;
