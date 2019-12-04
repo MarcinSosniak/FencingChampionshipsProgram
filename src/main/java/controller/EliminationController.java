@@ -860,6 +860,14 @@ public class EliminationController implements Initializable {
         TableColumn<Participant,String> triathlonOpen = new TableColumn<>();
         TableColumn<Participant,String> triathlonWomen = new TableColumn<>();
 
+        surname.setText("Nazwisko");
+        name.setText("Imie");
+        smallsword.setText("Szpada");
+        sabre.setText("Szabla");
+        rapier.setText("Rapier");
+        triathlonOpen.setText("Trójbój Open");
+        triathlonWomen.setText("Trójbój Kobiet");
+
         surname.setCellValueFactory( p -> new SimpleStringProperty(p.getValue().getSurname()));
         name.setCellValueFactory( p -> new SimpleStringProperty(p.getValue().getName()));
         smallsword.setCellValueFactory( p -> {
