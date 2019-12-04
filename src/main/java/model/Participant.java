@@ -330,4 +330,33 @@ public class Participant implements Serializable{
         fFemale = new SimpleBooleanProperty((Boolean) stream.readObject());
         participantResult = new SimpleObjectProperty<>((ParticipantResult) stream.readObject());
     }
+
+    private boolean equals2(Participant p){
+        if(this.getSurname().equals(p.getSurname()) && this.getName().equals(p.getName())){
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean checkFNewUnique(Participant newParticipant){
+        List<Participant> participants = Competition.getInstance().getParticipants();
+        for(Participant p: participants){
+            if(p.equals2(newParticipant))
+                return false;
+        }
+        return true;
+    }
+
+    public static boolean checkFCanEdit(Participant old,String editedName,String editedSurname){
+        List<Participant> participants = Competition.getInstance().getParticipants();
+        if(old.getName().equals(editedName) && old.getSurname().equals(editedSurname)){
+            return true;
+        }
+        for(Participant p: participants){
+            if(p.getName().equals(editedName) && p.getSurname().equals(editedSurname))
+                return false;
+        }
+        return true;
+    }
+
 }

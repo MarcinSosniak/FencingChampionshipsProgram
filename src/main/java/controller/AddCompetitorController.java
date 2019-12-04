@@ -3,10 +3,7 @@ package controller;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Competition;
 import model.Participant;
@@ -57,30 +54,29 @@ public class AddCompetitorController implements Initializable {
         System.out.format("cancelAddNewCompetitor \n");
     }
     public void addNewCompetitor(){
+        /* TODO: remove whitespace at the end and beggining */
         System.out.format("addNewCompetitor\n");
         Participant toAdd = null;
-        try {
-            LocalDate ld = datePicker.getValue();
-            Calendar c =  Calendar.getInstance();
-            c.set(ld.getYear(), ld.getMonthValue() -1 , ld.getDayOfMonth());
-            Date licenceExpDate = c.getTime();
-            toAdd = new Participant(competitorName.getText(),competitorSurname.getText(),
-                    competitorDivision.getText(),competitorGroup.getText(),competitorFMainReferee.isSelected()? JudgeState.MAIN_JUDGE: JudgeState.NON_JUDGE, licenceExpDate);
+
+        LocalDate ld = datePicker.getValue();
+        Calendar c =  Calendar.getInstance();
+        c.set(ld.getYear(), ld.getMonthValue() -1 , ld.getDayOfMonth());
+        Date licenceExpDate = c.getTime();
+
+        toAdd = new Participant(competitorName.getText().trim(),competitorSurname.getText().trim(),
+                competitorDivision.getText().trim(),competitorGroup.getText().trim(),competitorFMainReferee.isSelected()? JudgeState.MAIN_JUDGE: JudgeState.NON_JUDGE, licenceExpDate);
+        if(Participant.checkFNewUnique(toAdd)) {
             toAdd.setfSmallSwordParticipant(competitorFSmallSword.isSelected());
             toAdd.setfRapierParticipant(competitorFRapier.isSelected());
             toAdd.setfSabreParticipant(competitorFSabre.isSelected());
 
-        } catch (Exception e){
-            e.printStackTrace();
-            System.out.format("Something went wrong while adding competitor\n");
-            /**TODO: flash this info to client */
-        }
-        finally {
-            System.out.println("in confirm");
-            // add new participant to competition
             Competition.getInstance().getParticipants().add(toAdd);
+            System.out.println("in confirm");
             Stage toClose = (Stage) addButton.getScene().getWindow();
             toClose.close();
+        }else{
+            Alert alert= new Alert(Alert.AlertType.ERROR,"New surname or name is not unique\n");
+            alert.show();
         }
     }
 

@@ -2,15 +2,11 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Participant;
 import model.enums.JudgeState;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;
@@ -77,24 +73,33 @@ public class EditCompetitorController implements Initializable {
     }
 
     public void editCompetitor(){
-        toEdit.setName(competitorName.getText());
-        toEdit.setSurname(competitorSurname.getText());
-        toEdit.setLocation(competitorDivision.getText());
-        toEdit.setLocationGroup(competitorGroup.getText());
-        toEdit.setfSmallSwordParticipant(competitorFSmallSword.isSelected());
-        toEdit.setfRapierParticipant(competitorFRapier.isSelected());
-        toEdit.setfSabreParticipant(competitorFSabre.isSelected());
-        toEdit.setJudgeState(competitorFMainReferee.isSelected() ? JudgeState.MAIN_JUDGE : JudgeState.NON_JUDGE);
-        LocalDate ld = datePicker.getValue();
-        Calendar c =  Calendar.getInstance();
-        c.set(ld.getYear(), ld.getMonthValue() -1 , ld.getDayOfMonth());
-        Date date = c.getTime();
-        toEdit.setLicenseExpDate(date);
+        /* TODO: remove whitespace at the end and beggining */
+        String name = competitorName.getText().trim();
+        String surname = competitorSurname.getText().trim();
 
-        Stage toClose = (Stage) editButton.getScene().getWindow();
-        toClose.close();
+        if(Participant.checkFCanEdit(this.toEdit,name,surname)){
+            toEdit.setName(competitorName.getText().trim());
+            toEdit.setSurname(competitorSurname.getText().trim());
+            toEdit.setLocation(competitorDivision.getText().trim());
+            toEdit.setLocationGroup(competitorGroup.getText().trim());
+            toEdit.setfSmallSwordParticipant(competitorFSmallSword.isSelected());
+            toEdit.setfRapierParticipant(competitorFRapier.isSelected());
+            toEdit.setfSabreParticipant(competitorFSabre.isSelected());
+            toEdit.setJudgeState(competitorFMainReferee.isSelected() ? JudgeState.MAIN_JUDGE : JudgeState.NON_JUDGE);
+            LocalDate ld = datePicker.getValue();
+            Calendar c =  Calendar.getInstance();
+            c.set(ld.getYear(), ld.getMonthValue() -1 , ld.getDayOfMonth());
+            Date date = c.getTime();
+            toEdit.setLicenseExpDate(date);
 
-        System.out.format("editCompetitor\n");
+            Stage toClose = (Stage) editButton.getScene().getWindow();
+            toClose.close();
+
+            System.out.format("editCompetitor success\n");
+        }else{
+            Alert alert= new Alert(Alert.AlertType.ERROR,"New surname or name is not unique\n");
+            alert.show();
+        }
     }
 
 
