@@ -98,6 +98,15 @@ public class EliminationController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
+        try{
+            fSabreCompetitionFinals = Competition.getInstance().getWeaponCompetition(WeaponType.SABRE).getLastRound().getfFinal();
+            fSmallswordCompetitionFinals = Competition.getInstance().getWeaponCompetition(WeaponType.SMALL_SWORD).getLastRound().getfFinal();
+            fRapierCompetitionFinals = Competition.getInstance().getWeaponCompetition(WeaponType.RAPIER).getLastRound().getfFinal();
+        }catch (Exception e){
+            fSabreCompetitionFinals = false;
+            fSmallswordCompetitionFinals = false;
+            fRapierCompetitionFinals = false;
+        }
     }
 
 
