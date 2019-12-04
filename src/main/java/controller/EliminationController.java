@@ -184,7 +184,7 @@ public class EliminationController implements Initializable {
 
 
         TableView tv = new TableView();
-        tv.setSelectionModel(null);
+        //tv.setSelectionModel(null);
 
         switch (wt){
             case SABRE: { sabreTableView = tv; break; }
