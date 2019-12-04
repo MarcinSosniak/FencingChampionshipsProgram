@@ -1,26 +1,18 @@
 package model;
 import javafx.beans.property.*;
-import model.command.Command;
-import model.command.CommandAddBattleResult;
 import model.command.ValidInvocationChecker;
 import model.enums.FightScore;
-import model.enums.WeaponType;
-import model.exceptions.NoSuchWeaponException;
 import util.RationalNumber;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 import model.FightDrawing.FightDrawStrategy;
 import model.FightDrawing.FightDrawStrategyPicker;
 import model.KillerDrawing.KillerRandomizerStrategyPicker;
-import model.command.ChangePointsCommand;
-import util.RationalNumber;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.security.acl.Group;
 import java.util.*;
 
 public class Round implements Serializable {
@@ -37,6 +29,8 @@ public class Round implements Serializable {
     private int participantExcpectedFightNumber; // size of group -1
     private WeaponCompetition myWeaponCompetition;
     private SimpleObjectProperty<Fight> lastModyfiedFight;
+    private int totalFights =0;
+    private int playedFights =0;
     private Boolean fFinal;
     private Boolean fSemiFinal;
 
@@ -67,15 +61,16 @@ public class Round implements Serializable {
         this.fFinal = fFinal;
         this.fSemiFinal = fSemiFinal;
         drawGroups();
-        fillParticipatnsFightNumber();
+        updateFightInfo();
     }
 
-    private void fillParticipatnsFightNumber()
+    private void updateFightInfo()
     {
         for(CompetitionGroup group : groups)
         {
             for(Fight fight : group.getFightsList())
             {
+                totalFights++;
                 Participant p1  = fight.getFirstParticipant();
                 Participant p2  = fight.getSecondParticipant();
                 if( participantFightNumber.containsKey(p1))
@@ -98,6 +93,23 @@ public class Round implements Serializable {
 
             }
         }
+    }
+
+    public boolean fPlayed()
+    {
+        return totalFights==playedFights;
+    }
+
+    public void incPlayedFights()
+    {
+        playedFights++;
+        System.out.println("incremented played fights now: "+Integer.toString(playedFights) + " all: "+Integer.toString(totalFights));
+    }
+
+    public void decPlayedFights()
+    {
+        playedFights--;
+        System.out.println("decremented played fights now: "+Integer.toString(playedFights) + " all: "+Integer.toString(totalFights));
     }
 
 
@@ -204,6 +216,8 @@ public class Round implements Serializable {
         stream.writeObject(lastModyfiedFight.get());
         stream.writeObject(fFinal);
         stream.writeObject(fSemiFinal);
+        stream.writeInt(totalFights);
+        stream.writeInt(playedFights);
     }
 
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
@@ -221,6 +235,8 @@ public class Round implements Serializable {
         lastModyfiedFight = new SimpleObjectProperty<>((Fight) stream.readObject());
         fFinal = (Boolean) stream.readObject();
         fSemiFinal = (Boolean) stream.readObject();
+        totalFights=stream.readInt();
+        playedFights=stream.readInt();
     }
 
     @Override

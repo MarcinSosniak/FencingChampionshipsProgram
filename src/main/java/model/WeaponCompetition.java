@@ -147,7 +147,7 @@ public class WeaponCompetition implements Serializable {
         Objects.requireNonNull(checker);
         System.out.println("in invalidate");
         List<Command> out = new ArrayList<>();
-        for (CompetitionGroup g : (rounds.get(rounds.size()-1).getGroups())) {
+        for (CompetitionGroup g : getLastRound().getGroups()) {
             if (g.fInGroup(p)) {
                 for (Fight fight : g.getFightsList()) {
                     if (!fight.fHasResult() && fight.fIn(p)) {

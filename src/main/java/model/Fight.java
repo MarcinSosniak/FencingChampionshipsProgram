@@ -34,7 +34,7 @@ public  class Fight implements Serializable {
     private StringProperty secondParticipantStringProperty = new SimpleStringProperty();
     private Round round;
     private static final long serialVersionUID = 2;
-
+    private boolean fSet=false;
 
 
     public String getFirstParticipantStringProperty() {
@@ -99,6 +99,15 @@ public  class Fight implements Serializable {
 
     public void setFightScore(ValidInvocationChecker validInvocationChecker, FightScore score)
     {
+        if(fSet && score==FightScore.NULL_STATE) {
+            round.decPlayedFights();
+            fSet=false;
+        }
+        if(!fSet && score!=FightScore.NULL_STATE)
+        {
+            round.incPlayedFights();
+            fSet=true;
+        }
         Objects.requireNonNull(validInvocationChecker);
         this.secondParticipantStringProperty.setValue(this.secondParticipantStringProperty().getValue());
         this.firstParticipantStringProperty.setValue(this.firstParticipantStringProperty().getValue());
@@ -207,6 +216,7 @@ public  class Fight implements Serializable {
         stream.writeObject(round);
         stream.writeObject(firstParticipantStringProperty.get());
         stream.writeObject(secondParticipantStringProperty.get());
+        stream.writeBoolean(fSet);
     }
 
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
@@ -216,6 +226,7 @@ public  class Fight implements Serializable {
         round = (Round) stream.readObject();
         firstParticipantStringProperty = new SimpleStringProperty((String) stream.readObject());
         secondParticipantStringProperty = new SimpleStringProperty((String) stream.readObject());
+        fSet=stream.readBoolean();
     }
 
     @Override
