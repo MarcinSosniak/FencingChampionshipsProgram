@@ -174,7 +174,7 @@ public class CompetitorsViewController implements Initializable {
         {
             ;
         }
-
+        for (Participant p : Competition.getInstance().getParticipants()) { p.update(); }
 
         competitorsTable.setItems(Competition.getInstance().getParticipantsObservableList());
         setRightClickOnCompetitor(competitorsTable);
