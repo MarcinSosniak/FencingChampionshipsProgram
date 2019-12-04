@@ -60,8 +60,6 @@ public  class Fight implements Serializable {
         this.firstParticipant.setValue(first);
         this.secondParticipant.setValue(second);
         score.setValue(FightScore.NULL_STATE);
-        round.addExcpectedFightToParticipant(first);
-        round.addExcpectedFightToParticipant(second);
         this.firstParticipantStringProperty.setValue(this.getFirstParticipant().nameProperty().getValue() + " " + this.getFirstParticipant().surnameProperty().getValue());
         this.secondParticipantStringProperty.setValue(this.getSecondParticipant().nameProperty().getValue() + " " + this.getSecondParticipant().surnameProperty().getValue());
         System.out.println("Adding participants to round  weapon : " + WeaponType.str(round.getMyWeaponCompetition().getWeaponType()));

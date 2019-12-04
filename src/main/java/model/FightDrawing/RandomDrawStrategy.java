@@ -60,7 +60,7 @@ public class RandomDrawStrategy extends   FightDrawStrategy{
             for( List<Participant> killersForSingle : killersForParticipant) {
                 for (Participant killer : killersForSingle) {
                     fights.add(new Fight(round,nonKillers.get(currentNonKillerId),killer));
-                    round.addExcpectedFightToParticipant(killer);
+//                    round.addExcpectedFightToParticipant(killer);
                 }
                 currentNonKillerId++;
             }

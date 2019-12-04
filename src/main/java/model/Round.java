@@ -33,7 +33,7 @@ public class Round implements Serializable {
     private ObservableList<CompetitionGroup> groups=null;
     private ObservableList<Participant> participants;
     private Map<Participant, ObjectProperty<RationalNumber>> roundScore = FXCollections.observableHashMap();
-    private Map<Participant,Integer> participantDoubleFightNumber= new HashMap<>();
+    private Map<Participant,Integer> participantFightNumber= new HashMap<>();
     private int participantExcpectedFightNumber; // size of group -1
     private WeaponCompetition myWeaponCompetition;
     private SimpleObjectProperty<Fight> lastModyfiedFight;
@@ -61,13 +61,45 @@ public class Round implements Serializable {
         this.lastModyfiedFight = new SimpleObjectProperty<>();
         for(Participant p : participants)
         {
-            participantDoubleFightNumber.put(p,0);
+            participantFightNumber.put(p,0);
             roundScore.put(p,new SimpleObjectProperty<>(new RationalNumber(0)));
         }
         this.fFinal = fFinal;
         this.fSemiFinal = fSemiFinal;
         drawGroups();
+        fillParticipatnsFightNumber();
     }
+
+    private void fillParticipatnsFightNumber()
+    {
+        for(CompetitionGroup group : groups)
+        {
+            for(Fight fight : group.getFightsList())
+            {
+                Participant p1  = fight.getFirstParticipant();
+                Participant p2  = fight.getSecondParticipant();
+                if( participantFightNumber.containsKey(p1))
+                {
+                    participantFightNumber.put(p1,participantFightNumber.get(p1)+1);
+                }
+                else
+                {
+                    participantFightNumber.put(p1,1);
+                }
+                if( participantFightNumber.containsKey(p2))
+                {
+                    participantFightNumber.put(p2,participantFightNumber.get(p2)+1);
+                }
+                else
+                {
+                    participantFightNumber.put(p2,1);
+                }
+
+
+            }
+        }
+    }
+
 
     public void prepareForFinals(List<CompetitionGroup> cg){
         this.groups.clear();
@@ -103,19 +135,14 @@ public class Round implements Serializable {
     public boolean isSemiFinal() {return fSemiFinal;}
 
 
-    public Round drawGroups() {
+    private Round drawGroups() {
         groups = FXCollections.observableArrayList(fightDrawStrategy.drawFightsForRound(this,groupSize,participants));
         return this;
     }
 
-    public void addExcpectedFightToParticipant(Participant p) {
-        Integer current = participantDoubleFightNumber.get(p);
-        participantDoubleFightNumber.put(p,current+1);
-    }
-
     public void addPointsFromFight(ValidInvocationChecker checker, Participant p, int points) {
         Objects.requireNonNull(checker);
-        RationalNumber pScoreMultiplier = new RationalNumber(participantExcpectedFightNumber*2,participantDoubleFightNumber.get(p));
+        RationalNumber pScoreMultiplier = new RationalNumber(participantExcpectedFightNumber,participantFightNumber.get(p));
         RationalNumber participant_score= roundScore.get(p).get();
         RationalNumber points_to_add=pScoreMultiplier.multiply(points);
         RationalNumber after_add=participant_score.add(points_to_add);
@@ -171,7 +198,7 @@ public class Round implements Serializable {
         roundScore.forEach((p, rn) -> scores.put(p, rn.get()));
         stream.writeObject(scores);
 
-        stream.writeObject(participantDoubleFightNumber);
+        stream.writeObject(participantFightNumber);
         stream.writeInt(participantExcpectedFightNumber);
         stream.writeObject(myWeaponCompetition);
         stream.writeObject(lastModyfiedFight.get());
@@ -188,7 +215,7 @@ public class Round implements Serializable {
         roundScore = FXCollections.observableHashMap();
         Map<Participant, RationalNumber> m = (Map<Participant, RationalNumber>) stream.readObject();
         m.forEach((p, r) -> roundScore.put(p, new SimpleObjectProperty<>(r)));
-        participantDoubleFightNumber = (Map<Participant,Integer>) stream.readObject();
+        participantFightNumber = (Map<Participant,Integer>) stream.readObject();
         participantExcpectedFightNumber = stream.readInt();
         myWeaponCompetition = (WeaponCompetition) stream.readObject();
         lastModyfiedFight = new SimpleObjectProperty<>((Fight) stream.readObject());
