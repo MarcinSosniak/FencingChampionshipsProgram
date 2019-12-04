@@ -163,9 +163,9 @@ public class Round implements Serializable {
         ArrayList<CompetitionGroup> competitionGroups = new ArrayList<>();
         groups.forEach(g -> competitionGroups.add(g)) ;
         stream.writeObject(competitionGroups);
-        ArrayList<Participant> participants = new ArrayList<>();
-        participants.forEach(p -> participants.add(p)) ;
-        stream.writeObject(participants);
+        ArrayList<Participant> participants_ = new ArrayList<>();
+        participants.forEach(p -> participants_.add(p)) ;
+        stream.writeObject(participants_);
 
         Map<Participant, util.RationalNumber> scores = new HashMap<>();
         roundScore.forEach((p, rn) -> scores.put(p, rn.get()));

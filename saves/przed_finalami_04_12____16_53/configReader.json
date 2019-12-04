@@ -1,0 +1,84 @@
+{
+  "tags": {
+    "A": {
+      "vars": {
+        "A1": "N",
+        "A2": "Y",
+        "A0": "0"
+      }
+    },
+    "B": {
+      "vars": {
+        "B2": "2",
+        "B0": "1",
+        "B1": "Y"
+      }
+    },
+    "SMALL_SWORD": {
+      "vars": {
+        "START_GROUP_SIZE": "5",
+        "FINAL_ROUND_NUMBER": "3"
+      }
+    },
+    "RAPIER_ROUND_0": {
+      "vars": {
+        "PARTICIPANTS_COUNT": "5",
+        "GROUP_SIZE": "5"
+      }
+    },
+    "RAPIER_ROUND_1": {
+      "vars": {
+        "PARTICIPANTS_COUNT": "10",
+        "GROUP_SIZE": "3"
+      }
+    },
+    "RAPIER": {
+      "vars": {
+        "START_GROUP_SIZE": "5",
+        "FINAL_ROUND_NUMBER": "3"
+      }
+    },
+    "SABRE_ROUND_0": {
+      "vars": {
+        "PARTICIPANTS_COUNT": "5",
+        "GROUP_SIZE": "5"
+      }
+    },
+    "SMALL_SWORD_ROUND_0": {
+      "vars": {
+        "PARTICIPANTS_COUNT": "5",
+        "GROUP_SIZE": "5"
+      }
+    },
+    "SMALL_SWORD_ROUND_1": {
+      "vars": {
+        "PARTICIPANTS_COUNT": "5",
+        "GROUP_SIZE": "5"
+      }
+    },
+    "SABRE": {
+      "vars": {
+        "START_GROUP_SIZE": "5",
+        "FINAL_ROUND_NUMBER": "3"
+      }
+    },
+    "SECURITY": {
+      "vars": {
+        "PASSWORD": "admin"
+      }
+    },
+    "POINTS": {
+      "vars": {
+        "LOSE": "0",
+        "DOUBLE": "-1",
+        "WIN": "2"
+      }
+    },
+    "SABRE_ROUND_1": {
+      "vars": {
+        "PARTICIPANTS_COUNT": "5",
+        "GROUP_SIZE": "5"
+      }
+    }
+  }
+}

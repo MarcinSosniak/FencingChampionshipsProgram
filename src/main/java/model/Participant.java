@@ -67,10 +67,19 @@ public class Participant implements Serializable{
     /** Updating only transcient fields because when we read from json we still want to read them */
     public void update(){
         this.timesKiller = 0;
-        this.fSmallSwordParticipant = new SimpleBooleanProperty(false);
-        this.fSabreParticipant = new SimpleBooleanProperty(false);
-        this.fRapierParticipant = new SimpleBooleanProperty(false);
+//        this.fSmallSwordParticipant = new SimpleBooleanProperty(false);
+//        this.fSabreParticipant = new SimpleBooleanProperty(false);
+//        this.fRapierParticipant = new SimpleBooleanProperty(false);
         this.weaponPointsProperty = new HashMap<>();
+
+        /** to do remove */
+        this.fSmallSwordParticipant = new SimpleBooleanProperty(true);
+        this.fSabreParticipant = new SimpleBooleanProperty(true);
+        this.fRapierParticipant = new SimpleBooleanProperty(true);
+        this.weaponPointsProperty.put(WeaponType.RAPIER,new SimpleObjectProperty<RationalNumber>(new RationalNumber()));
+        this.weaponPointsProperty.put(WeaponType.SABRE,new SimpleObjectProperty<RationalNumber>(new RationalNumber()));
+        this.weaponPointsProperty.put(WeaponType.SMALL_SWORD,new SimpleObjectProperty<RationalNumber>(new RationalNumber()));
+
         this.participantResult = new SimpleObjectProperty<>(new ParticipantResult(this));
         this.fSabreInjury = new SimpleBooleanProperty(false);
         this.fSmallSwordInjury = new SimpleBooleanProperty(false);
