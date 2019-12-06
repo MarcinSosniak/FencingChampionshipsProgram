@@ -470,26 +470,29 @@ public class WeaponCompetition implements Serializable {
         /* There is only two fights in finals and two group */
         Fight finalFight = finalRound.get().getGroups().get(0).getFightsList().get(0);
         if(finalFight.getScore().equals(FightScore.WON_FIRST)){
+            System.out.println("xD1\n");
             finalFight.getFirstParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(1);
             finalFight.getSecondParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(2);
         }else if (finalFight.getScore().equals(FightScore.WON_SECOND)){
+            System.out.println("xD2\n");
             finalFight.getFirstParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(2);
             finalFight.getSecondParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(1);
         }else { /* Assuming that double in final round make both on 2nd place*/
+            System.out.println("xD3\n");
             finalFight.getFirstParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(2);
             finalFight.getSecondParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(2);
         }
         /* There is only one  */
         Fight thirdPlaceFight = finalRound.get().getGroups().get(1).getFightsList().get(0);
-        if(finalFight.getScore().equals(FightScore.WON_FIRST)){
-            finalFight.getFirstParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(3);
-            finalFight.getSecondParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(4);
-        }else if (finalFight.getScore().equals(FightScore.WON_SECOND)){
-            finalFight.getFirstParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(4);
-            finalFight.getSecondParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(3);
+        if(thirdPlaceFight.getScore().equals(FightScore.WON_FIRST)){
+            thirdPlaceFight.getFirstParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(3);
+            thirdPlaceFight.getSecondParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(4);
+        }else if (thirdPlaceFight.getScore().equals(FightScore.WON_SECOND)){
+            thirdPlaceFight.getFirstParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(4);
+            thirdPlaceFight.getSecondParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(3);
         }else { /* Assuming that double in final round make both on 2nd place*/
-            finalFight.getFirstParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(4);
-            finalFight.getSecondParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(4);
+            thirdPlaceFight.getFirstParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(4);
+            thirdPlaceFight.getSecondParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(4);
         }
 
         /* If first is greater than 1 */
@@ -506,16 +509,25 @@ public class WeaponCompetition implements Serializable {
         };
         participants.sort(compareByPoinst);
         RationalNumber lastPoints = new RationalNumber(-1000000,1);
-        int iteration = participants.size() + 1;
-        int currentPlace = participants.size();
-
+        Integer iteration = participants.size() + 1;
+        Integer currentPlace = participants.size();
         /* Sort should sort in ascending order that's why we start from lowest place */
+        //System.out.format("Printing calculate result for WC: " + this.weaponType.toString() + "\n");
         for(Participant p : participants){
+            //System.out.format("#### Iteration " + iteration.toString() + "\n****Participant: " + p.getName()+ " " + p.getSurname() + "\n****Place: "+p.getParticipantResult().getWeaponCompetitionResult(weaponType).getPlace() + "\n\n");
+            /** Setting points in participant result */
+            try {
+                p.getParticipantResult().getWeaponCompetitionResult(weaponType).setPoints(p.getPointsForWeaponProperty(weaponType).get());
+            }catch (NoSuchWeaponException e){
+                System.out.format("Some serious shit went wrong. This participant shouldn't be in the list\n");
+                e.printStackTrace();
+            }
             iteration --;
             ParticipantResult.WeaponCompetitionResult weaponCompetitionResult = p.getParticipantResult().getWeaponCompetitionResult(weaponType);
             if (weaponCompetitionResult.getPlace() > 0){
                 continue;
             }
+            //System.out.format("****Skiping continue\n");
             boolean fSwitchPlace = false;
             try{
                 RationalNumber toCompare = p.getPointsForWeaponProperty(weaponType).get();
@@ -533,6 +545,7 @@ public class WeaponCompetition implements Serializable {
             if (fSwitchPlace) {
                 currentPlace = iteration;
             }
+            //System.out.format("****Setting place: " + currentPlace.toString() + "\n\n");
             weaponCompetitionResult.setPlace(currentPlace);
         }
     }

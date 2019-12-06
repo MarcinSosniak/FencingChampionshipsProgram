@@ -41,6 +41,10 @@ public class ParticipantResult implements Serializable {
             return points.get();
         }
 
+        public Integer getPointsBasedOnPlace(){
+            return (101 -this.place.get());
+        }
+
         public SimpleObjectProperty<RationalNumber> pointsProperty() {
             return points;
         }
@@ -62,10 +66,13 @@ public class ParticipantResult implements Serializable {
             place = new SimpleIntegerProperty((Integer) stream.readObject());
             points = new SimpleObjectProperty<RationalNumber>((RationalNumber) stream.readObject());
         }
+
+        public void toExport(){
+            /** TODO: implement me! */
+        }
     }
 
     private static final long serialVersionUID = 1007;
-    /* TODO: Add to serializer */
     private SimpleObjectProperty<Participant> participant;
     private SimpleIntegerProperty triathlonOpenPoints = new SimpleIntegerProperty(0);
 
@@ -85,9 +92,9 @@ public class ParticipantResult implements Serializable {
     /** Call ONLY if points for each weapon are calculated*/
     public void calculateTriathlonPoints() {
         int current = this.triathlonOpenPoints.get();
-        int fromSabre = 101 - this.sabreResults.get().place.get();
-        int fromRapier = 101 - this.rapierResults.get().place.get();
-        int fromSmallSword = 101 - this.smallSwordResults.get().place.get();
+        int fromSabre = this.sabreResults.get().getPointsBasedOnPlace();
+        int fromRapier = this.rapierResults.get().getPointsBasedOnPlace();
+        int fromSmallSword = this.smallSwordResults.get().getPointsBasedOnPlace();
         int toSet = 0;
         if(fromSabre < 101){
             toSet += fromSabre;
@@ -183,6 +190,10 @@ public class ParticipantResult implements Serializable {
 
     public SimpleStringProperty triathlonWomenProperty() {
         return triathlonWomen;
+    }
+
+    public void export(){
+        /** TODO: implement me! */
     }
 
     private void writeObject(ObjectOutputStream stream) throws IOException {

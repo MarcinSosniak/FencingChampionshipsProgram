@@ -872,17 +872,17 @@ public class EliminationController implements Initializable {
         name.setCellValueFactory( p -> new SimpleStringProperty(p.getValue().getName()));
         smallsword.setCellValueFactory( p -> {
             StringProperty toRet = new SimpleStringProperty("-");
-            toRet.setValue(p.getValue().getParticipantResult().getSmallSwordResults().getPoints().toString());
+            toRet.setValue(p.getValue().getParticipantResult().getSmallSwordResults().getPlace().toString());
             return toRet;
         });
         sabre.setCellValueFactory( p -> {
             StringProperty toRet = new SimpleStringProperty("-");
-            toRet.setValue(p.getValue().getParticipantResult().getSabreResults().getPoints().toString());
+            toRet.setValue(p.getValue().getParticipantResult().getSabreResults().getPlace().toString());
             return toRet;
         });
         rapier.setCellValueFactory( p -> {
             StringProperty toRet = new SimpleStringProperty("-");
-            toRet.setValue(p.getValue().getParticipantResult().getRapierResults().getPoints().toString());
+            toRet.setValue(p.getValue().getParticipantResult().getRapierResults().getPlace().toString());
             return toRet;
         });
         triathlonOpen.setCellValueFactory( p -> {
