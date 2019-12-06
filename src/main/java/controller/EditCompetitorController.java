@@ -27,6 +27,8 @@ public class EditCompetitorController implements Initializable {
     @FXML
     TextField competitorGroup;
     @FXML
+    CheckBox fFemale;
+    @FXML
     CheckBox competitorFSmallSword;
     @FXML
     CheckBox competitorFSabre;
@@ -59,6 +61,7 @@ public class EditCompetitorController implements Initializable {
             competitorSurname.setText(toEdit.surnameProperty().getValue());
             competitorDivision.setText(toEdit.locationProperty().getValue());
             competitorGroup.setText(toEdit.locationGroupProperty().getValue());
+            fFemale.setSelected(toEdit.isfFemale());
             competitorFSmallSword.setSelected(toEdit.fSmallSwordParticipantProperty().getValue());
             competitorFRapier.setSelected(toEdit.fRapierParticipantProperty().getValue());
             competitorFSabre.setSelected(toEdit.fSabreParticipantProperty().getValue());
@@ -82,6 +85,7 @@ public class EditCompetitorController implements Initializable {
             toEdit.setSurname(competitorSurname.getText().trim());
             toEdit.setLocation(competitorDivision.getText().trim());
             toEdit.setLocationGroup(competitorGroup.getText().trim());
+            toEdit.setfFemale(fFemale.isSelected());
             toEdit.setfSmallSwordParticipant(competitorFSmallSword.isSelected());
             toEdit.setfRapierParticipant(competitorFRapier.isSelected());
             toEdit.setfSabreParticipant(competitorFSabre.isSelected());

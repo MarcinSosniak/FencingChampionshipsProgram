@@ -21,18 +21,19 @@
     <TextField fx:id="competitorSurname" text="nazwisko" GridPane.columnIndex="1" GridPane.fillWidth="TRUE" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
     <TextField fx:id="competitorDivision" text="oddzial" GridPane.columnIndex="1" GridPane.fillWidth="TRUE" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
     <TextField fx:id="competitorGroup" text="grupa" GridPane.columnIndex="1" GridPane.fillWidth="TRUE" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+    <CheckBox fx:id="fFemale" text="Czy kobieta?" GridPane.columnIndex="1" GridPane.fillWidth="TRUE" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
 
-    <CheckBox fx:id="competitorFSmallSword" text="szpada" selected="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="6" />
-    <CheckBox fx:id="competitorFSabre" text="szabla" selected="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="7" />
-    <CheckBox fx:id="competitorFRapier" text="rapier" selected="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="8" />
+    <CheckBox fx:id="competitorFSmallSword" text="szpada" selected="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="7" />
+    <CheckBox fx:id="competitorFSabre" text="szabla" selected="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="8" />
+    <CheckBox fx:id="competitorFRapier" text="rapier" selected="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="9" />
 
-    <CheckBox fx:id="competitorFMainReferee" text="sędzia główny" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="10" />
+    <CheckBox fx:id="competitorFMainReferee" text="sędzia główny" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="11" />
 
-    <Text style="-fx-font-size: 14" text="data ważności licencji:" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="12" GridPane.valignment="CENTER" />
+    <Text style="-fx-font-size: 14" text="data ważności licencji:" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="13" GridPane.valignment="CENTER" />
 
-    <Button fx:id="cancelButton" onAction="#cancelAddNewCompetitor" text="anuluj" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="TOP" />
-    <Button fx:id="addButton" onAction="#addNewCompetitor" style="-fx-background-color: green" text="dodaj" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="TOP" />
-   <DatePicker fx:id="datePicker" prefHeight="25.0" prefWidth="151.0" GridPane.columnIndex="1" GridPane.rowIndex="13">
+    <Button fx:id="cancelButton" onAction="#cancelAddNewCompetitor" text="anuluj" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="15" GridPane.valignment="TOP" />
+    <Button fx:id="addButton" onAction="#addNewCompetitor" style="-fx-background-color: green" text="dodaj" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="15" GridPane.valignment="TOP" />
+   <DatePicker fx:id="datePicker" prefHeight="25.0" prefWidth="151.0" GridPane.columnIndex="1" GridPane.rowIndex="14"  GridPane.valignment="TOP">
       <GridPane.margin>
          <Insets />
       </GridPane.margin>
@@ -46,6 +47,7 @@
         <RowConstraints percentHeight="7.0" /><!--surname-->
         <RowConstraints percentHeight="7.0" /><!--division-->
         <RowConstraints percentHeight="7.0" /><!--group-->
+        <RowConstraints percentHeight="5.0" /><!--fFemale-->
 
         <RowConstraints percentHeight="4.0" /> <!--small_sword-->
         <RowConstraints percentHeight="4.0" /> <!--sabre-->

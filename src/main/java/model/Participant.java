@@ -155,6 +155,10 @@ public class Participant implements Serializable{
     }
 
     /** For final results required */
+    public void setfFemale(boolean fFemale) {
+        this.fFemale.set(fFemale);
+    }
+
     public boolean isfFemale() {
         return fFemale.get();
     }

@@ -28,6 +28,8 @@ public class AddCompetitorController implements Initializable {
     @FXML
     TextField competitorGroup;
     @FXML
+    CheckBox fFemale;
+    @FXML
     CheckBox competitorFSmallSword;
     @FXML
     CheckBox competitorFSabre;
@@ -69,7 +71,7 @@ public class AddCompetitorController implements Initializable {
             toAdd.setfSmallSwordParticipant(competitorFSmallSword.isSelected());
             toAdd.setfRapierParticipant(competitorFRapier.isSelected());
             toAdd.setfSabreParticipant(competitorFSabre.isSelected());
-
+            toAdd.setfFemale(fFemale.isSelected());
             Competition.getInstance().getParticipants().add(toAdd);
             System.out.println("in confirm");
             Stage toClose = (Stage) addButton.getScene().getWindow();
