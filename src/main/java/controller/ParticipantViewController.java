@@ -20,6 +20,8 @@ import model.enums.FightScore;
 public class ParticipantViewController {
 
     private Round currentRound;
+    private Fight lastWrittenFight;
+    private TextFlow textFlow;
 
     @FXML
     GridPane mainPane;
@@ -127,7 +129,7 @@ public class ParticipantViewController {
         Fight fight = this.currentRound.getLastModyfiedFight();
         Text lastWrittenScore = new Text("Ostatnio wpisany wynik\n");
         lastWrittenScore.setFont(new Font(20));
-        TextFlow textFlow = prepareTextFlowFromFight(fight, 25);
+        textFlow = prepareTextFlowFromFight(this.lastWrittenFight, 25);
         vBox.getChildren().addAll(lastWrittenScore, textFlow);
         return vBox;
     }
@@ -136,11 +138,15 @@ public class ParticipantViewController {
     public void update(int columns) {
         GridPane groupPane = prepareGroupPane(columns);
         VBox vBox = prepareLastFightPane();
+        mainPane.getChildren().clear();
         mainPane.getChildren().addAll(groupPane, vBox);
     }
 
-    public void setData(Round round) {
+    public void setData(Round round,Fight f) {
+        if(round == null)
+            return;
         this.currentRound = round;
+        this.lastWrittenFight = f;
         this.update(round.getGroups().size() / 2 + round.getGroups().size() % 2);
     }
 

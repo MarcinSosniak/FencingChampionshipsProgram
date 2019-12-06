@@ -53,7 +53,9 @@ public  class Fight implements Serializable {
         return secondParticipantStringProperty;
     }
 
-
+    public Round getRound() {
+        return round;
+    }
 
     public Fight(Round round,Participant first, Participant second){
         this.round=round;

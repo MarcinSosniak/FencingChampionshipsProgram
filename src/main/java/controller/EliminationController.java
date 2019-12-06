@@ -88,6 +88,7 @@ public class EliminationController implements Initializable {
     public ObservableList<TableRow> smallSwordRows = FXCollections.observableArrayList();
 
     private static HashMap<Fight, TableCell<Fight, String>> prtipantHashMap = new HashMap<>();
+    private ParticipantViewController participantViewController;
 
 
     @FXML
@@ -107,6 +108,23 @@ public class EliminationController implements Initializable {
             fSmallswordCompetitionFinals = false;
             fRapierCompetitionFinals = false;
         }
+        /* Rendering ParticipantView */
+        Stage outputStage = new Stage();
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/participantView.fxml"));
+            Scene newScene = new Scene(loader.load());
+            outputStage.setScene(newScene);
+            outputStage.setTitle("Widok dla uczestnikow");
+            outputStage.initModality(Modality.NONE);
+            participantViewController = (ParticipantViewController) loader.getController();
+            participantViewController.setData(null,null);
+        }catch (Exception e){
+            System.out.format("Error while rendering participantView dialog");
+            e.printStackTrace();
+        }
+        outputStage.setResizable(true);
+        outputStage.setMaximized(true);
+        outputStage.show();
     }
 
 
@@ -683,7 +701,7 @@ public class EliminationController implements Initializable {
                               } else {
                                 f.commandSetFightScoreDirect(FightScore.WON_FIRST);
                             }
-
+                            participantViewController.setData(f.getRound(),f);
                         }
                     });
                     return cell;
@@ -723,6 +741,7 @@ public class EliminationController implements Initializable {
                             } else {
                                 f.commandSetFightScoreDirect(FightScore.WON_SECOND);
                             }
+                            participantViewController.setData(f.getRound(),f);
                         }
                     });
                     return cell;
@@ -750,6 +769,7 @@ public class EliminationController implements Initializable {
                             } else {
                                 f.commandSetFightScoreDirect(FightScore.DOUBLE);
                             }
+                            participantViewController.setData(f.getRound(),f);
                         }
                     });
                     return cell;
