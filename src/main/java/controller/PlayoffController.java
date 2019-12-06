@@ -40,6 +40,7 @@ public class PlayoffController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         participantTable.setSelectionModel(null);
+        participantTable.setOnSort(null);
     }
 
     private WeaponCompetition.RoundCreator rc;
@@ -126,7 +127,7 @@ public class PlayoffController implements Initializable {
                             }
                             else
                             {
-                                cell.setStyle("-fx-alignment: CENTER; -fx-background-color: blue;");
+                                cell.setStyle("-fx-alignment: CENTER; -fx-background-color: GREEN;");
                                 chosen.add(p);
                             }
                             self_update();
