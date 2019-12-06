@@ -161,8 +161,10 @@ public class Competition implements Serializable {
         }
         /* Calculating triathlon results*/
         for(Participant p : participants){
-            ParticipantResult participantResult = p.getParticipantResult();
-            participantResult.calculateTriathlonPoints();
+            p.getParticipantResult().calculateTriathlonPoints();
+            System.out.println("#####");
+            System.out.println(p.getParticipantResult().triathlonOpenPointsProperty().get());
+            System.out.println(p.getParticipantResult().triathlonWomenPointsProperty().get());
         }
         /* Now we need to set place for each triathlon */
         Comparator<Participant> compareTriathlonOpen = (Participant p1, Participant p2) ->{
@@ -212,9 +214,22 @@ public class Competition implements Serializable {
         participants.sort(compareTriathlonWomen);
         currentPlace = participants.size();
         lastPoints = -1000;
-        iteration = participants.size() + 1;
+
+        /* Here we should have only women's places iteration is no longer valid name */
+        iteration = 1;
+        for(Participant p : participants){
+            if(p.isfFemale())
+                iteration++;
+        }
 
         for(Participant p : participants){
+            if(!p.isfFemale()){
+                p.getParticipantResult().triathlonWomenPointsProperty().set(-1);
+                p.getParticipantResult().setTriathlonWomen("--");
+                continue;
+            }else{
+                p.getParticipantResult().triathlonWomenPointsProperty().set(p.getParticipantResult().getTriathlonOpenPoints());
+            }
             iteration --;
             boolean fSwitchPlace = false;
             int toCompare = p.getParticipantResult().getTriathlonWomenPoints();
@@ -225,12 +240,7 @@ public class Competition implements Serializable {
             if (fSwitchPlace) {
                 currentPlace = iteration;
             }
-            if(p.isfFemale()){
-                p.getParticipantResult().setTriathlonOpen("--");
-            }else{
-                p.getParticipantResult().setTriathlonOpen(currentPlace.toString());
-            }
+            p.getParticipantResult().setTriathlonWomen(currentPlace.toString());
         }
-
     }
 }

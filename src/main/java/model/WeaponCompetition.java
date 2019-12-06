@@ -470,15 +470,12 @@ public class WeaponCompetition implements Serializable {
         /* There is only two fights in finals and two group */
         Fight finalFight = finalRound.get().getGroups().get(0).getFightsList().get(0);
         if(finalFight.getScore().equals(FightScore.WON_FIRST)){
-            System.out.println("xD1\n");
             finalFight.getFirstParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(1);
             finalFight.getSecondParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(2);
         }else if (finalFight.getScore().equals(FightScore.WON_SECOND)){
-            System.out.println("xD2\n");
             finalFight.getFirstParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(2);
             finalFight.getSecondParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(1);
         }else { /* Assuming that double in final round make both on 2nd place*/
-            System.out.println("xD3\n");
             finalFight.getFirstParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(2);
             finalFight.getSecondParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(2);
         }
