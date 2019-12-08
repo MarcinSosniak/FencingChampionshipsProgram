@@ -3,6 +3,7 @@ package model;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.FightDrawing.FightDrawStrategy;
 import model.FightDrawing.FightDrawStrategyPicker;
 import model.KillerDrawing.KillerRandomizerStrategyPicker;
 import model.command.AddRoundCommand;
@@ -170,12 +171,13 @@ public class WeaponCompetition implements Serializable {
     }
 
     public void startFirstRound() {
-        RoundCreator rc = new RoundCreator(participants);
+        RoundCreator rc = new RoundCreator(participants,participants.size()+2,FightDrawStrategyPicker.STRATEGY_NAMES.FIRST);
         rc.startRound();
     }
 
     public void startFirstRound(int gropuSize) {
-        RoundCreator rc = new RoundCreator(participants,gropuSize);
+        String strategyName= ConfigReader.getInstance().getStringValue(WeaponType.str(weaponType)+"_ROUND_"+Integer.toString(rounds.size()),"STRATEGY","DEFAULT");
+        RoundCreator rc = new RoundCreator(participants,gropuSize,FightDrawStrategyPicker.STRATEGY_NAMES.fromString(strategyName));
         rc.startRound();
     }
 
@@ -184,9 +186,9 @@ public class WeaponCompetition implements Serializable {
     }
 
     /* Argument in call */
-    public RoundCreator prepareNewRound(int groupSize,int participantsCount,boolean fSemiFinal)
+    public RoundCreator prepareNewRound(int groupSize, int participantsCount, boolean fSemiFinal, FightDrawStrategyPicker.STRATEGY_NAMES strat)
     {
-        return new RoundCreator(groupSize,participantsCount,fSemiFinal);
+        return new RoundCreator(groupSize,participantsCount,fSemiFinal,strat);
     }
 
     /* From config if final */
@@ -195,10 +197,11 @@ public class WeaponCompetition implements Serializable {
         int groupSize  = ConfigReader.getInstance().getIntValue(WeaponType.str(weaponType)+"_ROUND_"+Integer.toString(rounds.size()),"GROUP_SIZE",3);
         int participantsCount= ConfigReader.getInstance().getIntValue(WeaponType.str(weaponType)+"_ROUND_"+Integer.toString(rounds.size()),"PARTICIPANTS_COUNT",3);
         int finalRoundNumber = ConfigReader.getInstance().getIntValue(WeaponType.str(weaponType).toUpperCase(), "FINAL_ROUND_NUMBER");
+        String fightDrawStrategyName = ConfigReader.getInstance().getStringValue(WeaponType.str(weaponType)+"_ROUND_"+Integer.toString(rounds.size()),"STRATEGY","DEFAULT");
         if(WeaponCompetition.this.rounds.size() == finalRoundNumber - 1)
-            return new RoundCreator(groupSize,participantsCount,true);
+            return new RoundCreator(groupSize,participantsCount,true,FightDrawStrategyPicker.STRATEGY_NAMES.fromString(fightDrawStrategyName));
         else
-            return new RoundCreator(groupSize,participantsCount,false);
+            return new RoundCreator(groupSize,participantsCount,false,FightDrawStrategyPicker.STRATEGY_NAMES.fromString(fightDrawStrategyName));
     }
 
 
@@ -222,6 +225,7 @@ public class WeaponCompetition implements Serializable {
         private int groupSize;
         private int particpantsNeeded;
         private boolean fSemiFinal;
+        private FightDrawStrategyPicker.STRATEGY_NAMES stratName=FightDrawStrategyPicker.STRATEGY_NAMES.DEFAULT;
 
         public void startRound() {
             if (!fRoundReady)
@@ -249,7 +253,7 @@ public class WeaponCompetition implements Serializable {
                 throw new IllegalStateException("winners list is too short or to large");
             participantsForRound.addAll(winners);
             boolean fFinal = WeaponCompetition.this.getLastRound().isSemiFinal();
-            _round = new Round(WeaponCompetition.this, rounds.size(), groupSize, participantsForRound, getFightDrawStrategyPicker(),fFinal,this.fSemiFinal);
+            _round = new Round(WeaponCompetition.this, rounds.size(), groupSize, participantsForRound, new FightDrawStrategyPicker(stratName),fFinal,this.fSemiFinal);
             fRoundReady = true;
         }
 
@@ -373,7 +377,7 @@ public class WeaponCompetition implements Serializable {
                 ArrayList<Participant> participants = new ArrayList<>();
                 Collections.addAll(participants,pFinal1,pFinal2,pThird1,pThird2);
                 Round toRet = new Round(WeaponCompetition.this,WeaponCompetition.this.getLastRound().getRoundNumber(),2,participants,
-                        new FightDrawStrategyPicker(FightDrawStrategyPicker.PRIVATE_STATEGY_NAMES.FINAL),true,false);
+                        new FightDrawStrategyPicker(FightDrawStrategyPicker.STRATEGY_NAMES.FINAL),true,false);
 
                 Fight finalFight = new Fight(toRet,pFinal1,pFinal2);
                 List<Fight> finalFightList = new ArrayList<Fight>();
@@ -397,7 +401,8 @@ public class WeaponCompetition implements Serializable {
             }
         }
 
-        public RoundCreator(int groupSize, int particpantsNeeded,boolean fSemiFinal) {
+        public RoundCreator(int groupSize, int particpantsNeeded,boolean fSemiFinal,FightDrawStrategyPicker.STRATEGY_NAMES stratName) {
+            this.stratName=stratName;
             this.fSemiFinal=fSemiFinal;
             this.groupSize = groupSize;
             this.particpantsNeeded = particpantsNeeded;
@@ -420,7 +425,8 @@ public class WeaponCompetition implements Serializable {
             if (participantsEligible.size() <= particpantsNeeded) {
                 participantsForRound.addAll(participantsEligible);
                 fRoundReady = true;
-                _round = new Round(WeaponCompetition.this, rounds.size() - 1, groupSize, participantsEligible, getFightDrawStrategyPicker(),false,false);
+                _round = new Round(WeaponCompetition.this, rounds.size() - 1, groupSize, participantsEligible,
+                        new FightDrawStrategyPicker(stratName),false,false);
                 return;
             }
             participantsEligible.sort(new Comparator<Participant>() {
@@ -440,18 +446,19 @@ public class WeaponCompetition implements Serializable {
             if (participantsForPlayoff.size()== 0  || participantsForRound.size() == particpantsNeeded) {
                 participantsForRound.addAll(participantsForPlayoff);
                 fRoundReady = true;
-                _round = new Round(WeaponCompetition.this, rounds.size()-1, groupSize, participantsForRound, getFightDrawStrategyPicker(),false,false);
+                _round = new Round(WeaponCompetition.this, rounds.size()-1, groupSize, participantsForRound,  new FightDrawStrategyPicker(stratName),false,false);
                 return;
             }
             fRoundReady = false;
         }
 
-        public RoundCreator(List<Participant> participants, int groupSize) {
+        public RoundCreator(List<Participant> participants, int groupSize,FightDrawStrategyPicker.STRATEGY_NAMES stratName) {
+            this.stratName=stratName;
             if (rounds.size() > 0)
                 throw new IllegalStateException("use this to construct only the first round");
             participantsForRound.addAll(participants);
             this.fSemiFinal=fSemiFinal;
-            _round = new Round(WeaponCompetition.this, 0, groupSize, participantsForRound, getFightDrawStrategyPicker(),false,false);
+            _round = new Round(WeaponCompetition.this, 0, groupSize, participantsForRound,  new FightDrawStrategyPicker(stratName),false,false);
             fRoundReady = true;
         }
 
@@ -461,7 +468,7 @@ public class WeaponCompetition implements Serializable {
                 throw new IllegalStateException("use this to construct only the first round");
             int groupSize = ConfigReader.getInstance().getIntValue(ConfigUtils.getWeaponTag(weaponType), "START_GROUP_SIZE");
             participantsForRound.addAll(participants);
-            _round = new Round(WeaponCompetition.this, 0, groupSize, participantsForRound, getFightDrawStrategyPicker(),false,false);
+            _round = new Round(WeaponCompetition.this, 0, groupSize, participantsForRound,  new FightDrawStrategyPicker(stratName),false,false);
             fRoundReady = true;
         }
     }

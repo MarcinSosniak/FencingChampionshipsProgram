@@ -1,10 +1,8 @@
 package model.FightDrawing;
 
-import model.CompetitionGroup;
-import model.Fight;
+import model.*;
 import model.KillerDrawing.KillerRandomizerStrategy;
-import model.Participant;
-import model.Round;
+import model.enums.WeaponType;
 import util.HumanReadableFatalError;
 
 import java.util.*;
@@ -12,49 +10,48 @@ import java.util.stream.Collectors;
 
 public class FightDrawStrategyPicker {
 
-    private boolean finals_picker=false;
-    private boolean fPrivate;
-    private SHOWED_STRATEGY_NAMES s_name;
-    private PRIVATE_STATEGY_NAMES p_name;
+    static private STRATEGY_NAMES DEFAULT_STRATEY_NAME= STRATEGY_NAMES.DEFAULT;
+    private STRATEGY_NAMES strName;
 
-    public FightDrawStrategyPicker() {}
+
+    public FightDrawStrategyPicker() {
+        strName=DEFAULT_STRATEY_NAME;
+    }
+
     public FightDrawStrategyPicker(boolean fFinal)
     {
-        finals_picker=fFinal;
+        if(fFinal) {
+            strName = STRATEGY_NAMES.FINAL;
+        }
+        else
+        {
+            strName=DEFAULT_STRATEY_NAME;
+        }
+    }
+
+    public FightDrawStrategyPicker(FightDrawStrategyPicker.STRATEGY_NAMES strat)
+    {
+        strName=strat;
     }
 
     public FightDrawStrategy pick(KillerRandomizerStrategy strat)
     {
-        if(fPrivate)
-        {
-            switch (p_name)
-            {
-                case FINAL:
-                    return new FinalStrategy();
-            }
+        switch (strName) {
+            case FINAL:
+                return new FinalStrategy();
+            case DEFAULT:
+                return new RandomDrawStrategy(strat);
+            case SPACING:
+                return new SpacingStrategy(strat);
+            case FIRST:
+                return new FirstRoundStrategy();
         }
-        else {
-            switch (s_name)
-            {
-                case DEFAULT:
-                    return new RandomDrawStrategy(strat);
-
-            }
+        throw new IllegalStateException("pick failed. This means someone implemented a strategy and not added it the picker");
     }
 
 
 
-    public FightDrawStrategyPicker(FightDrawStrategyPicker.SHOWED_STRATEGY_NAMES strat)
-    {
-        fPrivate=false;
-        s_name = strat;
-    }
 
-    public FightDrawStrategyPicker(FightDrawStrategyPicker.PRIVATE_STRATEGY_NAMES strat)
-    {
-        fPrivate=true;
-        p_name = strat;
-    }
 
 
 
@@ -64,53 +61,76 @@ public class FightDrawStrategyPicker {
 
 
 
-    public enum SHOWED_STRATEGY_NAMES
+    public enum STRATEGY_NAMES
     {
-        DEFAULT;
-
-        public static String toString(SHOWED_STRATEGY_NAMES name)
-        {
-            if( name == SHOWED_STRATEGY_NAMES.DEFAULT)
-            {
-                return "DEFAULT";
-            }
-            return "";
-        }
-
-        public static List<SHOWED_STRATEGY_NAMES> listAll()
-        {
-            return Arrays.asList(SHOWED_STRATEGY_NAMES.DEFAULT);
-        }
-
-        public static List<String> listAllString()
-        {
-            return SHOWED_STRATEGY_NAMES.listAll().stream().map(x-> SHOWED_STRATEGY_NAMES.toString(x)).collect(Collectors.toList());
-        }
-    }
-
-    public enum PRIVATE_STATEGY_NAMES
-    {
+        DEFAULT,
+        SPACING,
+        FIRST,
         FINAL;
 
-        public static String toString(PRIVATE_STATEGY_NAMES name)
+        public static String toString(STRATEGY_NAMES name)
         {
-            if( name == PRIVATE_STATEGY_NAMES.FINAL)
+            if( name == STRATEGY_NAMES.DEFAULT)
             {
                 return "DEFAULT";
             }
-            return "";
+            if( name == STRATEGY_NAMES.SPACING)
+            {
+                return "SPACING";
+            }
+            if (name == STRATEGY_NAMES.FINAL)
+            {
+                return "FINAL";
+            }
+            if (name == STRATEGY_NAMES.FIRST)
+            {
+                return "FIRST";
+            }
+            throw new IllegalStateException("someone did not incluue to String here");
         }
 
-        public static List<PRIVATE_STATEGY_NAMES> listAll()
+        public static STRATEGY_NAMES fromString(String name)
         {
-            return Arrays.asList(PRIVATE_STATEGY_NAMES.FINAL);
+            name=name.toUpperCase();
+            if( name.equals("DEFAULT"))
+            {
+                return STRATEGY_NAMES.DEFAULT;
+            }
+            if( name.equals("SPACING"))
+            {
+                return STRATEGY_NAMES.SPACING;
+            }
+            if (name.equals("FIRST"))
+            {
+                return STRATEGY_NAMES.FIRST;
+            }
+            if (name.equals("FINAL"))
+            {
+                return STRATEGY_NAMES.FINAL;
+            }
+            throw new IllegalStateException("Invalid string given");
+        }
+
+        public static List<STRATEGY_NAMES> listAllShowed()
+        {
+            return Arrays.asList(STRATEGY_NAMES.DEFAULT,STRATEGY_NAMES.SPACING);
+        }
+
+        public static List<String> listAllShowedString()
+        {
+            return STRATEGY_NAMES.listAllShowed().stream().map(x-> STRATEGY_NAMES.toString(x)).collect(Collectors.toList());
+        }
+
+        public static List<STRATEGY_NAMES> listAll()
+        {
+            return Arrays.asList(STRATEGY_NAMES.DEFAULT,STRATEGY_NAMES.SPACING,STRATEGY_NAMES.FINAL);
         }
 
         public static List<String> listAllString()
         {
-            return SHOWED_STRATEGY_NAMES.listAll().stream().map(x-> SHOWED_STRATEGY_NAMES.toString(x)).collect(Collectors.toList());
+            return STRATEGY_NAMES.listAll().stream().map(x-> STRATEGY_NAMES.toString(x)).collect(Collectors.toList());
         }
     }
 
-
 }
+

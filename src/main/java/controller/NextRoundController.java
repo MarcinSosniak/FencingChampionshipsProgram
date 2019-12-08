@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import model.FightDrawing.FightDrawStrategyPicker;
 import model.WeaponCompetition;
 import model.config.ConfigReader;
 import model.enums.WeaponType;
@@ -57,7 +58,7 @@ public class NextRoundController implements Initializable {
             System.out.println("set next round");
             iGroupSize=groupSize.getValue();
             iParticipantsCount=participantsCount.getValue();
-            WeaponCompetition.RoundCreator rc = wc.prepareNewRound(iGroupSize,iParticipantsCount,fSemiFinal.isSelected());
+            WeaponCompetition.RoundCreator rc = wc.prepareNewRound(iGroupSize,iParticipantsCount,fSemiFinal.isSelected(),FightDrawStrategyPicker.STRATEGY_NAMES.fromString((String)strategyChooser.getValue()));
             out.set(rc);
             Stage toClose = (Stage) okButton.getScene().getWindow();
             toClose.close();
@@ -70,7 +71,7 @@ public class NextRoundController implements Initializable {
             toClose.close();
         });
         strategyChooser.setItems(FXCollections.observableArrayList(
-                "default")
+                FightDrawStrategyPicker.STRATEGY_NAMES.listAllShowedString())
         );
     }
 

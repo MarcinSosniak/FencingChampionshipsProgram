@@ -35,6 +35,8 @@ public class Round implements Serializable {
     private Boolean fSemiFinal;
 
     public Fight getLastModyfiedFight() {
+        if (this.groups == null)
+            return null;
         this.groups.get(0).getFightsList().get(0).commandSetFightScoreDirect(FightScore.WON_SECOND);
         return this.groups.get(0).getFightsList().get(0);
     }
@@ -148,7 +150,12 @@ public class Round implements Serializable {
 
 
     private Round drawGroups() {
-        groups = FXCollections.observableArrayList(fightDrawStrategy.drawFightsForRound(this,groupSize,participants));
+        groups = FXCollections.observableArrayList(
+                fightDrawStrategy
+                        .drawFightsForRound(
+                                this,
+                                groupSize,
+                                participants));
         return this;
     }
 
