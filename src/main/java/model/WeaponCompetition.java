@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.FightDrawing.FightDrawStrategyPicker;
+import model.KillerDrawing.KillerRandomizerStrategyPicker;
 import model.command.AddRoundCommand;
 import model.command.Command;
 import model.command.ValidInvocationChecker;
@@ -371,7 +372,8 @@ public class WeaponCompetition implements Serializable {
 
                 ArrayList<Participant> participants = new ArrayList<>();
                 Collections.addAll(participants,pFinal1,pFinal2,pThird1,pThird2);
-                Round toRet = new Round(WeaponCompetition.this,WeaponCompetition.this.getLastRound().getRoundNumber(),2,participants,new FightDrawStrategyPicker(true),true,false);
+                Round toRet = new Round(WeaponCompetition.this,WeaponCompetition.this.getLastRound().getRoundNumber(),2,participants,
+                        new FightDrawStrategyPicker(FightDrawStrategyPicker.PRIVATE_STATEGY_NAMES.FINAL),true,false);
 
                 Fight finalFight = new Fight(toRet,pFinal1,pFinal2);
                 List<Fight> finalFightList = new ArrayList<Fight>();
