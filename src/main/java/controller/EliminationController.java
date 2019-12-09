@@ -327,9 +327,13 @@ public class EliminationController implements Initializable {
                 tabPane.getTabs().add(finalResultTab);
                 Competition.getInstance().calculateResults();
                 //tabPane.getTabs().add(new Tab());
-                calculateResultButton.setDisable(true);
+                //calculateResultButton.setDisable(true);
             }else{
-                calculateResultButton.setDisable(true);
+                finalResultTab = initResultTab();
+                Competition.getInstance().calculateResults();
+                tabPane.getTabs().remove(3);
+                tabPane.getTabs().add(finalResultTab);
+                //calculateResultButton.setDisable(true);
             }
         });
         calculateResultsButtons.add(calculateResultButton);

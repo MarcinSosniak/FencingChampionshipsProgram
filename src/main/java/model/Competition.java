@@ -157,6 +157,11 @@ public class Competition implements Serializable {
 
     /** For final results required */
     public void calculateResults() {
+        for(Participant p : participants){
+            ParticipantResult pr = new ParticipantResult(p);
+            p.setParticipantResult(pr);
+        }
+
         for(WeaponCompetition wc: weaponCompetitions){
             wc.calculateResults();
         }

@@ -99,6 +99,9 @@ public class Participant implements Serializable{
         throw new IllegalArgumentException("Incorrect judge state string");
     }*/
 
+    public void setParticipantResult(ParticipantResult participantResult) {
+        this.participantResult.set(participantResult);
+    }
 
     public void setName(String name) {
         this.name.set(name);
