@@ -504,46 +504,82 @@ public class WeaponCompetition implements Serializable {
                 return 0;
             }
         };
+
+        /* Ceil placing */
         participants.sort(compareByPoinst);
-        RationalNumber lastPoints = new RationalNumber(-1000000,1);
-        Integer iteration = participants.size() + 1;
-        Integer currentPlace = participants.size();
-        /* Sort should sort in ascending order that's why we start from lowest place */
-        //System.out.format("Printing calculate result for WC: " + this.weaponType.toString() + "\n");
+        Collections.reverse(participants);
+        int currenPlace = -1;
+        RationalNumber lastPoints = new RationalNumber(1000000,1);
+        int iteration = 4; /* Place to swap */
         for(Participant p : participants){
-            //System.out.format("#### Iteration " + iteration.toString() + "\n****Participant: " + p.getName()+ " " + p.getSurname() + "\n****Place: "+p.getParticipantResult().getWeaponCompetitionResult(weaponType).getPlace() + "\n\n");
-            /** Setting points in participant result */
             try {
                 p.getParticipantResult().getWeaponCompetitionResult(weaponType).setPoints(p.getPointsForWeaponProperty(weaponType).get());
             }catch (NoSuchWeaponException e){
                 System.out.format("Some serious shit went wrong. This participant shouldn't be in the list\n");
                 e.printStackTrace();
             }
-            iteration --;
             ParticipantResult.WeaponCompetitionResult weaponCompetitionResult = p.getParticipantResult().getWeaponCompetitionResult(weaponType);
             if (weaponCompetitionResult.getPlace() > 0){
                 continue;
             }
-            //System.out.format("****Skiping continue\n");
-            boolean fSwitchPlace = false;
+            iteration ++;
             try{
                 RationalNumber toCompare = p.getPointsForWeaponProperty(weaponType).get();
+                System.out.println("$$ " + toCompare.toString());
                 int compare = RationalNumber.compare(toCompare,lastPoints);
-                weaponCompetitionResult.setPoints(toCompare);
-                if (compare > 0){
-                    fSwitchPlace = true;
+                System.out.println("$# " + compare);
+                if (compare != 0 ){
+                    currenPlace = iteration;
+                    lastPoints = toCompare;
                 }
-                lastPoints = toCompare;
+                weaponCompetitionResult.setPlace(currenPlace);
             } catch (NoSuchWeaponException e){
                 System.out.format("Some serious shit went wrong. This participant shouldn't be in the list\n");
                 e.printStackTrace();
             }
-
-            if (fSwitchPlace) {
-                currentPlace = iteration;
-            }
-            //System.out.format("****Setting place: " + currentPlace.toString() + "\n\n");
-            weaponCompetitionResult.setPlace(currentPlace);
         }
+
+        /** Floor placing  */
+//        participants.sort(compareByPoinst);
+//        RationalNumber lastPoints = new RationalNumber(-1000000,1);
+//        Integer iteration = participants.size() + 1;
+//        Integer currentPlace = participants.size();
+//        /* Sort should sort in ascending order that's why we start from lowest place */
+//        //System.out.format("Printing calculate result for WC: " + this.weaponType.toString() + "\n");
+//        for(Participant p : participants){
+//            //System.out.format("#### Iteration " + iteration.toString() + "\n****Participant: " + p.getName()+ " " + p.getSurname() + "\n****Place: "+p.getParticipantResult().getWeaponCompetitionResult(weaponType).getPlace() + "\n\n");
+//            /** Setting points in participant result */
+//            try {
+//                p.getParticipantResult().getWeaponCompetitionResult(weaponType).setPoints(p.getPointsForWeaponProperty(weaponType).get());
+//            }catch (NoSuchWeaponException e){
+//                System.out.format("Some serious shit went wrong. This participant shouldn't be in the list\n");
+//                e.printStackTrace();
+//            }
+//            iteration --;
+//            ParticipantResult.WeaponCompetitionResult weaponCompetitionResult = p.getParticipantResult().getWeaponCompetitionResult(weaponType);
+//            if (weaponCompetitionResult.getPlace() > 0){
+//                continue;
+//            }
+//            //System.out.format("****Skiping continue\n");
+//            boolean fSwitchPlace = false;
+//            try{
+//                RationalNumber toCompare = p.getPointsForWeaponProperty(weaponType).get();
+//                int compare = RationalNumber.compare(toCompare,lastPoints);
+//                weaponCompetitionResult.setPoints(toCompare);
+//                if (compare > 0){
+//                    fSwitchPlace = true;
+//                }
+//                lastPoints = toCompare;
+//            } catch (NoSuchWeaponException e){
+//                System.out.format("Some serious shit went wrong. This participant shouldn't be in the list\n");
+//                e.printStackTrace();
+//            }
+//
+//            if (fSwitchPlace) {
+//                currentPlace = iteration;
+//            }
+//            //System.out.format("****Setting place: " + currentPlace.toString() + "\n\n");
+//            weaponCompetitionResult.setPlace(currentPlace);
+//        }
     }
 }

@@ -12,6 +12,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -190,57 +191,97 @@ public class Competition implements Serializable {
             }
         };
 
-        /* Now we need to assign place to each participant in OPEN triathlon */
-        participants.sort(compareTriathlonOpen);
-        Integer currentPlace = participants.size();
-        int lastPoints = -1000;
-        int iteration = participants.size() + 1;
+        /** floor place */
+//        /* Now we need to assign place to each participant in OPEN triathlon */
+//        participants.sort(compareTriathlonOpen);
+//        Integer currentPlace = participants.size();
+//        int lastPoints = -1000;
+//        int iteration = participants.size() + 1;
+//
+//        for(Participant p : participants){
+//            iteration --;
+//            boolean fSwitchPlace = false;
+//            int toCompare = p.getParticipantResult().getTriathlonOpenPoints();
+//            if (toCompare > lastPoints){
+//                fSwitchPlace = true;
+//            }
+//            lastPoints = toCompare;
+//            if (fSwitchPlace) {
+//                currentPlace = iteration;
+//            }
+//            p.getParticipantResult().setTriathlonOpen(currentPlace.toString());
+//        }
+//
+//        /* Now we need to assign place to each participant in WOMEN triathlon*/
+//        participants.sort(compareTriathlonWomen);
+//        currentPlace = participants.size();
+//        lastPoints = -1000;
+//
+//        /* Here we should have only women's places iteration is no longer valid name */
+//        iteration = 1;
+//        for(Participant p : participants){
+//            if(p.isfFemale())
+//                iteration++;
+//        }
+//
+//        for(Participant p : participants){
+//            if(!p.isfFemale()){
+//                p.getParticipantResult().triathlonWomenPointsProperty().set(-1);
+//                p.getParticipantResult().setTriathlonWomen("--");
+//                continue;
+//            }else{
+//                p.getParticipantResult().triathlonWomenPointsProperty().set(p.getParticipantResult().getTriathlonOpenPoints());
+//            }
+//            iteration --;
+//            boolean fSwitchPlace = false;
+//            int toCompare = p.getParticipantResult().getTriathlonWomenPoints();
+//            if (toCompare > lastPoints){
+//                fSwitchPlace = true;
+//            }
+//            lastPoints = toCompare;
+//            if (fSwitchPlace) {
+//                currentPlace = iteration;
+//            }
+//            p.getParticipantResult().setTriathlonWomen(currentPlace.toString());
+//        }
 
-        for(Participant p : participants){
-            iteration --;
-            boolean fSwitchPlace = false;
-            int toCompare = p.getParticipantResult().getTriathlonOpenPoints();
-            if (toCompare > lastPoints){
-                fSwitchPlace = true;
-            }
-            lastPoints = toCompare;
-            if (fSwitchPlace) {
+
+        /** Ceil place */
+        participants.sort(compareTriathlonOpen);
+        Collections.reverse(participants);
+
+
+        int currentPlace = -1;
+        int lastPoints = 10000;
+        int iteration = 0;
+        //boolean fSwitchPlace = false;
+        for(Participant p: participants){
+            iteration ++;
+            //fSwitchPlace = false;
+            if(lastPoints > p.getParticipantResult().getTriathlonOpenPoints()){
                 currentPlace = iteration;
             }
-            p.getParticipantResult().setTriathlonOpen(currentPlace.toString());
+            lastPoints = p.getParticipantResult().getTriathlonOpenPoints();
+            p.getParticipantResult().setTriathlonOpen(Integer.toString(currentPlace));
         }
 
-        /* Now we need to assign place to each participant in WOMEN triathlon*/
         participants.sort(compareTriathlonWomen);
-        currentPlace = participants.size();
-        lastPoints = -1000;
+        Collections.reverse(participants);
 
-        /* Here we should have only women's places iteration is no longer valid name */
-        iteration = 1;
-        for(Participant p : participants){
-            if(p.isfFemale())
-                iteration++;
-        }
-
-        for(Participant p : participants){
-            if(!p.isfFemale()){
-                p.getParticipantResult().triathlonWomenPointsProperty().set(-1);
+        currentPlace = -1;
+        iteration = 0;
+        lastPoints = 10000;
+        for(Participant p:participants){
+            if(!p.isfFemale()) {
                 p.getParticipantResult().setTriathlonWomen("--");
                 continue;
-            }else{
-                p.getParticipantResult().triathlonWomenPointsProperty().set(p.getParticipantResult().getTriathlonOpenPoints());
             }
-            iteration --;
-            boolean fSwitchPlace = false;
-            int toCompare = p.getParticipantResult().getTriathlonWomenPoints();
-            if (toCompare > lastPoints){
-                fSwitchPlace = true;
-            }
-            lastPoints = toCompare;
-            if (fSwitchPlace) {
+            iteration ++;
+            if(lastPoints > p.getParticipantResult().getTriathlonOpenPoints()){
                 currentPlace = iteration;
             }
-            p.getParticipantResult().setTriathlonWomen(currentPlace.toString());
+            lastPoints = p.getParticipantResult().getTriathlonOpenPoints();
+            p.getParticipantResult().setTriathlonWomen(Integer.toString(currentPlace));
         }
     }
 }
