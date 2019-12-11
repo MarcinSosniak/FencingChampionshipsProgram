@@ -101,10 +101,12 @@ public class ParticipantResult implements Serializable {
         }
         if(fromRapier < 101){
             toSet += fromRapier;
+            System.out.println("uuuuuuuuuu: " + fromRapier);
         }
         if(fromSmallSword < 101){
             toSet += fromSmallSword;
         }
+        System.out.println(toSet);
         this.triathlonOpenPoints.set(toSet);
 
         if(participant.get().isfFemale())
@@ -113,8 +115,8 @@ public class ParticipantResult implements Serializable {
             triathlonWomenPoints.set(-1);
     }
 
-    public int getTriathlonOpenPoints() {
-        return triathlonOpenPoints.get();
+    public Integer getTriathlonOpenPoints() {
+        return triathlonOpenPoints.getValue();
     }
 
     public SimpleIntegerProperty triathlonOpenPointsProperty() {
@@ -192,9 +194,6 @@ public class ParticipantResult implements Serializable {
         return triathlonWomen;
     }
 
-    public void export(){
-        /** TODO: implement me! */
-    }
 
     private void writeObject(ObjectOutputStream stream) throws IOException {
         stream.writeObject(participant.get());

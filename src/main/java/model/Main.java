@@ -23,7 +23,6 @@ public class Main extends Application {
 
 
     public static void main(String[] args)  {
-        ResultExporter.exportResults();
-        //launch(args);
+        launch(args);
     }
 }

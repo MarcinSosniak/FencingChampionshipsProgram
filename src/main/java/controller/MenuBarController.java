@@ -11,10 +11,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import model.AppMode;
-import model.CheckPointManager;
-import model.Competition;
-import model.WeaponCompetition;
+import model.*;
 import model.enums.TriRet;
 import util.Pointer;
 
@@ -90,7 +87,8 @@ public class MenuBarController implements Initializable {
     }
     @FXML
     public void exportResults(){
-        System.out.format("exportResults (TODO:implement me)\n");
+        System.out.format("exportResults");
+        ResultExporter.exportResults();
     }
     @FXML
     public void adminModeOn(){

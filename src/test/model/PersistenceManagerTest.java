@@ -21,7 +21,6 @@ public class PersistenceManagerTest {
 
     String json;
     Participant p1; Participant p2; Participant p3; Participant p4; Participant p5; Participant p6;
-    ConfigReader configReader;
     Competition competition;
 
     @Before
