@@ -381,6 +381,7 @@ public class EliminationController implements Initializable {
                         break;
                 }
             }
+            CheckPointManager.createCheckPoint();
             this.setData();
         });
 

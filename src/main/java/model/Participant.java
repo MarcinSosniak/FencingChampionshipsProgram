@@ -50,7 +50,8 @@ public class Participant implements Serializable{
     private transient BooleanProperty fRapierInjury = new SimpleBooleanProperty(false);
     private transient BooleanProperty fSmallSwordInjury = new SimpleBooleanProperty(false);
 
-    public Participant(String name, String surname, String location, String locationGroup, JudgeState judgeState, Date licenceExpDate){
+    public Participant(String name, String surname, String location, String locationGroup, JudgeState judgeState, Date licenceExpDate
+            ,int oldPointsSmallSword , int oldPointsSabre,int oldPointsRapier){
         this.name            = new SimpleStringProperty(name);
         this.surname         = new SimpleStringProperty(surname);
         this.location        = new SimpleStringProperty(location);
@@ -63,14 +64,9 @@ public class Participant implements Serializable{
         this.fRapierParticipant = new SimpleBooleanProperty(false);
         this.weaponPointsProperty = new HashMap<>();
         participantResult = new SimpleObjectProperty<>(new ParticipantResult(this));
-//        oldSeasonWeapoPointsPropety.put(WeaponType.RAPIER,new SimpleObjectProperty<>(new RationalNumber(0)));
-//        oldSeasonWeapoPointsPropety.put(WeaponType.SABRE,new SimpleObjectProperty<>(new RationalNumber(0)));
-//        oldSeasonWeapoPointsPropety.put(WeaponType.SMALL_SWORD,new SimpleObjectProperty<>(new RationalNumber(0)));
-        Random r = new Random();
-        oldSeasonWeapoPointsPropety.put(WeaponType.RAPIER,new SimpleObjectProperty<>(new RationalNumber(r.nextInt(901))));
-        oldSeasonWeapoPointsPropety.put(WeaponType.SABRE,new SimpleObjectProperty<>(new RationalNumber(r.nextInt(901))));
-        oldSeasonWeapoPointsPropety.put(WeaponType.SMALL_SWORD,new SimpleObjectProperty<>(new RationalNumber(r.nextInt(901))));
-
+        oldSeasonWeapoPointsPropety.put(WeaponType.RAPIER,new SimpleObjectProperty<>(new RationalNumber(oldPointsSmallSword)));
+        oldSeasonWeapoPointsPropety.put(WeaponType.SABRE,new SimpleObjectProperty<>(new RationalNumber(oldPointsSabre)));
+        oldSeasonWeapoPointsPropety.put(WeaponType.SMALL_SWORD,new SimpleObjectProperty<>(new RationalNumber(oldPointsSmallSword)));
     }
 
     /** Updating only transcient fields because when we read from json we still want to read them */
@@ -161,6 +157,11 @@ public class Participant implements Serializable{
             case SMALL_SWORD: setfSmallSwordParticipant(fparticipant);break;
             default: throw new InvalidParameterException();
         }
+    }
+
+    public void setOldSeasonWeapoPointsPropety(WeaponType wt,int points)
+    {
+        oldSeasonWeapoPointsPropety.get(wt).setValue(new RationalNumber(points));
     }
 
     /** For final results required */

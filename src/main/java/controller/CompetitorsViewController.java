@@ -190,25 +190,13 @@ public class CompetitorsViewController implements Initializable {
         refereeStatus.setCellValueFactory(dataValue -> dataValue.getValue().judgeStateProperty());
 
         sabrePoints.setCellValueFactory(dataValue -> {
-            try {
                 return new SimpleStringProperty(dataValue.getValue().getOldSeasonPointsForWeaponProperty(WeaponType.SABRE).get().toString());
-            } catch (NoSuchWeaponException e) {
-                return new SimpleStringProperty(cross);
-            }
         });
         rapierPoints.setCellValueFactory(dataValue -> {
-            try {
                 return new SimpleStringProperty(dataValue.getValue().getOldSeasonPointsForWeaponProperty(WeaponType.RAPIER).get().toString());
-            } catch (NoSuchWeaponException e) {
-                return new SimpleStringProperty(cross);
-            }
         });
         smallSwordPoints.setCellValueFactory(dataValue -> {
-            try {
                 return new SimpleStringProperty(dataValue.getValue().getOldSeasonPointsForWeaponProperty(WeaponType.SMALL_SWORD).get().toString());
-            } catch (NoSuchWeaponException e) {
-                return new SimpleStringProperty(cross);
-            }
         });
 
         licence.setCellValueFactory(dataValue -> dataValue.getValue().licenseExpDateProperty());

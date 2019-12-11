@@ -64,7 +64,9 @@ public class RandomDrawStrategy extends   FightDrawStrategy{
                 }
                 currentNonKillerId++;
             }
-            out.add(new CompetitionGroup(fights));
+            CompetitionGroup cg = new CompetitionGroup(fights);
+            cg.setGroupID("Killer Group");
+            out.add(cg);
         }
         return out;
     }

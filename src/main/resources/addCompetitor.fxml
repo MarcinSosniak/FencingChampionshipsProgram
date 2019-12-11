@@ -21,11 +21,17 @@
     <TextField fx:id="competitorSurname" text="nazwisko" GridPane.columnIndex="1" GridPane.fillWidth="TRUE" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
     <TextField fx:id="competitorDivision" text="oddzial" GridPane.columnIndex="1" GridPane.fillWidth="TRUE" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
     <TextField fx:id="competitorGroup" text="grupa" GridPane.columnIndex="1" GridPane.fillWidth="TRUE" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+
     <CheckBox fx:id="fFemale" text="Czy kobieta?" GridPane.columnIndex="1" GridPane.fillWidth="TRUE" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
 
     <CheckBox fx:id="competitorFSmallSword" text="szpada" selected="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="7" />
+    <TextField fx:id="oldSmallSword" GridPane.fillWidth="False" text="0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
+
     <CheckBox fx:id="competitorFSabre" text="szabla" selected="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="8" />
+    <TextField fx:id="oldSabre" GridPane.fillWidth="False" text="0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="8" />
+
     <CheckBox fx:id="competitorFRapier" text="rapier" selected="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="9" />
+    <TextField fx:id="oldRapier" GridPane.fillWidth="False" text="0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="9" />
 
     <CheckBox fx:id="competitorFMainReferee" text="sędzia główny" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="11" />
 
