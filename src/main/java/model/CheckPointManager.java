@@ -12,7 +12,7 @@ import java.time.ZonedDateTime;
 
 public class CheckPointManager {
 
-    // path shoul be e.g saves/11-11-2019__14-39-53
+    // path should be e.g saves/11-11-2019__14-39-53
     public static void readFromCheckPoint(String path){
         // init competition
         try {
