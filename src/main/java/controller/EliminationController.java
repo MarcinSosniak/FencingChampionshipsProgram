@@ -88,7 +88,7 @@ public class EliminationController implements Initializable {
     public ObservableList<TableRow> smallSwordRows = FXCollections.observableArrayList();
 
     private static HashMap<Fight, TableCell<Fight, String>> prtipantHashMap = new HashMap<>();
-    private ParticipantViewController participantViewController;
+    private static ParticipantViewController participantViewController;
 
 
     @FXML
@@ -562,6 +562,7 @@ public class EliminationController implements Initializable {
             cell1.setStyle("-fx-alignment: CENTER; -fx-background-color: RED;");
             cell2.setStyle("-fx-alignment: CENTER; -fx-background-color: RED;");
         }
+        participantViewController.setData(fight.getRound(), fight);
     }
 
     private static ListChangeListener<Fight> createListener(String listId) {

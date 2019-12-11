@@ -222,7 +222,7 @@ public class Participant implements Serializable{
     public void addPointsForWeapon(ValidInvocationChecker checker, WeaponType type, RationalNumber points){
         Objects.requireNonNull(checker);
         if (weaponPointsProperty.containsKey(type)) {
-            System.out.println("adding points in partcipant");
+           // System.out.println("adding points in partcipant: " + this);
             weaponPointsProperty.get(type).setValue(weaponPointsProperty.get(type).get().add(points));
         }
     }

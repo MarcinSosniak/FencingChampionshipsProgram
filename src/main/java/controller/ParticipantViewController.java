@@ -142,7 +142,7 @@ public class ParticipantViewController {
         mainPane.getChildren().addAll(groupPane, vBox);
     }
 
-    public void setData(Round round,Fight f) {
+    public void setData(Round round, Fight f) {
         if(round == null)
             return;
         this.currentRound = round;

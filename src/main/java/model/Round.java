@@ -35,7 +35,6 @@ public class Round implements Serializable {
     private Boolean fSemiFinal;
 
     public Fight getLastModyfiedFight() {
-        this.groups.get(0).getFightsList().get(0).commandSetFightScoreDirect(FightScore.WON_SECOND);
         return this.groups.get(0).getFightsList().get(0);
     }
 
