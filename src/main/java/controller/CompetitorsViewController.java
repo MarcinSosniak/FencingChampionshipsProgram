@@ -224,6 +224,12 @@ public class CompetitorsViewController implements Initializable {
                     } else {
                         // Format date.
                         setText(new SimpleDateFormat("dd-MM-yyyy").format(item));
+                        Date currentDate = new Date();
+                        if(item.compareTo(currentDate) < 0){
+                            setStyle("-fx-background-color: CORAL");
+                        }else{
+                            setStyle("");
+                        }
                     }
                 }
             };
