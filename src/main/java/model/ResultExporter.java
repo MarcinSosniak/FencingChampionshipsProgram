@@ -108,10 +108,6 @@ public class ResultExporter {
         Collections.sort(participantList, new Comparator<Participant>() {
             @Override
             public int compare(Participant p1, Participant p2) {
-                System.out.println("write: " + p1.getParticipantResult().getTriathlonOpenPoints() + " " +
-                                p2.getParticipantResult().getTriathlonOpenPoints()
-                        );
-
                 return p1.getParticipantResult().getTriathlonOpenPoints().compareTo(
                         p2.getParticipantResult().getTriathlonOpenPoints());
             }

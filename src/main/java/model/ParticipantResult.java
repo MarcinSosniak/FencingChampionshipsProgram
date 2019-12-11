@@ -101,7 +101,6 @@ public class ParticipantResult implements Serializable {
         }
         if(fromRapier < 101){
             toSet += fromRapier;
-            System.out.println("uuuuuuuuuu: " + fromRapier);
         }
         if(fromSmallSword < 101){
             toSet += fromSmallSword;
