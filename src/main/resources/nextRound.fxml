@@ -14,7 +14,7 @@
       <Spinner fx:id="participantsCount" amountToStepBy="1" initialValue="0" layoutX="214.0" layoutY="137.0" max="100" min="0" prefHeight="25.0" prefWidth="59.0" />
       <Button fx:id="okButton" layoutX="257.0" layoutY="304.0" mnemonicParsing="false" text="OK" />
       <Button fx:id="cancelButton" layoutX="39.0" layoutY="304.0" mnemonicParsing="false" text="anuluj" />
-      <ChoiceBox fx:id="strategyChooser" layoutX="107.0" layoutY="232.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="strategyChooser" layoutX="107.0"  value="DEFAULT" layoutY="232.0" prefWidth="150.0" />
       <CheckBox fx:id="fSemiFinal" layoutX="116.0" layoutY="269.0" text="Next round semifinal" onAction="#semiFinalCheckboxAction"/>
       <Text layoutX="145.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Następna runda">
          <font>

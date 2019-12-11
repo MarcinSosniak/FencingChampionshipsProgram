@@ -186,7 +186,7 @@ public class ConfigReader {
             }
             else
             {
-                String[] splitedLine= line.split(" ");
+                String[] splitedLine= line.split("\\s+");
                 try {
                     currentTagVars.set(splitedLine[0].toUpperCase(), splitedLine[1]);
                 }
@@ -236,7 +236,7 @@ public class ConfigReader {
             }
             else
             {
-                String[] splitedLine= line.split(" ");
+                String[] splitedLine= line.split("\\s+");
                 try {
                     currentTagVars.set(splitedLine[0].toUpperCase(), splitedLine[1]);
                 }
@@ -278,9 +278,13 @@ public class ConfigReader {
     }
 
     public String getStringValue(String tag, String name,String defaultValue) {
-        if (!tags.containsKey(tag))
-            throw new IllegalStateException("tag was not found");
-        return tags.get(tag).getString(name);
+        try{
+            return getStringValue(tag,name);
+        }
+        catch (IllegalStateException ex)
+        {
+            return defaultValue;
+        }
     }
 
     public void setStringValue(String tag, String name, String val) {

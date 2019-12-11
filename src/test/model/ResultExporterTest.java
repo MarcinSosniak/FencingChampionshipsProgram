@@ -23,14 +23,14 @@ public class ResultExporterTest {
 
     @Before
     public void setUp() throws Exception {
-        Participant p1 = new Participant("Marcin", "Kowalski", "KRK", "A", JudgeState.NON_JUDGE,new Date());
-        Participant p2 = new Participant("Paulina", "Nowak", "KRK", "B", JudgeState.NON_JUDGE,new Date());
-        Participant p3 = new Participant("Name3","Surname3","Location1","lacationGroup1", JudgeState.NON_JUDGE,new Date());
-        Participant p4 = new Participant("Name4","Surname4","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date());
-        Participant p5 = new Participant("Kot","Kiti","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date());
-        Participant p6 = new Participant("Mak","XD","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date());
-        Participant p7 = new Participant("yy","yy","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date());
-        Participant p8 = new Participant("aa","aa","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date());
+        Participant p1 = new Participant("Marcin", "Kowalski", "KRK", "A", JudgeState.NON_JUDGE,new Date(),0,0,0);
+        Participant p2 = new Participant("Paulina", "Nowak", "KRK", "B", JudgeState.NON_JUDGE,new Date(),0,0,0);
+        Participant p3 = new Participant("Name3","Surname3","Location1","lacationGroup1", JudgeState.NON_JUDGE,new Date(),0,0,0);
+        Participant p4 = new Participant("Name4","Surname4","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date(),0,0,0);
+        Participant p5 = new Participant("Kot","Kiti","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date(),0,0,0);
+        Participant p6 = new Participant("Mak","XD","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date(),0,0,0);
+        Participant p7 = new Participant("yy","yy","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date(),0,0,0);
+        Participant p8 = new Participant("aa","aa","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date(),0,0,0);
 
 
         ObservableList smallSwordParticipants = FXCollections.observableArrayList();

@@ -55,6 +55,7 @@ public class MenuBarController implements Initializable {
             adminMode.textProperty().setValue("Safe Mode");
             modeStatus.setText("  Admin Mode");
         }
+        exportResults.setDisable(true);
     }
 
     @FXML
@@ -142,4 +143,10 @@ public class MenuBarController implements Initializable {
     {
 
     }
+
+    public void setDisableExport(boolean fDisable)
+    {
+        exportResults.setDisable(fDisable);
+    }
 }
+

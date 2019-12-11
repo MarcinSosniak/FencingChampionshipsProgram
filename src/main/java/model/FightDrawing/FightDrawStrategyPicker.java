@@ -108,7 +108,7 @@ public class FightDrawStrategyPicker {
             {
                 return STRATEGY_NAMES.FINAL;
             }
-            throw new IllegalStateException("Invalid string given");
+            throw new IllegalStateException("Invalid string given '" +name+"'");
         }
 
         public static List<STRATEGY_NAMES> listAllShowed()
