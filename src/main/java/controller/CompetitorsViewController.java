@@ -111,7 +111,7 @@ public class CompetitorsViewController implements Initializable {
 
         for (WeaponCompetition weaponCompetition: Competition.getInstance().getWeaponCompetitions()){
             // start first round
-            if (weaponCompetition.getLastRound() == null) weaponCompetition.startFirstRound(5);
+            if (weaponCompetition.getLastRound() == null) weaponCompetition.startFirstRound();
 
         }
         try {
@@ -190,25 +190,13 @@ public class CompetitorsViewController implements Initializable {
         refereeStatus.setCellValueFactory(dataValue -> dataValue.getValue().judgeStateProperty());
 
         sabrePoints.setCellValueFactory(dataValue -> {
-            try {
-                return new SimpleStringProperty(dataValue.getValue().getPointsForWeaponProperty(WeaponType.SABRE).get().toString());
-            } catch (NoSuchWeaponException e) {
-                return new SimpleStringProperty(cross);
-            }
+                return new SimpleStringProperty(dataValue.getValue().getOldSeasonPointsForWeaponProperty(WeaponType.SABRE).get().toString());
         });
         rapierPoints.setCellValueFactory(dataValue -> {
-            try {
-                return new SimpleStringProperty(dataValue.getValue().getPointsForWeaponProperty(WeaponType.RAPIER).get().toString());
-            } catch (NoSuchWeaponException e) {
-                return new SimpleStringProperty(cross);
-            }
+                return new SimpleStringProperty(dataValue.getValue().getOldSeasonPointsForWeaponProperty(WeaponType.RAPIER).get().toString());
         });
         smallSwordPoints.setCellValueFactory(dataValue -> {
-            try {
-                return new SimpleStringProperty(dataValue.getValue().getPointsForWeaponProperty(WeaponType.SMALL_SWORD).get().toString());
-            } catch (NoSuchWeaponException e) {
-                return new SimpleStringProperty(cross);
-            }
+                return new SimpleStringProperty(dataValue.getValue().getOldSeasonPointsForWeaponProperty(WeaponType.SMALL_SWORD).get().toString());
         });
 
         licence.setCellValueFactory(dataValue -> dataValue.getValue().licenseExpDateProperty());

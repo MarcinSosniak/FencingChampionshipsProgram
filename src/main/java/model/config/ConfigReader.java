@@ -277,6 +277,12 @@ public class ConfigReader {
         return tags.get(tag).getString(name);
     }
 
+    public String getStringValue(String tag, String name,String defaultValue) {
+        if (!tags.containsKey(tag))
+            throw new IllegalStateException("tag was not found");
+        return tags.get(tag).getString(name);
+    }
+
     public void setStringValue(String tag, String name, String val) {
         if (!tags.containsKey(tag)){
             TagVariables vars = new TagVariables();

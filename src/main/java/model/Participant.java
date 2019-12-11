@@ -42,6 +42,7 @@ public class Participant implements Serializable{
     private transient BooleanProperty fSabreParticipant;
     private transient BooleanProperty fRapierParticipant;
     private transient Map<WeaponType, ObjectProperty<util.RationalNumber>> weaponPointsProperty;
+    private Map<WeaponType,ObjectProperty<RationalNumber>> oldSeasonWeapoPointsPropety = new HashMap<>();
 
     private transient SimpleObjectProperty<ParticipantResult> participantResult;
 
@@ -49,7 +50,8 @@ public class Participant implements Serializable{
     private transient BooleanProperty fRapierInjury = new SimpleBooleanProperty(false);
     private transient BooleanProperty fSmallSwordInjury = new SimpleBooleanProperty(false);
 
-    public Participant(String name, String surname, String location, String locationGroup, JudgeState judgeState, Date licenceExpDate){
+    public Participant(String name, String surname, String location, String locationGroup, JudgeState judgeState, Date licenceExpDate
+            ,int oldPointsSmallSword , int oldPointsSabre,int oldPointsRapier){
         this.name            = new SimpleStringProperty(name);
         this.surname         = new SimpleStringProperty(surname);
         this.location        = new SimpleStringProperty(location);
@@ -62,6 +64,9 @@ public class Participant implements Serializable{
         this.fRapierParticipant = new SimpleBooleanProperty(false);
         this.weaponPointsProperty = new HashMap<>();
         participantResult = new SimpleObjectProperty<>(new ParticipantResult(this));
+        oldSeasonWeapoPointsPropety.put(WeaponType.RAPIER,new SimpleObjectProperty<>(new RationalNumber(oldPointsSmallSword)));
+        oldSeasonWeapoPointsPropety.put(WeaponType.SABRE,new SimpleObjectProperty<>(new RationalNumber(oldPointsSabre)));
+        oldSeasonWeapoPointsPropety.put(WeaponType.SMALL_SWORD,new SimpleObjectProperty<>(new RationalNumber(oldPointsSmallSword)));
     }
 
     /** Updating only transcient fields because when we read from json we still want to read them */
@@ -157,6 +162,11 @@ public class Participant implements Serializable{
         }
     }
 
+    public void setOldSeasonWeapoPointsPropety(WeaponType wt,int points)
+    {
+        oldSeasonWeapoPointsPropety.get(wt).setValue(new RationalNumber(points));
+    }
+
     /** For final results required */
     public void setfFemale(boolean fFemale) {
         this.fFemale.set(fFemale);
@@ -217,6 +227,10 @@ public class Participant implements Serializable{
         if (weaponPointsProperty.containsKey(type))
             return weaponPointsProperty.get(type);
         else throw new NoSuchWeaponException();
+    }
+
+    public ObjectProperty<RationalNumber> getOldSeasonPointsForWeaponProperty(WeaponType type){
+        return oldSeasonWeapoPointsPropety.get(type);
     }
 
     public void addPointsForWeapon(ValidInvocationChecker checker, WeaponType type, RationalNumber points){
