@@ -184,6 +184,7 @@ public class CompetitorsViewController implements Initializable {
         club.setCellValueFactory(dataValue -> dataValue.getValue().locationProperty());
         group.setCellValueFactory(dataValue -> dataValue.getValue().locationGroupProperty());
 
+
         fSmallSwordParticipant.setCellValueFactory(param -> (param.getValue().fSmallSwordParticipantProperty().get() ? new SimpleObjectProperty<>(tick) : new SimpleObjectProperty<>(cross)));
         fRapierParticipant.setCellValueFactory(param -> (param.getValue().fRapierParticipantProperty().get() ? new SimpleObjectProperty<>(tick) : new SimpleObjectProperty<>(cross)));
         fSabreParticipant.setCellValueFactory(param -> (param.getValue().fSabreParticipantProperty().get() ? new SimpleObjectProperty<>(tick) : new SimpleObjectProperty<>(cross)));

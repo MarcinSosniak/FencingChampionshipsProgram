@@ -44,13 +44,13 @@ public class PersistenceManagerTest {
                 "   }\n" +
                 "]\n";
 
-        p1 = new Participant("Marcin", "Kowalski", "KRK", "A", JudgeState.NON_JUDGE,new Date(),0,0,0);
-        p2 = new Participant("Paulina", "Nowak", "KRK", "B", JudgeState.NON_JUDGE,new Date(),0,0,0);
-        p3 = new Participant("Name3","Surname3","Location1","lacationGroup1", JudgeState.NON_JUDGE,new Date(),0,0,0);
-        p4 = new Participant("Name4","Surname4","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date(),0,0,0);
-        p5 = new Participant("Kot","Kiti","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date(),0,0,0);
-        p6 = new Participant("Mak","XD","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date(),0,0,0);
 
+        p1 = new Participant("Marcin", "Kowalski", "KRK", "A", JudgeState.NON_JUDGE,new Date(), 0, 0, 0);
+        p2 = new Participant("Paulina", "Nowak", "KRK", "B", JudgeState.NON_JUDGE,new Date(), 0, 0, 0);
+        p3 = new Participant("Name3","Surname3","Location1","lacationGroup1", JudgeState.NON_JUDGE,new Date(), 0, 0, 0);
+        p4 = new Participant("Name4","Surname4","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date(), 0, 0, 0);
+        p5 = new Participant("Kot","Kiti","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date(), 0, 0, 0);
+        p6 = new Participant("Mak","XD","Location2","lacationGroup2", JudgeState.NON_JUDGE,new Date(), 0, 0, 0);
 
         ObservableList rapierParticipants = FXCollections.observableArrayList();
         rapierParticipants.add(p1); rapierParticipants.add(p2); rapierParticipants.add(p4); rapierParticipants.add(p5); rapierParticipants.add(p6);

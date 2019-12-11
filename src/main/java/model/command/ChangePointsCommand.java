@@ -1,10 +1,12 @@
 package model.command;
 
+import model.Main;
 import model.Participant;
 import model.Round;
 
-public class ChangePointsCommand implements Command {
+import java.util.logging.Level;
 
+public class ChangePointsCommand implements Command {
 
     private static final ValidInvocationChecker checker = ValidInvocationChecker.getChecker();
 
@@ -20,9 +22,7 @@ public class ChangePointsCommand implements Command {
         this.ifAdd = ifAdd;
     }
 
-    @Override
-    public void execute() {
-        System.out.println("Executing changePointsCommand");
+    private void changePoints(){
         if (ifAdd) {
             round.addRoundScorePoints(checker, participant, pointsNumber);
             participant.addPointsForWeapon(checker, round.getMyWeaponCompetition().getWeaponType(), pointsNumber);
@@ -31,9 +31,17 @@ public class ChangePointsCommand implements Command {
             round.subtractRoundScorePoints(checker, participant, pointsNumber);
             participant.subtractPointsFromWeapon(checker, round.getMyWeaponCompetition().getWeaponType(), pointsNumber);
         }
+    }
 
-        for (Command c: round.getMyWeaponCompetition().getcStack().getCommandStack())
-            System.out.println(c);
+    @Override
+    public void execute() {
+        changePoints();
+        if (ifAdd)
+            Main.logger.log(Level.INFO, "Execute add " + pointsNumber + " to participant " + participant.getName() + " " + participant.getSurname());
+        else
+            Main.logger.log(Level.INFO, "Execute subtract " + pointsNumber + " from participant " + participant.getName() + " " + participant.getSurname());
+
+
     }
 
     @Override
@@ -41,17 +49,22 @@ public class ChangePointsCommand implements Command {
         if (ifAdd) {
             round.subtractRoundScorePoints(checker, participant, pointsNumber);
             participant.subtractPointsFromWeapon(checker, round.getMyWeaponCompetition().getWeaponType(), pointsNumber);
+            Main.logger.log(Level.INFO, "Undo add " + pointsNumber + " to participant " + participant.getName() + " " + participant.getSurname());
         }
         else {
             round.addRoundScorePoints(checker, participant, pointsNumber);
             participant.addPointsForWeapon(checker, round.getMyWeaponCompetition().getWeaponType(), pointsNumber);
+            Main.logger.log(Level.INFO, "Undo subtract " + pointsNumber + " to participant " + participant.getName() + " " + participant.getSurname());
         }
     }
 
     @Override
     public void redo() {
-        execute();
+        changePoints();
+        if (ifAdd)
+            Main.logger.log(Level.INFO, "Redo add " + pointsNumber + " to participant " + participant.getName() + " " + participant.getSurname());
+        else
+            Main.logger.log(Level.INFO, "Redo subtract " + pointsNumber + " from participant " + participant.getName() + " " + participant.getSurname());
     }
-
 
 }
