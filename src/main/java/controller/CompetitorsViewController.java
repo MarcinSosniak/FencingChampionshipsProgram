@@ -2,6 +2,7 @@ package controller;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -10,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import model.*;
 import model.config.ConfigReader;
 import model.enums.JudgeState;
@@ -185,14 +187,16 @@ public class CompetitorsViewController implements Initializable {
         group.setCellValueFactory(dataValue -> dataValue.getValue().locationGroupProperty());
 
 
-        fSmallSwordParticipant.setCellValueFactory(param -> (param.getValue().fSmallSwordParticipantProperty().get() ? new SimpleObjectProperty<>(tick) : new SimpleObjectProperty<>(cross)));
-        fRapierParticipant.setCellValueFactory(param -> (param.getValue().fRapierParticipantProperty().get() ? new SimpleObjectProperty<>(tick) : new SimpleObjectProperty<>(cross)));
-        fSabreParticipant.setCellValueFactory(param -> (param.getValue().fSabreParticipantProperty().get() ? new SimpleObjectProperty<>(tick) : new SimpleObjectProperty<>(cross)));
+
+        fSmallSwordParticipant.setCellValueFactory(param -> (param.getValue().fSmallSwordParticipantSProperty));
+        fRapierParticipant.setCellValueFactory(param -> (param.getValue().fRapierParticipantSProperty));
+        fSabreParticipant.setCellValueFactory(param -> (param.getValue().fSabreParticipantSProperty));
         refereeStatus.setCellValueFactory(dataValue -> dataValue.getValue().judgeStateProperty());
 
         sabrePoints.setCellValueFactory(dataValue -> {
                 return new SimpleStringProperty(dataValue.getValue().getOldSeasonPointsForWeaponProperty(WeaponType.SABRE).get().toString());
         });
+
         rapierPoints.setCellValueFactory(dataValue -> {
                 return new SimpleStringProperty(dataValue.getValue().getOldSeasonPointsForWeaponProperty(WeaponType.RAPIER).get().toString());
         });

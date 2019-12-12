@@ -130,35 +130,38 @@ public class EliminationController implements Initializable {
 
     public void update() {
         calculateResultsButtons = new ArrayList<>();
+
+        tabPane.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
+            int selectedIndex = newValue.intValue();
+            System.out.println("SELECTED here: " + selectedIndex);
+            if (selectedIndex == 0)
+                menuBarController.setData(Competition.getInstance().getSingleWeaponCompetition(WeaponType.RAPIER), this);
+            else if (selectedIndex == 1)
+                menuBarController.setData(Competition.getInstance().getSingleWeaponCompetition(WeaponType.SABRE), this);
+            else if (selectedIndex == 2)
+                menuBarController.setData(Competition.getInstance().getSingleWeaponCompetition(WeaponType.SMALL_SWORD), this);
+        });
+
+        int tab = 0;
         if(rapierTab != null || sabreTab != null || smallSwordTab != null){
-            int tab = tabPane.getSelectionModel().getSelectedIndex();
+            tab = tabPane.getSelectionModel().getSelectedIndex();
             tabPane.getTabs().remove(0,3);
             rapierTab = initTab(WeaponType.RAPIER);
             sabreTab = initTab(WeaponType.SABRE);
             smallSwordTab = initTab(WeaponType.SMALL_SWORD);
             tabPane.getTabs().addAll(rapierTab,sabreTab,smallSwordTab);
+            System.out.println("");
             tabPane.getSelectionModel().select(tab);
+            System.out.println(menuBarController.wc.getWeaponType());
+
+
         }else{
-            rapierTab = initTab(WeaponType.RAPIER);
             sabreTab = initTab(WeaponType.SABRE);
             smallSwordTab = initTab(WeaponType.SMALL_SWORD);
+            rapierTab = initTab(WeaponType.RAPIER);
             tabPane.getTabs().addAll(rapierTab,sabreTab,smallSwordTab);
         }
 
-
-        // first value
-        menuBarController.setData(Competition.getInstance().getSingleWeaponCompetition(WeaponType.RAPIER));
-        // change tab handler
-        tabPane.getSelectionModel().selectedIndexProperty().addListener((observable, oldValue, newValue) -> {
-            int selectedIndex = newValue.intValue();
-            System.out.println("XXXXD here: " + selectedIndex);
-            if (selectedIndex == 0)
-                menuBarController.setData(Competition.getInstance().getSingleWeaponCompetition(WeaponType.RAPIER));
-            else if (selectedIndex == 1)
-                menuBarController.setData(Competition.getInstance().getSingleWeaponCompetition(WeaponType.SABRE));
-            else if (selectedIndex == 2)
-                menuBarController.setData(Competition.getInstance().getSingleWeaponCompetition(WeaponType.SMALL_SWORD));
-        });
 
     }
 
@@ -480,7 +483,10 @@ public class EliminationController implements Initializable {
         try {
             Round lastRound = Competition.getInstance().getSingleWeaponCompetition(wt).getLastRound();
 
-            ObservableList<CompetitionGroup> cgl = Competition.getInstance().getSingleWeaponCompetition(wt).getLastRound().getGroups();
+            ObservableList<CompetitionGroup> cgl = Competition.getInstance().
+                    getSingleWeaponCompetition(wt).
+                    getLastRound().
+                    getGroups();
             int rows = (cgl.size() % columns == 0) ? cgl.size() / columns : cgl.size() / columns + 1;
 
             /* Create rows and columns for group panel */

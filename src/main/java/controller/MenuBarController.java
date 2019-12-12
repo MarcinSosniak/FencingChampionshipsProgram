@@ -12,12 +12,15 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.*;
+import model.command.AddRoundCommand;
+import model.command.Command;
 import model.enums.TriRet;
 import util.Pointer;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class MenuBarController implements Initializable {
@@ -40,11 +43,15 @@ public class MenuBarController implements Initializable {
     Text modeStatus;
 
 
-    private WeaponCompetition wc;
+    WeaponCompetition wc;
     private Stage stage;
+    private EliminationController el;
 
-    public void setData(WeaponCompetition wc){
+    public void setData(WeaponCompetition wc, EliminationController el){
         this.wc = wc;
+        this.el = el;
+        System.out.println("in set data: " + wc.getWeaponType());
+
         modeStatus.setFill(javafx.scene.paint.Color.RED);
         modeStatus.setFont(new Font(20));
         if(AppMode.getMode().fSafe()) {
@@ -77,9 +84,20 @@ public class MenuBarController implements Initializable {
 
     @FXML
     public void undo(){
-        System.out.format("undo\n");
-        System.out.println(wc.getWeaponType());
+        System.out.format("UNDO TOOOOO in weapon " + wc.getWeaponType() + "\n");
+        for (Command c: wc.getcStack().getCommandStack()){
+            System.out.println(c);
+        }
+        System.out.format("UNDO END\n");
         wc.getcStack().undo();
+
+        List<Command> commands = wc.getcStack().getCommandStack();
+        Command lastCommand = commands.get(commands.size() - 1);
+
+
+        if (lastCommand.getClass().equals(AddRoundCommand.class))
+            el.setData();
+
     }
     @FXML
     public void redo(){

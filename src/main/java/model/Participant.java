@@ -41,6 +41,9 @@ public class Participant implements Serializable{
     private transient BooleanProperty fSmallSwordParticipant;
     private transient BooleanProperty fSabreParticipant;
     private transient BooleanProperty fRapierParticipant;
+    public transient StringProperty fSmallSwordParticipantSProperty;
+    public transient StringProperty fSabreParticipantSProperty;
+    public transient StringProperty fRapierParticipantSProperty;
     private transient Map<WeaponType, ObjectProperty<util.RationalNumber>> weaponPointsProperty;
     private Map<WeaponType,ObjectProperty<RationalNumber>> oldSeasonWeapoPointsPropety = new HashMap<>();
 
@@ -108,9 +111,7 @@ public class Participant implements Serializable{
         this.participantResult.set(participantResult);
     }
 
-    public void setName(String name) {
-        this.name.set(name);
-    }
+    public void setName(String name) { this.name.set(name); }
 
     public void setSurname(String surname) {
         this.surname.set(surname);
@@ -131,6 +132,8 @@ public class Participant implements Serializable{
             else this.weaponPointsProperty.put(WeaponType.SMALL_SWORD, new SimpleObjectProperty<>(new RationalNumber(0)));
 
             this.fSmallSwordParticipant.setValue(fSmallSwordParticipant);
+            if (fSmallSwordParticipant) this.fSmallSwordParticipantSProperty.setValue("\u2713");
+            else this.fSmallSwordParticipantSProperty.setValue("\u2718");
         }
     }
 
@@ -139,7 +142,10 @@ public class Participant implements Serializable{
             if (this.weaponPointsProperty.containsKey(WeaponType.SABRE) && !fSabreParticipant)
                 this.weaponPointsProperty.remove(WeaponType.SABRE);
             else this.weaponPointsProperty.put(WeaponType.SABRE, new SimpleObjectProperty<>(new RationalNumber(0)));
+
             this.fSabreParticipant.setValue(fSabreParticipant);
+            if (fSabreParticipant) this.fSabreParticipantSProperty.setValue("\u2713");
+            else this.fSabreParticipantSProperty.setValue("\u2718");
         }
     }
 
@@ -150,6 +156,8 @@ public class Participant implements Serializable{
             else this.weaponPointsProperty.put(WeaponType.RAPIER, new SimpleObjectProperty<>(new RationalNumber(0)));
 
             this.fRapierParticipant.setValue(fRapierParticipant);
+            if (fRapierParticipant) this.fRapierParticipantSProperty.setValue("\u2713");
+            else this.fRapierParticipantSProperty.setValue("\u2718");
         }
     }
 
@@ -250,8 +258,6 @@ public class Participant implements Serializable{
     }
 
     public int getTimesKiller() { return timesKiller; }
-
-    public void setTimesKiller(int timesKiller) { this.timesKiller = timesKiller; }
 
     public void incTimesKiller() { this.timesKiller++; }
 

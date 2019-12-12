@@ -1,6 +1,7 @@
 package model.command;
 
 import controller.EliminationController;
+import model.Main;
 import model.Participant;
 import model.WeaponCompetition;
 import model.enums.WeaponType;
@@ -24,6 +25,7 @@ public class CommandAddInjury implements Command {
     private boolean oldSabreInjury;
     private boolean oldFRapierInjury;
     private boolean oldFSmallSwordInjury;
+    private WeaponType wt;
 
     public CommandAddInjury(Participant p, List<WeaponType> weaponList, WeaponCompetition competition, EliminationController el) {
         this.participant = p;
@@ -32,12 +34,10 @@ public class CommandAddInjury implements Command {
         if (weaponList.contains(WeaponType.SABRE)) _fSabreInjury = true;
         if (weaponList.contains(WeaponType.RAPIER)) _fRapierInjury = true;
         if (weaponList.contains(WeaponType.SMALL_SWORD)) _fSmallSwordInjury = true;
+        this.wt = competition.getWeaponType();
     }
 
-
-    @Override
-    public void execute() {
-        System.out.println("in execute command add injury");
+    public void executeCommand(){
         oldSabreInjury = participant.isInjured(WeaponType.SABRE);
         oldFRapierInjury = participant.isInjured(WeaponType.RAPIER);
         oldFSmallSwordInjury = participant.isInjured(WeaponType.SMALL_SWORD);
@@ -57,6 +57,20 @@ public class CommandAddInjury implements Command {
         enableOrDisableRows(true);
     }
 
+
+    @Override
+    public void execute() {
+        // new injury
+        if (!oldFRapierInjury && _fRapierInjury)
+            Main.logger.info(wt + " Execute command: add rapier injury to " + participant.getName() + " " + participant.getSurname());
+        if (_fSabreInjury)
+            Main.logger.info(wt + " Execute command: add sabre injury to " + participant.getName() + " " + participant.getSurname());
+        if (_fSmallSwordInjury)
+            Main.logger.info(wt + " Execute command: add small sword injury to " + participant.getName() + " " + participant.getSurname());
+
+        executeCommand();
+    }
+
     @Override
     public void undo() {
         participant.setfRapierInjury(validInvocationChecker, oldFRapierInjury);
@@ -68,11 +82,24 @@ public class CommandAddInjury implements Command {
         }
         Collections.reverse(commandsUsedList);
         enableOrDisableRows(false);
+        if (!oldFRapierInjury && _fRapierInjury)
+            Main.logger.info(wt + " Undo command: add rapier injury to " + participant.getName() + " " + participant.getSurname());
+        if (_fSabreInjury)
+            Main.logger.info(wt + " Undo command: add sabre injury to " + participant.getName() + " " + participant.getSurname());
+        if (_fSmallSwordInjury)
+            Main.logger.info(wt + " Undo command: add small sword injury to " + participant.getName() + " " + participant.getSurname());
+
     }
 
     @Override
     public void redo() {
-        execute();
+        executeCommand();
+        if (!oldFRapierInjury && _fRapierInjury)
+            Main.logger.info(wt + " Redo command: add rapier injury to " + participant.getName() + " " + participant.getSurname());
+        if (_fSabreInjury)
+            Main.logger.info(wt + " Redo command: add sabre injury to " + participant.getName() + " " + participant.getSurname());
+        if (_fSmallSwordInjury)
+            Main.logger.info(wt + " Redo command: add small sword injury to " + participant.getName() + " " + participant.getSurname());
     }
 
     private void enableOrDisableRows(boolean ifDisable){
