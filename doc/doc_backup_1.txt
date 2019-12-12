@@ -1,0 +1,512 @@
+﻿\documentclass[polish,12pt]{aghthesis}
+% \documentclass[english,12pt]{aghthesis} dla pracy w języku angielskim. Uwaga, w przypadku strony tytułowej zmiana języka dotyczy tylko kolejności wersji językowych tytułu pracy. 
+
+% Szablon przystosowany jest do druku dwustronnego. 
+
+\usepackage{polski}
+\usepackage{url}
+\usepackage[T1]{fontenc}
+\usepackage[polish]{babel}
+\usepackage{graphicx}
+
+\author{ Marek Fudaliński, Marcin Sośniak, \\ Paulina Tuduj }
+
+\titlePL{System do organizacji i rozgrywania zawodów w Nowoczesnej Szermierce Klasycznej}
+\titleEN{Application for organizing and playing competitions in Modern Classical Fencing}
+
+\fieldofstudy{Informatyka}
+
+\supervisor{Łukasz Faber\ AGH}
+
+\date{\the\year}
+
+
+\begin{document}
+
+\maketitle
+
+\section{\SectionTitleProjectVision}
+\label{sec:cel-wizja}
+\emph{Przedmiotem naszej pracy inżynierskiej jest stworzenie programu/aplikacji, w języku Java, który umożliwia pełne przeprowadzenie zawodów w nowoczesnej szermierce klasycznej. Głównym celem jest wytworzenie niezawodnego, prostego i przejrzystego narzędzia, ułatwiającego organizację takich zawodów. W poniższym rodziale przedstawimy charakterystykę problemu, motywację jak i wizję końcowego produktu.}  % niniejsza linijka to tylko komentarz, który należy usunać
+
+\subsection{Charakterystyka Problemu}
+Problem dostrzegliśmy podczas uczestnistwa, głównie jako widownia, w zawodach. Zawody były przeprowadzane przy użyciu arkuszy wypełnianych ręcznie co miało znaczny wpływ na czas trwania zawodów oraz na 
+powtarzające się ludzkie błędy.
+\\Po konsultacji z jedną z zaprzyjaźnionych szkół nowoczesnej szermierki klasycznej (TUTAJ NAZWA SZKOŁY) wyciągneliśmy wnioski, że na rynku nie istnieje odpowiednie oprogramowanie umożliwijące przeprowadzenie takich zawodów.Oprogramowanie takie musiałoby zapewnić dostoswanie się do dynamicznie zmieniajęcego się regulaminu, elastyczność oraz odporność na błędy, w dużej mierze ludzkie. Jednocześnie takie narzędzie ma za zadanie szybko i czytelnie przekazywać najistotniejsze informację dla zawodników, takie jak prazydział do grup czy też aktualne wyniki walk. 
+
+\subsection{Przegląd istniejących rozwiązań}
+ %TODO
+    
+\subsection{Charakterystyka Zawodow}
+Całe zawody składają się z trzech konkurencji wyróżnionych ze względu na używaną w nich broń: 
+    \begin{itemize}
+	    \item Szable
+	    \item Szpadzie
+	    \item Rapierze z lewakiem (dalej zwanym rapierze)
+    \end{itemize}
+Na zawody na danej broni składają się 3 etapy:
+    \begin{itemize}
+	    \item Rundy eliminacyjne może występować tylko jedna
+	    \item Runda półfinałowa, rozgrywana na zasadach pucharowych omówionych w (TUTAJ DOPISAC GDZIE)
+	    \item Runda finałowa, również rozgrywane na zasadach pucharowych omówionych w (TUTAJ DOPISAC GDZIE)
+    \end{itemize}
+    
+\subsubsection{Charakterystyka eliminacji}
+W rundzie eliminacyjnej zawodnicy są arbitralnie za pomocą wybranej strategii, wyjątkiem mogą być killerzy opisani dalej, przydzielani do grup o stałym rozmiarze w obrębie obecnie rozgrywanej rundy w ramach zawodach na danej broni. O awansie do nasepnej rundy decyduje liczba punktów zdobytych z odbytych walk oraz oczywiście ilość zawodników mających znaleźć się w następnej rundzie, im więcej punktów tym większa szansa na awans do następnej rundy lub też półfinału. Jeżeli na podstawie punktacji nie jest możliwe wybranie dokładnej liczby wymaganych zawodników do następnej rundy to należy przeprowadzić dogrywki.
+
+\subsubsection{Charakterystyka punktacji walk}
+Każda z walk może zakończyć się na trzy sposoby:
+\begin{itemize}
+	    \item Wygraną pierwszego zawodnika z pary
+	    \item Wygraną drugie zawodnika z pary
+	    \item Trafieniem obopólnym, zwanym również dublem
+\end{itemize}
+Jeżeli wynikiem walki będzie zwyciestwo jednego z zawodników, to wygranemu należy przyznać dwa punkty, a przegranemu zero.
+\\Zakończenie walki trafieniem obopólnym skutkuje odjęciem jednego punkta uczestnikom danej walki.
+\\Jeżeli podczas walki jeden z zawodników zostanie kontuzjowany to wynik rozstrzygany jest na jego niekorzyść (przegraną).
+
+\subsubsection{Charakterystyka 'killerów'}
+ W etapie eliminacyjnym może się zdarzyć iż dla danego rozmaru grupy nie da sie uzyskac rownych grup zawodnikow. Np. dla 8 zawodników i rozmiaru grupy 3 w jednej z grup będzie brakowało zawodnika. Dla każdego zawodnika z nie pełnej grupy wtedy dobiera się zwodników  z innych grup zwanych "killerami", tak aby ta każda osoba z wybrakowanej grupy zawalczyła komplet walk (rozmiar grupy - 1 ). Punky killerów sa wtedy skalowane razy n/(n+k) gdzie n to rozmiar grupy w danej rundzie a k to ilość walk jako killer.
+ 
+\subsubsection{Charakterystyka rund pucharowych}
+W pierwszej kolejności rozgrywana jest runda półfinałowa składające się z dwóch walk. Sposób rozegranie rundy finałowej zależy od ich wyniku który może być następujący: 
+\begin{enumerate}
+	    \item Obie walki rozstrzygną się na korzyść jednego z zawodników
+	    \item Jedna z walk zakończy się trafieniem obopólnym, a druga wygraną jednego z zawodników
+	    \item Obie z walk zakończą się trafieniem obopólnym
+\end{enumerate}
+W pierwszym przypadku wygrani z obu walk walczą w rundzie finałowej o pierwsze miejsce, a przegrani o trzecie. Jeżeli walka foinałowa zakończy się wygraną jednego z zawodników to w oczywisty sposób zdobywa on pierwsze miejsce, a przegrany zajmuje drugie miejsce na podium. Wynikiem walki finałowej może być jednak trafienie obopólne, które to skutuje zajęciem drugiego miejsca przez obu zawodników.
+Walka o trzecie miejsce odbywa się analogicznie z tą różnicą, żę wygrany otrzymuje trzecie miejsce, przegrany czwarte albo w wyniku trafienie obopólnego obaj zawodnicy zajmują czwarte miejsce.
+\\Jeżeli tylko jedna z walk półfinałowych zakończyła się trafieniem obopółnym to runda finałowa nie zostaje rozegrana, a walką finałową staję się druga z walk. Zawodnicy walki z wynkiem trafienie obopólnego zajmują miejsce czwarte. W drugiej z walk zwycięzca otrzymuje pierwsze a przegrany drugie miejsce.
+\\Gdy obie walki półfinałowe zakończą się trafieniem obopólnym to wszyscy z uczestników zajmują ex aequo czwarte miejsce, co oznacza, że żaden uczestnik zawodów nie zdobył miejsca na podium.
+ 
+\subsubsection{Wyliczanie punktów końcowych}
+ Punkty zawodników za zawody (do klasyfikacji genralnej, i sezonowego pucharu trzech broni), sa wyliczane dla każdej broni na podstawie miejsca zajętego na danej broni. Punkty na danej broni = 101 - miejsce na danej broni liczac od 1. Czyli pierwsza osoba otrzymuje 100pkt druga 99 etc. Zawodnicy (oprócz pierwszej czwórki wyznaczanej przez rundy pucharowe) otrzymuja miejsca w kolejności zgodniej z ilościa punktów z walk na danej broni. Wielu zawodników może zajmować to samo miejsce. Jednak samo miejsce zależy od ilości zawodników przed nim. Zaużmy że mamy zawodników A,B,C. A i B maja 8pkt na szpadzie (i tylko oni), a C ma 7 punktów na szpadzie. Jeśli więc A i B zajma miejsce 14, to C zajmie miejsce 16 a nikt nie zajmie miejsca piętnastego. 
+ 
+\subsubsection{kategoria trzech broni}
+ Wynik zawodnika w kategorii trzech broni jest suma punktów końcowych zawodnika za każda z broni. Jeśli zawodnik nie startował za jego wynik punktowy przyjmuje się 0 punktów. 
+ 
+ \subsubsection{kategoria trzech broni dla kobiet}
+ Wynik zawodniczki w kategorii trzech broni jest suma punktów końcowych za każda z broni. Jeśli zawodniczka nie startowała za jej wynik punktowy przyjmuje się 0 punktów. W rankingu uwzględniane są jedynie kobiety.
+
+
+\subsection{Motywacja projektu}
+  Programy komputerowe ułatwiaja ogarnizacje i gromadzenie danych w ramach zawodów. Nowoczesna Szermierka Klasyczna  jest nową i dynamicznie rozwiającą się dyscyplina, wprowadzającą reguralne i częste zmainy w regulaminie, dotyczące również spodobu rozgrywania zawodów. Jendocześnie zasady oceniania walk są bardzo nietypowe w stosunku do innych sportów, miedzy innymi doposzczując zarówno częste remisy, jak reguarlne ujemne punkty. Organizator wymaga też, aby program mogła obsługiwać osobą po bardzo krótkim i prostym szkoleniu. Nie istnieje aktualnie żadne narzędzie które mogło by, w stopniu zadowalajacym organizatora, asystować w rozgrywaniu zawodów. Alternatywamą jest poprzedni program do rozgrywania zawdów Nowoczesnej Szermierki Klasycznej, oraz różnego rodzaju oskryptowane arkusze kalkulacyjne. Jednak poprzedni progam nie jest w stanie współpracować z nadchodzacymi zmianami, organizacji grup zawodników, a arkusze kalkulacyjne, rowniez wymagaja poprawek w samych skryptach, nie tylko w plikach konfigarcyjnych, oraz są nieintuicyjne w użyciu, co może prowadzić do błędów użytkownika.
+  
+  
+\subsection{Wizja produktu}\
+Celem naszego projektu jest utworzenie nieskomplikowanego, elastycznego, łatwopszenoszalnego programu. Dodatkowo otrzymany produkt ma być odporny na błędy użytkownika. Powinien charakteryzować się możliwością serializacji oraz zapisu w dowolnym momencie rozgrywek. Ma być konfigurowalny na wiele sposobów takich jak dobranie odpowiedniego sposobu rozlosowywania grup oraz konfiguracji ich wielkości.ma także umożliwić w łatwy sposób implementacji kolejnej strategii wcześniej nieprzewidzianej.
+\\Odbiorcą naszego produktu są szkoły nowoczesnej szermierki klasycznej.
+
+
+%   Program będzie napisany w jezyku Java 8. Interfejs będzie on w pełni konfigurowalny, zapewniajac też możliwość łatwej poprawki błędów użytkownika oraz prostego przywrócenia stanu w przypadku innej awarii. Same grupy będa zależne od pliku inicjalizacyjengo, a strategia dobierania zawodonikow do grup, będzie również wybierana z konfiguracji, oraz z latwą możliwoscią, zostanie również zapewniona łatwość implementacji kolejnych strategii. 
+  %serializacja
+  %savy
+  
+  
+  \subsection{Studium wykonalności} 
+  Wykorzystanym językiem programowania jest Java w wersji 8. Dokonaliśmy takiego wyboru z uwagi na znajomość tego języka oraz jego popularność oraz ze względu na stabilność, przenoszalność i  pewność platformy. Program ma być możliwy do uruchomienia na możliwie jak najbardziej podstawowej jednostce bez konieczności instalacji dodatkowego oprogramowania.
+  \\Do projektowania interfejsu użytkownika stwierdziliśmy, że najlepszym wyborem będzie JavaFx, ponieważ jest dobrze udokumnetowanym, natywnym, w pełni funkcjonalnym frameworkiem Javy.
+  
+ 
+ \subsection{Analiza zagrożeń}
+ Realizacja naszego projektu niesie ze sobą następujące ryzyka:
+ \begin{itemize}
+	\item W związku z brakiem odpowiedniego oprogramowania na rynku istnieje obawa, że program który mamy zamiar stworzyc jest dużo bardziej skompliwkowany niż się to z początku wydaje.
+	\item Reulamin przeprowadzania zawodów jest bardzo często modyfikowany z uwagi na niską dojrzzałość sportu, jest to bardzo młoda dyscyplina.
+	\item Program jest na tyle rozbudowany, że niesposób jednoznacznie przewidzieć jaka bedzie dokładana jego architektura co może spowodować wiele komplikacji oraz ograniczyć wymaganą elastyczność.
+	\item Kolejnym zagrożeniem może być to, że ostateczna wersja oprogramowania nie będzie zaspokajać potrzeb klienta. Klient może niezdawać sobie sprawy ze wszystkich wymagań dla takiego systemu.
+	\item W naszym zespole nie ma osoby mającej doświadczenie w projektowaniu oraz implementacji w pełni funkcjonalnego GUI, co może skutkować niefunkcjonalnym interfejsem użytkownika.
+\end{itemize}
+
+\section{\SectionTitleScope}
+\label{sec:zakres-funkcjonalnosci}
+% \emph{Kontekst użytkowania produktu (aktorzy, współpracujace systemy)
+%   oraz specyfikacja wymagań funkcjonalnych i niefunkcjonalnych.}  % niniejsza linijka to tylko komentarz, który należy usunać
+ Nasz produkt ma sciśle i precyzjnie wyznaczone zakresy zadań. Jest tworzony głównie z myślą o użytkownikach i prostocie użytkowania, niezawodności oraz elastyczności.
+ 
+ 
+\subsection{Charakterystyka użytkowników}
+
+\subsubsection{Operator niezaufany}
+Operator  niezaufany to użytkownik wchodzacy w bezpośrenia interaktuje z programem, nie uznanym za użykownika zaufanego. Należy przyjąć iż taki operator jest tylko wstępnie przeszkolony i nie powinnien mieć możliwośći dostępu do bardziej niebezpiecznych funkcji (jak arbitralne dodanie/ odjęcie puntkóW, czy też wyeliminowanie zawodnika z turnieju). Należy przyjać, że może on popełniać błedy, i musi się dać je w prosty sposób skorygować. Tryb w którym pracuje użytokwnik niezaufany nazywamy trybem automatycznym
+\subsubsection{Operator zaufany}
+Operator to użytkownik bezpośrenio interaktujacy z programem. Powinnien mieć dostęp do wszystkich funkcji. Jego działania także maja być odwracalne, ale nie jest istotne aby opcje cofnięcia niektórych zmian dało sie znaleść prosto. Tryb w którym pracuje użytokwnik bezpieczny nazywamy trybem administratora.
+\subsubsection{Zawodnik}
+Zawodnik jest użytkownikiem pasywnym, tylko odbiera inforacje z ekranu w postaci graficznej/tekstowej. 
+
+\subsection{Współpracujace Systemy}
+Program ma pracować w środowisku windows.
+
+\subsection{Wymagania funkcjonalne}
+Nasz program powinien udostępnić możliwość wykonania następujących czynności:
+
+\subsubsection{Uruchomienie z nowymi zawodami}
+Program powinien umożliwić utworzenie nowych zawodów oraz możliwość ich nazwania.
+
+\subsubsection{Wczytanie zawodów}
+Nasz program powinien umożliwić wczytanie wcześniej rozgrywanych zawodów.
+
+\subsubsection{Przygotowanie nowych zawodów}
+
+\subsubsection{Wczytanie zawodników z poprzednich zawodów}
+Program powinien zachowywać wszystkich zawodników którzy kiedykolwiek uczestniczyli w zawodach, aby zminimalizować potrzebny czas na dodawanie zawodników. W ten sposób wystarczy oznaczyć jedynie którzy ze wszystkich do tej pory uczestniczących zawodników biorą udział w obecnych zawodach oraz dodanie absolutie nowych jeszcze nigdy nie uczestniczących w żadnym dotychczasowym konkursie zawodników. Zawodnicy z nieważną licencją powinni byc dodatkowo oznaczeni.
+
+\subsubsection{Dodanie nowych zawodników}
+Dodanie nowego zawodnika wymaga podania następujących informacji:
+\begin{itemize}
+	\item imie
+	\item nazwisko
+	\item status sędziowski
+	\item płeć
+	\item informacje o uczestnistwiew zawodach na danej broni
+	\item date ważności licencji
+	\item grupe lokalizacyjną
+	\item nazwę klubu
+\end{itemize}
+Zakłada się, że imię i nazwisko zawodnika identyfikuje go jednoznacznie.
+
+\subsubsection{Edycja zawodników}
+Program ma umożliwić modyfikację wszystkich parametrów podawanych przy dodawaniu zawodnika, jednocześnie ma weryfikować w dalszym ciągu unikalność imienia i nazwiska.
+
+\subsubsection{Aktywacja/deaktywacja trybu administratora}
+Tryb administratora ma być chroniony hasłem i ma za zadanie przełączyć trybem przeznaczonym dla operatora zaufanego i operatora niezaufanego.
+
+\subsubsection{Zmiana hasła dla trybu administratora}
+Program ma udostępnić możliwośc zmiany hasła dostępu do trybu administratora z poziomu Interfesju użytkownika.
+
+\subsubsection{Równoległe przeprowadzanie zawodów na każdej z broni}
+Rozgrywki na danej broni w danych zawodach mają być przeprowadzane równolegle i niezależnie
+
+\subsubsection{Wybór strategii rozlosowywania zawodników}
+Wybór ma być dostępny jedynie w trybie administratora, dla operatora zaufanego, w przeciwnym przypadku trym rozlosowanie jest tryb domyślny.
+
+\subsubsection{Udostępnić możliwość konfiguracji zawodów przy pomocy odpowiedniego pliku}
+Plik konfiguracyjny ma mieć wpływ na domyślne sterowanie zawodów:
+\begin{itemize}
+    \item Ilość zawodników przechodzących do konkretnej rundy
+    \item Która runda z kolei jest runda półfinałową
+    \item Rozmiar grup w poszczególnych rundach
+    \item Wybór strategiii rozlosowywania zawodników do grup
+    \item Niezaszyfrowane hasło dostępu do trybu bezpiecznego
+\end{itemize}
+
+\subsubsection{Dodatkowe funkcjonalności związane z trybem administratora}
+\begin{itemize}
+    \item Ręczne wpisanie ilu zawodników ma przejść do następnej rundy eliminacyjnej
+    \item Ręczne zadanie rozmiaru grup w następnej rundzie eliminacyjnej
+    \item Odgórne dodanie/odjęcie punktów zawodnikowi na danej bronii
+    \item Oznaczenie zawodnika jako kontuzjowanego
+    \item Wybranie, którzy zawodnicy mający równy(najniższy akceptowalny do awansu) wynik punktowy mają znaleźć się w następnej rundzie
+\end{itemize}
+
+\subsubsection{Sedziowie nie mogą być killerami}
+Program ma zagwarantować, że żaden sędzia nie będzie wybrany jako killer w danej rundzie.
+
+\subsubsection{Minimalizacja częstości bycia killerem}
+Program ma nie dopuścić do sytuacji, w której istnije zawodnik(nie będaćy sędzią), który na przestrzeni zawodów był killerem n+2 razy podczas gdy istnieje zawodnik(niebędący sędzią) któy był killerem jedynie n razy.
+
+\subsubsection{Logowanie operacji wykonanych przez operatora}
+Program ma zapewnić logowanie historii akcji wykonanych przez operatora i zapisywać to do odpowiedniego pliku.
+
+\subsubsection{Wyświetlenie nowododanych wyników}
+Po dodaniu wyniku jakiej kolwiek walki, powinna pojawic sie informacja o tej walce na ekranie dla zawodnikow, do czasu zakonczenia rundy, badĽ do czasu dodania nowego wyniku.
+
+\subsubsection{Dostarczenie pełnego command stacka}
+Program ma zapewnić w pełni funkcjonalny command stack rozdzielony między poszczególnymi zawodami (każde zawody posiadają własny command stack)
+
+\subsubsection{Autozapis}
+Program ma zapewnić automatyczny zapis po każdym rozlosowaniu nowej rundy. Stan command stack'a ma być zachowany.
+
+\subsubsection{Eksport wyników}
+Program ma umożliwić eksport wyników z danych zawodów.
+
+
+
+
+\subsection{Wymagania niefunkcjonalne}
+
+	\subsubsection{Odporność na błędu użytkownika}
+	Dziłania użytkownika powinny być możliwie odwracalne.Co oznacza, że żadne działanie użytkownika nie może nie odwracalnie zniszczyć stanu aplikacji. 
+	\subsubsection{Odporność na błędy niezależne od użytkownika}
+	Np. Wyłączenie się komputera w dowolnym momencie. 
+	
+	\subsubsection{Intuicyjny i przejrzysty interfejs}
+	Program ma charakteryzować się jak najprostrzym i czytelnym interfejsem, jego estetyka jest pozostawiona na drugim planie
+	
+	\subsubsection{Możliwość odtowrzenia działań użytkownika}
+	
+	\subsubsection{Możliwość 'włamania'  się do systemy administratora na wypadek utraty hasła.}
+	Hasło powinno być łatwe do odzyskania. Jego egzystencja ma zasugerować użytkownikowi, że zmiany które wpraowadza mogą w znaczy sposób wpłynąć na zawody.
+	\subsubsection{Napisanie elastycznego kodu}
+	Rozumiemy przez to napisanie kodu, który umożliwia dalszy rozwój i rozszerzenie programu.
+	\subsection{Maksymalna funkcjonalność GUI}
+	Program ma być maksymalnie czytelny i funkcjonalny z punktu widzenia użytkownika
+	
+\subsection{Wzorcowy wygląd GUI}
+Wzorcowy wygląd GUI otrzymaliśmy od klienta. W Założeniu nie był on wiążący, a jedynie generalnym szkicem wyglądu poszczególnych ekranów.
+
+\subsubsection{Ekran startowy}
+    \includegraphics[width=17cm,height=14cm,h]{GUI_prototype/01_ekran_startowy.png}
+
+\subsubsection{Ekran z lista zawodników}
+    \includegraphics[width=17cm,height=20cm, left]{GUI_prototype/02_dodawanie_zawodnikow.png}
+
+
+\subsubsection{Ekran dodawania zawodników}
+    \includegraphics[width=17cm, center]{GUI_prototype/03_dodawanie_zawodnikow_-_dodaj_nowego_zawodnika.png}
+
+
+\subsubsection{Ekran edycji zawodników}
+    \includegraphics[width=17cm, center]{GUI_prototype/04_dodawanie_zawodnikow_-_edytuj_zawodnika.png}
+
+
+
+\subsubsection{Ekran eliminacji zawodników}
+    \includegraphics[width=18cm, height= 24 cm, center]{GUI_prototype/05_eliminacje.png}
+
+
+\subsubsection{Widok dla zawodników}
+    \includegraphics[width=18cm,  height= 21 cm cm,center]{GUI_prototype/08_widok_dla_zawodnikow.png}
+
+
+
+\subsubsection{Ekran zmiany hasła}
+    \includegraphics[width=17cm,  height= 21 cm, center]{GUI_prototype/07_zmiana_hasla.png}
+
+
+
+\subsubsection{Ekran wyników}
+    \includegraphics[width=17cm, height= 21 cm, center]{GUI_prototype/09_eliminacje_-_wyniki.png}
+
+
+\subsubsection{Ekran trybu administratora}
+    \includegraphics[width=17cm, center]{GUI_prototype/06_tryb_administratora.png}
+
+
+
+
+\section{\SectionTitleRealizationAspects}
+\label{sec:wybrane-aspekty-realizacji}
+\emph{Przyjęte założenia, struktura i zasada działania systemu,
+  wykorzystane rozwiazania technologiczne wraz z uzasadnieniem
+  ich wyboru, istotne mechanizmy i zastosowane algorytmy.} % niniejsza linijka to tylko komentarz, który należy usunać
+
+\subsection{Stos technologiczny}
+\subsubsection{Java}
+Zaczynając nasz projekt każdy z nas miał już wcześniej styczność z tym językiem programowania. Korzystanie z niej nie spowodowało nam wiele kłopotów, co zawdzięczamy w dużej mierze bardzo dobrej i z powodzeniem aktualizowanej dokumentacji.
+\subsubsection{JavaFx}
+Posłużyła nam do stworzenia widoków oraz połączenia ich wraz z modelami.
+\\Każda osoba w projekcie miała pewną styczność z JavaFx jednak była to znajomość na podstawowym poziomie. Narzędzie to poznaliśmy znacznie lepiej w trakcie tworzenia tego projektu. Tak jak w przypadku Javy dokumentacja była na wysokim poziomie co umożliwiło nam dość sprawne przyswojenie tego frameworku.Dodatkowo mieliśmy pewność, że będzie on umożliwiał realizację naszych założeń związanych z GUI bez większych komplikacji ponieważ to natywny framework Javy.
+\subsubsection{Gson}
+Posłużył nam do serializacji pliku konfiguracyjnego oraz  serializacji początkowych zawodników.
+Zdecydowaliśmy się na niego z uwagi na znajomość działania tej biblioteki oraz jej efektywność. Dodatkowo umożliwiła nam ona prostą serializację klasy bez konieczności implementacji dodatkowych funkcji. Pozwolił nam również na serializowanie jedynie niezbędnych danych (takich jak imie czy nazwisko) bez konieczności serializacji zbędnych (np. czy uczstnik brał udział w zawodach na szable).
+
+\subsubsection{JUnit4}
+Posłużyłam nam do przeprowadzenia testów.
+Wybraliśmy go z uwagi na znajomość tego frameworku, kompatybilność z Java.
+\subsubsection{Gradle}
+Posłużył nam do pobieranie odpowiednich bibliotek oraz utworzenie pliku wykonywalnego w postaci JAR'a (Java ARchive). Zdecydowaliśmy się na jego użycie aby zachować spójność użytych bibliotek wewnątrz projektu. Dodatkowo mieliśmy z tym narzędziem niewielką styczność w trakcie kursu Technologie Obiektowe.
+
+\subsubsection{Mockito}
+Posłużył nam do symulacji obiektów w testach.
+\subsection{Przyjęte założenia}
+\subsubsection{Ilość zawdoników}
+Maksymalna liczba zawodników startujących  w jednych zawów jest ograniczona do 50. Jednocześnie nie przyjeliśmy tego za ostrą granice, system był tworzony z  myślą o większej ilości zawodników, ale przekroczenie 50 zawodników może powodować nie optymalne wyświetlanie się niektórych sekcji. Jednocześnie przyjeliśmy założenie, że nie będzie ich dużo więcej, co zmniejsza nacisk na wydajności niektórych operacji.
+\subsubsection{Undo/redo dla kazdej broni osobno}
+Ze wględu na wygodę użytkownia przyjelismy że możliwość cofnięcia jest użyteczna tylko dla widocznej zakładki broni. Nigdy nie może  być tracony.
+\subsubsection{Płynność działania systemu}
+\subsubsection{Estetyka i funkcjonalność}
+Realizacja interfejsu użytkownika została oparta w znacznej mierze na prototypach otrzymanych od klienta. Zostały dodane pewne usprawnienia czy też brakujące widoki, jak wybór zwycieskich zawodników w dogrywkach. Warto zaznaczyć, że tworząc interfejs użytkownika skupiliśmy się na minimaliźmie oraz czytelności.
+
+\subsubsection{Pliki konfiguracyjne}
+Przyjeliśmy, że sensowniej będzie stworzyć 2 a nie jeden plik konfiguracyjny. Dodatkowy plik konfiguracyjny będzie mógł nadpisywać  drugi, więc użytkownik będzie mógł łatwo podzielić konfigurację na tą część którą rzadko zmienia (np. która runda jest rundą finałową) oraz te które zmienia częsciej (np.ilości zawodnikó w rundach).
+\subsubsection{Hasło}
+Hasło nie musi być dokładnie ukryte, aby jego odzyskanie było relatywnie proste. Ze wględu też na punkt następny nie ma szczególnego sensu dobrego ukrywania hasla (np. Sól + SHA 256). Zabezpieczenie hasłem stanowi bardziej sugestie dla użytkownika niż zabezpieczenie do złamania.
+\subsubsection{Nie złośliwość użytkownika}
+Zakładamy, że użytkownik się może dość często pomylić, ale nie robi tego z pełną celowością, tzn. nie ma sensu zabezpieczania systemu przez celowymi atakami użytkownika, ze wględu na otoczenie w jakim będzie wykorzystywany. Nie zakładamy istnienia prostej drogi aby dać jakiemuś z zawodników przewagę(oprócz logowanego dodwania punktów), która nie byłaby łatwo wykrywalna, nie tylko poprzez odczyt stanu systemu, ale także przez kontrole innych zawodników czy sędziów.
+\subsubsection{Nie domiar zawodników}
+Przyjeliśmy, że jeśli zawodników jest mniej niż zapotrzebowanie na daną rundę (z wyłączeniem rund półfinałowych i finałowych) to nie jest to blędem i poprostu do następnej rundy przejdą wszyscy możliwi zawodnicy. Takie podejście znacząco ułatwi tworzenie konfiguracji, ponieważ część rund można zostawić pierwszą runde ustawioną na za dużą liczbe zawodników i nie konfigurować tego za kążdym razem. 
+
+\subsection{Struktura systemu}
+\subsubsection{Krótki opis wewnętrznej struktury}
+\begin{itemize}
+    \item Competition singleton bedacy korzeniem struktur danych w systemie. Zawiera liste zawodnikow oraz po jednym obiekcie WeaponCompetition na każdą broń
+    \item WeaponCompetition obiekt przechowujacy informacje dotyczacej zawodów na danej broni w tym liste zawodnikow, stos rozkazów (obiekt CommandStack) oraz listę rund (obiektów Round)
+    \item Round obiekt przechowujacy informacje o rundzie, przechowuje listę zawodników w danej rundzie oraz listę grup (Obiekt CompetitionGroup)
+    \item CompetitionGroup obiekt zawierajacy tylko liste walk (obiektów Fight) w danej grupie
+    \item Fight obiekt zawierjacy dwóch zawodników oraz wynik ich walki. Posiada tez zwrotną referencje na runde w której się znajduje.
+    \item Participant obiekt zawodnika. Obiekty te tworzy się albo wczytujac zapis albo wczytujac listę zawodników i dodając poprzez działania użytkownika. Gdy przejdzie się już do własciwego rozgrwania zawodów każdy zawodnik ma dokladnie jeden obiekt i nie są one juz  tworzone, duplikowane ani niszczone aż do końca pracy systemu. 
+\end{itemize}
+\subsubsection{Realizacja serializacji}
+\subsubsection{Realizacja rozlosowywania grup}
+Strategia rozlosowania grupy przyjmuje dane rudny (rozmiar grupy liste zawodników, strategie rozlosowywania killerów), oraz przygotowuje zbiór grop, które obowiązywały w danej rundzie.Aktualnie, są 4 strategie losowania zawodników do grup, z czego dwie są do wyboru przez użytkownika. Strategie są wybieranie z puli z strategi i nowe mogą być bardzo łatwo dodane, jednak wymaga to dodania ich do kodu. Zapewnia to przyszłą rozszerzalność systemu.
+\begin{itemize}
+    \item DEFAULT czyli strategia czysto losowa. 
+    Zawodnicy danej rundy są ustawiani w losowej kolejności, a następnie dodawni do danych grup pokolei (czyli są tworzone walki każdy z każdym). Ostatnia grupa jeśli jest niepełna, to zawodnicy którzy w niej są walczą każdy z każdym oraz każdemu z zawodników są przypisywani killerzy korzystając z danej strategii rozlosowywania killerów. 
+    \item FINAL czyli strategia rozlosowywania dla rund finałowych i półfinałowych, przypisuje zawodników w kolejnośći w jakiej są do dwóch grup dwuosobowych.
+    \item FIRST specjalna stretegia która  zwraca pustą listę grup. Używana do rozlosowania pierwszej rundy.
+    \item SPACING strategia z rozstawieniem. Założenia rozstawienia:
+    \begin{itemize}
+        \item Najlepsi zawodnicy nie mogą ze sobą walczyć
+        \item Poziom grup powinnien byc mniejwięcej równy
+    \end{itemize}
+    Sortuje się zawodników po ich wynikach z poprzedniego sezonu na danej broni (najlepsi jako pierwsi).Przyjmmy roboczo 'grupę' jako zbiór zawodników których walki każdy z każdym stworzą obiekt CompetitionGroup.
+    Działanie kiedy nie ma killerów:\\
+    \includegraphics[width=14cm, height= 10cm,left]
+    {spacing_strat_no_killers_diagram.png}\\
+    Schemat jest prosty w przypadku kiedy liczba zawodników jest podzielna przez rozmiar grupy. Jeśli jendak nie jest musimy zmienic zachowanie, pamiętając o tym, że tylko jedna grupa może być nie pełna i potrzebować killerów aby zminimalizować liczbę walk killerów. Jednoczesnie, jako że jest to rozstawienie nie losowe, nie może np. zawsze ostania albo pierwsza grupa zawierać killerów musi to być losowe. Jednoczesnie wymaga sie zeby załozenia byly jak najbardziej spełnione. \\
+    Algorytm więc dokonuje w identyczny sposób rozstawienie tyle ile może, czyli do każdej grupy zostanie dodane k osób, gdzie k = ilość zawodników mod(rozmiar grupy).\\
+    \includegraphics[width=14cm, height= 10cm,left]{spacing_strat_killers_1.png}\\
+    W następnym kroku algorytm losuje jedną z grup i oznacza ją jako ignorowaną. Potem rozstawia zawodników do nie ignorowanych grup, kontynując od tej samej grupy na której skończył. Jeżeli ta grupa została uznana za ignorowaną i była pierwszą grupą zaczyna od drugiej grupy, a jeśli była ostatnią to zaczyna od przed ostatniej\\
+    \includegraphics[width=14cm, height= 10cm,left]{spacing_strat_killers_2.png}\\
+    Z grup z pełnym składem są tworzone CompetitionGroup'y poprzez wygenrowanie walk każdy z każdym. Dla nie pelnej gruby dobiera się walki każdy z każdym, oraz walki killerowe zgodnie ze strategią doboru killerów. Czyli będą to pseudolosowi zawodnicy z innych grup.
+\end{itemize}
+\subsubsection{Dobór killerów}
+Killerami są zawodnicy z innych grup niż ta do której dobiera się walki killerowe. Sędziowie głowni nie mogą być killerami.Dobór killerów jest również pod wzorcem strategią, żeby umożliwić szybką rozszerzalność systemu. Aktualnie jest jedna strategia doboru killerów, Która priorytetyzuje równe rozłożenie killerów, czyli minimalizacje częstotliwości sytuacji w której dany zawodnik jest killerem na jakiejkolwiek z broni.Algorytm usuwa z kopi listy zawodników wszystkich tych, którzy są oznaczeni jako sędziowie głowni.Następnie sortuje się zawodników po tym ile razy byli killerami rosnąco. Następnie jeśli zawodników z najniższym wynikiem jest więcej niż potrzebnych, losuje się ich. W przeciwnym wypadku wybiera się wszystkich z najniższym wynikiem. I sprawdza się kolejny wynik czy jest więcej niż nowa wymagana mniejsza. I tak długo 
+\subsubsection{Przebieg zawodów}
+\subsubsection{Command stack}
+\subsubsection{Export wyników}
+\subsubsection{Odczytywanie Konfiguracji}
+Przykładowy plik konfiguracyjny
+\begin{verbatim}
+// THIS IS A COMMENT
+# THIS IS ALSO A COMMENT
+[POINTS]
+    WIN 2
+    LOSE 0
+    DOUBLE -1
+[SABRE]
+    FINAL_ROUND_NUMBER 3
+[RAPIER]
+    FINAL_ROUND_NUMBER 3
+[SMALL_SWORD]
+    FINAL_ROUND_NUMBER 3
+
+[RAPIER_ROUND_1]
+    GROUP_SIZE 3
+    PARTICIPANTS_COUNT 50
+    STRATEGY SPACING
+
+[RAPIER_ROUND_2]
+    GROUP_SIZE 3
+    PARTICIPANTS_COUNT 6
+    STRATEGY DEFAULT
+
+[SABRE_ROUND_1]
+    GROUP_SIZE 5
+    PARTICIPANTS_COUNT 50
+    STRATEGY SPACING
+
+[SABRE_ROUND_2]
+    GROUP_SIZE 5
+    PARTICIPANTS_COUNT 10
+    STRATEGY DEFAULT
+
+[SMALL_SWORD_ROUND_1]
+    GROUP_SIZE 5
+    PARTICIPANTS_COUNT 50
+    STRATEGY SPACING
+
+[SMALL_SWORD_ROUND_2]
+    GROUP_SIZE 5
+    PARTICIPANTS_COUNT 10
+    STRATEGY DEFAULT
+
+[SECURITY]
+    PASSWORD admin
+[PATHS]
+    PARTICIPANTS_LIST participants.json
+    
+\end{verbatim}
+Charakterystyka Plik konfiguracyjnego i jego obsługi:
+\begin{itemize}
+    \item linie zaczynającę się (pomijając spacje) od '\#' lub '//' są traktowane jako komentarze i są ignorowane. Ignorowane są również linie składające się z samych bialych znaków.
+    \item Wcięcia w pliku są opcjonalne, ale zalecane.
+    \item Wszystkie łancuchy znaków, nazwy tagi i wartości które chemy traktować jako jeden ciąg nie mogą zawierać spacji. Wyrażenia w nawiasach kwadratowych jest tagiem. Wszystkie zmienne do nastepnego tagu należa do niego. Zmienna składa się z 2 ciągłych (niezawierajacych spacji) łańcuchów znaków oddzielonych przynajmniej jednym białym znakiem.
+    \item Każda zmienna ma swoją nazwe i tag do którego należy. Zmienne mogą być typu całkowitoliczbowego, Logiczne (T lub Y oznacza wartość logiczną prawda, N lub F oznacza wartość logiczną fałszywą), oraz łancuch znaków bez spacji. Zmienna musi mieć wartość aby plik był poprawny.
+    \item Konfiguracja jest ładowana na starcie programu z pliku do pamięci. W ten sposób nie ma potrzeby na dużą liczbe odczytów z pliku, co w niektórych przapadkach mogło być czasochłonne. Jednakże takie podejscie uniemożliwia zmiane konfiguracji na działającym systemie. Singleton odpowiadający za przechowywanie i dostęp do zapisanych ustawień jest serializowany to postaci .json i z takiej odczytywany, a więc mając minimalną więdzę można zapisać projekt, zmodyfikować zapisany stan obiektu i wczytać już z nową konfiguracją. Takie działanie celowo nie jest proste, ale jest wykonalne bez modyfikacji binarnej plików. Modyfikacja ustawień w trakcie działania systemu, w trakcie w znaczeniu logicznym, jest niebezpieczna i może doprowadzić do niemożliwości skoczńczenia zawodów, albo innych problemów. 
+    \item 
+    Lista poszczególnych zmiennych i ich charakterystyk:
+    \begin{itemize}
+        \item 
+            tag [POINTS]
+            \begin{itemize}
+                \item WIN ilość punktów które otrzymuje zawodnik wygrywając walkę, przy standardowej liczbie walk.
+                \item LOSE ilość punktów którą zawodnik otrzymje przegrywając walkę, przy standarwoej liczbie walk. 
+                \item DOUBLE ilość punktów która zawodnik otrzymyje kiedy jego walka skończy się trafieniem obopólnym, przy standorwej liczbie walk. 
+            \end{itemize}
+        \item 
+            tag [SABRE]
+            \begin{itemize}
+                \item 
+                FINAL\_ROUND\_NUMBER która runda jest rundą finałową dla zawodów szablowych.
+            \end{itemize}
+        \item 
+            tag [RAPIER]
+            \begin{itemize}
+                \item
+                FINAL\_ROUND\_NUMBER która runda jest rundą finałową dla zawodów rapierowych.
+            \end{itemize}
+        \item 
+            tag [SABRE]
+            \begin{itemize}
+                \item 
+                FINAL\_ROUND\_NUMBER która runda jest rundą finałową dla zawodów szpadowych.
+            \end{itemize}
+        \item tag [RAPIER\_ROUND\_X] gdzie X jest liczbą. Zmienne pod tym tagiem określają zachowanie danej rundy rapierowej o numerze X licząc od 1.
+            \begin{itemize}
+                \item GROUP\_SIZE rozmiar pojedynczje grupy w tej rundzie
+                \item PARTICIPANTS\_COUNT maksymalna liczba zawodników w tej rundzie
+                \item STRATEGY Nazwa strategii rozlosowywania zawodników. 
+            \end{itemize}
+        \item tag [SABRE\_ROUND\_X] gdzie X jest liczbą. Zmienne pod tym tagiem określają zachowanie danej rundy szablowej o numerze X licząc od 1.
+            \begin{itemize}
+                \item GROUP\_SIZE rozmiar pojedynczje grupy w tej rundzie
+                \item PARTICIPANTS\_COUNT maksymalna liczba zawodników w tej rundzie
+                \item STRATEGY Nazwa strategii rozlosowywania zawodników. 
+            \end{itemize}
+        \item tag [SMALL\_SWORD\_ROUND\_X] gdzie X jest liczbą. Zmienne pod tym tagiem określają zachowanie danej rundy szpadowej o numerze X licząc od 1.
+            \begin{itemize}
+                \item GROUP\_SIZE rozmiar pojedynczje grupy w tej rundzie
+                \item PARTICIPANTS\_COUNT maksymalna liczba zawodników w tej rundzie
+                \item STRATEGY Nazwa strategii rozlosowywania zawodników. 
+            \end{itemize}
+        \item tag [SECURITY]
+            \begin{itemize}
+                \item PASSWORD poczatkowe haslo chroniace dostepu do trybu administratora
+            \end{itemize}
+        \item tag [PATHS]
+            \begin{itemize}
+                \item PARTICIPANTS\_LIST scieżka do pliku zawierającego listę zawodników.
+            \end{itemize}
+        
+    \end{itemize}
+    
+\end{itemize}
+
+
+
+\section{\SectionTitleWorkOrganization}
+\label{sec:organizacja-pracy}
+\emph{Struktura zespołu (role poszczególnych osób), krótki opis i
+  uzasadnienie przyjętej metodyki i/lub kolejności prac, planowane i
+  zrealizowane etapy prac ze wskazaniem udziału poszczególnych
+  członków zespołu, wykorzystane praktyki i narzędzia w zarzadzaniu
+  projektem.}  % niniejsza linijka to tylko komentarz, który należy usunać
+
+\section{\SectionTitleResults}
+\label{sec:wyniki-projektu}
+\emph{Wskazanie wyników projektu (co konkretnie udało się uzyskać:
+  oprogramowanie, dokumentacja, raporty z testów/wdrożenia, itd.), prezentacja wyników
+  i ocena ich użyteczności (jak zostało to zweryfikowane --- np.\ wnioski
+  klienta/użytkownika, zrealizowane testy wydajnościowe, itd.),
+  istniejace ograniczenia i propozycje dalszych prac.}  % niniejsza linijka to tylko komentarz, który należy usunać
+
+% o ile to możliwe proszę uzywać odwołań \cite w konkretnych miejscach a nie \nocite
+
+\nocite{artykul2011,ksiazka2011,narzedzie2011,projekt2011}
+
+\bibliography{bibliografia}
+
+\end{document}
