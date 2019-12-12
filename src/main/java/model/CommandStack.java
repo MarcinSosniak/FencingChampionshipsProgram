@@ -34,18 +34,15 @@ public class CommandStack implements Serializable {
     }
 
     public void undo() {
-        if(commandStack.size() < 1)
-            throw  new IllegalStateException("nothing to undo");
-        System.out.println("xxxxx");
-        for (int i=0; i<commandStack.size(); i++) System.out.println(commandStack.get(i));
-        System.out.println("here");
-        System.out.println(commandStack.size()-1);
-        Command command = commandStack.get(commandStack.size()-1);
+        for (int i = 0; i < commandStack.size(); i++) System.out.println(commandStack.get(i));
+        System.out.println(commandStack.size() - 1);
+        Command command = commandStack.get(commandStack.size() - 1);
         System.out.println("TRYING TO UNDO COMMAND: " + command);
         command.undo();
-        commandStack.remove(commandStack.size()-1);
+        commandStack.remove(commandStack.size() - 1);
         undoStack.add(command);
     }
+
 
     public List<Command> getCommandStack() {
         return commandStack;

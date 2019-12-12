@@ -84,32 +84,38 @@ public class MenuBarController implements Initializable {
 
     @FXML
     public void undo(){
-        System.out.format("UNDO TOOOOO in weapon " + wc.getWeaponType() + "\n");
-        for (Command c: wc.getcStack().getCommandStack()){
-            System.out.println(c);
+        if (wc.getcStack().getCommandStack().size() > 1){
+            List<Command> commands = wc.getcStack().getCommandStack();
+            Command lastCommand = commands.get(commands.size() - 1);
+
+            wc.getcStack().undo();
+            if (lastCommand.getClass().equals(AddRoundCommand.class))
+                el.setData();
         }
-        System.out.format("UNDO END\n");
-        wc.getcStack().undo();
-
-        List<Command> commands = wc.getcStack().getCommandStack();
-        Command lastCommand = commands.get(commands.size() - 1);
-
-
-        if (lastCommand.getClass().equals(AddRoundCommand.class))
-            el.setData();
-
+        else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Nie można cofnąć");
+            alert.show();
+        }
     }
+
+
     @FXML
     public void redo(){
         System.out.format("redo\n");
+        if (wc.getcStack().getUndoStack().size() > 0){
+            List<Command> undoCommands = wc.getcStack().getUndoStack();
+            Command lastUndoCommand = undoCommands.get(undoCommands.size() - 1);
+            wc.getcStack().redo();
 
-        List<Command> undoCommands = wc.getcStack().getUndoStack();
-        Command lastUndoCommand = undoCommands.get(undoCommands.size() - 1);
-        wc.getcStack().redo();
-
-        if (lastUndoCommand.getClass().equals(AddRoundCommand.class))
-            el.setData();
+            if (lastUndoCommand.getClass().equals(AddRoundCommand.class))
+                el.setData();
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Nie można powtórzyć");
+            alert.show();
+        }
     }
+
     @FXML
     public void exportResults(){
         System.out.format("exportResults");
