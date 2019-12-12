@@ -108,7 +108,8 @@ public class FightDrawStrategyPicker {
             {
                 return STRATEGY_NAMES.FINAL;
             }
-            throw new IllegalStateException("Invalid string given '" +name+"'");
+            System.out.println("WARNING got STRATEGY NAME THAT IS valid defaulting to DEFAULT. got '"+name+"'");
+            return STRATEGY_NAMES.DEFAULT;
         }
 
         public static List<STRATEGY_NAMES> listAllShowed()

@@ -79,12 +79,8 @@ public class WelcomeController implements Initializable {
         catch (HumanReadableFatalError humanReadableFatalError) { humanReadableFatalError.printStackTrace(); }
 
         String password = "";
-        try {
-            password = ConfigReader.getInstance().getStringValue("SECURITY", "PASSWORD");
-        }
-        catch (IllegalStateException ex){
-            ConfigReader.getInstance().setStringValue("SECURITY", "PASSWORD", "");
-        }
+        password = ConfigReader.getInstance().getStringValue("SECURITY", "PASSWORD","admin");
+
 
 
         Competition.init(

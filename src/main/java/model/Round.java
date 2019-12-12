@@ -99,28 +99,23 @@ public class Round implements Serializable {
         return totalFights==playedFights;
     }
 
-    public void incPlayedFights()
+    void incPlayedFights()
     {
         playedFights++;
         System.out.println("incremented played fights now: "+Integer.toString(playedFights) + " all: "+Integer.toString(totalFights));
     }
 
-    public void decPlayedFights()
+    void decPlayedFights()
     {
         playedFights--;
         System.out.println("decremented played fights now: "+Integer.toString(playedFights) + " all: "+Integer.toString(totalFights));
     }
 
 
-    public void prepareForFinals(List<CompetitionGroup> cg){
+    void prepareForFinals(List<CompetitionGroup> cg){
         this.groups.clear();
         this.groups.addAll(cg);
 
-    }
-
-    public Round setMyWeaponCompetition(WeaponCompetition myWeaponCompetition) {
-        this.myWeaponCompetition = myWeaponCompetition;
-        return this;
     }
 
 

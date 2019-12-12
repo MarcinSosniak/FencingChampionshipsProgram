@@ -266,7 +266,8 @@ public class EliminationController implements Initializable {
 
             tableRow.setOnMouseClicked(event -> {
                 Participant p = (Participant) tv.getSelectionModel().getSelectedItem();
-
+                if(AppMode.getMode().fSafe())
+                    return;
                 if (event.getButton().equals(MouseButton.SECONDARY) && !tableRow.isEmpty()) {
                     //tableRow.fireEvent(myEvent);
                     System.out.format("Right click on add injury " + wt + "\n");

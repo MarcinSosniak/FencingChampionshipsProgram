@@ -112,7 +112,6 @@ public class CompetitorsViewController implements Initializable {
         }
 
         for (WeaponCompetition weaponCompetition: Competition.getInstance().getWeaponCompetitions()){
-            // start first round
             if (weaponCompetition.getLastRound() == null) weaponCompetition.startFirstRound();
 
         }
@@ -168,7 +167,8 @@ public class CompetitorsViewController implements Initializable {
         menuBarController.adminMode.setDisable(true);
         menuBarController.changePassword.setDisable(true);
 
-        try(Scanner scanner = new Scanner(new File("src/main/resources/participants.json"))){
+        String fileName = ConfigReader.getInstance().getStringValue("PATHS","PARTICIPANTS_LIST","participants.json");
+        try(Scanner scanner = new Scanner(new File(fileName))){
             String json_arr = scanner.useDelimiter("\\A").next();
             Competition.getInstance().getParticipantsObservableList().addAll(PersistenceManager.deserializeFromJsonArray(json_arr,Participant.class,false));
         }

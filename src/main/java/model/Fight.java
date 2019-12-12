@@ -128,9 +128,10 @@ public  class Fight implements Serializable {
     }
 
 
-    // ???????
-    public Command getCommandSetLooser(Participant p) /**does NOT. I REPEAT DOES NOT PUT IN COMMAND STACK. FOR USE IN OTHER COMMANDS ONLY**/
+
+    public Command getCommandSetLooser(ValidInvocationChecker checker,Participant p)
     {
+        Objects.requireNonNull(checker);
         return new CommandAddBattleResult(this,p,true);
     }
 

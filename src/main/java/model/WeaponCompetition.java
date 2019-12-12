@@ -153,7 +153,7 @@ public class WeaponCompetition implements Serializable {
             if (g.fInGroup(p)) {
                 for (Fight fight : g.getFightsList()) {
                     if (!fight.fHasResult() && fight.fIn(p)) {
-                        out.add(fight.getCommandSetLooser(p));
+                        out.add(fight.getCommandSetLooser(checker,p));
                     }
                 }
             }
@@ -462,15 +462,15 @@ public class WeaponCompetition implements Serializable {
             fRoundReady = true;
         }
 
-        public RoundCreator(List<Participant> participants) {
-            this.fSemiFinal = fSemiFinal;
-            if (rounds.size() > 0)
-                throw new IllegalStateException("use this to construct only the first round");
-            int groupSize = ConfigReader.getInstance().getIntValue(ConfigUtils.getWeaponTag(weaponType), "START_GROUP_SIZE");
-            participantsForRound.addAll(participants);
-            _round = new Round(WeaponCompetition.this, 0, groupSize, participantsForRound,  new FightDrawStrategyPicker(stratName),false,false);
-            fRoundReady = true;
-        }
+//        public RoundCreator(List<Participant> participants) {
+//            this.fSemiFinal = fSemiFinal;
+//            if (rounds.size() > 0)
+//                throw new IllegalStateException("use this to construct only the first round");
+//            int groupSize = ConfigReader.getInstance().getIntValue(ConfigUtils.getWeaponTag(weaponType), "START_GROUP_SIZE");
+//            participantsForRound.addAll(participants);
+//            _round = new Round(WeaponCompetition.this, 0, groupSize, participantsForRound,  new FightDrawStrategyPicker(stratName),false,false);
+//            fRoundReady = true;
+//        }
     }
     public ObservableList<Participant> getParticipantsObservableList(){ return participants; }
 
