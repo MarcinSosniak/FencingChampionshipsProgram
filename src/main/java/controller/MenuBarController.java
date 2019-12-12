@@ -102,7 +102,13 @@ public class MenuBarController implements Initializable {
     @FXML
     public void redo(){
         System.out.format("redo\n");
+
+        List<Command> undoCommands = wc.getcStack().getUndoStack();
+        Command lastUndoCommand = undoCommands.get(undoCommands.size() - 1);
         wc.getcStack().redo();
+
+        if (lastUndoCommand.getClass().equals(AddRoundCommand.class))
+            el.setData();
     }
     @FXML
     public void exportResults(){

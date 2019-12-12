@@ -11,15 +11,11 @@ import model.enums.WeaponType;
 import model.exceptions.NoSuchWeaponException;
 import util.RationalNumber;
 
-import javax.swing.text.html.ImageView;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.security.InvalidParameterException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import model.command.ValidInvocationChecker;
 import java.util.*;
 
@@ -53,6 +49,9 @@ public class Participant implements Serializable{
     private transient BooleanProperty fRapierInjury = new SimpleBooleanProperty(false);
     private transient BooleanProperty fSmallSwordInjury = new SimpleBooleanProperty(false);
 
+    static String tick = "\u2713";
+    static String cross = "\u2718";
+
     public Participant(String name, String surname, String location, String locationGroup, JudgeState judgeState, Date licenceExpDate
             ,int oldPointsSmallSword , int oldPointsSabre,int oldPointsRapier){
         this.name            = new SimpleStringProperty(name);
@@ -63,8 +62,16 @@ public class Participant implements Serializable{
         this.licenseExpDate  = new SimpleObjectProperty<>(licenceExpDate);
 
         this.fSmallSwordParticipant = new SimpleBooleanProperty(false);
+        this.fSmallSwordParticipantSProperty = new SimpleStringProperty(cross);
+
         this.fSabreParticipant = new SimpleBooleanProperty(false);
+        this.fSabreParticipantSProperty = new SimpleStringProperty(cross);
+
+
         this.fRapierParticipant = new SimpleBooleanProperty(false);
+        this.fRapierParticipantSProperty = new SimpleStringProperty(cross);
+
+
         this.weaponPointsProperty = new HashMap<>();
         participantResult = new SimpleObjectProperty<>(new ParticipantResult(this));
         oldSeasonWeapoPointsPropety.put(WeaponType.RAPIER,new SimpleObjectProperty<>(new RationalNumber(oldPointsSmallSword)));
@@ -75,15 +82,18 @@ public class Participant implements Serializable{
     /** Updating only transcient fields because when we read from json we still want to read them */
     public void update(){
         this.timesKiller = 0;
-//        this.fSmallSwordParticipant = new SimpleBooleanProperty(false);
-//        this.fSabreParticipant = new SimpleBooleanProperty(false);
-//        this.fRapierParticipant = new SimpleBooleanProperty(false);
         this.weaponPointsProperty = new HashMap<>();
 
         /** to do remove */
         this.fSmallSwordParticipant = new SimpleBooleanProperty(true);
+        this.fSmallSwordParticipantSProperty = new SimpleStringProperty(tick);
+
         this.fSabreParticipant = new SimpleBooleanProperty(true);
+        this.fSabreParticipantSProperty = new SimpleStringProperty(tick);
+
         this.fRapierParticipant = new SimpleBooleanProperty(true);
+        this.fRapierParticipantSProperty = new SimpleStringProperty(tick);
+
         this.weaponPointsProperty.put(WeaponType.RAPIER,new SimpleObjectProperty<RationalNumber>(new RationalNumber()));
         this.weaponPointsProperty.put(WeaponType.SABRE,new SimpleObjectProperty<RationalNumber>(new RationalNumber()));
         this.weaponPointsProperty.put(WeaponType.SMALL_SWORD,new SimpleObjectProperty<RationalNumber>(new RationalNumber()));
@@ -92,6 +102,7 @@ public class Participant implements Serializable{
         this.fSabreInjury = new SimpleBooleanProperty(false);
         this.fSmallSwordInjury = new SimpleBooleanProperty(false);
         this.fRapierInjury = new SimpleBooleanProperty(false);
+
     }
     /*
     public Date createDateFromString(String dateS) throws ParseException{
@@ -132,8 +143,8 @@ public class Participant implements Serializable{
             else this.weaponPointsProperty.put(WeaponType.SMALL_SWORD, new SimpleObjectProperty<>(new RationalNumber(0)));
 
             this.fSmallSwordParticipant.setValue(fSmallSwordParticipant);
-            if (fSmallSwordParticipant) this.fSmallSwordParticipantSProperty.setValue("\u2713");
-            else this.fSmallSwordParticipantSProperty.setValue("\u2718");
+            if (fSmallSwordParticipant) this.fSmallSwordParticipantSProperty.setValue(tick);
+            else this.fSmallSwordParticipantSProperty.setValue(cross);
         }
     }
 
@@ -144,8 +155,9 @@ public class Participant implements Serializable{
             else this.weaponPointsProperty.put(WeaponType.SABRE, new SimpleObjectProperty<>(new RationalNumber(0)));
 
             this.fSabreParticipant.setValue(fSabreParticipant);
-            if (fSabreParticipant) this.fSabreParticipantSProperty.setValue("\u2713");
-            else this.fSabreParticipantSProperty.setValue("\u2718");
+
+            if (fSabreParticipant) this.fSabreParticipantSProperty.setValue(tick);
+            else this.fSabreParticipantSProperty.setValue(cross);
         }
     }
 
@@ -156,8 +168,8 @@ public class Participant implements Serializable{
             else this.weaponPointsProperty.put(WeaponType.RAPIER, new SimpleObjectProperty<>(new RationalNumber(0)));
 
             this.fRapierParticipant.setValue(fRapierParticipant);
-            if (fRapierParticipant) this.fRapierParticipantSProperty.setValue("\u2713");
-            else this.fRapierParticipantSProperty.setValue("\u2718");
+            if (fRapierParticipant) this.fRapierParticipantSProperty.setValue(tick);
+            else this.fRapierParticipantSProperty.setValue("cross");
         }
     }
 

@@ -51,6 +51,7 @@ public class CommandStack implements Serializable {
         return commandStack;
     }
 
+    public ArrayList<Command> getUndoStack() { return undoStack; }
 
     @Override
     public boolean equals(Object obj) {
