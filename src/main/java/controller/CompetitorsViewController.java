@@ -53,11 +53,11 @@ public class CompetitorsViewController implements Initializable {
     TableColumn<Participant, JudgeState> refereeStatus;
 
     @FXML
-    TableColumn<Participant, String> smallSwordPoints;
+    TableColumn<Participant, RationalNumber> smallSwordPoints;
     @FXML
-    TableColumn<Participant, String> sabrePoints;
+    TableColumn<Participant, RationalNumber> sabrePoints;
     @FXML
-    TableColumn<Participant, String> rapierPoints;
+    TableColumn<Participant, RationalNumber> rapierPoints;
 
     @FXML
     TableColumn<Participant, Date> licence;
@@ -193,16 +193,12 @@ public class CompetitorsViewController implements Initializable {
         fSabreParticipant.setCellValueFactory(param -> (param.getValue().fSabreParticipantSProperty));
         refereeStatus.setCellValueFactory(dataValue -> dataValue.getValue().judgeStateProperty());
 
-        sabrePoints.setCellValueFactory(dataValue -> {
-                return new SimpleStringProperty(dataValue.getValue().getOldSeasonPointsForWeaponProperty(WeaponType.SABRE).get().toString());
-        });
 
-        rapierPoints.setCellValueFactory(dataValue -> {
-                return new SimpleStringProperty(dataValue.getValue().getOldSeasonPointsForWeaponProperty(WeaponType.RAPIER).get().toString());
-        });
-        smallSwordPoints.setCellValueFactory(dataValue -> {
-                return new SimpleStringProperty(dataValue.getValue().getOldSeasonPointsForWeaponProperty(WeaponType.SMALL_SWORD).get().toString());
-        });
+        sabrePoints.setCellValueFactory(dataValue -> dataValue.getValue().getOldSeasonPointsForWeaponProperty(WeaponType.SABRE));
+        rapierPoints.setCellValueFactory(dataValue -> dataValue.getValue().getOldSeasonPointsForWeaponProperty(WeaponType.RAPIER));
+        smallSwordPoints.setCellValueFactory(dataValue -> dataValue.getValue().getOldSeasonPointsForWeaponProperty(WeaponType.SMALL_SWORD));
+
+
 
         licence.setCellValueFactory(dataValue -> dataValue.getValue().licenseExpDateProperty());
         licence.setCellFactory(column -> {

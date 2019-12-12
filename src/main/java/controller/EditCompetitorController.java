@@ -31,12 +31,6 @@ public class EditCompetitorController implements Initializable {
     @FXML
     CheckBox fFemale;
     @FXML
-    TextField oldSmallSword;
-    @FXML
-    TextField oldRapier;
-    @FXML
-    TextField oldSabre;
-    @FXML
     CheckBox competitorFSmallSword;
     @FXML
     CheckBox competitorFSabre;
@@ -50,6 +44,13 @@ public class EditCompetitorController implements Initializable {
     Button cancelButton;
     @FXML
     DatePicker datePicker;
+    @FXML
+    TextField lastSeasonSabrePoints;
+    @FXML
+    TextField lastSeasonRapierPoints;
+    @FXML
+    TextField lastSeasonSmallSwordPoints;
+
 
 
     public void setData(Participant p){
@@ -74,6 +75,12 @@ public class EditCompetitorController implements Initializable {
             competitorFRapier.setSelected(toEdit.fRapierParticipantProperty().getValue());
             competitorFSabre.setSelected(toEdit.fSabreParticipantProperty().getValue());
             competitorFMainReferee.setSelected(toEdit.getJudgeState() == JudgeState.MAIN_JUDGE);
+
+            lastSeasonRapierPoints.setText(toEdit.getOldSeasonPointsForWeaponProperty(WeaponType.RAPIER).get().toString());
+            lastSeasonSabrePoints.setText(toEdit.getOldSeasonPointsForWeaponProperty(WeaponType.SABRE).get().toString());
+            lastSeasonSmallSwordPoints.setText(toEdit.getOldSeasonPointsForWeaponProperty(WeaponType.SMALL_SWORD).get().toString());
+
+
         }
     }
 
@@ -88,18 +95,6 @@ public class EditCompetitorController implements Initializable {
         String name = competitorName.getText().trim();
         String surname = competitorSurname.getText().trim();
 
-        int iOldSmallSword =0;
-        int iOldSabre = 0;
-        int iOldRapier =0;
-        try{ iOldSmallSword=Integer.parseInt(oldSmallSword.getText().trim()); } catch (Exception ex) {iOldSmallSword=0;}
-        try{ iOldSabre=Integer.parseInt(oldSabre.getText().trim()); } catch (Exception ex) {iOldSmallSword=0;}
-        try{ iOldRapier=Integer.parseInt(oldRapier.getText().trim()); } catch (Exception ex) {iOldSmallSword=0;}
-        if( iOldSmallSword > 900) iOldSmallSword = 900;
-        if( iOldSmallSword < 0) iOldSmallSword = 0;
-        if( iOldSabre > 900) iOldSabre = 900;
-        if( iOldSabre < 0) iOldSabre =0;
-        if( iOldRapier > 900) iOldRapier = 900;
-        if( iOldRapier < 0) iOldRapier = 0;
 
         if(Participant.checkFCanEdit(this.toEdit,name,surname) && !competitorName.getText().trim().equals("") && !competitorSurname.getText().trim().equals("")){
             toEdit.setName(competitorName.getText().trim());
@@ -111,9 +106,10 @@ public class EditCompetitorController implements Initializable {
             toEdit.setfRapierParticipant(competitorFRapier.isSelected());
             toEdit.setfSabreParticipant(competitorFSabre.isSelected());
             toEdit.setJudgeState(competitorFMainReferee.isSelected() ? JudgeState.MAIN_JUDGE : JudgeState.NON_JUDGE);
-            toEdit.setOldSeasonWeapoPointsPropety(WeaponType.SMALL_SWORD,iOldSmallSword);
-            toEdit.setOldSeasonWeapoPointsPropety(WeaponType.SABRE,iOldSabre);
-            toEdit.setOldSeasonWeapoPointsPropety(WeaponType.RAPIER,iOldRapier);
+
+            toEdit.setOldSeasonWeapoPointsPropety(WeaponType.SMALL_SWORD, Integer.valueOf(lastSeasonSmallSwordPoints.getText()));
+            toEdit.setOldSeasonWeapoPointsPropety(WeaponType.SABRE, Integer.valueOf(lastSeasonSabrePoints.getText()));
+            toEdit.setOldSeasonWeapoPointsPropety(WeaponType.RAPIER, Integer.valueOf(lastSeasonRapierPoints.getText()));
             LocalDate ld = datePicker.getValue();
             Calendar c =  Calendar.getInstance();
             c.set(ld.getYear(), ld.getMonthValue() -1 , ld.getDayOfMonth());

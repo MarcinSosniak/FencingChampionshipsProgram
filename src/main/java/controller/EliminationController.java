@@ -163,6 +163,7 @@ public class EliminationController implements Initializable {
         }
 
 
+
     }
 
     public void setData() {
@@ -846,6 +847,7 @@ public class EliminationController implements Initializable {
 
         /** Preparing GridPane for results */
         GridPane gridPane = new GridPane();
+     //   gridPane.set();
 
         RowConstraints row1 = new RowConstraints();
         RowConstraints row2 = new RowConstraints();

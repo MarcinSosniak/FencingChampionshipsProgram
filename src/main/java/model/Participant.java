@@ -185,6 +185,7 @@ public class Participant implements Serializable{
     public void setOldSeasonWeapoPointsPropety(WeaponType wt,int points)
     {
         oldSeasonWeapoPointsPropety.get(wt).setValue(new RationalNumber(points));
+
     }
 
     /** For final results required */

@@ -4,6 +4,7 @@
 
 <!--ten rosnie-->
 <GridPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.ParticipantViewController" fx:id="mainPane" style="-fx-border-color: green; -fx-alignment: center;">
+
     <padding>
         <Insets bottom="3"/>
     </padding>

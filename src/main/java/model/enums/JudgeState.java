@@ -6,9 +6,8 @@ public enum JudgeState {
     @Override
     public String toString() {
         switch(this) {
-            // sędzia główny --> for correct displaying
-            case MAIN_JUDGE: return "s"+"\u0119"  +"dzia g" + "\u0142" + "\u00F3" + "wny";
-            case NON_JUDGE: return "\u2718";
+            case MAIN_JUDGE: return "\u2713";     //tick
+            case NON_JUDGE: return "\u2718";      //cross
         }
         return "";
     }

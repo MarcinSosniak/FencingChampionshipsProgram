@@ -5,7 +5,10 @@
 
 <GridPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="controller.EliminationController">
     <fx:include fx:id="menuBar" source="menuBar.fxml" GridPane.rowIndex="0" GridPane.vgrow="ALWAYS" GridPane.hgrow="ALWAYS" fillHeight="true"/>
-    <TabPane fx:id="tabPane" GridPane.rowIndex="1" GridPane.vgrow="SOMETIMES" GridPane.hgrow="ALWAYS" >
+    <TabPane fx:id="tabPane" GridPane.rowIndex="1" GridPane.vgrow="SOMETIMES" GridPane.hgrow="ALWAYS"
+
+
+    >
         <padding>
             <Insets bottom="3"/>
         </padding>
