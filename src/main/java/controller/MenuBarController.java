@@ -94,6 +94,8 @@ public class MenuBarController implements Initializable {
         }
         else {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Nie można cofnąć");
+            Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            alertStage.getIcons().add(ApplicationController.image);
             alert.show();
         }
     }
@@ -112,6 +114,8 @@ public class MenuBarController implements Initializable {
         }
         else {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Nie można powtórzyć");
+            Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            alertStage.getIcons().add(ApplicationController.image);
             alert.show();
         }
     }
@@ -134,6 +138,8 @@ public class MenuBarController implements Initializable {
             if(p.get()==TriRet.FALSE)
             {
                 Alert alert= new Alert(Alert.AlertType.ERROR,"Błędne hasło");
+                Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+                alertStage.getIcons().add(ApplicationController.image);
                 alert.show();
                 return;
             }

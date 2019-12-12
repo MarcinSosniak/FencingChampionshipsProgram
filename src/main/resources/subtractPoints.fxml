@@ -14,7 +14,7 @@
         <Spinner fx:id="spinner" min="0" max="10" initialValue="1" amountToStepBy="0.5" layoutX="58.0" layoutY="87.0">
         </Spinner>
         <Button fx:id="cancelButton" onAction="#cancelSubtractPoints" layoutX="23.0" layoutY="154.0" mnemonicParsing="false" text="anuluj" />
-        <Button fx:id="confirmButton" onAction="#subtractPoints" layoutX="214.0" layoutY="154.0" mnemonicParsing="false" text="ok" />
+        <Button fx:id="confirmButton" onAction="#subtractPoints" layoutX="214.0" layoutY="154.0" mnemonicParsing="false" text="OK" />
         <Text layoutX="77.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ile punktów odjąć?" wrappingWidth="136.80329132080078">
             <font>
                 <Font size="13.0" />

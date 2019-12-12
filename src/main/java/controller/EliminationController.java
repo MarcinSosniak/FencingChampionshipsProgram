@@ -433,6 +433,8 @@ public class EliminationController implements Initializable {
             try { root = loader.load(); }
             catch (IOException ex) { System.out.println("error while loading add points");}
             Stage childStage = new Stage();
+            childStage.setTitle("Dodaj punkty zawodnikowi");
+            childStage.getIcons().add(ApplicationController.image);
             childStage.setResizable(false);
             childStage.setScene(new Scene(root));
             childStage.initModality(Modality.APPLICATION_MODAL);
@@ -457,6 +459,8 @@ public class EliminationController implements Initializable {
             try { root = loader.load(); }
             catch (IOException ex) { System.out.println("error while subtracting points");}
             Stage childStage = new Stage();
+            childStage.setTitle("Odejmij punkty zawodnikowi");
+            childStage.getIcons().add(ApplicationController.image);
             childStage.setResizable(false);
             childStage.setScene(new Scene(root));
             childStage.initModality(Modality.APPLICATION_MODAL);
