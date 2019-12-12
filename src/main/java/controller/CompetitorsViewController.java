@@ -80,6 +80,7 @@ public class CompetitorsViewController implements Initializable {
             root = loader.load();
         } catch (IOException e) { e.printStackTrace(); }
         ApplicationController.primaryStage.getScene().setRoot(root);
+        ApplicationController.primaryStage.setTitle("Zawody MCF Aramis");
     }
 
     @FXML
@@ -127,6 +128,8 @@ public class CompetitorsViewController implements Initializable {
             EliminationController ec = (EliminationController) loader.getController();
             ec.setData();
             ApplicationController.primaryStage.getScene().setRoot(root);
+            ApplicationController.primaryStage.setTitle("Eliminacje zawody");
+
         } catch (Exception e) {
             e.printStackTrace();
             System.out.format("Cannot load main FXML\n");

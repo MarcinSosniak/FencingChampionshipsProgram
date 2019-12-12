@@ -105,6 +105,7 @@ public class WelcomeController implements Initializable {
         catch (IOException e) { e.printStackTrace(); }
 
         ApplicationController.primaryStage.getScene().setRoot(root);
+        ApplicationController.primaryStage.setTitle("Wybór zawodników startujących w zawodach");
     }
 
     @Override

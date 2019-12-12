@@ -53,14 +53,14 @@ public class MenuBarController implements Initializable {
         System.out.println("in set data: " + wc.getWeaponType());
 
         modeStatus.setFill(javafx.scene.paint.Color.RED);
-        modeStatus.setFont(new Font(20));
+        modeStatus.setFont(new Font(18));
         if(AppMode.getMode().fSafe()) {
-            adminMode.textProperty().setValue("Admin Mode");
+            adminMode.textProperty().setValue("Tryb administratora");
             modeStatus.setText("");
         }
         else {
-            adminMode.textProperty().setValue("Safe Mode");
-            modeStatus.setText("  Admin Mode");
+            adminMode.textProperty().setValue("Tryb bezpieczny");
+            modeStatus.setText("   Tryb administratora");
         }
         exportResults.setDisable(true);
     }
@@ -128,12 +128,12 @@ public class MenuBarController implements Initializable {
             Pointer<TriRet> p = new Pointer<>();
             p.set(TriRet.NO_VALUE);
             Stage stageroni = ApplicationController.getApplicationController().renderPasswordGet("/passwordGet.fxml",
-                    "gimme password", true, Competition.getInstance().getPassword(),p);
+                    "Podaj hasło", true, Competition.getInstance().getPassword(),p);
             stageroni.getIcons().add(ApplicationController.image);
             stageroni.showAndWait();
             if(p.get()==TriRet.FALSE)
             {
-                Alert alert= new Alert(Alert.AlertType.ERROR,"Not matching password");
+                Alert alert= new Alert(Alert.AlertType.ERROR,"Błędne hasło");
                 alert.show();
                 return;
             }
@@ -141,12 +141,12 @@ public class MenuBarController implements Initializable {
                 return;
 
             AppMode.getMode().setMode(AppMode.APP_MODE.ADMIN);
-            adminMode.textProperty().setValue("Safe Mode");
-            modeStatus.setText("  Admin Mode");
+            adminMode.textProperty().setValue("Tryb bezpieczny");
+            modeStatus.setText("   Tryb administratora");
         }
         else {
             AppMode.getMode().setMode(AppMode.APP_MODE.SAFE);
-            adminMode.textProperty().setValue("Admin");
+            adminMode.textProperty().setValue("Tryb administratora");
             modeStatus.textProperty().setValue("");
         }
     }
@@ -154,6 +154,8 @@ public class MenuBarController implements Initializable {
     @FXML
     public void changePassword(){
         stage = new Stage();
+        stage.setTitle("Zmień hasło");
+        stage.getIcons().add(ApplicationController.image);
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/passwordChange.fxml"));
 
         Parent root = null;

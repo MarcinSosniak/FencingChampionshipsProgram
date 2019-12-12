@@ -72,7 +72,7 @@ public class AddInjuryController {
     }
 
     private void update(){
-        this.text.setText("Are you sure that you want to remove \n" + p.getName() + " " + p.getSurname() + " from competition?\n");
+        this.text.setText("Czy na pewno chcesz usunąć zawodnika \n" + p.getName() + " " + p.getSurname() + " z zawodów?\n");
 
         if (p.fSabreParticipantProperty().getValue()) SabreInjury.setSelected(false);
         else SabreInjury.setDisable(true);

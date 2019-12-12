@@ -9,11 +9,11 @@
 
 <GridPane prefHeight="288.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddInjuryController">
     <Text fx:id="text" style="-fx-font-size: 15" textAlignment="JUSTIFY" wrappingWidth="300" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP" />
-    <CheckBox fx:id="SabreInjury" text="Sabre Injury" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" />
-    <CheckBox fx:id="SmallSwordInjury" text="Small Sword Injury" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP" />
-    <CheckBox fx:id="RapierInjury" text="Rapier Injury" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="TOP" />
-    <Button fx:id="cancelButton" onAction="#cancel" style="-fx-background-color: grey" text="Cancel --" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="5" GridPane.valignment="BOTTOM" />
-    <Button fx:id="confirmButton" onAction="#confirm" style="-fx-background-color: green" text="Add ++" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="BOTTOM" />
+    <CheckBox fx:id="SabreInjury" text="szabla" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" />
+    <CheckBox fx:id="SmallSwordInjury" text="szpada" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP" />
+    <CheckBox fx:id="RapierInjury" text="rapier" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="TOP" />
+    <Button fx:id="cancelButton" onAction="#cancel" style="-fx-background-color: grey" text="anuluj" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="5" GridPane.valignment="BOTTOM" />
+    <Button fx:id="confirmButton" onAction="#confirm" style="-fx-background-color: green" text="OK" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="BOTTOM" />
 
 
     <rowConstraints>

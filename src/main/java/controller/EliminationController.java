@@ -115,6 +115,7 @@ public class EliminationController implements Initializable {
             Scene newScene = new Scene(loader.load());
             outputStage.setScene(newScene);
             outputStage.setTitle("Widok dla uczestnikow");
+            outputStage.getIcons().add(ApplicationController.image);
             outputStage.initModality(Modality.NONE);
             participantViewController = (ParticipantViewController) loader.getController();
             participantViewController.setData(null,null);
@@ -226,10 +227,10 @@ public class EliminationController implements Initializable {
         tv.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tv.setItems(weaponCompetitionParticipants.get(wt));
 
-        TableColumn<Participant, String> name = new TableColumn<Participant, String>("Name");
-        TableColumn<Participant, String> surname = new TableColumn<Participant, String>("Surname");
-        TableColumn<Participant, RationalNumber> points = new TableColumn<>("Points");
-        TableColumn<Participant, String> group = new TableColumn<Participant, String>("Group");
+        TableColumn<Participant, String> name = new TableColumn<Participant, String>("imię");
+        TableColumn<Participant, String> surname = new TableColumn<Participant, String>("nazwisko");
+        TableColumn<Participant, RationalNumber> points = new TableColumn<>("punkty");
+        TableColumn<Participant, String> group = new TableColumn<Participant, String>("grupa");
 
         name.setCellValueFactory(x -> x.getValue().nameProperty());
         surname.setCellValueFactory(x -> x.getValue().surnameProperty());
@@ -271,7 +272,7 @@ public class EliminationController implements Initializable {
                 if (event.getButton().equals(MouseButton.SECONDARY) && !tableRow.isEmpty()) {
                     //tableRow.fireEvent(myEvent);
                     System.out.format("Right click on add injury " + wt + "\n");
-                    Stage childScene = ApplicationController.getApplicationController().renderAddInjury("/addInjury.fxml", "Add_Injury", true, p, wt, this);
+                    Stage childScene = ApplicationController.getApplicationController().renderAddInjury("/addInjury.fxml", "Dodaj obrażenia", true, p, wt, this);
                     childScene.getIcons().add(ApplicationController.image);
                     childScene.showAndWait();
 
@@ -318,7 +319,7 @@ public class EliminationController implements Initializable {
 
         Button calculateResultButton = new Button();
         calculateResultButton.setMaxSize(1000, 1000);
-        calculateResultButton.setText("CalculateResults");
+        calculateResultButton.setText("policz wyniki");
         calculateResultButton.setOnAction(x -> {
             /* TODO: !!! check if all fights has selected score !!! */
             System.out.format("Check implementation\n");
@@ -347,7 +348,7 @@ public class EliminationController implements Initializable {
 
         Button nextRoundButton = new Button();
         nextRoundButton.setMaxSize(1000, 1000);
-        nextRoundButton.setText("Next Round");
+        nextRoundButton.setText("następna runda");
         nextRoundButton.setOnAction(x -> {
             System.out.format("Implement by hand\n");
 
@@ -419,7 +420,7 @@ public class EliminationController implements Initializable {
 
         Button addPoints = new Button();
         addPoints.setMaxSize(1000, 1000);
-        addPoints.setText("Add Points");
+        addPoints.setText("dodaj punkty");
         //addPoints.setStyle("-fx-background-color: green; -fx-padding: 10;");
 
         addPoints.setOnAction(x -> {
@@ -444,7 +445,7 @@ public class EliminationController implements Initializable {
 
         Button substractPoints = new Button();
         substractPoints.setMaxSize(1000, 1000);
-        substractPoints.setText("SubstractPoints");
+        substractPoints.setText("odejmij punkty");
         //substractPoints.setStyle("-fx-background-color: grey; -fx-padding: 10;");
 
         substractPoints.setOnAction(x -> {
@@ -510,10 +511,10 @@ public class EliminationController implements Initializable {
             }
 
             /* Add group label */
-            Label text = new Label("Groups");
+            Label text = new Label("GRUPY");
             text.setTextAlignment(TextAlignment.CENTER);
             text.setStyle("-fx-alignment: CENTER;");
-            text.setFont(new Font(20));
+            text.setFont(new Font(18));
             GridPane.setConstraints(text, 0, 0, 3, 1);
             //GridPane.setFillWidth(text,true);
             GridPane.setHalignment(text, HPos.CENTER);
@@ -529,7 +530,7 @@ public class EliminationController implements Initializable {
                 tableForGroup.setSelectionModel(null);
                 GridPane.setConstraints(tableForGroup, groupsAdded % columns, currentRow);
                 tableForGroup.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-                TableColumn<Participant, String> tc = new TableColumn("GROUP " + competitionGroup.getGroupID());
+                TableColumn<Participant, String> tc = new TableColumn("grupa " + competitionGroup.getGroupID());
                 tc.setCellValueFactory(x -> new SimpleStringProperty(x.getValue().nameProperty().getValue() + " " + x.getValue().surnameProperty().getValue()));
                 tableForGroup.getColumns().addAll(tc);
                 tableForGroup.setItems(competitionGroup.getGroupParticipants());//
@@ -638,10 +639,10 @@ public class EliminationController implements Initializable {
             }
 
             /* Add result label */
-            Label text = new Label("Fight Results");
+            Label text = new Label("WYNIKI WALK");
             text.setTextAlignment(TextAlignment.CENTER);
             text.setStyle("-fx-alignment: CENTER;");
-            text.setFont(new Font(20));
+            text.setFont(new Font(18));
             GridPane.setConstraints(text, 0, 0, columns, 1);
             GridPane.setHalignment(text, HPos.CENTER);
             GridPane.setFillHeight(text, true);
@@ -677,9 +678,9 @@ public class EliminationController implements Initializable {
                 firstParticipant.setStyle("-fx-alignment: CENTER;");
                 secondParticipant.setStyle("-fx-alignment: CENTER;");
 
-                firstParticipant.setText("First");
+                firstParticipant.setText("pierwszy");
                 doubleColumn.setText("X");
-                secondParticipant.setText("Second");;
+                secondParticipant.setText("drugi");;
 
                 firstParticipant.setCellValueFactory(f -> f.getValue().firstParticipantStringProperty());
                 secondParticipant.setCellValueFactory(f -> f.getValue().secondParticipantStringProperty());
@@ -837,7 +838,12 @@ public class EliminationController implements Initializable {
         /* Add content to tab*/
         Tab tabToRet = new Tab();
         tabToRet.setClosable(false);
-        tabToRet.setText(wt.toString());
+        switch (wt){
+            case SABRE: { tabToRet.setText("szabla"); break; }
+            case SMALL_SWORD: { tabToRet.setText("szpada"); break; }
+            case RAPIER: { tabToRet.setText("rapier"); break; }
+        }
+
         tabToRet.setContent(mainTabPane);
 
         return tabToRet;

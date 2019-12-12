@@ -17,23 +17,28 @@
         </ImageView>
         <Text style="-fx-font-size: 18" text="Witaj w programie do przeprowadzania zawdow MCF Nowoczesna Szermierka Klasyczna!" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
         <GridPane GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
-            <Text style="-fx-font-size: 20" text="Rozpocznij nowe zawody" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
-            <Text style="-fx-font-size: 16" text="Podaj nazwę zawodów w formacie yyyy-mm-dd_miasto  np. 2019-04-23_Kraków" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
-            <TextField fx:id="newCompetitionName" text="nazwa zawodów (yyyy-mm-dd_miasto)" GridPane.columnIndex="1" GridPane.fillWidth="TRUE" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS" />
+            <Text style="-fx-font-size: 18;" text="rozpocznij nowe zawody:" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+
+            <Text style="-fx-font-size: 16" text="Podaj nazwę zawodów w formacie yyyy-mm-dd_miasto" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+            <Text style="-fx-font-size: 13;" text="np. 2019-04-23_Kraków" textAlignment="CENTER" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
+
+
+            <TextField fx:id="newCompetitionName" text="nazwa zawodów (yyyy-mm-dd_miasto)" GridPane.columnIndex="1" GridPane.fillWidth="TRUE" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.vgrow="ALWAYS" />
         <rowConstraints>
-            <RowConstraints percentHeight="15" />
-            <RowConstraints percentHeight="20" />
-            <RowConstraints percentHeight="25" />
-            <RowConstraints percentHeight="25" />
-            <RowConstraints percentHeight="15" />
+            <RowConstraints percentHeight="15.0" />
+            <RowConstraints percentHeight="20.0" />
+            <RowConstraints percentHeight="25.0" />
+            <RowConstraints percentHeight="10.0" />
+            <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" />
+            <RowConstraints percentHeight="15.0" />
         </rowConstraints>
          <columnConstraints>
-            <ColumnConstraints percentWidth="20" />
-            <ColumnConstraints percentWidth="60" />
-            <ColumnConstraints percentWidth="20" />
+            <ColumnConstraints percentWidth="20.0" />
+            <ColumnConstraints percentWidth="60.0" />
+            <ColumnConstraints percentWidth="20.0" />
          </columnConstraints>
        </GridPane>
-       <Text style="-fx-font-size: 20" text="lub wczytaj zawody:" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
+       <Text style="-fx-font-size: 18;" text="lub wczytaj zawody:" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
        <Button onAction="#selectCompetition" text="+ Wybierz zawody" GridPane.columnIndex="2" GridPane.fillHeight="TRUE" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="TOP" />
        <Button onAction="#goNext" text="dalej" GridPane.columnIndex="3" GridPane.fillHeight="TRUE" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="TOP" />
     </children>

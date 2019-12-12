@@ -32,7 +32,7 @@ public class ApplicationController {
 
 
     public void initRootLayouts(){
-        primaryStage.setTitle("Inzynierka Szermierka");
+        primaryStage.setTitle("Zawody MCF Aramis");
 
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/welcomeScreen.fxml"));

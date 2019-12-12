@@ -48,4 +48,5 @@ public class Main extends Application {
         setUpLoggingToFile();
         launch(args);
     }
+
 }
