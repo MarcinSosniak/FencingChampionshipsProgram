@@ -117,7 +117,8 @@ public class CompetitorsViewController implements Initializable {
         }
         try {
             String json = PersistenceManager.serializeObjectsArrayToJson(new ArrayList<Participant>(Competition.getInstance().getParticipants()));
-            try (PrintStream out = new PrintStream(new FileOutputStream("src/main/resources/participants.json"))) {
+            String fileName = ConfigReader.getInstance().getStringValue("PATHS","PARTICIPANTS_LIST","participants.json");
+            try (PrintStream out = new PrintStream(new FileOutputStream(fileName))) {
                 out.print(json);
             }
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/elimination.fxml"));
