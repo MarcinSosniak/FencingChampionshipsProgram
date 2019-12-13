@@ -22,6 +22,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.*;
+import model.FightDrawing.FightDrawStrategyPicker;
 import model.enums.FightScore;
 import model.enums.WeaponType;
 import model.exceptions.NoSuchWeaponException;
@@ -350,12 +351,16 @@ public class EliminationController implements Initializable {
         nextRoundButton.setMaxSize(1000, 1000);
         nextRoundButton.setText("następna runda");
         nextRoundButton.setOnAction(x -> {
-            System.out.format("Implement by hand\n");
+            System.out.format("HUEEEEEEEEEEEEEEEEEEEEEEEeeeeee\n");
 
             WeaponCompetition wc = Competition.getInstance().getWeaponCompetition(wt);
             WeaponCompetition.RoundCreator rc = null;
             if(AppMode.getMode().fSafe()) {
                 rc = wc.prepareNewRound();
+            }
+            else if(wc.getLastRound()!=null && wc.getLastRound().getfSemiFinal())
+            {
+                rc = wc.prepareNewRound(2,4,false, FightDrawStrategyPicker.STRATEGY_NAMES.FINAL);
             }
             else
             {
