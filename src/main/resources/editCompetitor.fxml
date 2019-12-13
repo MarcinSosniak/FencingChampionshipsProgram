@@ -18,7 +18,7 @@
     <TextField fx:id="competitorSurname" GridPane.columnIndex="1" GridPane.fillWidth="TRUE" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
     <TextField fx:id="competitorDivision" GridPane.columnIndex="1" GridPane.fillWidth="TRUE" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
     <TextField fx:id="competitorGroup" GridPane.columnIndex="1" GridPane.fillWidth="TRUE" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-    <CheckBox fx:id="fFemale" text="Czy kobieta?" GridPane.columnIndex="1" GridPane.fillWidth="TRUE" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+    <CheckBox fx:id="fFemale" text="Kobieta?" GridPane.columnIndex="1" GridPane.fillWidth="TRUE" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
 
     <CheckBox fx:id="competitorFSmallSword" text="szpada" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="7" />
     <TextField fx:id="lastSeasonSmallSwordPoints" GridPane.fillWidth="False" text="0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />

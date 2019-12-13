@@ -22,7 +22,7 @@
     <TextField fx:id="competitorDivision" text="oddzial" GridPane.columnIndex="1" GridPane.fillWidth="TRUE" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
     <TextField fx:id="competitorGroup" text="grupa" GridPane.columnIndex="1" GridPane.fillWidth="TRUE" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
 
-    <CheckBox fx:id="fFemale" text="Czy kobieta?" GridPane.columnIndex="1" GridPane.fillWidth="TRUE" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+    <CheckBox fx:id="fFemale" text="Kobieta?" GridPane.columnIndex="1" GridPane.fillWidth="TRUE" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
 
     <CheckBox fx:id="competitorFSmallSword" text="szpada" selected="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="7" />
     <TextField fx:id="oldSmallSword" GridPane.fillWidth="False" text="0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
