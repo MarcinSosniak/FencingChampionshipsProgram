@@ -435,6 +435,7 @@ public class WeaponCompetition implements Serializable {
                     return RationalNumber.compare(getParticpantScore(o1), getParticpantScore(o2)); // this *should* favour greater value
                 }
             });
+            Collections.reverse(participantsEligible);
 
             RationalNumber cutoff = getParticpantScore(participantsEligible.get(particpantsNeeded - 1));
             participantsForRound.addAll(participantsEligible.stream()
@@ -443,7 +444,7 @@ public class WeaponCompetition implements Serializable {
             participantsForPlayoff.addAll(participantsEligible.stream()
                     .filter(x -> getParticpantScore(x).equals(cutoff))
                     .collect(Collectors.toList()));
-            if (participantsForPlayoff.size()== 0  || participantsForRound.size() == particpantsNeeded) {
+            if (participantsForPlayoff.size()== (particpantsNeeded - participantsForRound.size())  || participantsForRound.size() == particpantsNeeded) {
                 participantsForRound.addAll(participantsForPlayoff);
                 fRoundReady = true;
                 _round = new Round(WeaponCompetition.this, rounds.size()-1, groupSize, participantsForRound,  new FightDrawStrategyPicker(stratName),false,false);
