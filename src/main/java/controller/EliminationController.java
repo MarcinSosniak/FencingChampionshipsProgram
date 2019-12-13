@@ -272,7 +272,7 @@ public class EliminationController implements Initializable {
                 if (event.getButton().equals(MouseButton.SECONDARY) && !tableRow.isEmpty()) {
                     //tableRow.fireEvent(myEvent);
                     System.out.format("Right click on add injury " + wt + "\n");
-                    Stage childScene = ApplicationController.getApplicationController().renderAddInjury("/addInjury.fxml", "Dodaj obrażenia", true, p, wt, this);
+                    Stage childScene = ApplicationController.getApplicationController().renderAddInjury("/addInjury.fxml", "Dodaj kontuzje", true, p, wt, this);
                     childScene.getIcons().add(ApplicationController.image);
                     childScene.showAndWait();
 
