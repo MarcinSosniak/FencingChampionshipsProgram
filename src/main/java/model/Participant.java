@@ -169,7 +169,7 @@ public class Participant implements Serializable{
 
             this.fRapierParticipant.setValue(fRapierParticipant);
             if (fRapierParticipant) this.fRapierParticipantSProperty.setValue(tick);
-            else this.fRapierParticipantSProperty.setValue("cross");
+            else this.fRapierParticipantSProperty.setValue(cross);
         }
     }
 
