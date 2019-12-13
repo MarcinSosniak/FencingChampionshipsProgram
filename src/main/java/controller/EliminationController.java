@@ -31,10 +31,7 @@ import util.RationalNumber;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 /** TODO: undo doesn't change color properly
  * TODO: should add function set cell colors properly :) which is invoked by command controller */
 /**
@@ -533,6 +530,7 @@ public class EliminationController implements Initializable {
             int currentRow = 1;
             int groupsAdded = 0;
             //System.out.format("1 \n");
+            List<Participant> previousParticipants = new LinkedList<>();
             for (CompetitionGroup competitionGroup : cgl) {
                 System.out.format(competitionGroup.getGroupID() + "1 \n");
                 TableView tableForGroup = new TableView();
@@ -548,6 +546,26 @@ public class EliminationController implements Initializable {
                     currentRow++;
                 }
                 gridPaneForGroups.getChildren().add(tableForGroup);
+                if(competitionGroup.getGroupID().equals("Killer Group")){
+                    tc.setCellValueFactory(x -> new SimpleStringProperty(x.getValue().nameProperty().getValue() + " " + x.getValue().surnameProperty().getValue()));
+                    tc.setCellFactory( c -> {
+                        TableCell<Participant,String> cell= new TableCell<Participant,String>(){
+                            @Override
+                            protected void updateItem(String item, boolean empty) {
+                                super.updateItem(item, empty);
+                                setText(empty ? null : item);
+                                if(!isEmpty() && previousParticipants.contains((Participant)getTableRow().getItem())){
+                                    setStyle("-fx-alignment: LEFT; -fx-background-color: #FFDAAE;");
+                                }else{
+                                    setStyle("-fx-alignment: LEFT; -fx-background-color: TRANSCIENT");
+                                }
+                            }
+                        };
+                        return cell;
+                    });
+                }else {
+                    previousParticipants.addAll(competitionGroup.getGroupParticipants());
+                }
             }
             gridPaneForGroups.getChildren().add(text);
             // vBoxPane.getChildren().add(gridPaneForGroups);
