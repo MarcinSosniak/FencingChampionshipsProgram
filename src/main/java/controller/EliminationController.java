@@ -360,7 +360,7 @@ public class EliminationController implements Initializable {
             else
             {
                 Pointer<WeaponCompetition.RoundCreator> p = new Pointer<>();
-                Stage stageroni = ApplicationController.getApplicationController().renderNextRound("/nextRound.fxml", "gimme", true, wc,p);
+                Stage stageroni = ApplicationController.getApplicationController().renderNextRound("/nextRound.fxml", "Następna runda", true, wc,p);
                 stageroni.getIcons().add(ApplicationController.image);
                 stageroni.setResizable(false);
                 stageroni.showAndWait();
@@ -372,7 +372,7 @@ public class EliminationController implements Initializable {
             if (rc.getfRoundReady()) {
                 rc.startRound();
             }else {
-                Stage stageroni = ApplicationController.getApplicationController().renderPlayOff("/playOff.fxml", "gimme", true, rc);
+                Stage stageroni = ApplicationController.getApplicationController().renderPlayOff("/playOff.fxml", "Dogrywka", true, rc);
                 stageroni.getIcons().add(ApplicationController.image);
                 stageroni.showAndWait();
                 if(rc.getfRoundReady())
@@ -880,7 +880,7 @@ public class EliminationController implements Initializable {
         gridPane.getColumnConstraints().addAll(column1,column2,column3);
 
         /** Preparing title */
-        Label text = new Label("Final_Results");
+        Label text = new Label("WYNIKI KOŃCOWE");
         text.setTextAlignment(TextAlignment.CENTER);
         text.setStyle("-fx-alignment: CENTER;");
         text.setFont(new Font(20));
@@ -947,7 +947,7 @@ public class EliminationController implements Initializable {
         Tab tabToRet = new Tab();
         tabToRet.setContent(gridPane);
         tabToRet.setClosable(false);
-        tabToRet.setText("Final_Results");
+        tabToRet.setText("wyniki końcowe");
 
         return tabToRet;
     }

@@ -388,9 +388,9 @@ public class WeaponCompetition implements Serializable {
                 thirdPlaceFightList.add(thirdPlaceFight);
 
                 CompetitionGroup cgFinal = new CompetitionGroup(finalFightList);
-                cgFinal.setGroupID("final_fight");
+                cgFinal.setGroupID("walka o pierwsze miejsce");
                 CompetitionGroup cgThird = new CompetitionGroup(thirdPlaceFightList);
-                cgThird.setGroupID("third_place_fight");
+                cgThird.setGroupID("walka o trzecie miejsce");
                 List<CompetitionGroup> cgList = new ArrayList<>();
                 Collections.addAll(cgList,cgFinal,cgThird);
 
