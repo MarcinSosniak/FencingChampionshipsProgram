@@ -554,10 +554,16 @@ public class EliminationController implements Initializable {
                             protected void updateItem(String item, boolean empty) {
                                 super.updateItem(item, empty);
                                 setText(empty ? null : item);
-                                if(!isEmpty() && previousParticipants.contains((Participant)getTableRow().getItem())){
-                                    setStyle("-fx-alignment: LEFT; -fx-background-color: #FFDAAE;");
-                                }else{
-                                    setStyle("-fx-alignment: LEFT; -fx-background-color: TRANSCIENT");
+                                try {
+                                    if (!empty && previousParticipants
+                                            .contains((Participant) getTableRow()
+                                                    .getItem())) {
+                                        setStyle("-fx-background-color: #FFDAAE;");
+                                    } else {
+                                        setStyle("");
+                                    }
+                                }catch (Exception e){
+                                    setStyle("");
                                 }
                             }
                         };

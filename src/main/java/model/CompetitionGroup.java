@@ -12,6 +12,7 @@ import java.util.List;
 
 public class CompetitionGroup implements Serializable {
 
+    private static int created = 0;
     private ObservableList<Fight> fightsList;
     private ObservableList<Participant> groupParticipants;
     private String groupID;
@@ -22,7 +23,8 @@ public class CompetitionGroup implements Serializable {
     }
 
     public CompetitionGroup(List<Fight> fights) {
-        this.groupID = "a";
+        this.groupID = Integer.toString(created);
+        created ++;
         this.fightsList = FXCollections.observableArrayList(fights);
         this.groupParticipants = FXCollections.observableArrayList();
         for(Fight f: fightsList){

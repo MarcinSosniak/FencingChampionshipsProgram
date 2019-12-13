@@ -118,7 +118,17 @@ public class WeaponCompetition implements Serializable {
     }
 
     public String groupForParticipant(Participant p){
-        return "a";
+        Round r = this.getLastRound();
+        String to_ret = "";
+        for(CompetitionGroup cg: r.getGroups()){
+            if(cg.fInGroup(p)){
+                if(!to_ret.equals("")){
+                    to_ret += " | ";
+                }
+                to_ret += cg.getGroupID();
+            }
+        }
+        return to_ret;
     }
 
     public WeaponType getWeaponType(){
