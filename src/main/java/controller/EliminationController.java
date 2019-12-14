@@ -87,6 +87,7 @@ public class EliminationController implements Initializable {
 
     private static HashMap<Fight, TableCell<Fight, String>> prtipantHashMap = new HashMap<>();
     private static ParticipantViewController participantViewController;
+    private List<TableView> fightTables;
 
 
     @FXML
@@ -149,7 +150,6 @@ public class EliminationController implements Initializable {
             sabreTab = initTab(WeaponType.SABRE);
             smallSwordTab = initTab(WeaponType.SMALL_SWORD);
             tabPane.getTabs().addAll(rapierTab,sabreTab,smallSwordTab);
-            System.out.println("");
             tabPane.getSelectionModel().select(tab);
             System.out.println(menuBarController.wc.getWeaponType());
 
@@ -167,6 +167,7 @@ public class EliminationController implements Initializable {
 
     public void setData() {
         this.weaponCompetitionParticipants = FXCollections.observableHashMap();
+        this.fightTables = new LinkedList<>();
         for (WeaponType wt : WeaponType.values()) {
             try {
                 this.weaponCompetitionParticipants.put(wt, Competition.getInstance().getSingleWeaponCompetition(wt).getParticipantsObservableList());
@@ -686,6 +687,7 @@ public class EliminationController implements Initializable {
                 CompetitionGroup cg = groups.get(i);
 
                 TableView tableForGroupFights = new TableView();
+                this.fightTables.add(tableForGroupFights);
                 tableForGroupFights.setSelectionModel(null);
 
                 tableForGroupFights.setPadding(new Insets(5, 5, 5, 5));
@@ -880,6 +882,13 @@ public class EliminationController implements Initializable {
         tabToRet.setContent(mainTabPane);
 
         return tabToRet;
+    }
+
+    /** Light refreshing to solve bug after undo/redo */
+    public void lightRefresh(){
+        for(TableView t:this.fightTables){
+            t.refresh();
+        }
     }
 
     /** For final results required */

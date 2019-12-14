@@ -91,6 +91,8 @@ public class MenuBarController implements Initializable {
             wc.getcStack().undo();
             if (lastCommand.getClass().equals(AddRoundCommand.class))
                 el.setData();
+            else
+                el.lightRefresh();
         }
         else {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Nie można cofnąć");
@@ -111,6 +113,8 @@ public class MenuBarController implements Initializable {
 
             if (lastUndoCommand.getClass().equals(AddRoundCommand.class))
                 el.setData();
+            else
+                el.lightRefresh();
         }
         else {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Nie można powtórzyć");
