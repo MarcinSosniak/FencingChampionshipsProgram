@@ -891,6 +891,20 @@ public class EliminationController implements Initializable {
         }
     }
 
+    public void reverseAddRound(WeaponType wt){
+        switch (wt){
+            case SMALL_SWORD:
+                fSmallswordCompetitionFinals = false;
+                break;
+            case RAPIER:
+                fRapierCompetitionFinals = false;
+                break;
+            case SABRE:
+                fSabreCompetitionFinals = false;
+                break;
+        }
+    }
+
     /** For final results required */
     private Tab initResultTab() {
 

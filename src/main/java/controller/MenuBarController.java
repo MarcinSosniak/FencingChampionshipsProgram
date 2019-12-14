@@ -89,9 +89,10 @@ public class MenuBarController implements Initializable {
             Command lastCommand = commands.get(commands.size() - 1);
 
             wc.getcStack().undo();
-            if (lastCommand.getClass().equals(AddRoundCommand.class))
+            if (lastCommand.getClass().equals(AddRoundCommand.class)) {
+                el.reverseAddRound(wc.getWeaponType());
                 el.setData();
-            else
+            }else
                 el.lightRefresh();
         }
         else {
