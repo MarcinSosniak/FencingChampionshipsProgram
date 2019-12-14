@@ -44,15 +44,21 @@ public class CommandAddBattleResult implements Command {
     @Override
     public void execute() {
         switch (scoreToSet){
-            case WON_FIRST:
+            case WON_FIRST: {
                 Main.logger.info(wt + " Execute command: " + fight.getFirstParticipant().getName() + " " + fight.getFirstParticipant().getSurname() + "" +
                         " won fight with " + fight.getSecondParticipant().getName() + " " + fight.getSecondParticipant().getSurname());
-            case WON_SECOND:
-                Main.logger.info(wt + " Execute command: " +fight.getSecondParticipant().getName() + " " + fight.getSecondParticipant().getSurname() + "" +
+                break;
+            }
+            case WON_SECOND: {
+                Main.logger.info(wt + " Execute command: " + fight.getSecondParticipant().getName() + " " + fight.getSecondParticipant().getSurname() + "" +
                         " won fight with " + fight.getFirstParticipant().getName() + " " + fight.getFirstParticipant().getSurname());
-            case DOUBLE:
-                Main.logger.info(wt + " Execute command: double between " +  fight.getFirstParticipant().getName() + " " + fight.getFirstParticipant().getSurname() +
-                        " and " + fight.getSecondParticipant().getName() + " " + fight.getSecondParticipant().getSurname());
+                break;
+            }
+                case DOUBLE: {
+                    Main.logger.info(wt + " Execute command: double between " + fight.getFirstParticipant().getName() + " " + fight.getFirstParticipant().getSurname() +
+                            " and " + fight.getSecondParticipant().getName() + " " + fight.getSecondParticipant().getSurname());
+                break;
+                }
         }
         executeCommand();
     }
@@ -83,30 +89,42 @@ public class CommandAddBattleResult implements Command {
             fight.updateScore(validInvocationChecker, false);
 
         switch (scoreToSet) {
-            case WON_FIRST:
+            case WON_FIRST: {
                 Main.logger.info(wt + " Undo command: " + fight.getFirstParticipant().getName() + " " + fight.getFirstParticipant().getSurname() + "" +
-                                " won fight with " + fight.getSecondParticipant().getName() + " " + fight.getSecondParticipant().getSurname());
-            case WON_SECOND:
+                        " won fight with " + fight.getSecondParticipant().getName() + " " + fight.getSecondParticipant().getSurname());
+                break;
+            }
+            case WON_SECOND: {
                 Main.logger.info(wt + " Undo command: " + fight.getSecondParticipant().getName() + " " + fight.getSecondParticipant().getSurname() + "" +
-                                " won fight with " + fight.getFirstParticipant().getName() + " " + fight.getFirstParticipant().getSurname());
-            case DOUBLE:
+                        " won fight with " + fight.getFirstParticipant().getName() + " " + fight.getFirstParticipant().getSurname());
+                break;
+            }
+            case DOUBLE: {
                 Main.logger.info(wt + " Undo command: double between " + fight.getFirstParticipant().getName() + " " + fight.getFirstParticipant().getSurname() +
-                                " and " + fight.getSecondParticipant().getName() + " " + fight.getSecondParticipant().getSurname());
+                        " and " + fight.getSecondParticipant().getName() + " " + fight.getSecondParticipant().getSurname());
+                break;
+            }
         }
     }
 
     @Override
     public void redo() {
         switch (scoreToSet){
-            case WON_FIRST:
+            case WON_FIRST: {
                 Main.logger.info(wt + " Redo command: " + fight.getFirstParticipant().getName() + " " + fight.getFirstParticipant().getSurname() +
                         " won fight with " + fight.getSecondParticipant().getName() + " " + fight.getSecondParticipant().getSurname());
-            case WON_SECOND:
+                break;
+            }
+            case WON_SECOND: {
                 Main.logger.info(wt + " Redo command: " + fight.getSecondParticipant().getName() + " " + fight.getSecondParticipant().getSurname() +
                         " won fight with " + fight.getFirstParticipant().getName() + " " + fight.getFirstParticipant().getSurname());
-            case DOUBLE:
-                Main.logger.info(wt + " Redo command: double between " +  fight.getFirstParticipant().getName() + " " + fight.getFirstParticipant().getSurname() +
+                break;
+            }
+            case DOUBLE: {
+                Main.logger.info(wt + " Redo command: double between " + fight.getFirstParticipant().getName() + " " + fight.getFirstParticipant().getSurname() +
                         " and " + fight.getSecondParticipant().getName() + " " + fight.getSecondParticipant().getSurname());
+                break;
+            }
         }
         executeCommand();
     }
