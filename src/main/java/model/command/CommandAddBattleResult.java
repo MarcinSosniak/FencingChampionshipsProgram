@@ -45,16 +45,13 @@ public class CommandAddBattleResult implements Command {
     public void execute() {
         switch (scoreToSet){
             case WON_FIRST:
-                Main.logger.log(Level.INFO,
-                        wt + " Execute command: " + fight.getFirstParticipant().getName() + " " + fight.getFirstParticipant().getSurname() + "" +
+                Main.logger.info(wt + " Execute command: " + fight.getFirstParticipant().getName() + " " + fight.getFirstParticipant().getSurname() + "" +
                         " won fight with " + fight.getSecondParticipant().getName() + " " + fight.getSecondParticipant().getSurname());
             case WON_SECOND:
-                Main.logger.log(Level.INFO,
-                        wt + " Execute command: " +fight.getSecondParticipant().getName() + " " + fight.getSecondParticipant().getSurname() + "" +
+                Main.logger.info(wt + " Execute command: " +fight.getSecondParticipant().getName() + " " + fight.getSecondParticipant().getSurname() + "" +
                         " won fight with " + fight.getFirstParticipant().getName() + " " + fight.getFirstParticipant().getSurname());
             case DOUBLE:
-                Main.logger.log(Level.INFO,
-                        wt + " Execute command: double between " +  fight.getFirstParticipant().getName() + " " + fight.getFirstParticipant().getSurname() +
+                Main.logger.info(wt + " Execute command: double between " +  fight.getFirstParticipant().getName() + " " + fight.getFirstParticipant().getSurname() +
                         " and " + fight.getSecondParticipant().getName() + " " + fight.getSecondParticipant().getSurname());
         }
         executeCommand();
@@ -70,11 +67,6 @@ public class CommandAddBattleResult implements Command {
         if(fight.getScore()!= FightScore.NULL_STATE)
             fight.updateScore(validInvocationChecker,false);
 
-        switch (scoreToSet){
-            case WON_FIRST: Main.logger.log(Level.INFO, "");
-            case WON_SECOND: Main.logger.log(Level.INFO, "");
-            case DOUBLE: Main.logger.log(Level.INFO, "");
-        }
     }
 
 

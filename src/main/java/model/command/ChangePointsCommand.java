@@ -21,7 +21,7 @@ public class ChangePointsCommand implements Command {
         this.participant = participant;
         this.pointsNumber = pointsNumber;
         this.ifAdd = ifAdd;
-        this.wt = wt;
+        this.wt = round.getMyWeaponCompetition().getWeaponType();
     }
 
     private void changePoints(){
