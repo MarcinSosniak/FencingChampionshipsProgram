@@ -162,7 +162,8 @@ public class WeaponCompetition implements Serializable {
         for (CompetitionGroup g : getLastRound().getGroups()) {
             if (g.fInGroup(p)) {
                 for (Fight fight : g.getFightsList()) {
-                    if (!fight.fHasResult() && fight.fIn(p)) {
+                    if (!fight.fHasResult()
+                            && fight.fIn(p)) {
                         out.add(fight.getCommandSetLooser(checker,p));
                     }
                 }
@@ -208,7 +209,7 @@ public class WeaponCompetition implements Serializable {
         int participantsCount= ConfigReader.getInstance().getIntValue(WeaponType.str(weaponType)+"_ROUND_"+Integer.toString(rounds.size()),"PARTICIPANTS_COUNT",3);
         int finalRoundNumber = ConfigReader.getInstance().getIntValue(WeaponType.str(weaponType).toUpperCase(), "FINAL_ROUND_NUMBER");
         String fightDrawStrategyName = ConfigReader.getInstance().getStringValue(WeaponType.str(weaponType)+"_ROUND_"+Integer.toString(rounds.size()),"STRATEGY","DEFAULT");
-        if(WeaponCompetition.this.rounds.size() == finalRoundNumber - 1)
+        if(WeaponCompetition.this.rounds.size() >= finalRoundNumber - 1)
             return new RoundCreator(groupSize,participantsCount,true,FightDrawStrategyPicker.STRATEGY_NAMES.fromString(fightDrawStrategyName));
         else
             return new RoundCreator(groupSize,participantsCount,false,FightDrawStrategyPicker.STRATEGY_NAMES.fromString(fightDrawStrategyName));
@@ -416,16 +417,17 @@ public class WeaponCompetition implements Serializable {
             this.fSemiFinal=fSemiFinal;
             this.groupSize = groupSize;
             this.particpantsNeeded = particpantsNeeded;
-            if(fSemiFinal)
-            {
-                prepareSemiFinal();
-                return;
-            }
             if(WeaponCompetition.this.getLastRound().isSemiFinal())
             {
                 prepareFinalRound();
                 return;
             }
+            if(fSemiFinal)
+            {
+                prepareSemiFinal();
+                return;
+            }
+
             Round lastRound;
             lastRound = rounds.get(rounds.size() - 1);
             ArrayList<Participant> participantsEligible = new ArrayList<>(

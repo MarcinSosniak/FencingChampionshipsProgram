@@ -57,7 +57,7 @@ public class AddInjuryController {
 
         WeaponCompetition wc =  Competition.getInstance().getWeaponCompetition(wt);
         wc.getcStack().executeCommand( new CommandAddInjury(p, weaponTypesToSetInjury, wc, el));
-
+        el.update();
 
         Stage toClose = (Stage) confirmButton.getScene().getWindow();
         toClose.close();

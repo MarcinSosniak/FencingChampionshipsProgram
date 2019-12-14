@@ -116,7 +116,7 @@ public  class Fight implements Serializable {
         this.score.setValue(score);
     }
 
-    public boolean fHasResult(){return score.get()==FightScore.NULL_STATE;}
+    public boolean fHasResult(){return score.get()!=FightScore.NULL_STATE;}
 
     public void commandSetFightScoreDirect(FightScore score) {
         round.getCStack().executeCommand(new CommandAddBattleResult(this,score));
@@ -139,9 +139,9 @@ public  class Fight implements Serializable {
                                          Participant winner) // doesn't set anything
     {
         Objects.requireNonNull(validInvocationChecker);
-        if(firstParticipant.equals(winner))
+        if(firstParticipant.getValue().equals(winner))
             return FightScore.WON_FIRST;
-        else if(secondParticipant.equals(winner))
+        else if(secondParticipant.getValue().equals(winner))
             return FightScore.WON_SECOND;
         else
             throw new IllegalArgumentException("participant missmatch, one to be winner is not in fight");
@@ -151,9 +151,9 @@ public  class Fight implements Serializable {
                                         Participant loser) // doesn't set anything
     {
         Objects.requireNonNull(validInvocationChecker);
-        if(firstParticipant.equals(loser))
+        if(firstParticipant.getValue().equals(loser))
             return FightScore.WON_SECOND;
-        else if(secondParticipant.equals(loser))
+        else if(secondParticipant.getValue().equals(loser))
             return FightScore.WON_FIRST;
         else
             throw new IllegalArgumentException("participant missmatch, one to be winner is not in fight");
@@ -167,7 +167,8 @@ public  class Fight implements Serializable {
 
     public boolean fIn(Participant part)
     {
-        if (part.equals(firstParticipant) || part.equals(secondParticipant))
+        if (part.equals(firstParticipant.getValue())
+                || part.equals(secondParticipant.getValue()))
             return true;
         return false;
     }
