@@ -325,7 +325,7 @@ public class EliminationController implements Initializable {
             Competition.getInstance().getWeaponCompetition(WeaponType.RAPIER).setFinalRound();
             Competition.getInstance().getWeaponCompetition(WeaponType.SABRE).setFinalRound();
             Competition.getInstance().getWeaponCompetition(WeaponType.SMALL_SWORD).setFinalRound();
-
+            menuBarController.exportResults.setDisable(false);
             /** For final results required */
             if(tabPane.getTabs().size() < 4){
                 finalResultTab = initResultTab();
