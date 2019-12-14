@@ -328,7 +328,7 @@ public class WeaponCompetition implements Serializable {
                 }else{ /* Should be 4 of then prepare round */
                     ArrayList<Participant> participantsToRound = new ArrayList<>();
                     this.participantsForRound.addAll(top4current);
-                    this._round = new Round(WeaponCompetition.this,WeaponCompetition.this.getLastRound().getRoundNumber()+1,2,participantsForRound,getFightDrawStrategyPicker(),false,true);
+                    this._round = new Round(WeaponCompetition.this,WeaponCompetition.this.getLastRound().getRoundNumber()+1,2,participantsForRound,new FightDrawStrategyPicker(FightDrawStrategyPicker.STRATEGY_NAMES.DEFAULT),false,true);
                     this.fRoundReady=true;
                     return;
                 }
