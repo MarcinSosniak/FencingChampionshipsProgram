@@ -428,9 +428,15 @@ public class EliminationController implements Initializable {
 
         addPoints.setOnAction(x -> {
             System.out.println("ON ACTION: " + wt);
-           Participant p = getCurrentlySelectedParticipant(wt);
+            Participant p = getCurrentlySelectedParticipant(wt);
             if(p == null)
                 return;
+            if(AppMode.getMode().fSafe())
+            {
+                Alert alert = new Alert(Alert.AlertType.WARNING,"Nie masz uprawnień do wykonania tej akcji, przejdź do trybu administratora");
+                alert.show();
+                return;
+            }
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/addPoints.fxml"));
             Parent root = null;
             try { root = loader.load(); }
@@ -457,6 +463,12 @@ public class EliminationController implements Initializable {
             Participant p = getCurrentlySelectedParticipant(wt);
             if(p == null)
                 return;
+            if(AppMode.getMode().fSafe())
+            {
+                Alert alert = new Alert(Alert.AlertType.WARNING,"Nie masz uprawnień do wykonania tej akcji, przejdź do trybu administratora");
+                alert.show();
+                return;
+            }
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/subtractPoints.fxml"));
             Parent root = null;
             try { root = loader.load(); }

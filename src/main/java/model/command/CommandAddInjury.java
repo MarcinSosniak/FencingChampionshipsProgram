@@ -31,9 +31,9 @@ public class CommandAddInjury implements Command {
         this.participant = p;
         this.competition = competition;
         this.controller = el;
-        if (weaponList.contains(WeaponType.SABRE)) _fSabreInjury = true;
-        if (weaponList.contains(WeaponType.RAPIER)) _fRapierInjury = true;
-        if (weaponList.contains(WeaponType.SMALL_SWORD)) _fSmallSwordInjury = true;
+        if (weaponList.contains(WeaponType.SABRE) || p.isInjured(WeaponType.SABRE)) _fSabreInjury = true;
+        if (weaponList.contains(WeaponType.RAPIER)|| p.isInjured(WeaponType.RAPIER)) _fRapierInjury = true;
+        if (weaponList.contains(WeaponType.SMALL_SWORD)|| p.isInjured(WeaponType.SMALL_SWORD)) _fSmallSwordInjury = true;
         this.wt = competition.getWeaponType();
     }
 

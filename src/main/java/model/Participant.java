@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import model.command.ChangePointsCommand;
 import model.command.CommandAddInjury;
+import model.config.ConfigReader;
 import model.enums.JudgeState;
 import model.enums.WeaponType;
 import model.exceptions.NoSuchWeaponException;
@@ -84,15 +85,35 @@ public class Participant implements Serializable{
         this.timesKiller = 0;
         this.weaponPointsProperty = new HashMap<>();
 
-        /** to do remove */
-        this.fSmallSwordParticipant = new SimpleBooleanProperty(true);
-        this.fSmallSwordParticipantSProperty = new SimpleStringProperty(tick);
+        if(ConfigReader.getInstance().getBooleanValue("TEST","DEFAULT_SMALL_SWORD_COMPETITOR",false)) {
+            this.fSmallSwordParticipant = new SimpleBooleanProperty(true);
+            this.fSmallSwordParticipantSProperty = new SimpleStringProperty(tick);
+        }
+        else
+        {
+            this.fSmallSwordParticipant = new SimpleBooleanProperty(false);
+            this.fSmallSwordParticipantSProperty = new SimpleStringProperty(cross);
+        }
 
-        this.fSabreParticipant = new SimpleBooleanProperty(true);
-        this.fSabreParticipantSProperty = new SimpleStringProperty(tick);
+        if(ConfigReader.getInstance().getBooleanValue("TEST","DEFAULT_SABRE_COMPETITOR",false)) {
+            this.fSabreParticipant = new SimpleBooleanProperty(true);
+            this.fSabreParticipantSProperty = new SimpleStringProperty(tick);
+        }
+        else
+        {
+            this.fSabreParticipant = new SimpleBooleanProperty(false);
+            this.fSabreParticipantSProperty = new SimpleStringProperty(cross);
+        }
 
-        this.fRapierParticipant = new SimpleBooleanProperty(true);
-        this.fRapierParticipantSProperty = new SimpleStringProperty(tick);
+        if(ConfigReader.getInstance().getBooleanValue("TEST","DEFAULT_RAPIER_COMPETITOR",false)) {
+            this.fRapierParticipant = new SimpleBooleanProperty(true);
+            this.fRapierParticipantSProperty = new SimpleStringProperty(tick);
+        }
+        else
+        {
+            this.fRapierParticipant = new SimpleBooleanProperty(false);
+            this.fRapierParticipantSProperty = new SimpleStringProperty(cross);
+        }
 
         this.weaponPointsProperty.put(WeaponType.RAPIER,new SimpleObjectProperty<RationalNumber>(new RationalNumber()));
         this.weaponPointsProperty.put(WeaponType.SABRE,new SimpleObjectProperty<RationalNumber>(new RationalNumber()));

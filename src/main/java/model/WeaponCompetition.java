@@ -275,8 +275,9 @@ public class WeaponCompetition implements Serializable {
             //take 4 with highest points
             this.groupSize=2;
             this.particpantsNeeded=4;
-            List<Participant> participants = WeaponCompetition.this.getLastRound().getParticipants();
-            participants.sort((Participant p1,Participant p2) -> {
+            List<Participant> eligibleParticipants = WeaponCompetition.this.getLastRound().getParticipants();
+            eligibleParticipants = eligibleParticipants.stream().filter(x-> !x.isInjured(WeaponCompetition.this.weaponType)).collect(Collectors.toList());
+            eligibleParticipants.sort((Participant p1,Participant p2) -> {
                 try {
                     RationalNumber pointp1 = p1.getPointsForWeaponProperty(WeaponCompetition.this.weaponType).get();
                     RationalNumber pointp2 = p2.getPointsForWeaponProperty(WeaponCompetition.this.weaponType).get();
@@ -286,18 +287,18 @@ public class WeaponCompetition implements Serializable {
                 }
             });
             try {
-                Collections.reverse(participants);
+                Collections.reverse(eligibleParticipants);
                 List<Participant> top4current = new ArrayList<>();
-                top4current.add(participants.get(0));
-                top4current.add(participants.get(1));
-                top4current.add( participants.get(2));
-                top4current.add(participants.get(3));
+                top4current.add(eligibleParticipants.get(0));
+                top4current.add(eligibleParticipants.get(1));
+                top4current.add( eligibleParticipants.get(2));
+                top4current.add(eligibleParticipants.get(3));
 
                 RationalNumber lowestPoints = top4current.get(top4current.size()-1).getPointsForWeaponProperty(WeaponCompetition.this.weaponType).get();
 
                 // szukam wiekszych lub rownych od lowest points
                 int found = 0;
-                for(Participant p: participants){
+                for(Participant p: eligibleParticipants){
                     if(RationalNumber.compare(p.getPointsForWeaponProperty(WeaponCompetition.this.weaponType).get(),lowestPoints) >= 0){
                         found ++;
                     }
@@ -313,7 +314,7 @@ public class WeaponCompetition implements Serializable {
                         }
                     }).collect(Collectors.toList());
                     /* TODO: playoffs needed */
-                    this.participantsForPlayoff.addAll(participants.stream().filter(p-> {
+                    this.participantsForPlayoff.addAll(eligibleParticipants.stream().filter(p-> {
                         try {
                             return p.getPointsForWeaponProperty(WeaponCompetition.this.weaponType).get().equals(lowestPoints);
                         } catch (Exception ex) {
