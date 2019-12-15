@@ -7,6 +7,7 @@ import model.KillerDrawing.RandomKillerRandomizationStrategy;
 import model.config.ConfigReader;
 import model.enums.JudgeState;
 import model.enums.WeaponType;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,6 +23,12 @@ public class PersistenceManagerTest {
     String json;
     Participant p1; Participant p2; Participant p3; Participant p4; Participant p5; Participant p6;
     Competition competition;
+
+    @After
+    public void tearDown() throws Exception
+    {
+        ConfigReader.nullInstance();
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -43,7 +50,7 @@ public class PersistenceManagerTest {
                 "      \"licenseExpDate\":\"23-07-2020\"\n" +
                 "   }\n" +
                 "]\n";
-
+        ConfigReader.init("src/main/resources/cfg/default.cfg","src/main/resources/cfg/test.cfg");
 
         p1 = new Participant("Marcin", "Kowalski", "KRK", "A", JudgeState.NON_JUDGE,new Date(), 0, 0, 0);
         p2 = new Participant("Paulina", "Nowak", "KRK", "B", JudgeState.NON_JUDGE,new Date(), 0, 0, 0);

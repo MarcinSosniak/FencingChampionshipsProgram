@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 public class CommandStackTest {
 
     CommandStack stack;
-    private static final int MULTIPLE_TEST_SIZE=2*3*4*5*6*7;
+    private static final int MULTIPLE_TEST_SIZE=2*3*4*5;
 
     @Test
     public void executeCommand() throws Exception {
@@ -56,12 +56,19 @@ public class CommandStackTest {
 
 
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void redo_with_nothing_to_redo() throws Exception
     {
         Command mockedCommand = mock(Command.class);
         stack.executeCommand(mockedCommand);
-        stack.redo();
+        try {
+            stack.redo();
+        }
+        catch (Exception ex)
+        {
+            fail();
+        }
+        assertEquals(false,stack.canRedo());
     }
 
     @Test
@@ -73,13 +80,20 @@ public class CommandStackTest {
         verify(mockedCommand).undo();
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void undo_with_nothing_to_undo() throws Exception
     {
-        stack.undo();
+        try {
+            stack.undo();
+        }
+        catch (Exception ex)
+        {
+            fail();
+        }
+        assertEquals(false,stack.canUndo());
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public  void executeAndRedoAfterUndo()
     {
         //prepare
@@ -97,7 +111,32 @@ public class CommandStackTest {
             fail();
         }
         //test
-        stack.redo();
+        try {
+            stack.redo();
+        }
+        catch (Exception ex)
+        {
+            fail();
+        }
+        assertEquals(false,stack.canRedo());
+
+    }
+
+    @Test
+    public void canRedo()
+    {
+        Command mockedCommand = mock(Command.class);
+        stack.executeCommand(mockedCommand);
+        stack.undo();
+        assertEquals(true,stack.canRedo());
+    }
+
+    @Test
+    public void canUndo()
+    {
+        Command mockedCommand = mock(Command.class);
+        stack.executeCommand(mockedCommand);
+        assertEquals(true,stack.canUndo());
     }
 
     @Before

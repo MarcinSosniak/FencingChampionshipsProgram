@@ -132,15 +132,18 @@ public class RationalNumber implements Serializable {
         {
             return String.valueOf(num);
         }
-        else if (num < denom  ) // if num == denom, then denom == 1 due to reduction on creation
+        else if (Math.abs(num)< denom  ) // if num == denom, then denom == 1 due to reduction on creation
         {
             return String.format("%d/%d",num,denom);
         }
         else
         {
-            int overflow = num / denom;
-            int num_without_overflow = num - denom * overflow;
-            return String.format("%d %d/%d",overflow,num_without_overflow,denom);
+            int overflow = Math.abs(num) / denom;
+            int num_without_overflow = Math.abs(num) - denom * overflow;
+            if(num > 0)
+                return String.format("%d %d/%d",overflow,num_without_overflow,denom);
+            else
+                return String.format("-%d %d/%d",overflow,num_without_overflow,denom);
         }
 
     }

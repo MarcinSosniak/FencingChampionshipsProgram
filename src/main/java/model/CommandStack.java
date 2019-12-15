@@ -25,8 +25,8 @@ public class CommandStack implements Serializable {
     }
 
     public void redo() {
-        if(undoStack.size() < 1)
-            throw  new IllegalStateException("nothing to redo");
+        if(!canRedo())
+            return;
         Command command = undoStack.get(undoStack.size()-1);
         command.redo();
         undoStack.remove(undoStack.size()-1);
@@ -34,6 +34,7 @@ public class CommandStack implements Serializable {
     }
 
     public void undo() {
+        if(!canUndo()) return;
         for (int i = 0; i < commandStack.size(); i++) System.out.println(commandStack.get(i));
         System.out.println(commandStack.size() - 1);
         Command command = commandStack.get(commandStack.size() - 1);
@@ -65,6 +66,15 @@ public class CommandStack implements Serializable {
             return true;
         }
         return false;
+    }
+
+    public boolean canRedo()
+    {
+        return undoStack.size()>0;
+    }
+    public boolean canUndo()
+    {
+        return commandStack.size()>0;
     }
 
 }

@@ -133,12 +133,19 @@ public class RationalNumberTest {
     }
 
     @Test
+    public void test_toStringMinusExtraction() throws Exception {
+        RationalNumber number = new RationalNumber(-7,3);
+        assertEquals("-2 1/3",number.toString());
+    }
+
+    @Test
     public void set() throws Exception {
         RationalNumber test= new RationalNumber(0);
         RationalNumber override = new RationalNumber(5,6);
         test.set(override);
         assertEquals(test,override);
     }
+
 
     @Before
     public void setUp() throws Exception {
