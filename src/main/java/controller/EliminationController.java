@@ -1010,6 +1010,34 @@ public class EliminationController implements Initializable {
             return new SimpleStringProperty(p.getValue().getParticipantResult().triathlonWomenProperty().get());
         });
 
+        Comparator<String> placeComparator = new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                if(o1.equals(o2)){
+                    return 0;
+                }
+                if(o1.equals("--")){
+                    return 1;
+                }
+                if(o2.equals("--")){
+                    return -1;
+                }
+                Integer i1 = new Integer(o1);
+                Integer i2 = new Integer(o2);
+                return i1.compareTo(i2);
+            }
+        };
+        rapier.setComparator(placeComparator);
+        smallsword.setComparator(placeComparator);
+        sabre.setComparator(placeComparator);
+        triathlonOpen.setComparator(placeComparator);
+        triathlonWomen.setComparator(placeComparator);
+
+
+
+
+
+
         GridPane.setConstraints(tv,1,1);
         tv.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tv.getColumns().addAll(surname,name,smallsword,sabre,rapier,triathlonOpen,triathlonWomen);
