@@ -980,17 +980,26 @@ public class EliminationController implements Initializable {
         surname.setCellValueFactory( p -> new SimpleStringProperty(p.getValue().getSurname()));
         name.setCellValueFactory( p -> new SimpleStringProperty(p.getValue().getName()));
         smallsword.setCellValueFactory( p -> {
-            StringProperty toRet = new SimpleStringProperty("-");
+            StringProperty toRet = new SimpleStringProperty("--");
+            if(p.getValue().getParticipantResult().getSmallSwordResults().getPlace() < 0){
+                return toRet;
+            }
             toRet.setValue(p.getValue().getParticipantResult().getSmallSwordResults().getPlace().toString());
             return toRet;
         });
         sabre.setCellValueFactory( p -> {
-            StringProperty toRet = new SimpleStringProperty("-");
+            StringProperty toRet = new SimpleStringProperty("--");
+            if(p.getValue().getParticipantResult().getSabreResults().getPlace() < 0){
+                return toRet;
+            }
             toRet.setValue(p.getValue().getParticipantResult().getSabreResults().getPlace().toString());
             return toRet;
         });
         rapier.setCellValueFactory( p -> {
-            StringProperty toRet = new SimpleStringProperty("-");
+            StringProperty toRet = new SimpleStringProperty("--");
+            if(p.getValue().getParticipantResult().getRapierResults().getPlace() < 0){
+                return toRet;
+            }
             toRet.setValue(p.getValue().getParticipantResult().getRapierResults().getPlace().toString());
             return toRet;
         });
