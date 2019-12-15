@@ -93,9 +93,13 @@ public class RationalNumber implements Serializable {
     /** implemtns '>' operator. Return 1,0,-1 **/
     public static int compare(RationalNumber first,RationalNumber scnd)
     {
-        RationalNumber left = new RationalNumber(first.num*scnd.denom, first.denom*scnd.denom);
-        RationalNumber right = new RationalNumber(scnd.num*first.denom,scnd.denom*first.denom);
-        int outCome = left.num - right.num;
+//        RationalNumber left = new RationalNumber(first.num*scnd.denom, first.denom*scnd.denom);
+//        RationalNumber right = new RationalNumber(scnd.num*first.denom,scnd.denom*first.denom);
+        int left = first.num*scnd.denom;
+        int right = scnd.num*first.denom;
+
+//        int outCome = left.num - right.num;
+        int outCome = left - right;
         if(outCome >0)
             return 1;
         else if(outCome <0)

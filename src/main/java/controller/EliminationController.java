@@ -282,6 +282,7 @@ public class EliminationController implements Initializable {
             return tableRow;
         });
 
+        points.setComparator(RationalNumber.getComparator());
 
         GridPane.setConstraints(tv, 0, 0);
         tableViewGridPane.getChildren().add(tv);

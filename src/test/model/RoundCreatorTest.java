@@ -113,6 +113,29 @@ public class RoundCreatorTest {
 
     @Test
     public void setPlayOffWinners() throws Exception {
+        int points[] = {2,2,2,2};
+        addParticipants(points);
+        WeaponCompetition.RoundCreator rc=wc.prepareNewRound(3,3,false, FightDrawStrategyPicker.STRATEGY_NAMES.DEFAULT);
+        List<Participant> playoffers= rc.getParticipantsForPlayoff();
+        assertEquals(4,playoffers.size());
+        List<Participant> playOfWinners = new ArrayList<>();
+        Collections.addAll(playOfWinners,wcInsideParticipantList.get(0),wcInsideParticipantList.get(1),wcInsideParticipantList.get(2));
+        // test
+        rc.setPlayOffWinners(playOfWinners);
+        assertEquals(true,rc.getfRoundReady());
+        rc.startRound();
+         // verify
+        Round nr = wc.getLastRound();
+        nr.getParticipants().removeAll(playoffers);
+        assertEquals(0,nr.getParticipants().size());
+    }
+    @Test
+    public void getParcipanntsForPlayOff() throws Exception{
+        int points[] = {2,2,2,2};
+        addParticipants(points);
+        WeaponCompetition.RoundCreator rc=wc.prepareNewRound(3,3,false, FightDrawStrategyPicker.STRATEGY_NAMES.DEFAULT);
+        List<Participant> playoffers= rc.getParticipantsForPlayoff();
+        assertEquals(4,playoffers.size());
     }
 
 

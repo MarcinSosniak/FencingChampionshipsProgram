@@ -58,6 +58,21 @@ public class ConfigReaderTest {
     }
 
     @Test
+    public void getStringValueDefault() throws Exception{
+        setCustomConfigReader(BASE_TEST_FILE,null);
+
+        assertEquals("cat",testedReader.getStringValue("BASE","NOTEXISTING","cat"));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void getStringValueException() throws Exception{
+        setCustomConfigReader(BASE_TEST_FILE,null);
+        testedReader.getStringValue("BASE","NOTEXISTING");
+    }
+
+
+
+    @Test
     public void overrideTestBoolean() throws Exception
     {
         setCustomConfigReader(BASE_TEST_FILE,null);

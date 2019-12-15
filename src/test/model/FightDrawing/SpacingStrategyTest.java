@@ -6,14 +6,12 @@ import model.*;
 import model.KillerDrawing.RandomKillerRandomizationStrategy;
 import model.enums.JudgeState;
 import model.enums.WeaponType;
+import net.bytebuddy.matcher.CollectionErasureMatcher;
 import org.junit.Test;
 import org.mockito.Mockito;
 import util.RationalNumber;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -101,9 +99,67 @@ public class SpacingStrategyTest {
             }
 
         }
-
-
     }
+
+    @Test
+    public void drawFightsForRound_precise() throws Exception
+    {
+        List<Participant> participants = new ArrayList<>();
+        final int PARTICIPANTS_COUNT = 6; // DO NOT CHANGE
+        final int GROUP_SIZE = 3;//DONOT CHANGE
+        for (int i = 0; i < PARTICIPANTS_COUNT; i++) {
+            Participant p = mock(Participant.class);
+            doReturn(new SimpleStringProperty("n" + Integer.toString( i))).when(p).nameProperty();
+            doReturn(new SimpleStringProperty("s" + Integer.toString( i))).when(p).surnameProperty();
+            Mockito.doReturn(new SimpleObjectProperty<>(new RationalNumber(PARTICIPANTS_COUNT-i))).when(p).getOldSeasonPointsForWeaponProperty(any());
+            participants.add(p);
+        }
+        WeaponCompetition wc = Mockito.mock(WeaponCompetition.class);
+        Round r = Mockito.mock(Round.class);
+        doReturn(wc).when(r).getMyWeaponCompetition();
+        doReturn(WeaponType.SMALL_SWORD).when(wc).getWeaponType();
+
+        SpacingStrategy s = new SpacingStrategy(new RandomKillerRandomizationStrategy());
+        //test
+        List<CompetitionGroup> cgs = s.drawFightsForRound(r, GROUP_SIZE, participants);
+        //verify
+        /*
+        | Group 0  | Group 1  |
+        +----------+----------+
+        |    p0    |   p1     |
+        +----------+----------+
+        |    p3    |   p2     |
+        +----------+----------+
+        |    p4    |   p5     |
+        +----------+----------+
+        */
+
+        //GROUP 0
+        CompetitionGroup cg = cgs.get(1);
+        List<Participant> participantsToVerify  = new ArrayList<>();
+        Collections.addAll(participantsToVerify,participants.get(0),participants.get(3),participants.get(4));
+        for (Fight f: cg.getFightsList())
+        {
+            assertEquals(true,participantsToVerify.contains(f.getFirstParticipant()));
+            assertEquals(true,participantsToVerify.contains(f.getSecondParticipant()));
+        }
+
+        System.out.println("\n\n");
+        //GROUP 1
+        cg=cgs.get(0);
+        participantsToVerify.clear();
+        Collections.addAll(participantsToVerify,participants.get(1),participants.get(2),participants.get(5));
+        for (Fight f: cg.getFightsList())
+        {
+            assertEquals(true,participantsToVerify.contains(f.getFirstParticipant()));
+            assertEquals(true,participantsToVerify.contains(f.getSecondParticipant()));
+        }
+    }
+
+
+
+
+
     @Test
     public void drawFightsForRoundKillers() throws Exception {
         //prepare
@@ -139,12 +195,12 @@ public class SpacingStrategyTest {
         topN.sort(new Comparator<Participant>() {
             @Override
             public int compare(Participant o1, Participant o2) {
-                return RationalNumber.compare(o1.getOldSeasonPointsForWeaponProperty(WeaponType.SMALL_SWORD).getValue(),
+                return -RationalNumber.compare(o1.getOldSeasonPointsForWeaponProperty(WeaponType.SMALL_SWORD).getValue(),
                         o2.getOldSeasonPointsForWeaponProperty(WeaponType.SMALL_SWORD).get());
             }
         });
 
-        topN = topN.subList(0,N); // imporrtant that top fighters will not fight against each other
+        topN = topN.subList(0,N-1); // imporrtant that top fighters will not fight against each other
 
         List<List<Participant>> particpantsInGroups = new ArrayList<>();
         for( CompetitionGroup cg : cgs)
@@ -156,21 +212,10 @@ public class SpacingStrategyTest {
                     partInGroup.add(f.getFirstParticipant());
                 if(!partInGroup.contains(f.getSecondParticipant()))
                     partInGroup.add(f.getSecondParticipant());
-//                if(topN.contains(f.getFirstParticipant()) && topN.contains(f.getSecondParticipant()))
-//                    fail();
+                if(topN.contains(f.getFirstParticipant()) && topN.contains(f.getSecondParticipant()))
+                    fail();
             }
             particpantsInGroups.add(partInGroup);
-        }
-
-        for( List<Participant> pl : particpantsInGroups)
-        {
-            System.out.print("[");
-            for(Participant p : pl)
-            {
-                System.out.print(p.getOldSeasonPointsForWeaponProperty(WeaponType.SMALL_SWORD).get().toString());
-                System.out.print(",");
-            }
-            System.out.println("]");
         }
 
     }

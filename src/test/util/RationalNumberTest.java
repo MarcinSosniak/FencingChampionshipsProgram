@@ -100,6 +100,14 @@ public class RationalNumberTest {
     }
 
     @Test
+    public void specyficCompare() throws Exception
+    {
+        RationalNumber n10_1_2 = new RationalNumber(21,2);
+        RationalNumber n11 = new RationalNumber(11);
+        assertEquals(1,RationalNumber.getComparator().compare(n11,n10_1_2));
+    }
+
+    @Test
     public void greater() throws Exception {
         RationalNumber nr1 = new RationalNumber(931689,10000);
         RationalNumber nr2 = new RationalNumber(5,3);

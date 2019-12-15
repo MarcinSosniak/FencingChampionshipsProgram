@@ -98,7 +98,7 @@ public class PersistenceManagerTest {
 
 
     @Test
-    public void test(){
+    public void CompetitionSerializationAndDeserliazitionTest(){
         String filename = "competition.bin";
 
         // Serialization
