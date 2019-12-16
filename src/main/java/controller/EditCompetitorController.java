@@ -121,7 +121,7 @@ public class EditCompetitorController implements Initializable {
 
             System.out.format("editCompetitor success\n");
         }else{
-            Alert alert= new Alert(Alert.AlertType.ERROR,"New surname or name is not unique\n");
+            Alert alert= new Alert(Alert.AlertType.ERROR,"Nowe imie i nazwisko nie jest unikalne\n");
             alert.show();
         }
     }

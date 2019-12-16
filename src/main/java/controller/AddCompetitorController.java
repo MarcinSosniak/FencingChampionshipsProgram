@@ -74,17 +74,17 @@ public class AddCompetitorController implements Initializable {
         int iOldSabre = 0;
         int iOldRapier =0;
         try{ iOldSmallSword=Integer.parseInt(oldSmallSword.getText().trim()); } catch (Exception ex) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Small sword points form last seazon are not a number");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Szpadowe punkty z poprzedniej rundy nie są liczbą.");
             alert.show();
             return;
         }
         try{ iOldSabre=Integer.parseInt(oldSabre.getText().trim()); } catch (Exception ex) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Sabre points form last seazon are not a number");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Szablowe punkty z poprzedniej rundy nie są liczbą.");
             alert.show();
             return;
         }
         try{ iOldRapier=Integer.parseInt(oldRapier.getText().trim()); } catch (Exception ex) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Rapier points form last seazon are not a number");
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Rapierowe punkty z poprzedniej rundy nie są liczbą.");
             alert.show();
             return;
         }
@@ -109,7 +109,7 @@ public class AddCompetitorController implements Initializable {
             Stage toClose = (Stage) addButton.getScene().getWindow();
             toClose.close();
         }else{
-            Alert alert= new Alert(Alert.AlertType.ERROR,"New surname or name is not unique\n");
+            Alert alert= new Alert(Alert.AlertType.ERROR,"Nowe imie i nazwisko nie jest unikalne\n");
             alert.show();
         }
     }
