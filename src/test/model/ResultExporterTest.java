@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 public class ResultExporterTest {
 
     Competition competition;
-    private final String BASE_TEST_FILE= "src/main/resources/cfg/default.cfg";
+    private final String BASE_TEST_FILE= "cfg/default.cfg";
 
     @Before
     public void setUp() throws Exception {

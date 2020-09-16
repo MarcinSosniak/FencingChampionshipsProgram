@@ -50,7 +50,7 @@ public class PersistenceManagerTest {
                 "      \"licenseExpDate\":\"23-07-2020\"\n" +
                 "   }\n" +
                 "]\n";
-        ConfigReader.init("src/main/resources/cfg/default.cfg","src/main/resources/cfg/test.cfg");
+        ConfigReader.init("cfg/default.cfg","cfg/override.cfg");
 
         p1 = new Participant("Marcin", "Kowalski", "KRK", "A", JudgeState.NON_JUDGE,new Date(), 0, 0, 0);
         p2 = new Participant("Paulina", "Nowak", "KRK", "B", JudgeState.NON_JUDGE,new Date(), 0, 0, 0);

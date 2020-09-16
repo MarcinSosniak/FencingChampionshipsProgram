@@ -74,7 +74,7 @@ public class WelcomeController implements Initializable {
         ObservableList smallSwordParticipants = FXCollections.observableArrayList();
 
         try {
-            ConfigReader.init("src/main/resources/cfg/default.cfg","src/main/resources/cfg/test.cfg");
+            ConfigReader.init("cfg/default.cfg","cfg/override.cfg");
         }
         catch (HumanReadableFatalError humanReadableFatalError) { humanReadableFatalError.printStackTrace(); }
 
