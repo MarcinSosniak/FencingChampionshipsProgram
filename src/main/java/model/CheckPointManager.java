@@ -48,13 +48,15 @@ public class CheckPointManager {
     }
 
     public static void createCheckPoint(List<String> path) {
-        for (int i = 0; i < path.size() - 1; i++) {
-            String addedPath = path.subList(0, i).stream().reduce("", (partial, elem) -> partial + "/" + elem);
-            File f = new File(addedPath);
-            if (!f.isDirectory())
+        for (int i = 0; i < path.size(); i++) {
+            String addedPath = path.subList(0, i+1).stream().reduce("", (partial, elem) -> partial + "/" + elem);
+            File f = new File(addedPath.substring(1));
+            if (!f.isDirectory()) {
                 f.mkdir();
+            }
+
         }
-        createCheckPoint(path.stream().reduce("", (partial, elem) -> partial + "/" + elem));
+        createCheckPoint(path.stream().reduce("", (partial, elem) -> partial + "/" + elem).substring(1));
 
     }
 

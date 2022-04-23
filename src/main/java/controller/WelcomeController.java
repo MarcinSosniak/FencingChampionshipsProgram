@@ -45,10 +45,10 @@ public class WelcomeController implements Initializable {
 
         if (selectedDirectory != null) {
             String[] parts = selectedDirectory.getPath().split(Pattern.quote("\\"));
-            if (parts[parts.length -2].equals("saves")) {
+            if (parts[parts.length -3].equals("saves")) {
                 String targetDirectoryName = parts[parts.length - 1];
                 System.out.println(targetDirectoryName);
-                CheckPointManager.readFromCheckPoint("saves/"+targetDirectoryName);
+                CheckPointManager.readFromCheckPoint(selectedDirectory.getPath());
 
                 // No need to show or read particpants.
                 try {
