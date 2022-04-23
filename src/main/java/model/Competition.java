@@ -124,6 +124,7 @@ public class Competition implements Serializable {
 
     private void writeObject(ObjectOutputStream stream) throws IOException {
         stream.writeObject(password);
+        stream.writeObject(competitionName);
         ArrayList<WeaponCompetition> weaponCompetitionArrayList = new ArrayList<>();
         weaponCompetitions.forEach(wc -> weaponCompetitionArrayList.add(wc)) ;
         stream.writeObject(weaponCompetitionArrayList);
@@ -136,6 +137,7 @@ public class Competition implements Serializable {
 
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
         password = (String) stream.readObject();
+        competitionName = (String) stream.readObject();
         weaponCompetitions = FXCollections.observableArrayList((ArrayList<WeaponCompetition>) stream.readObject());
         participants = FXCollections.observableArrayList((ArrayList<Participant>) stream.readObject());
         killerRandomizerStrategy = (KillerRandomizerStrategy) stream.readObject();

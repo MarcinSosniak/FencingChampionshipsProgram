@@ -1,11 +1,7 @@
 package model;
 
-import com.google.gson.annotations.Expose;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableMap;
-import model.command.ChangePointsCommand;
-import model.command.CommandAddInjury;
 import model.config.ConfigReader;
 import model.enums.JudgeState;
 import model.enums.WeaponType;
@@ -41,8 +37,8 @@ public class Participant implements Serializable{
     public transient StringProperty fSmallSwordParticipantSProperty;
     public transient StringProperty fSabreParticipantSProperty;
     public transient StringProperty fRapierParticipantSProperty;
-    private transient Map<WeaponType, ObjectProperty<util.RationalNumber>> weaponPointsProperty;
-    private Map<WeaponType,ObjectProperty<RationalNumber>> oldSeasonWeapoPointsPropety = new HashMap<>();
+    private transient Map<WeaponType, ObjectProperty<RationalNumber>> weaponPointsProperty;
+    private Map<WeaponType, ObjectProperty<RationalNumber>> oldSeasonWeapoPointsPropety = new HashMap<>();
 
     private transient SimpleObjectProperty<ParticipantResult> participantResult;
 
@@ -75,7 +71,7 @@ public class Participant implements Serializable{
 
         this.weaponPointsProperty = new HashMap<>();
         participantResult = new SimpleObjectProperty<>(new ParticipantResult(this));
-        oldSeasonWeapoPointsPropety.put(WeaponType.RAPIER,new SimpleObjectProperty<>(new RationalNumber(oldPointsSmallSword)));
+        oldSeasonWeapoPointsPropety.put(WeaponType.RAPIER,new SimpleObjectProperty<>(new RationalNumber(oldPointsRapier)));
         oldSeasonWeapoPointsPropety.put(WeaponType.SABRE,new SimpleObjectProperty<>(new RationalNumber(oldPointsSabre)));
         oldSeasonWeapoPointsPropety.put(WeaponType.SMALL_SWORD,new SimpleObjectProperty<>(new RationalNumber(oldPointsSmallSword)));
     }
@@ -364,7 +360,10 @@ public class Participant implements Serializable{
         stream.writeInt(timesKiller);
         Map<WeaponType, util.RationalNumber> weaponPoints = new HashMap<>();
         weaponPointsProperty.forEach((wt, wp) -> weaponPoints.put(wt, wp.get()));
+        Map<WeaponType, util.RationalNumber> oldSeasonWeaponPoints = new HashMap<>();
+        oldSeasonWeapoPointsPropety.forEach((wt, wp) -> oldSeasonWeaponPoints.put(wt, wp.get()));
         stream.writeObject(weaponPoints);
+        stream.writeObject(oldSeasonWeaponPoints);
         /** For final results required */
         stream.writeObject(fFemale.get());
         stream.writeObject(participantResult.get());
@@ -385,8 +384,10 @@ public class Participant implements Serializable{
         fSmallSwordInjury = new SimpleBooleanProperty(stream.readBoolean());
         timesKiller = stream.readInt();
         weaponPointsProperty = FXCollections.observableHashMap();
-        Map<WeaponType, RationalNumber> m = (Map<WeaponType, RationalNumber>) stream.readObject();
-        m.forEach((wt, wp) -> weaponPointsProperty.put(wt, new SimpleObjectProperty<>(wp)));
+        Map<WeaponType, RationalNumber> weaponPoints = (Map<WeaponType, RationalNumber>) stream.readObject();
+        weaponPoints.forEach((wt, wp) -> weaponPointsProperty.put(wt, new SimpleObjectProperty<>(wp)));
+        Map<WeaponType, RationalNumber> oldSeasonWeaponPoints = (Map<WeaponType, RationalNumber>) stream.readObject();
+        oldSeasonWeaponPoints.forEach((wt, wp) -> weaponPointsProperty.put(wt, new SimpleObjectProperty<>(wp)));
         /** For final results required */
         fFemale = new SimpleBooleanProperty((Boolean) stream.readObject());
         participantResult = new SimpleObjectProperty<>((ParticipantResult) stream.readObject());

@@ -31,6 +31,7 @@ import util.RationalNumber;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 /** TODO: undo doesn't change color properly
  * TODO: should add function set cell colors properly :) which is invoked by command controller */
@@ -226,7 +227,7 @@ public class EliminationController implements Initializable {
         tv.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         tv.setItems(weaponCompetitionParticipants.get(wt));
 
-        TableColumn<Participant, String> name = new TableColumn<Participant, String>("imiƒô");
+        TableColumn<Participant, String> name = new TableColumn<Participant, String>("imiÍ");
         TableColumn<Participant, String> surname = new TableColumn<Participant, String>("nazwisko");
         TableColumn<Participant, RationalNumber> points = new TableColumn<>("punkty");
         TableColumn<Participant, String> group = new TableColumn<Participant, String>("grupa");
@@ -348,7 +349,7 @@ public class EliminationController implements Initializable {
 
         Button nextRoundButton = new Button();
         nextRoundButton.setMaxSize(1000, 1000);
-        nextRoundButton.setText("nastƒôpna runda");
+        nextRoundButton.setText("nastÍpna runda");
         nextRoundButton.setOnAction(x -> {
             System.out.format("HUEEEEEEEEEEEEEEEEEEEEEEEeeeeee\n");
 
@@ -364,7 +365,7 @@ public class EliminationController implements Initializable {
             else
             {
                 Pointer<WeaponCompetition.RoundCreator> p = new Pointer<>();
-                Stage stageroni = ApplicationController.getApplicationController().renderNextRound("/nextRound.fxml", "Nastƒôpna runda", true, wc,p);
+                Stage stageroni = ApplicationController.getApplicationController().renderNextRound("/nextRound.fxml", "NastÍpna runda", true, wc,p);
                 stageroni.getIcons().add(ApplicationController.image);
                 stageroni.setResizable(false);
                 stageroni.showAndWait();
@@ -434,7 +435,7 @@ public class EliminationController implements Initializable {
                 return;
             if(AppMode.getMode().fSafe())
             {
-                Alert alert = new Alert(Alert.AlertType.WARNING,"Nie masz uprawnie≈Ñ do wykonania tej akcji, przejd≈∫ do trybu administratora");
+                Alert alert = new Alert(Alert.AlertType.WARNING,"Nie masz uprawnieÒ do wykonania tej akcji, przejdü do trybu administratora");
                 alert.show();
                 return;
             }
@@ -466,7 +467,7 @@ public class EliminationController implements Initializable {
                 return;
             if(AppMode.getMode().fSafe())
             {
-                Alert alert = new Alert(Alert.AlertType.WARNING,"Nie masz uprawnie≈Ñ do wykonania tej akcji, przejd≈∫ do trybu administratora");
+                Alert alert = new Alert(Alert.AlertType.WARNING,"Nie masz uprawnieÒ do wykonania tej akcji, przejdü do trybu administratora");
                 alert.show();
                 return;
             }
@@ -945,7 +946,7 @@ public class EliminationController implements Initializable {
         gridPane.getColumnConstraints().addAll(column1,column2,column3);
 
         /** Preparing title */
-        Label text = new Label("WYNIKI KO≈ÉCOWE");
+        Label text = new Label("WYNIKI KO—COWE");
         text.setTextAlignment(TextAlignment.CENTER);
         text.setStyle("-fx-alignment: CENTER;");
         text.setFont(new Font(20));
@@ -970,13 +971,15 @@ public class EliminationController implements Initializable {
         TableColumn<Participant,String> triathlonOpen = new TableColumn<>();
         TableColumn<Participant,String> triathlonWomen = new TableColumn<>();
 
+        System.out.println("force recompile");
+
         surname.setText("Nazwisko");
         name.setText("Imie");
         smallsword.setText("Szpada");
         sabre.setText("Szabla");
         rapier.setText("Rapier");
-        triathlonOpen.setText("Tr√≥jb√≥j Open");
-        triathlonWomen.setText("Tr√≥jb√≥j Kobiet");
+        triathlonOpen.setText("TrÛjbÛj Open");
+        triathlonWomen.setText("TrÛjbÛj Kobiet");
 
         surname.setCellValueFactory( p -> new SimpleStringProperty(p.getValue().getSurname()));
         name.setCellValueFactory( p -> new SimpleStringProperty(p.getValue().getName()));
@@ -1049,7 +1052,7 @@ public class EliminationController implements Initializable {
         Tab tabToRet = new Tab();
         tabToRet.setContent(gridPane);
         tabToRet.setClosable(false);
-        tabToRet.setText("wyniki ko≈Ñcowe");
+        tabToRet.setText("wyniki koÒcowe");
 
         return tabToRet;
     }
