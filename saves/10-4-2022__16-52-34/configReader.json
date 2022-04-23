@@ -1,36 +1,22 @@
 {
   "tags": {
-    "A": {
-      "vars": {
-        "A1": "N",
-        "A2": "Y",
-        "A0": "0"
-      }
-    },
-    "B": {
-      "vars": {
-        "B2": "2",
-        "B0": "1",
-        "B1": "Y"
-      }
-    },
     "SMALL_SWORD": {
       "vars": {
-        "FINAL_ROUND_NUMBER": "3"
+        "FINAL_ROUND_NUMBER": "6"
       }
     },
     "RAPIER_ROUND_1": {
       "vars": {
         "PARTICIPANTS_COUNT": "50",
-        "STRATEGY": "SPACING",
-        "GROUP_SIZE": "3"
+        "STRATEGY": "DEFAULT",
+        "GROUP_SIZE": "5"
       }
     },
     "RAPIER_ROUND_2": {
       "vars": {
-        "PARTICIPANTS_COUNT": "6",
+        "PARTICIPANTS_COUNT": "20",
         "STRATEGY": "DEFAULT",
-        "GROUP_SIZE": "3"
+        "GROUP_SIZE": "5"
       }
     },
     "PATHS": {
@@ -39,38 +25,61 @@
         "PARTICIPANTS_LIST": "participants.json"
       }
     },
+    "RAPIER_ROUND_3": {
+      "vars": {
+        "PARTICIPANTS_COUNT": "6",
+        "STRATEGY": "DEFAULT",
+        "GROUP_SIZE": "3"
+      }
+    },
     "RAPIER": {
       "vars": {
-        "FINAL_ROUND_NUMBER": "3"
+        "FINAL_ROUND_NUMBER": "5"
       }
     },
     "TEST": {
       "vars": {
+        "DEFAULT_SABRE_COMPETITOR": "Y",
+        "DEFAULT_RAPIER_COMPETITOR": "Y",
         "DEFAULT_SMALL_SWORD_COMPETITOR": "Y"
       }
     },
     "SMALL_SWORD_ROUND_1": {
       "vars": {
         "PARTICIPANTS_COUNT": "50",
-        "STRATEGY": "SPACING",
+        "STRATEGY": "DEFAULT",
         "GROUP_SIZE": "5"
       }
     },
     "SABRE": {
       "vars": {
-        "FINAL_ROUND_NUMBER": "3"
+        "FINAL_ROUND_NUMBER": "5"
       }
     },
     "SMALL_SWORD_ROUND_2": {
       "vars": {
-        "PARTICIPANTS_COUNT": "10",
+        "PARTICIPANTS_COUNT": "50",
         "STRATEGY": "DEFAULT",
-        "GROUP_SIZE": "5"
+        "GROUP_SIZE": "3"
       }
     },
     "SECURITY": {
       "vars": {
         "PASSWORD": "admin"
+      }
+    },
+    "SMALL_SWORD_ROUND_3": {
+      "vars": {
+        "PARTICIPANTS_COUNT": "20",
+        "STRATEGY": "DEFAULT",
+        "GROUP_SIZE": "5"
+      }
+    },
+    "SMALL_SWORD_ROUND_4": {
+      "vars": {
+        "PARTICIPANTS_COUNT": "6",
+        "STRATEGY": "DEFAULT",
+        "GROUP_SIZE": "3"
       }
     },
     "POINTS": {
@@ -83,15 +92,22 @@
     "SABRE_ROUND_1": {
       "vars": {
         "PARTICIPANTS_COUNT": "50",
-        "STRATEGY": "SPACING",
+        "STRATEGY": "DEFAULT",
         "GROUP_SIZE": "5"
       }
     },
     "SABRE_ROUND_2": {
       "vars": {
-        "PARTICIPANTS_COUNT": "10",
+        "PARTICIPANTS_COUNT": "20",
         "STRATEGY": "DEFAULT",
         "GROUP_SIZE": "5"
+      }
+    },
+    "SABRE_ROUND_3": {
+      "vars": {
+        "PARTICIPANTS_COUNT": "6",
+        "STRATEGY": "DEFAULT",
+        "GROUP_SIZE": "3"
       }
     }
   }
