@@ -2,18 +2,43 @@ package model;
 
 import javafx.beans.property.*;
 import model.enums.WeaponType;
+import util.ObservableUtils;
 import util.RationalNumber;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * There is a crash because during deserialization there is no value
  * for some properties and we try to recreate object property with null value which is not allowed
  */
 public class ParticipantResult implements Serializable {
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ParticipantResult)) return false;
+        ParticipantResult that = (ParticipantResult) o;
+        return participant.get().getName().equals(that.participant.get().getName())
+            && participant.get().getSurname().equals(that.participant.get().getSurname())
+            && ObservableUtils.equals(triathlonOpenPoints, that.triathlonOpenPoints)
+            && ObservableUtils.equals(triathlonWomenPoints, that.triathlonWomenPoints)
+            && ObservableUtils.equals(triathlonOpen, that.triathlonOpen)
+            && ObservableUtils.equals(triathlonWomen, that.triathlonWomen)
+            && ObservableUtils.equals(smallSwordResults, that.smallSwordResults)
+            && ObservableUtils.equals(rapierResults, that.rapierResults)
+            && ObservableUtils.equals(sabreResults, that.sabreResults);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(participant, triathlonOpenPoints, triathlonWomenPoints, triathlonOpen, triathlonWomen, smallSwordResults, rapierResults, sabreResults);
+    }
+
     public class WeaponCompetitionResult implements Serializable {
         private static final long serialVersionUID = 1008;
 
@@ -69,6 +94,21 @@ public class ParticipantResult implements Serializable {
 
         public void toExport(){
             /** TODO: implement me! */
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof WeaponCompetitionResult)) return false;
+            WeaponCompetitionResult that = (WeaponCompetitionResult) o;
+            return type == that.type
+                && ObservableUtils.equals(place, that.place)
+                && ObservableUtils.equals(points, that.points);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(type, place, points);
         }
     }
 

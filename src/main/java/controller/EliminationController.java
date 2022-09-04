@@ -945,7 +945,7 @@ public class EliminationController implements Initializable {
         gridPane.getColumnConstraints().addAll(column1,column2,column3);
 
         /** Preparing title */
-        Label text = new Label("WYNIKI KOŃCOWE");
+        Label text = new Label("WYNIKI KONCOWE");
         text.setTextAlignment(TextAlignment.CENTER);
         text.setStyle("-fx-alignment: CENTER;");
         text.setFont(new Font(20));

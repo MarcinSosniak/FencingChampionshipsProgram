@@ -1,15 +1,12 @@
 package model;
 
-import com.google.gson.annotations.Expose;
 import javafx.beans.property.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableMap;
-import model.command.ChangePointsCommand;
-import model.command.CommandAddInjury;
+import model.command.ValidInvocationChecker;
 import model.config.ConfigReader;
 import model.enums.JudgeState;
 import model.enums.WeaponType;
 import model.exceptions.NoSuchWeaponException;
+import util.ObservableUtils;
 import util.RationalNumber;
 
 import java.io.IOException;
@@ -17,7 +14,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.security.InvalidParameterException;
-import model.command.ValidInvocationChecker;
 import java.util.*;
 
 public class Participant implements Serializable{
@@ -42,7 +38,7 @@ public class Participant implements Serializable{
     public transient StringProperty fSabreParticipantSProperty;
     public transient StringProperty fRapierParticipantSProperty;
     private transient Map<WeaponType, ObjectProperty<util.RationalNumber>> weaponPointsProperty;
-    private Map<WeaponType,ObjectProperty<RationalNumber>> oldSeasonWeapoPointsPropety = new HashMap<>();
+    private Map<WeaponType,ObjectProperty<RationalNumber>> oldSeasonWeaponPointsProperty = new HashMap<>();
 
     private transient SimpleObjectProperty<ParticipantResult> participantResult;
 
@@ -50,8 +46,8 @@ public class Participant implements Serializable{
     private transient BooleanProperty fRapierInjury = new SimpleBooleanProperty(false);
     private transient BooleanProperty fSmallSwordInjury = new SimpleBooleanProperty(false);
 
-    static String tick = "\u2713";
-    static String cross = "\u2718";
+    public static String tick = "\u2713";
+    public static String cross = "\u2718";
 
     public Participant(String name, String surname, String location, String locationGroup, JudgeState judgeState, Date licenceExpDate
             ,int oldPointsSmallSword , int oldPointsSabre,int oldPointsRapier){
@@ -75,9 +71,9 @@ public class Participant implements Serializable{
 
         this.weaponPointsProperty = new HashMap<>();
         participantResult = new SimpleObjectProperty<>(new ParticipantResult(this));
-        oldSeasonWeapoPointsPropety.put(WeaponType.RAPIER,new SimpleObjectProperty<>(new RationalNumber(oldPointsSmallSword)));
-        oldSeasonWeapoPointsPropety.put(WeaponType.SABRE,new SimpleObjectProperty<>(new RationalNumber(oldPointsSabre)));
-        oldSeasonWeapoPointsPropety.put(WeaponType.SMALL_SWORD,new SimpleObjectProperty<>(new RationalNumber(oldPointsSmallSword)));
+        oldSeasonWeaponPointsProperty.put(WeaponType.RAPIER,new SimpleObjectProperty<>(new RationalNumber(oldPointsRapier)));
+        oldSeasonWeaponPointsProperty.put(WeaponType.SABRE,new SimpleObjectProperty<>(new RationalNumber(oldPointsSabre)));
+        oldSeasonWeaponPointsProperty.put(WeaponType.SMALL_SWORD,new SimpleObjectProperty<>(new RationalNumber(oldPointsSmallSword)));
     }
 
     /** Updating only transcient fields because when we read from json we still want to read them */
@@ -205,7 +201,7 @@ public class Participant implements Serializable{
 
     public void setOldSeasonWeapoPointsPropety(WeaponType wt,int points)
     {
-        oldSeasonWeapoPointsPropety.get(wt).setValue(new RationalNumber(points));
+        oldSeasonWeaponPointsProperty.get(wt).setValue(new RationalNumber(points));
 
     }
 
@@ -272,7 +268,7 @@ public class Participant implements Serializable{
     }
 
     public ObjectProperty<RationalNumber> getOldSeasonPointsForWeaponProperty(WeaponType type){
-        return oldSeasonWeapoPointsPropety.get(type);
+        return oldSeasonWeaponPointsProperty.get(type);
     }
 
     public void addPointsForWeapon(ValidInvocationChecker checker, WeaponType type, RationalNumber points){
@@ -328,19 +324,6 @@ public class Participant implements Serializable{
         }
     }
 
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj != null && obj instanceof Participant)
-            return (this.name.toString().equals(((Participant) obj).name.toString())
-                    && this.surname.toString().equals(((Participant) obj).surname.toString())
-                    && this.location.toString().equals(((Participant) obj).location.toString())
-                    && this.locationGroup.toString().equals(((Participant) obj).locationGroup.toString())
-                    && this.judgeState.toString().equals(((Participant) obj).judgeState.toString())
-                    && this.licenseExpDate.toString().equals(((Participant) obj).licenseExpDate.toString()));
-        return false;
-    }
-
     @Override
     public int hashCode() {
         return this.name.hashCode() * 4 + this.surname.hashCode() * 17 +
@@ -362,9 +345,8 @@ public class Participant implements Serializable{
         stream.writeBoolean(fSabreInjury.get());
         stream.writeBoolean(fSmallSwordInjury.get());
         stream.writeInt(timesKiller);
-        Map<WeaponType, util.RationalNumber> weaponPoints = new HashMap<>();
-        weaponPointsProperty.forEach((wt, wp) -> weaponPoints.put(wt, wp.get()));
-        stream.writeObject(weaponPoints);
+        stream.writeObject(ObservableUtils.toMap(weaponPointsProperty));
+        stream.writeObject(ObservableUtils.toMap(oldSeasonWeaponPointsProperty));
         /** For final results required */
         stream.writeObject(fFemale.get());
         stream.writeObject(participantResult.get());
@@ -378,15 +360,17 @@ public class Participant implements Serializable{
         judgeState = new SimpleObjectProperty<>((JudgeState) stream.readObject());
         licenseExpDate = new SimpleObjectProperty<>((Date) stream.readObject());
         fSmallSwordParticipant = new SimpleBooleanProperty(stream.readBoolean());
+        fSmallSwordParticipantSProperty = ObservableUtils.toSimpleStringProperty(fSmallSwordParticipant);
         fRapierParticipant = new SimpleBooleanProperty(stream.readBoolean());
+        fRapierParticipantSProperty = ObservableUtils.toSimpleStringProperty(fRapierParticipant);
         fSabreParticipant = new SimpleBooleanProperty(stream.readBoolean());
+        fSabreParticipantSProperty = ObservableUtils.toSimpleStringProperty(fSabreParticipant);
         fRapierInjury = new SimpleBooleanProperty(stream.readBoolean());
         fSabreInjury = new SimpleBooleanProperty(stream.readBoolean());
         fSmallSwordInjury = new SimpleBooleanProperty(stream.readBoolean());
         timesKiller = stream.readInt();
-        weaponPointsProperty = FXCollections.observableHashMap();
-        Map<WeaponType, RationalNumber> m = (Map<WeaponType, RationalNumber>) stream.readObject();
-        m.forEach((wt, wp) -> weaponPointsProperty.put(wt, new SimpleObjectProperty<>(wp)));
+        weaponPointsProperty = ObservableUtils.toObservableMap((Map<WeaponType, RationalNumber>) stream.readObject());
+        oldSeasonWeaponPointsProperty = ObservableUtils.toObservableMap((Map<WeaponType, RationalNumber>) stream.readObject());
         /** For final results required */
         fFemale = new SimpleBooleanProperty((Boolean) stream.readObject());
         participantResult = new SimpleObjectProperty<>((ParticipantResult) stream.readObject());
@@ -420,4 +404,56 @@ public class Participant implements Serializable{
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "Participant{" +
+                "name=" + name +
+                ", surname=" + surname +
+                ", location=" + location +
+                ", locationGroup=" + locationGroup +
+                ", judgeState=" + judgeState +
+                ", licenseExpDate=" + licenseExpDate +
+                ", fFemale=" + fFemale +
+                ", timesKiller=" + timesKiller +
+                ", fSmallSwordParticipant=" + fSmallSwordParticipant +
+                ", fSabreParticipant=" + fSabreParticipant +
+                ", fRapierParticipant=" + fRapierParticipant +
+                ", fSmallSwordParticipantSProperty=" + fSmallSwordParticipantSProperty +
+                ", fSabreParticipantSProperty=" + fSabreParticipantSProperty +
+                ", fRapierParticipantSProperty=" + fRapierParticipantSProperty +
+                ", weaponPointsProperty=" + weaponPointsProperty +
+                ", oldSeasonWeaponPointsPropety=" + oldSeasonWeaponPointsProperty +
+                ", participantResult=" + participantResult +
+                ", fSabreInjury=" + fSabreInjury +
+                ", fRapierInjury=" + fRapierInjury +
+                ", fSmallSwordInjury=" + fSmallSwordInjury +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Participant)) return false;
+        Participant that = (Participant) o;
+        return timesKiller == that.timesKiller
+            && ObservableUtils.equals(name, that.name)
+            && ObservableUtils.equals(surname, that.surname)
+            && ObservableUtils.equals(location, that.location)
+            && ObservableUtils.equals(locationGroup, that.locationGroup)
+            && ObservableUtils.equals(judgeState, that.judgeState)
+            && ObservableUtils.equals(licenseExpDate, that.licenseExpDate)
+            && ObservableUtils.equals(fFemale, that.fFemale)
+            && ObservableUtils.equals(fSmallSwordParticipant, that.fSmallSwordParticipant)
+            && ObservableUtils.equals(fSabreParticipant, that.fSabreParticipant)
+            && ObservableUtils.equals(fRapierParticipant, that.fRapierParticipant)
+            && ObservableUtils.equals(fSmallSwordParticipantSProperty, that.fSmallSwordParticipantSProperty)
+            && ObservableUtils.equals(fSabreParticipantSProperty, that.fSabreParticipantSProperty)
+            && ObservableUtils.equals(fRapierParticipantSProperty, that.fRapierParticipantSProperty)
+            && ObservableUtils.equals(weaponPointsProperty, that.weaponPointsProperty)
+            && ObservableUtils.equals(oldSeasonWeaponPointsProperty, that.oldSeasonWeaponPointsProperty)
+            && ObservableUtils.equals(participantResult, that.participantResult)
+            && ObservableUtils.equals(fSabreInjury, that.fSabreInjury)
+            && ObservableUtils.equals(fRapierInjury, that.fRapierInjury)
+            && ObservableUtils.equals(fSmallSwordInjury, that.fSmallSwordInjury);
+    }
 }

@@ -4,17 +4,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.KillerDrawing.KillerRandomizerStrategy;
 import model.enums.WeaponType;
-import model.exceptions.NoSuchWeaponException;
-import util.RationalNumber;
+import util.ObservableUtils;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class Competition implements Serializable {
 
@@ -94,51 +90,20 @@ public class Competition implements Serializable {
         throw new IllegalStateException("Asked for Weapon type not in competitions");
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj != null && obj instanceof Competition) {
-            List<Participant> otherParticipants = ((Competition) obj).getParticipants();
-            boolean found;
-            for (Participant p1 : getParticipants()) {
-                found = false;
-                for (Participant p2: otherParticipants){
-                    if (p1.equals(p2)) { found = true; break; };
-                    System.out.println(p2.getName());
-                }
-                System.out.println(p1.getName());
-                if (!found) return false;
-            }
-
-            List<WeaponCompetition> otherWeaponCompetitions = ((Competition) obj).getWeaponCompetitions();
-            for (WeaponCompetition w1 : getWeaponCompetitions()) {
-                found = false;
-                for (WeaponCompetition w2: otherWeaponCompetitions){
-                    if (w1.equals(w2)) { found = true; break; };
-                }
-                if (!found) return false;
-            }
-            return true;
-        }
-        return false;
-    }
-
     private void writeObject(ObjectOutputStream stream) throws IOException {
-        stream.writeObject(password);
-        ArrayList<WeaponCompetition> weaponCompetitionArrayList = new ArrayList<>();
-        weaponCompetitions.forEach(wc -> weaponCompetitionArrayList.add(wc)) ;
-        stream.writeObject(weaponCompetitionArrayList);
-
-        ArrayList<Participant> participants = new ArrayList<>();
-        this.participants.forEach(p -> participants.add(p)) ;
-        stream.writeObject(participants);
+        stream.writeObject(ObservableUtils.toList(weaponCompetitions));
+        stream.writeObject(ObservableUtils.toList(participants));
         stream.writeObject(killerRandomizerStrategy);
+        stream.writeObject(competitionName);
+        stream.writeObject(password);
     }
 
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
-        password = (String) stream.readObject();
-        weaponCompetitions = FXCollections.observableArrayList((ArrayList<WeaponCompetition>) stream.readObject());
-        participants = FXCollections.observableArrayList((ArrayList<Participant>) stream.readObject());
+        weaponCompetitions = FXCollections.observableArrayList((List<WeaponCompetition>) stream.readObject());
+        participants = FXCollections.observableArrayList((List<Participant>) stream.readObject());
         killerRandomizerStrategy = (KillerRandomizerStrategy) stream.readObject();
+        competitionName = (String) stream.readObject();
+        password = (String) stream.readObject();
     }
 
     public ObservableList<Participant> getParticipantsObservableList(){ return participants; }
@@ -288,5 +253,33 @@ public class Competition implements Serializable {
             lastPoints = p.getParticipantResult().getTriathlonOpenPoints();
             p.getParticipantResult().setTriathlonWomen(Integer.toString(currentPlace));
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Competition{" +
+                "weaponCompetitions=" + weaponCompetitions +
+                ", participants=" + participants +
+                ", killerRandomizerStrategy=" + killerRandomizerStrategy +
+                ", competitionName='" + competitionName + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Competition)) return false;
+        Competition that = (Competition) o;
+        return ObservableUtils.equals(weaponCompetitions, that.weaponCompetitions)
+                && ObservableUtils.equals(participants, that.participants)
+                && Objects.equals(killerRandomizerStrategy, that.killerRandomizerStrategy)
+                && Objects.equals(competitionName, that.competitionName)
+                && Objects.equals(password, that.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(weaponCompetitions, participants, killerRandomizerStrategy, competitionName, password);
     }
 }

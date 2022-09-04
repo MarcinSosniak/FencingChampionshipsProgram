@@ -11,6 +11,17 @@ import java.util.stream.Collectors;
 public class RandomKillerRandomizationStrategy implements KillerRandomizerStrategy {
 
     public RandomKillerRandomizationStrategy(){}
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof RandomKillerRandomizationStrategy;
+    }
+
     //return List of Killers for every one that needs it
     public List<List<Participant>>  drawKiller(List<Participant> participantsNotInKillerGroup,int oponentLessParticipantsCount, int fightsNeededPerPerson)
     {
