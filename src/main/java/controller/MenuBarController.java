@@ -72,7 +72,9 @@ public class MenuBarController implements Initializable {
     @FXML
     public void saveAs(){
         Stage stage = new Stage();
-        File file = new File("saves");
+        File saves = new File("saves");
+        saves.mkdir();
+        File file = new File("saves/" + Competition.getInstance().getCompetitionName());
         file.mkdir();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(file);

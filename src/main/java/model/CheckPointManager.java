@@ -45,8 +45,9 @@ public class CheckPointManager {
         createCheckPoint(path);
     }
 
-    public static void createCheckPoint(String path){
-        new File(path.substring(0,path.lastIndexOf("/"))).mkdir();
+    public static void createCheckPoint(String path) {
+        String save_name = path.contains("/") ? path.substring(0,path.lastIndexOf("/")) : path.substring(0,path.lastIndexOf("\\"));
+        new File(save_name).mkdir();
         new File(path).mkdir();
 
         try {
