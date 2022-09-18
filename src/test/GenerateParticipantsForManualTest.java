@@ -18,7 +18,7 @@ public class GenerateParticipantsForManualTest {
 
     @Test
     public void createParticipantsListForManualTests() throws Exception {
-        int PARTICIPANTS_COUNT = 16;
+        int PARTICIPANTS_COUNT = 31;
         int GROUP_SIZE = 5;
         int JUDGES = 3;
 
