@@ -16,7 +16,7 @@ import java.io.Serializable;
 import java.security.InvalidParameterException;
 import java.util.*;
 
-public class Participant implements Serializable{
+public class Participant implements Serializable {
 
     private static final long serialVersionUID = 3;
     private StringProperty name;

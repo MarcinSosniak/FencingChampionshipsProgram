@@ -142,7 +142,7 @@ public class Round implements Serializable {
 
 
     private Round drawGroups() {
-        groups = FXCollections.observableArrayList(fightDrawStrategy.drawFightsForRound(this,groupSize,participants));
+        groups = FXCollections.observableArrayList(fightDrawStrategy.drawFightsForRoundWithZeroedGroupId(this,groupSize,participants));
         return this;
     }
 

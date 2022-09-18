@@ -23,7 +23,7 @@ public class PersistenceManager {
     }
 
 
-    public static String serializeObjectsArrayToJson(ArrayList arrayList){
+    public static String serializeObjectsArrayToJson(List arrayList){
         Gson gson = FxGson.create();
         return gson.toJson(arrayList);
     }

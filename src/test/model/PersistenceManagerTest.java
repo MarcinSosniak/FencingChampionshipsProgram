@@ -9,14 +9,14 @@ import model.enums.WeaponType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import util.ObservableUtils;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class PersistenceManagerTest {
 
@@ -96,7 +96,7 @@ public class PersistenceManagerTest {
     public void serializeAndDeserializeParametrizedObjectTest() {
         String json = PersistenceManager.serializeParametrizedObject(p1);
         Participant p = PersistenceManager.deserializeParametrizedObject(json, Participant.class);
-        assertEquals(p1, p);
+        assertTrue(compareParticipantsFromJson(p1, p));
     }
 
     @Test
@@ -109,8 +109,8 @@ public class PersistenceManagerTest {
 
         List<Participant> participantList =
                 PersistenceManager.deserializeFromJsonArray(myJson, Participant.class, false);
-        assertEquals(p1, participantList.get(0));
-        assertEquals(p2, participantList.get(1));
+        assertTrue(compareParticipantsFromJson(p1, participantList.get(0)));
+        assertTrue(compareParticipantsFromJson(p2, participantList.get(1)));
     }
 
 
@@ -154,4 +154,17 @@ public class PersistenceManagerTest {
 //        new File(filename).delete();
     }
 
+
+
+    private boolean compareParticipantsFromJson(Participant a, Participant b) {
+        return a.getName().equals(b.getName()) &&
+                a.getSurname().equals(b.getSurname()) &&
+                a.getLocation().equals(b.getLocation()) &&
+                a.getLocationGroup().equals(b.getLocationGroup()) &&
+                a.getJudgeState().equals(b.getJudgeState()) &&
+                a.isfFemale() == b.isfFemale() &&
+                ObservableUtils.equals(a.getOldSeasonPointsForWeaponProperty(WeaponType.RAPIER), b.getOldSeasonPointsForWeaponProperty(WeaponType.RAPIER)) &&
+                ObservableUtils.equals(a.getOldSeasonPointsForWeaponProperty(WeaponType.SABRE), b.getOldSeasonPointsForWeaponProperty(WeaponType.SABRE)) &&
+                ObservableUtils.equals(a.getOldSeasonPointsForWeaponProperty(WeaponType.SMALL_SWORD), b.getOldSeasonPointsForWeaponProperty(WeaponType.SMALL_SWORD));
+    }
 }

@@ -41,7 +41,7 @@ public class SpacingStrategyTest {
 
         SpacingStrategy s = new SpacingStrategy(new RandomKillerRandomizationStrategy());
         //test
-        List<CompetitionGroup> cg = s.drawFightsForRound(r,5,participants);
+        List<CompetitionGroup> cg = s.drawFightsForRoundWithZeroedGroupId(r,5,participants);
 
         //after
         List<List<Participant>> cgPart = new ArrayList<>();
@@ -121,7 +121,7 @@ public class SpacingStrategyTest {
 
         SpacingStrategy s = new SpacingStrategy(new RandomKillerRandomizationStrategy());
         //test
-        List<CompetitionGroup> cgs = s.drawFightsForRound(r, GROUP_SIZE, participants);
+        List<CompetitionGroup> cgs = s.drawFightsForRoundWithZeroedGroupId(r, GROUP_SIZE, participants);
         //verify
         /*
         | Group 0  | Group 1  |
@@ -189,7 +189,7 @@ public class SpacingStrategyTest {
 
         SpacingStrategy s = new SpacingStrategy(new RandomKillerRandomizationStrategy());
         //test
-        List<CompetitionGroup> cgs = s.drawFightsForRound(r, GROUP_SIZE, participants);
+        List<CompetitionGroup> cgs = s.drawFightsForRoundWithZeroedGroupId(r, GROUP_SIZE, participants);
         //
         List<Participant> topN = new ArrayList<>(participants);
         topN.sort(new Comparator<Participant>() {

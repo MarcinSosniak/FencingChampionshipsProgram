@@ -36,6 +36,9 @@ public class CompetitionGroup implements Serializable {
             }
         }
     }
+
+    public static void resetGroupId() { created = 0;}
+
     public String getGroupID(){
         return this.groupID;
     }

@@ -8,6 +8,7 @@ import model.config.ConfigReader;
 import java.io.*;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 public class CheckPointManager {
@@ -67,17 +68,22 @@ public class CheckPointManager {
     }
 
     private static String getDirectionNameForSaves(){
-        int year = ZonedDateTime.now(ZoneId.of("Europe/Warsaw") ).getYear();
-        int month = ZonedDateTime.now(ZoneId.of("Europe/Warsaw") ).getMonthValue();
-        int day = ZonedDateTime.now(ZoneId.of("Europe/Warsaw") ).getDayOfMonth();
-        int hour =  ZonedDateTime.now(ZoneId.of("Europe/Warsaw") ).getHour();
-        int minutes =  ZonedDateTime.now(ZoneId.of("Europe/Warsaw") ).getMinute();
-        int seconds =  ZonedDateTime.now(ZoneId.of("Europe/Warsaw") ).getSecond();
+        ZonedDateTime current = ZonedDateTime.now();
+        int year = current.getYear();
+        int month = current.getMonthValue();
+        int day = current.getDayOfMonth();
+        int hour =  current.getHour();
+        int minutes =  current.getMinute();
+        int seconds =  current.getSecond();
+
+
+        String strDate = DateTimeFormatter.ofPattern("yyyy-MM-dd--HH-mm-ss").format(current);
 
         if (Competition.getInstance().getCompetitionName() == null)
-            Competition.getInstance().setCompetitionName(day +"-"+month +"-"+year);
+            Competition.getInstance().setCompetitionName(strDate);
 
-        return "saves/" + Competition.getInstance().getCompetitionName() + "__" + + hour+"-"+minutes+"-"+seconds;
+//        return "saves/" + Competition.getInstance().getCompetitionName() + "__" + + hour+"-"+minutes+"-"+seconds;
+        return "saves/" + Competition.getInstance().getCompetitionName()+ "__" + strDate;
     }
 
 
