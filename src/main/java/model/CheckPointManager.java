@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 
 public class CheckPointManager {
 
-    // path should be e.g saves/11-11-2019__14-39-53
+    // path should be e.g saves/{name}/11-11-2019__14-39-53
     public static void readFromCheckPoint(String path){
         // init competition
         try {
@@ -46,7 +46,7 @@ public class CheckPointManager {
     }
 
     public static void createCheckPoint(String path){
-
+        new File(path.substring(0,path.lastIndexOf("/"))).mkdir();
         new File(path).mkdir();
 
         try {
@@ -83,7 +83,7 @@ public class CheckPointManager {
             Competition.getInstance().setCompetitionName(strDate);
 
 //        return "saves/" + Competition.getInstance().getCompetitionName() + "__" + + hour+"-"+minutes+"-"+seconds;
-        return "saves/" + Competition.getInstance().getCompetitionName()+ "__" + strDate;
+        return "saves/" + Competition.getInstance().getCompetitionName()+ "/" + strDate;
     }
 
 
