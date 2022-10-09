@@ -488,10 +488,39 @@ public class WeaponCompetition implements Serializable {
     }
     public ObservableList<Participant> getParticipantsObservableList(){ return participants; }
 
-    /** For final results required */
-    public void calculateResults(){
-        /* There is only two fights in finals and two group */
+
+    private void set4placeforDoubled(Fight fight) {
+        if(!fight.getScore().equals(FightScore.DOUBLE)) {
+            throw new IllegalArgumentException("cannot use this on on not doubled fight");
+        }
+        fight.getFirstParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(4);
+        fight.getSecondParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(4);
+    }
+
+    private void setFirst2Places(Fight fight) {
+        if(fight.getScore().equals(FightScore.DOUBLE)) {
+            throw new IllegalArgumentException("cannot use this on on doubled fight");
+        }
+        fight.getWinner().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(1);
+        fight.getLooser().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(2);
+    }
+
+    private void calculateFinalsFromDoubledSemiFinals() {
+        List<Fight>  doubledSemiFinalFights= new LinkedList<Fight>();
+        doubledSemiFinalFights.add(finalRound.get().getGroups().get(0).getFightsList().get(0));
+        doubledSemiFinalFights.add(finalRound.get().getGroups().get(1).getFightsList().get(0));
+        for (Fight fight : doubledSemiFinalFights) {
+            if(fight.getScore().equals(FightScore.DOUBLE)) {
+                set4placeforDoubled(fight);
+            } else {
+                setFirst2Places(fight);
+            }
+        }
+    }
+
+    private void calculateTrueFinals() {
         Fight finalFight = finalRound.get().getGroups().get(0).getFightsList().get(0);
+        Fight thirdPlaceFight = finalRound.get().getGroups().get(1).getFightsList().get(0);
         if(finalFight.getScore().equals(FightScore.WON_FIRST)){
             finalFight.getFirstParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(1);
             finalFight.getSecondParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(2);
@@ -503,7 +532,6 @@ public class WeaponCompetition implements Serializable {
             finalFight.getSecondParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(2);
         }
         /* There is only one  */
-        Fight thirdPlaceFight = finalRound.get().getGroups().get(1).getFightsList().get(0);
         if(thirdPlaceFight.getScore().equals(FightScore.WON_FIRST)){
             thirdPlaceFight.getFirstParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(3);
             thirdPlaceFight.getSecondParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(4);
@@ -514,7 +542,19 @@ public class WeaponCompetition implements Serializable {
             thirdPlaceFight.getFirstParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(4);
             thirdPlaceFight.getSecondParticipant().getParticipantResult().getWeaponCompetitionResult(weaponType).setPlace(4);
         }
+    }
 
+
+    /** For final results required */
+    public void calculateResults(){
+        /* There is only two fights in finals and two group */
+
+        // this happens when we copy over semi-final
+        if(finalRound.get().isSemiFinal()) {
+            calculateFinalsFromDoubledSemiFinals();
+        } else {
+            calculateTrueFinals();
+        }
         /* If first is greater than 1 */
         Comparator<Participant> compareByPoinst = (Participant p1,Participant p2) ->{
             try{

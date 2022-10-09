@@ -186,6 +186,19 @@ public  class Fight implements Serializable {
             return null;
     }
 
+    public Participant getLooser()
+    {
+        FightScore actualScore= score.get();
+        if(actualScore==null)
+            return null;
+        if (actualScore==FightScore.WON_FIRST)
+            return secondParticipant.get();
+        if (actualScore==FightScore.WON_SECOND)
+            return  firstParticipant.get();
+        else
+            return null;
+    }
+
     public void updateScore(ValidInvocationChecker validInvocationChecker, boolean reverse)
     {
         Objects.requireNonNull(validInvocationChecker);
