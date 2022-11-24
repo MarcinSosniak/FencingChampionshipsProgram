@@ -106,6 +106,9 @@ public class WeaponCompetition implements Serializable {
         finalRound = new SimpleObjectProperty<>((Round) stream.readObject());
     }
 
+    public List<Round> getRoundsCopy() {
+        return new ArrayList<>(rounds);
+    }
     public void addRound(ValidInvocationChecker validInvocationChecker, Round round){
         Objects.requireNonNull(validInvocationChecker);
 //        rounds.add(round.setMyWeaponCompetition(this).drawGroups());

@@ -2,17 +2,22 @@ package model;
 
 import model.enums.WeaponType;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ResultExporter {
 
     public static void exportResults(){
         new File("results").mkdir();
 
-        String path = "results/" +  Competition.getInstance().getCompetitionName();
+        String path = "results/" +  Competition.getInstance().getCompetitionName() + ".txt";
 
         try {
             BufferedWriter writer =
@@ -28,6 +33,9 @@ public class ResultExporter {
             writer.write("\n\n\n");
             writer.write("WYNIKI ALL\n\n");
             writeAllResults(writer);
+            writer.write("\n\n\n");
+            writer.write("WYNIKI KOBIET\n\n");
+            writeWomenTotalResults(writer);
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -124,5 +132,29 @@ public class ResultExporter {
         }
     }
 
+    private static void writeWomenTotalResults(BufferedWriter writer) {
+        List<Participant> participantList =
+                new LinkedList<>(
+                        Competition.getInstance().getParticipants())
+                        .stream().filter(it -> it.isfFemale()).collect(Collectors.toList()
+                );
+        Collections.sort(participantList, new Comparator<Participant>() {
+            @Override
+            public int compare(Participant p1, Participant p2) {
+                return p1.getParticipantResult().getTriathlonOpenPoints().compareTo(
+                        p2.getParticipantResult().getTriathlonOpenPoints());
+            }
+        });
+        Collections.reverse(participantList);
+        for (Participant p: participantList){
+            try {
+                writer.write( p.getParticipantResult().getTriathlonOpen() + "\t" +
+                        p.getParticipantResult().getTriathlonOpenPoints() + "\t" +
+                        p.getName() + " " + p.getSurname() + "\t" +
+                        p.getLocation() +  "\n"
+                );
+            } catch (IOException e) { e.printStackTrace(); }
+        }
+    }
 
 }
