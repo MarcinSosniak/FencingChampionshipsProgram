@@ -18,6 +18,7 @@ public class SpacingStrategy extends FightDrawStrategy {
 
     @Override
     public List<CompetitionGroup> drawFightsForRound(Round round, int groupSize, List<Participant> participants) {
+        Collections.shuffle(participants);
         if(participants.size()%groupSize==0)
         {
             return generate_no_killers(round, groupSize,  participants);
