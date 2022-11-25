@@ -47,6 +47,12 @@ public class CheckPointManager {
     }
 
     public static void createCheckPoint(String path) {
+        try {
+            saveTextState();
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+
         String save_name = path.contains("/") ? path.substring(0,path.lastIndexOf("/")) : path.substring(0,path.lastIndexOf("\\"));
         new File(save_name).mkdir();
         new File(path).mkdir();
@@ -67,11 +73,6 @@ public class CheckPointManager {
             bw2.close();
         }
         catch (IOException e) { e.printStackTrace(); }
-        try {
-            saveTextState();
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
     }
 
     private static String getDirectionNameForSaves(){
