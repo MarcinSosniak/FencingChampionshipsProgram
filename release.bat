@@ -1,1 +1,1 @@
-python release.py %1
+python release.py %*

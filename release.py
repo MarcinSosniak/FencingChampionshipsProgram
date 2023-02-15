@@ -12,6 +12,7 @@ def main():
     copy_release_folder(version)
     copy_jar(version)
     update_run_script(version)
+    run_git(version)
 
 def update_run_script(version):
     old_run = None
@@ -20,7 +21,13 @@ def update_run_script(version):
     with open(get_release_folder_fpath(version) + "\\run.bat", "w") as f:
         f.write(old_run.split(JAR_FILNAME_BASE)[0] + get_jar_filename(version) + '\n')
 
-
+def run_git(version):
+    if "--skip-git" in sys.argv:
+        return
+    subprocess.run('git reset HEAD', shell=True)
+    subprocess.run('git add build.gradle', shell=True)
+    subprocess.run(f'git commit -m \"RELEASE {version}\"')
+    subprocess.run(f'git tag  v{version}')
 
 def get_release_folder_fpath(version):
     return "releases\\" + get_release_folder_name(version)
