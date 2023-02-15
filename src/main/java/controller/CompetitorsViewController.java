@@ -1,29 +1,22 @@
 package controller;
 
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import model.*;
 import model.config.ConfigReader;
 import model.enums.JudgeState;
 import model.enums.WeaponType;
-import model.exceptions.NoSuchWeaponException;
 import util.RationalNumber;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.math.BigDecimal;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -42,7 +35,7 @@ public class CompetitorsViewController implements Initializable {
     @FXML
     TableColumn<Participant,String> club;
     @FXML
-    TableColumn<Participant,String> group;
+    TableColumn<Participant,String> locationGroup;
     @FXML
     TableColumn<Participant, String> fSmallSwordParticipant;
     @FXML
@@ -188,7 +181,7 @@ public class CompetitorsViewController implements Initializable {
         name.setCellValueFactory(dataValue -> dataValue.getValue().nameProperty());
         surname.setCellValueFactory(dataValue -> dataValue.getValue().surnameProperty());
         club.setCellValueFactory(dataValue -> dataValue.getValue().locationProperty());
-        group.setCellValueFactory(dataValue -> dataValue.getValue().locationGroupProperty());
+        locationGroup.setCellValueFactory(dataValue -> dataValue.getValue().locationGroupProperty());
 
 
 

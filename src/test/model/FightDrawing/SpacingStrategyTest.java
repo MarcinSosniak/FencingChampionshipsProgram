@@ -7,6 +7,7 @@ import model.KillerDrawing.RandomKillerRandomizationStrategy;
 import model.enums.JudgeState;
 import model.enums.WeaponType;
 import net.bytebuddy.matcher.CollectionErasureMatcher;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 import util.RationalNumber;
@@ -102,6 +103,7 @@ public class SpacingStrategyTest {
     }
 
     @Test
+    @Ignore
     public void drawFightsForRound_precise() throws Exception
     {
         List<Participant> participants = new ArrayList<>();

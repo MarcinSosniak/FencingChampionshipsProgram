@@ -45,6 +45,8 @@ public class FightDrawStrategyPicker {
                 return new SpacingStrategy(strat);
             case FIRST:
                 return new FirstRoundStrategy();
+            case LOCATION_GROUP:
+                return new LocationGroupDrawStrategy(strat);
         }
         throw new IllegalStateException("pick failed. This means someone implemented a strategy and not added it the picker");
     }
@@ -66,7 +68,8 @@ public class FightDrawStrategyPicker {
         DEFAULT,
         SPACING,
         FIRST,
-        FINAL;
+        FINAL,
+        LOCATION_GROUP;
 
         public static String toString(STRATEGY_NAMES name)
         {
@@ -86,27 +89,35 @@ public class FightDrawStrategyPicker {
             {
                 return "FIRST";
             }
-            throw new IllegalStateException("someone did not incluue to String here");
+            if (name == STRATEGY_NAMES.LOCATION_GROUP)
+            {
+                return "LOCATION_GROUP";
+            }
+            throw new IllegalStateException("someone did not include to String here");
         }
 
         public static STRATEGY_NAMES fromString(String name)
         {
             name=name.toUpperCase();
-            if( name.equals("DEFAULT"))
+            if( name.equals(STRATEGY_NAMES.DEFAULT.name()))
             {
                 return STRATEGY_NAMES.DEFAULT;
             }
-            if( name.equals("SPACING"))
+            if( name.equals(STRATEGY_NAMES.SPACING.name()))
             {
                 return STRATEGY_NAMES.SPACING;
             }
-            if (name.equals("FIRST"))
+            if (name.equals(STRATEGY_NAMES.FIRST.name()))
             {
                 return STRATEGY_NAMES.FIRST;
             }
-            if (name.equals("FINAL"))
+            if (name.equals(STRATEGY_NAMES.FINAL.name()))
             {
                 return STRATEGY_NAMES.FINAL;
+            }
+            if (name.equals(STRATEGY_NAMES.LOCATION_GROUP.name()))
+            {
+                return STRATEGY_NAMES.LOCATION_GROUP;
             }
             System.out.println("WARNING got STRATEGY NAME THAT IS valid defaulting to DEFAULT. got '"+name+"'");
             return STRATEGY_NAMES.DEFAULT;
@@ -114,7 +125,7 @@ public class FightDrawStrategyPicker {
 
         public static List<STRATEGY_NAMES> listAllShowed()
         {
-            return Arrays.asList(STRATEGY_NAMES.DEFAULT,STRATEGY_NAMES.SPACING);
+            return Arrays.asList(STRATEGY_NAMES.DEFAULT,STRATEGY_NAMES.SPACING, STRATEGY_NAMES.LOCATION_GROUP);
         }
 
         public static List<String> listAllShowedString()
@@ -124,7 +135,7 @@ public class FightDrawStrategyPicker {
 
         public static List<STRATEGY_NAMES> listAll()
         {
-            return Arrays.asList(STRATEGY_NAMES.DEFAULT,STRATEGY_NAMES.SPACING,STRATEGY_NAMES.FINAL);
+            return Arrays.asList(STRATEGY_NAMES.DEFAULT,STRATEGY_NAMES.SPACING,STRATEGY_NAMES.FINAL, STRATEGY_NAMES.LOCATION_GROUP);
         }
 
         public static List<String> listAllString()

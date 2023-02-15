@@ -20,7 +20,7 @@
             <TableColumn text="nazwisko" fx:id="surname" />
             <TableColumn text="imie" fx:id="name"/>
             <TableColumn text="klub" fx:id="club"/>
-            <TableColumn text="grupa" fx:id="group"/>
+            <TableColumn text="grupa_lokalizacji" fx:id="locationGroup"/>
             <TableColumn text="szpada" fx:id="fSmallSwordParticipant"/>
             <TableColumn text="szabla" fx:id="fSabreParticipant"/>
             <TableColumn text="rapier" fx:id="fRapierParticipant"/>
