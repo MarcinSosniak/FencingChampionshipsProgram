@@ -1,0 +1,5 @@
+1) https://www.java.com/en/download/manual.jsp nalezy sobie pobrac java z tego linku i zainstolowac. 
+	na windowsie polecam "windows online"
+2) dwukliknac w Szermierka-1.0-SNAPSHOT.jar -> powinno dzialac. 
+	Jesli to nie pomoze to dwukliknac w plik "run.bat". Nalezy pozwolic mu sie wykonac, nie nie zaszyfruje wam dyskow.
+ 

@@ -1,0 +1,1 @@
+python release.py %1
