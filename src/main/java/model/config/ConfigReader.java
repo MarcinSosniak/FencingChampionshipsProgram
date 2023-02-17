@@ -88,9 +88,9 @@ public class ConfigReader {
         public boolean getBoolean(String varName) {
             String var=vars.get(varName);
             if (var != null) {
-                if (var.equals("Y") || var.equals("T"))
+                if (var.equals("Y") || var.equals("T") || var.equals("1"))
                     return true;
-                else if (var.equals("N") || var.equals("F"))
+                else if (var.equals("N") || var.equals("F") || var.equals("0"))
                     return false;
                 throw new IllegalStateException("Value was not boolean");
             }

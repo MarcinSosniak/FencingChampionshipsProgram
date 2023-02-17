@@ -26,7 +26,7 @@ public class LocationGroupDrawStrategy extends BaseMinimizeDrawStrategy {
             score += groupScore;
             scores.add(groupScore);
         }
-        debugLog(groups, scores, score);
+//        debugLog(groups, scores, score);
         return score;
     }
 

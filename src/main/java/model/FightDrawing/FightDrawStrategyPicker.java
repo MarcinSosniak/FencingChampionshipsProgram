@@ -1,11 +1,9 @@
 package model.FightDrawing;
 
-import model.*;
 import model.KillerDrawing.KillerRandomizerStrategy;
-import model.enums.WeaponType;
-import util.HumanReadableFatalError;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class FightDrawStrategyPicker {
@@ -47,51 +45,38 @@ public class FightDrawStrategyPicker {
                 return new FirstRoundStrategy();
             case LOCATION_GROUP:
                 return new LocationGroupDrawStrategy(strat);
+            case AVOID_REPEATS:
+                return new AvoidDuplicateFightsStrategy(strat);
         }
         throw new IllegalStateException("pick failed. This means someone implemented a strategy and not added it the picker");
     }
 
-
-
-
-
-
-
-//    public static final String[] SHOWED_STRATEGY_NAMES = {"DEFAULT"};
-//    public static final String[] BACKEND_STRATEGY_NAMES = {"SEMIFINALS",};
-
-
-
-
-    public enum STRATEGY_NAMES
-    {
+    public enum STRATEGY_NAMES {
         DEFAULT,
         SPACING,
         FIRST,
         FINAL,
-        LOCATION_GROUP;
+        LOCATION_GROUP,
+        AVOID_REPEATS;
 
-        public static String toString(STRATEGY_NAMES name)
-        {
-            if( name == STRATEGY_NAMES.DEFAULT)
-            {
+        public static String toString(STRATEGY_NAMES name) {
+            if (name == STRATEGY_NAMES.DEFAULT) {
                 return "DEFAULT";
             }
-            if( name == STRATEGY_NAMES.SPACING)
-            {
+            if (name == STRATEGY_NAMES.SPACING) {
                 return "SPACING";
             }
-            if (name == STRATEGY_NAMES.FINAL)
-            {
+            if (name == STRATEGY_NAMES.FINAL) {
                 return "FINAL";
             }
-            if (name == STRATEGY_NAMES.FIRST)
-            {
+            if (name == STRATEGY_NAMES.FIRST) {
                 return "FIRST";
             }
-            if (name == STRATEGY_NAMES.LOCATION_GROUP)
-            {
+            if (name == STRATEGY_NAMES.LOCATION_GROUP) {
                 return "LOCATION_GROUP";
+            }
+            if (name == STRATEGY_NAMES.AVOID_REPEATS) {
+                return "AVOID_REPEATS";
             }
             throw new IllegalStateException("someone did not include to String here");
         }
@@ -107,25 +92,25 @@ public class FightDrawStrategyPicker {
             {
                 return STRATEGY_NAMES.SPACING;
             }
-            if (name.equals(STRATEGY_NAMES.FIRST.name()))
-            {
+            if (name.equals(STRATEGY_NAMES.FIRST.name())) {
                 return STRATEGY_NAMES.FIRST;
             }
-            if (name.equals(STRATEGY_NAMES.FINAL.name()))
-            {
+            if (name.equals(STRATEGY_NAMES.FINAL.name())) {
                 return STRATEGY_NAMES.FINAL;
             }
-            if (name.equals(STRATEGY_NAMES.LOCATION_GROUP.name()))
-            {
+            if (name.equals(STRATEGY_NAMES.LOCATION_GROUP.name())) {
                 return STRATEGY_NAMES.LOCATION_GROUP;
             }
-            System.out.println("WARNING got STRATEGY NAME THAT IS valid defaulting to DEFAULT. got '"+name+"'");
+            if (name.equals(STRATEGY_NAMES.AVOID_REPEATS.name())) {
+                return STRATEGY_NAMES.AVOID_REPEATS;
+            }
+            System.out.println("WARNING got STRATEGY NAME THAT IS valid defaulting to DEFAULT. got '" + name + "'");
             return STRATEGY_NAMES.DEFAULT;
         }
 
         public static List<STRATEGY_NAMES> listAllShowed()
         {
-            return Arrays.asList(STRATEGY_NAMES.DEFAULT,STRATEGY_NAMES.SPACING, STRATEGY_NAMES.LOCATION_GROUP);
+            return Arrays.asList(STRATEGY_NAMES.DEFAULT, STRATEGY_NAMES.SPACING, STRATEGY_NAMES.LOCATION_GROUP, STRATEGY_NAMES.AVOID_REPEATS);
         }
 
         public static List<String> listAllShowedString()
@@ -135,7 +120,7 @@ public class FightDrawStrategyPicker {
 
         public static List<STRATEGY_NAMES> listAll()
         {
-            return Arrays.asList(STRATEGY_NAMES.DEFAULT,STRATEGY_NAMES.SPACING,STRATEGY_NAMES.FINAL, STRATEGY_NAMES.LOCATION_GROUP);
+            return Arrays.asList(STRATEGY_NAMES.DEFAULT, STRATEGY_NAMES.SPACING, STRATEGY_NAMES.FINAL, STRATEGY_NAMES.LOCATION_GROUP, STRATEGY_NAMES.AVOID_REPEATS);
         }
 
         public static List<String> listAllString()

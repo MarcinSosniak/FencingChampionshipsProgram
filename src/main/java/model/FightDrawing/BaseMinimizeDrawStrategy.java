@@ -29,17 +29,23 @@ public abstract class BaseMinimizeDrawStrategy extends FightDrawStrategy {
                 calculateScore(participants, round, groupSize)
         );
         long startTime = Instant.now().toEpochMilli();
-        for (int i = 0; i < DRAWS; i++) {
+        int draws = getDrawsCount();
+        for (int i = 0; i < draws; i++) {
             Collections.shuffle(participants);
             int score = calculateScore(participants, round, groupSize);
             if (score < bestConfiguration.snd())
                 bestConfiguration = new Pair<>(new ArrayList<>(participants), score);
         }
         long endTime = Instant.now().toEpochMilli();
-        System.out.println("drawing round time = " + (endTime-startTime + "ms"));
+        System.out.println("drawing round time = " + (endTime - startTime + "ms"));
         return drawFightsForSortedParticipants(round, groupSize, bestConfiguration.fst(), killS);
     }
 
-    abstract protected int calculateScore(List<Participant> groups, Round round, int groupSize);
+    //Override if calculating is expensive
+    protected int getDrawsCount() {
+        return DRAWS;
+    }
+
+    abstract protected int calculateScore(List<Participant> participants, Round round, int groupSize);
 
 }
