@@ -6,15 +6,12 @@ import model.KillerDrawing.RandomKillerRandomizationStrategy;
 import model.config.ConfigReader;
 import model.enums.JudgeState;
 import model.enums.WeaponType;
+import model.resultsOperations.ResultExporter;
 import org.junit.Before;
 import org.junit.Test;
 import util.RationalNumber;
 
-import java.lang.reflect.Constructor;
-import java.rmi.server.ExportException;
 import java.util.Date;
-
-import static org.junit.Assert.*;
 
 public class ResultExporterTest {
 

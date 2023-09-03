@@ -15,6 +15,7 @@ import model.*;
 import model.command.AddRoundCommand;
 import model.command.Command;
 import model.enums.TriRet;
+import model.resultsOperations.ResultExporter;
 import util.Pointer;
 
 import java.io.File;

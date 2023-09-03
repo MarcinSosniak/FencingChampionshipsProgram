@@ -1,5 +1,7 @@
-package model;
+package model.resultsOperations;
 
+import model.Competition;
+import model.Participant;
 import model.enums.WeaponType;
 
 import java.io.BufferedWriter;
