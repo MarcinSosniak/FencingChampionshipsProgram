@@ -356,6 +356,7 @@ public class EliminationController implements Initializable {
         nextRoundButton.setMaxSize(1000, 1000);
         nextRoundButton.setText("następna runda");
         nextRoundButton.setOnAction(x -> {
+            if (!requestUserConfirmationForNextRound(Competition.getInstance().getWeaponCompetition(wt))) return;
             System.out.format("HUEEEEEEEEEEEEEEEEEEEEEEEeeeeee\n");
 
             WeaponCompetition wc = Competition.getInstance().getWeaponCompetition(wt);
@@ -873,8 +874,22 @@ public class EliminationController implements Initializable {
                             + "?");
             alert.getButtonTypes();
             Optional<ButtonType> result = alert.showAndWait();
-            if (!result.isPresent() || result.get() == ButtonType.CANCEL)
-                return false;
+            return result.isPresent() && result.get() != ButtonType.CANCEL;
+        }
+        return true;
+    }
+
+    private boolean requestUserConfirmationForNextRound(WeaponCompetition wc) {
+        if (wc.getLastRound().getGroups().stream()
+                .anyMatch(g -> g.getFightsList().stream()
+                        .anyMatch(f -> f.scoreProperty().get().equals(FightScore.NULL_STATE)))
+        ) {
+            Alert alert = new Alert(
+                    Alert.AlertType.CONFIRMATION,
+                    "CZy napewno chcesz rozlosowac kolejna runde bez zaznaczonych wszystkich wynikow?");
+            alert.getButtonTypes();
+            Optional<ButtonType> result = alert.showAndWait();
+            return result.isPresent() && result.get() != ButtonType.CANCEL;
         }
         return true;
     }
