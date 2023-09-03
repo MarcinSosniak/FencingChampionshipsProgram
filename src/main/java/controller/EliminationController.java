@@ -85,7 +85,7 @@ public class EliminationController implements Initializable {
     public ObservableList<TableRow> sabreRows = FXCollections.observableArrayList();
     public ObservableList<TableRow> smallSwordRows = FXCollections.observableArrayList();
 
-    private static HashMap<Fight, TableCell<Fight, String>> prtipantHashMap = new HashMap<>();
+    private static HashMap<Fight, TableCell<Fight, String>> participantHashMap = new HashMap<>();
     private static ParticipantViewController participantViewController;
     private List<TableView> fightTables;
 
@@ -635,12 +635,12 @@ public class EliminationController implements Initializable {
 
                     int index = c.getFrom() ;  // updated only one element
                     Fight fight = c.getList().get(index);
-                    if (prtipantHashMap.containsKey(fight)){
+                    if (participantHashMap.containsKey(fight)){
                         System.out.println("CONTAINS");
-                        changeStyle(fight, prtipantHashMap.get(fight));
+                        changeStyle(fight, participantHashMap.get(fight));
                     }
                     else {
-                        System.out.println(prtipantHashMap.size());
+                        System.out.println(participantHashMap.size());
                         System.out.println("DOES NOT CONTAIN");
                     }
 
@@ -756,9 +756,10 @@ public class EliminationController implements Initializable {
                         }
                     };
                     cell.setOnMouseClicked(e -> {
-                        prtipantHashMap.put((Fight) cell.getTableRow().getItem(), cell);
+                        participantHashMap.put((Fight) cell.getTableRow().getItem(), cell);
                         if (e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty()) {
                             Fight f = (Fight) cell.getTableRow().getItem();
+                            if (!requestUserConfirmationForFightStateChange(f)) return;
                             if (f.getScore().equals(FightScore.WON_FIRST)) {
                                 f.commandSetFightScoreDirect(FightScore.NULL_STATE);
                               } else {
@@ -795,10 +796,11 @@ public class EliminationController implements Initializable {
                         }
                     };
                     cell.setOnMouseClicked(e -> {
-                        prtipantHashMap.put((Fight) cell.getTableRow().getItem(), cell);
+                        participantHashMap.put((Fight) cell.getTableRow().getItem(), cell);
 
                         if (e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty()) {
                             Fight f = (Fight) cell.getTableRow().getItem();
+                            if (!requestUserConfirmationForFightStateChange(f)) return;
                             if (f.getScore().equals(FightScore.WON_SECOND)) {
                                 f.commandSetFightScoreDirect(FightScore.NULL_STATE);
                             } else {
@@ -824,9 +826,10 @@ public class EliminationController implements Initializable {
                         }
                     };
                     cell.setOnMouseClicked(e -> {
-                        prtipantHashMap.put((Fight) cell.getTableRow().getItem(), cell);
+                        participantHashMap.put((Fight) cell.getTableRow().getItem(), cell);
                         if (e.getButton().equals(MouseButton.PRIMARY) && !cell.isEmpty()) {
                             Fight f = (Fight) cell.getTableRow().getItem();
+                            if (!requestUserConfirmationForFightStateChange(f)) return;
                             if (f.getScore().equals(FightScore.DOUBLE)) {
                                 f.commandSetFightScoreDirect(FightScore.NULL_STATE);
                             } else {
@@ -851,6 +854,23 @@ public class EliminationController implements Initializable {
             e.printStackTrace();
             return new ScrollPane();
         }
+    }
+
+    private boolean requestUserConfirmationForFightStateChange(Fight f) {
+        if (!f.getScore().equals(FightScore.NULL_STATE)) {
+            Alert alert = new Alert(
+                    Alert.AlertType.CONFIRMATION,
+                    "Czy napewno chcesz zmienic wynik walki miedzy "
+                            + f.firstParticipantProperty().get().getFullName()
+                            + " a "
+                            + f.secondParticipantProperty().get().getFullName()
+                            + "?");
+            alert.getButtonTypes();
+            Optional<ButtonType> result = alert.showAndWait();
+            if (!result.isPresent() || result.get() == ButtonType.CANCEL)
+                return false;
+        }
+        return true;
     }
 
     private Tab initTab(WeaponType wt) {

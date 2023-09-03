@@ -235,6 +235,10 @@ public class Participant implements Serializable {
 
     public StringProperty surnameProperty() { return surname; }
 
+    public String getFullName() {
+        return name.get() + " " + surname.get();
+    }
+
     public String getLocation() { return location.get(); }
 
     public StringProperty locationProperty() { return location; }
