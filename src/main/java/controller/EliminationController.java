@@ -89,6 +89,11 @@ public class EliminationController implements Initializable {
     private static ParticipantViewController participantViewController;
     private List<TableView> fightTables;
 
+    private static EliminationController instance = null;
+
+    public static EliminationController getInstance() {
+        return instance;
+    }
 
     @FXML
     MenuBarController menuBarController;
@@ -97,8 +102,8 @@ public class EliminationController implements Initializable {
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle){
-        try{
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
             fSabreCompetitionFinals = Competition.getInstance().getWeaponCompetition(WeaponType.SABRE).getLastRound().getfFinal();
             fSmallswordCompetitionFinals = Competition.getInstance().getWeaponCompetition(WeaponType.SMALL_SWORD).getLastRound().getfFinal();
             fRapierCompetitionFinals = Competition.getInstance().getWeaponCompetition(WeaponType.RAPIER).getLastRound().getfFinal();
@@ -125,6 +130,7 @@ public class EliminationController implements Initializable {
         outputStage.setResizable(true);
         outputStage.setMaximized(true);
         outputStage.show();
+        instance = this;
     }
 
 
